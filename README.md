@@ -19,10 +19,8 @@ It should print 'nvm' if the installation was successful
 
 * <code>npm install expo-cli --global</code>
 
-## Creating and starting a new project
+## Starting the project
 
-* <code>expo init myNewProject</code>
-* <code>cd myNewProject</code>
 * <code>expo start</code>
 
 ## Useful libraries
