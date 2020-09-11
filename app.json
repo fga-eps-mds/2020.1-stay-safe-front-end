@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "front-end",
-    "slug": "front-end",
+    "name": "Stay Safe",
+    "slug": "StaySafe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
