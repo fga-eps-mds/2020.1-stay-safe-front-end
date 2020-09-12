@@ -3,11 +3,9 @@ import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 
-import RedStatusBar from '../../components/RedStatusBar'
-import NormalLabel from '../../components/NormalLabel'
-import NormalInput from '../../components/NormalInput'
-import NormalSend, { SendLabel } from '../../components/NormalSend'
-import { Container, KeyboardScrollView, Title } from './styles'
+import Logo from '../../img/logo.svg'
+import { Container, KeyboardScrollView, LogoWrapper, Title } from '../../components/NormalForms'
+import { NormalLabel, NormalInput, NormalSend, SendLabel } from '../../components/NormalForms'
 
 class Cadastro extends React.Component {
     constructor() {
@@ -57,12 +55,13 @@ class Cadastro extends React.Component {
         if (!this.state.fontsLoaded) return null
 
         return (
-            <>
-                <SafeAreaView style={{flex: 0}} />
-                <RedStatusBar />
-
+            <SafeAreaView style={{flex: 1}}>
                 <Container>
                     <KeyboardScrollView>
+                        <LogoWrapper>
+                            <Logo width={60} height={60} />
+                        </LogoWrapper>
+
                         <Title>Cadastro</Title>
 
                         <NormalLabel>Username</NormalLabel>
@@ -95,11 +94,10 @@ class Cadastro extends React.Component {
                         <NormalSend onPress={() => this.isUserDataValid()}>
                             <SendLabel>Criar Conta</SendLabel>
                         </NormalSend>
-
                     </KeyboardScrollView>
                 </Container>
-            </>
-        );
+            </SafeAreaView>
+        )
     }
 }
 

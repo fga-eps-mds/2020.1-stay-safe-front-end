@@ -8,7 +8,11 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#E83338"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#E83338",
+      "barStyle": "light-content"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,6 +25,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": ["js", "jsx", "svg", "ts", "tsx"]
     }
   }
 }
