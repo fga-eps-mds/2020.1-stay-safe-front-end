@@ -36,16 +36,16 @@ class Cadastro extends React.Component {
         if (this.state.userName == null || this.state.userName == '') {
             Alert.alert("Campo não podem ficar em branco", "Username não pode ficar em branco")
         }
-        if (this.state.userFullName == null || this.state.userFullName == '') {
+        else if (this.state.userFullName == null || this.state.userFullName == '') {
             Alert.alert("Campo não podem ficar em branco", "Nome Completo não pode ficar em branco")
         }
-        if (this.state.userEmail == null || this.state.userEmail == '') {
+        else if (this.state.userEmail == null || this.state.userEmail == '') {
             Alert.alert("Campo não podem ficar em branco", "Email não pode ficar em branco")
         }
-        if (this.state.userPwd == null || this.state.userPwd == '') {
+        else if (this.state.userPwd == null || this.state.userPwd == '') {
             Alert.alert("Campo não podem ficar em branco", "Senha não pode ficar em branco")
         }
-        if (this.state.userPwd.length < 6) {
+        else if (this.state.userPwd && this.state.userPwd.length < 6) {
             Alert.alert("Campo não podem ficar em branco", "Senha precisa de mínimo de 6 (seis) caracteres")
         }
         
