@@ -1,12 +1,12 @@
 import React from 'react'
+import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { View, Keyboard } from 'react-native'
 import * as Font from 'expo-font'
 
 import RedStatusBar from '../../components/RedStatusBar'
 import NormalLabel from '../../components/NormalLabel'
 import NormalInput from '../../components/NormalInput'
-import NormalSend from '../../components/NormalSend'
+import NormalSend, { SendLabel } from '../../components/NormalSend'
 import { Container, KeyboardScrollView, Title } from './styles'
 
 class Cadastro extends React.Component {
@@ -14,20 +14,30 @@ class Cadastro extends React.Component {
         super()
         this.state = {
             fontsLoaded: false,
-            userName: null
+            userName: null,
+            userFullName: null,
+            userEmail: null,
+            userPwd: null
         }
+    }
+
+    componentDidMount() {
+        this.loadFonts()
     }
 
     loadFonts = async () => {
         await Font.loadAsync({
           'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
+          'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
         });
 
         this.setState({ fontsLoaded: true })
     }
 
-    componentDidMount() {
-        this.loadFonts()
+    isUserDataValid = () => {
+        if (this.state.userName == null || this.state.userName == '') {
+            Alert.alert("Campo não podem ficar em branco", "Username não pode ficar em branco")
+        }
     }
 
     render() {
@@ -44,21 +54,35 @@ class Cadastro extends React.Component {
 
                         <NormalLabel>Username</NormalLabel>
                         <NormalInput
+                            maxLength={10}
+                            onChangeText={(text) => this.setState({ userName: text })}
                         />
 
                         <NormalLabel>Nome Completo</NormalLabel>
                         <NormalInput
+                            maxLength={100}
+                            onChangeText={(text) => this.setState({ userFullName: text })}
                         />
 
                         <NormalLabel>Email</NormalLabel>
                         <NormalInput
+                            keyboardType='email-address'
+                            maxLength={10}
+                            onChangeText={(text) => this.setState({ userEmail: text })}
                         />
 
                         <NormalLabel>Senha</NormalLabel>
                         <NormalInput
+                            secureTextEntry={true}
+                            maxLength={18}
+                            onChangeText={(text) => this.setState({ userPwd: text })}
+                            onSubmitEditing={() => this.isUserDataValid()}
                         />
-                        
-                        <NormalSend />
+
+                        <NormalSend onPress={() => this.isUserDataValid()}>
+                            <SendLabel>Criar Conta</SendLabel>
+                        </NormalSend>
+
                     </KeyboardScrollView>
                 </Container>
             </>
