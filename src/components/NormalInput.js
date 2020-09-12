@@ -1,0 +1,17 @@
+import styled from 'styled-components/native'
+
+export default NormalInput = styled.TextInput.attrs({
+    placeholderTextColor: "#ffffff",
+    autoCapitalize: 'none',
+    multiline: false,
+})`
+    width: 80%;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    font-family: Trueno-SemiBold;
+    font-size: 14px;
+    color: #010A26;
+    margin-bottom: 25px;
+    padding-horizontal: 14px;
+`;
