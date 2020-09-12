@@ -48,7 +48,7 @@ class Cadastro extends React.Component {
             Alert.alert("Campo não podem ficar em branco", "Senha não pode ficar em branco")
         }
         if (this.state.userPwd.length < 6) {
-            Alert.alert("Campo não podem ficar em branco", "Senha precisa de mínimo de 6 caracteres")
+            Alert.alert("Campo não podem ficar em branco", "Senha precisa de mínimo de 6 (seis) caracteres")
         }
         
     }
