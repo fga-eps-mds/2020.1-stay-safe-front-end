@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 
 import Logo from '../../img/logo.svg'
+import { scale } from '../../utils/scalling'
 import { Container, KeyboardScrollView, LogoWrapper, Title } from '../../components/NormalForms'
 import { NormalLabel, NormalInput, NormalSend, SendLabel } from '../../components/NormalForms'
 
@@ -59,7 +60,6 @@ class Cadastro extends React.Component {
                 })
                 if (!response.body.error && response.status === 200) {
                     AsyncStorage.setItem("userToken", response.body.token)
-                    const a = await AsyncStorage.getItem("userToken")
                 } else {
                     Alert.alert("Erro ao logar usuário", response.body.error)
                 }
@@ -77,40 +77,51 @@ class Cadastro extends React.Component {
                 <Container>
                     <KeyboardScrollView>
                         <LogoWrapper>
-                            <Logo width={60} height={60} />
+                            <Logo width={scale(52)} height={scale(52)} />
                         </LogoWrapper>
 
                         <Title>Cadastro</Title>
 
                         <NormalLabel>Username</NormalLabel>
                         <NormalInput
+                            returnKeyType='next'
                             maxLength={20}
                             onChangeText={(text) => this.setState({ username: text })}
+                            onSubmitEditing={() => this.fullNameInput.focus()}
                         />
 
                         <NormalLabel>Nome Completo</NormalLabel>
                         <NormalInput
+                            ref={(input) => this.fullNameInput = input}
+                            returnKeyType='next'
                             maxLength={200}
                             onChangeText={(text) => this.setState({ userFullName: text })}
+                            onSubmitEditing={() => this.emailInput.focus()}
                         />
 
                         <NormalLabel>Email</NormalLabel>
                         <NormalInput
+                            ref={(input) => this.emailInput = input}
+                            returnKeyType='next'
                             keyboardType='email-address'
                             maxLength={50}
                             onChangeText={(text) => this.setState({ userEmail: text })}
-
+                            onSubmitEditing={() => this.pwdInput.focus()}
                         />
 
                         <NormalLabel>Senha</NormalLabel>
                         <NormalInput
+                            ref={(input) => this.pwdInput = input}
+                            returnKeyType='next'
                             secureTextEntry={true}
                             maxLength={20}
                             onChangeText={(text) => this.setState({ userPwd: text })}
+                            onSubmitEditing={() => this.confirmPwdInput.focus()}
                         />
 
                         <NormalLabel>Confirmar Senha</NormalLabel>
                         <NormalInput
+                            ref={(input) => this.confirmPwdInput = input}
                             secureTextEntry={true}
                             maxLength={20}
                             onChangeText={(text) => this.setState({ userConfirmPwd: text })}

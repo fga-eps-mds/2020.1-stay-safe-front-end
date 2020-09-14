@@ -48,7 +48,7 @@ export const NormalInput = styled.TextInput.attrs({
     multiline: false,
 })`
     width: 80%;
-    height: ${scale(45)}px;
+    height: ${scale(42)}px;
     background-color: #ffffff;
     border-radius: ${scale(15)}px;
     font-family: Trueno-Regular;
