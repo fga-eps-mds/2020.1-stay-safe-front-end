@@ -2,10 +2,11 @@ import React from 'react'
 import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
+import { Feather } from '@expo/vector-icons'
 
 import Logo from '../../img/logo.svg'
 import { scale } from '../../utils/scalling'
-import { Container, KeyboardScrollView, LogoWrapper, Title } from '../../components/NormalForms'
+import { Container, KeyboardScrollView, BackScreen, LogoWrapper, Title } from '../../components/NormalForms'
 import { NormalLabel, NormalInput, NormalSend, SendLabel } from '../../components/NormalForms'
 
 import { createUser, authUser } from '../../services/users'
@@ -76,6 +77,10 @@ class Cadastro extends React.Component {
             <SafeAreaView style={{ flex: 1 }}>
                 <Container>
                     <KeyboardScrollView>
+                        <BackScreen onPress={() => this.props.navigation.goBack()}>
+                            <Feather name="arrow-left" size={scale(28)} color="#010A26" />
+                        </BackScreen>
+
                         <LogoWrapper>
                             <Logo width={scale(52)} height={scale(52)} />
                         </LogoWrapper>
