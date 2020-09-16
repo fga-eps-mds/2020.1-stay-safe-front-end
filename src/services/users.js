@@ -2,7 +2,7 @@ import { userApi } from './api'
 import base64 from 'react-native-base64'
 
 export const authUser = async (data) => {
-  const response = await fetch(userApi + '/api/auth/', {
+  const response = await fetch(userApi + '/auth/', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -32,7 +32,7 @@ export const getUser = async (id) => {
 };
 
 export const createUser = async (data) => {
-  const response = await fetch(userApi + '/api/users/', {
+  const response = await fetch(userApi + '/users/', {
     method: 'POST',
     headers: {
       Accept: 'application/json',
