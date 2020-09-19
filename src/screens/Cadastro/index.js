@@ -4,18 +4,25 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 
 import Logo from '../../img/logo.svg'
+import { scale } from '../../utils/scalling'
 import { Container, KeyboardScrollView, LogoWrapper, Title } from '../../components/NormalForms'
 import { NormalLabel, NormalInput, NormalSend, SendLabel } from '../../components/NormalForms'
+
+import { createUser, authUser } from '../../services/users'
+import { validateUser } from '../../utils/validateUser'
+
+import AsyncStorage from '@react-native-community/async-storage'
 
 class Cadastro extends React.Component {
     constructor() {
         super()
         this.state = {
             fontsLoaded: false,
-            userName: null,
+            username: null,
             userFullName: null,
             userEmail: null,
-            userPwd: null
+            userPwd: null,
+            userConfirmPwd: null
         }
     }
 
@@ -25,73 +32,103 @@ class Cadastro extends React.Component {
 
     loadFonts = async () => {
         await Font.loadAsync({
-          'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
-          'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
+            'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
+            'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
         });
 
         this.setState({ fontsLoaded: true })
     }
 
-    isUserDataValid = () => {
-        if (this.state.userName == null || this.state.userName == '') {
-            Alert.alert("Campo não podem ficar em branco", "Username não pode ficar em branco")
+    handleRegister = async () => {
+        if (validateUser({
+            fullName: this.state.userFullName,
+            username: this.state.username,
+            email: this.state.userEmail,
+            password: this.state.userPwd,
+            confirmPassword: this.state.userConfirmPwd
+        })) {
+            const response = await createUser({
+                full_name: this.state.userFullName,
+                username: this.state.username,
+                email: this.state.userEmail,
+                password: this.state.userPwd
+            })
+            if (!response.body.error && response.status === 201) {
+                const response = await authUser({
+                    username: this.state.username,
+                    password: this.state.userPwd,
+                })
+                if (!response.body.error && response.status === 200) {
+                    AsyncStorage.setItem("userToken", response.body.token)
+                } else {
+                    Alert.alert("Erro ao logar usuário", response.body.error)
+                }
+            } else {
+                Alert.alert("Erro ao cadastrar usuário", response.body.error)
+            }
         }
-        else if (this.state.userFullName == null || this.state.userFullName == '') {
-            Alert.alert("Campo não podem ficar em branco", "Nome Completo não pode ficar em branco")
-        }
-        else if (this.state.userEmail == null || this.state.userEmail == '') {
-            Alert.alert("Campo não podem ficar em branco", "Email não pode ficar em branco")
-        }
-        else if (this.state.userPwd == null || this.state.userPwd == '') {
-            Alert.alert("Campo não podem ficar em branco", "Senha não pode ficar em branco")
-        }
-        else if (this.state.userPwd && this.state.userPwd.length < 6) {
-            Alert.alert("Campo não podem ficar em branco", "Senha precisa de mínimo de 6 (seis) caracteres")
-        }
-        
     }
 
     render() {
         if (!this.state.fontsLoaded) return null
 
         return (
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <Container>
                     <KeyboardScrollView>
                         <LogoWrapper>
-                            <Logo width={60} height={60} />
+                            <Logo width={scale(52)} height={scale(52)} />
                         </LogoWrapper>
 
                         <Title>Cadastro</Title>
 
                         <NormalLabel>Username</NormalLabel>
                         <NormalInput
-                            maxLength={10}
-                            onChangeText={(text) => this.setState({ userName: text })}
+                            returnKeyType='next'
+                            maxLength={20}
+                            onChangeText={(text) => this.setState({ username: text })}
+                            onSubmitEditing={() => this.fullNameInput.focus()}
                         />
 
                         <NormalLabel>Nome Completo</NormalLabel>
                         <NormalInput
-                            maxLength={100}
+                            ref={(input) => this.fullNameInput = input}
+                            returnKeyType='next'
+                            maxLength={200}
                             onChangeText={(text) => this.setState({ userFullName: text })}
+                            onSubmitEditing={() => this.emailInput.focus()}
                         />
 
                         <NormalLabel>Email</NormalLabel>
                         <NormalInput
+                            ref={(input) => this.emailInput = input}
+                            returnKeyType='next'
                             keyboardType='email-address'
-                            maxLength={10}
+                            maxLength={50}
                             onChangeText={(text) => this.setState({ userEmail: text })}
+                            onSubmitEditing={() => this.pwdInput.focus()}
                         />
 
                         <NormalLabel>Senha</NormalLabel>
                         <NormalInput
+                            ref={(input) => this.pwdInput = input}
+                            returnKeyType='next'
                             secureTextEntry={true}
-                            maxLength={18}
+                            maxLength={20}
                             onChangeText={(text) => this.setState({ userPwd: text })}
-                            onSubmitEditing={() => this.isUserDataValid()}
+                            onSubmitEditing={() => this.confirmPwdInput.focus()}
                         />
 
-                        <NormalSend onPress={() => this.isUserDataValid()}>
+                        <NormalLabel>Confirmar Senha</NormalLabel>
+                        <NormalInput
+                            ref={(input) => this.confirmPwdInput = input}
+                            secureTextEntry={true}
+                            maxLength={20}
+                            onChangeText={(text) => this.setState({ userConfirmPwd: text })}
+                            onSubmitEditing={() => this.handleRegister()}
+                        />
+
+                        <NormalSend onPress={() => this.handleRegister()}>
                             <SendLabel>Criar Conta</SendLabel>
                         </NormalSend>
                     </KeyboardScrollView>
