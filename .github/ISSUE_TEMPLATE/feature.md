@@ -1,8 +1,8 @@
 ---
-name: Feature request
+name: Feature
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: feature
 assignees: ''
 
 ---
@@ -13,10 +13,10 @@ assignees: ''
 ## Additional context
 [Add any other context or screenshots about the feature request here.]
 
-## Topics:
-- [ ] Topic 1
-- [ ] Topic 2
-- [ ] Topic 3
+## Tasks:
+- [ ] Task 1
+- [ ] Task 2
+- [ ] Task 3
 
 ## Assignees
 The issue must be assigned at least to one project contributor.
