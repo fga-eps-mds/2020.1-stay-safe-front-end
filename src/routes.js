@@ -5,6 +5,7 @@ const AppStack = createStackNavigator()
 
 import Cadastro from './screens/Cadastro'
 import Login from './screens/Login'
+import Home from './screens/Home'
 
 export default Routes = () => {
     return (
@@ -12,6 +13,7 @@ export default Routes = () => {
             <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={Login}>
                 <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
+                <AppStack.Screen name="Home" component={Home} />
             </AppStack.Navigator>
         </>
     );
