@@ -17,6 +17,14 @@ export const KeyboardScrollView = styled(KeyboardAwareScrollView).attrs({
 })`
 `;
 
+export const BackScreen = styled.TouchableOpacity.attrs({
+    activeOpacity: 0.2,
+})`
+    width: 80%;
+    padding-vertical: ${scale(8)}px;
+    margin-left: -${scale(8)}px
+`;
+
 export const LogoWrapper = styled.View`
     width: 80%;
     margin-top: 5%;
@@ -38,7 +46,6 @@ export const NormalLabel = styled.Text`
     font-size: ${scale(14)}px;
     color: #011640;
     text-align: left;
-    margin-left: ${scale(20)}px;
     margin-bottom: ${scale(14)}px;
 `;
 
