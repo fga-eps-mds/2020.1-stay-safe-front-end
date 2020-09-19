@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import {
   View,
-  Text,
-  Button,
   StyleSheet
 } from 'react-native';
-//import { Marker } from 'react-native-svg';
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 
 export default function Home() {
 
