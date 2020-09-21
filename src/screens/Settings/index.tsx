@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
 import { Feather } from '@expo/vector-icons';
 
@@ -17,6 +18,9 @@ import {
   DeleteText
 } from './styles';
 
+import AsyncStorage from '@react-native-community/async-storage'
+import { deleteUser } from '../../services/users';
+
 import { scale } from '../../utils/scalling';
 import { buttonsObject } from './buttonsObject';
 
@@ -26,10 +30,26 @@ interface ButtonObject {
 }
 
 const Settings: React.FC = () => {
+  const navigation = useNavigation();
+
   const [loaded] = Font.useFonts({
     'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
     'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
   })
+
+  const handleLogout = () => {
+    AsyncStorage.removeItem('userToken');
+    navigation.navigate('Home');
+  };
+
+  const handleDeleteAccount = async () => {
+    const token = await AsyncStorage.getItem("userToken");
+    AsyncStorage.removeItem('userToken');
+
+    await deleteUser(token);
+
+    navigation.navigate('Home');
+  };
 
   if(!loaded) 
     return null;
@@ -49,11 +69,11 @@ const Settings: React.FC = () => {
           })}
         </ButtonsContainer>
         <UserButtonsContainer>
-          <LogoutButton onPress={() => {}}>
+          <LogoutButton onPress={() => handleLogout()}>
             <Feather name="log-out" size={scale(20)} color="#FFFFFF" />
             <SendLabel>Sair</SendLabel>
           </LogoutButton>
-          <DeleteButton>
+          <DeleteButton onPress={() => handleDeleteAccount()} >
             <DeleteText>Excluir conta</DeleteText>
           </DeleteButton>
         </UserButtonsContainer>
