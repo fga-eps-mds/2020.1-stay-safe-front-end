@@ -12,9 +12,9 @@ export default Routes = () => {
     return (
         <>
             <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={Login}>
-                {/* <AppStack.Screen name="Login" component={Login} />
+                <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
-                <AppStack.Screen name="Home" component={Home} /> */}
+                <AppStack.Screen name="Home" component={Home} />
                 <AppStack.Screen name="Settings" component={Settings} />
             </AppStack.Navigator>
         </>
