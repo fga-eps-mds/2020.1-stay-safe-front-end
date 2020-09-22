@@ -22,13 +22,15 @@ export const getAllUsers = async () => {
   })
 };
 
-export const getUser = async (id) => {
-  return await fetch(userApi + '/users/' + id, {
+export const getUser = async (username) => {
+  const response = await fetch(userApi + '/users/' + username, {
     method: 'GET',
     headers: {
       Accept: 'application/json'
     }
   })
+
+  return { status: response.status, body: await response.json() }
 };
 
 export const createUser = async (data) => {
