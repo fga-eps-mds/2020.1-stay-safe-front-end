@@ -11,10 +11,10 @@ import Profile from './screens/Profile'
 export default Routes = () => {
     return (
         <>
-            <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={Profile}>
-                {/*<AppStack.Screen name="Login" component={Login} />
+            <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={Login}>
+                <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
-                <AppStack.Screen name="Home" component={Home} /> */}
+                <AppStack.Screen name="Home" component={Home} />
                 <AppStack.Screen name="Profile" component={Profile} />
             </AppStack.Navigator>
         </>
