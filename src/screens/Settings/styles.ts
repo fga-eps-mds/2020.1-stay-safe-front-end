@@ -39,7 +39,6 @@ export const LogoutButton = styled(NormalSend)`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  margin-bottom
 `;
 
 export const DeleteButton = styled.TouchableOpacity`
