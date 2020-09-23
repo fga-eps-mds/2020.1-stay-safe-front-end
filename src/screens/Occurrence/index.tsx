@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 import { scale } from '../../utils/scalling'
+import { validateOccurrence } from '../../utils/validateOccurrence'
 import {
     Header,
     HeaderTitle,
@@ -24,7 +25,7 @@ import {
     TouchablePicker,
     PlaceholderPicker,
     DatePicker,
-    TimePicker
+    TimePicker,
 } from './styles'
 import {
     occurrence_type,
@@ -37,8 +38,8 @@ import {
 const Occurrence: React.FC = () => {
     const navigation = useNavigation()
 
-    const [selectedOccurrence, setSelectedOccurence] = useState("");
-    const [selectedGun, setSelectedGun] = useState("");
+    const [selectedOccurrenceType, setSelectedOccurenceType] = useState('');
+    const [selectedGun, setSelectedGun] = useState('');
     const [selectedVictim, setSelectedVictim] = useState(null);
     const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null);
     const [selectedPoliceReport, setSelectedPoliceReport] = useState(null);
@@ -95,6 +96,18 @@ const Occurrence: React.FC = () => {
         return formatedDatetime
     }
 
+    const handleRegisterOccurrence = () => {
+        if (validateOccurrence({
+            occurrenceType: selectedOccurrenceType,
+            gun: selectedGun,
+            victim: selectedVictim,
+            physicalAggression: selectedPhysicalAggression,
+            policeReport: selectedPoliceReport,
+        })) {
+            console.log('Registro Feito')
+        }
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
@@ -125,7 +138,7 @@ const Occurrence: React.FC = () => {
                                 borderTopRightRadius: 15, borderBottomLeftRadius: 15,
                                 borderBottomRightRadius: 15
                             }}
-                            onChangeItem={item => setSelectedOccurence(item.value)}
+                            onChangeItem={item => setSelectedOccurenceType(item.value)}
                         />
                     </InputContainer>
 
@@ -259,14 +272,10 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
                     </InputWrapper>
 
-                    <NormalSend style={{ marginTop: 45 }} onPress={() => {
-                        console.log(selectedOccurrence)
-                        console.log(selectedGun)
-                        console.log(selectedVictim)
-                        console.log(selectedPhysicalAggression)
-                        console.log(selectedPoliceReport)
-                        console.log(formatDatetime(datetime))
-                    }}>
+                    <NormalSend
+                        style={{ marginTop: 45 }}
+                        onPress={handleRegisterOccurrence}
+                    >
                         <SendLabel>Enviar</SendLabel>
                     </NormalSend>
                 </KeyboardScrollView>
