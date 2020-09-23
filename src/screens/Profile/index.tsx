@@ -14,10 +14,11 @@ import HeaderTitle from '../../components/HeaderTitle';
 import { KeyboardScrollView, SendLabel } from '../../components/NormalForms';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { getUser } from '../../services/users';
+import { getUser, updateUser, authUser } from '../../services/users';
 
 import Logo from '../../img/logo.svg';
 
+import { validateUser } from '../../utils/validateUser';
 import { scale } from '../../utils/scalling';
 
 const Profile: React.FC = () => {
@@ -40,11 +41,43 @@ const Profile: React.FC = () => {
           setUserFullName(response.body.full_name);
           setUserEmail(response.body.email);
         } else {
-          Alert.alert('Erro ao Visualizar usuário.');
+          Alert.alert('Erro ao visualizar usuário.');
         }
       });
     });
   }, []);
+
+  const handleUpdateProfile = async() => {
+    if (validateUser({
+      fullName: userFullName,
+      username: username,
+      email: userEmail,
+      password: userPwd,
+      confirmPassword: userConfirmPwd
+    })) {
+      const token = await AsyncStorage.getItem("userToken");
+      console.log(token);
+      const response = await updateUser({
+        full_name: userFullName,
+        username: username,
+        email: userEmail,
+        password: userPwd
+      }, token);
+
+      if (!response.body.error && response.status === 200) {
+        if (!response.body.error && response.status === 200) {
+          console.log('autorizou');
+          AsyncStorage.setItem("userToken", response.body.token)
+          AsyncStorage.setItem("username", username);
+          Alert.alert('Usuário atualizado com sucesso!');
+        } else {
+          Alert.alert("Erro ao atualizar usuário", response.body.error)
+        }
+      } else {
+        Alert.alert("Erro ao atualizar usuário", response.body.error)
+      }
+  }
+  };
 
   if(!loaded)
     return null;
@@ -60,30 +93,42 @@ const Profile: React.FC = () => {
           <LabelsContainer>
             <LabelViewing>Username</LabelViewing>
             <InputViewing
+              returnKeyType='next'
+              maxLength={20}
               value={username}
-              onChange={text => setUsername(text)}
+              onChangeText={text => setUsername(text)}
             />
             <LabelViewing>Nome Completo</LabelViewing>
-            <InputViewing 
+            <InputViewing
+              returnKeyType='next'
+              maxLength={200}
               value={userFullName} 
-              onChange={text => setUserFullName(text)} 
+              onChangeText={text => setUserFullName(text)} 
             />
             <LabelViewing>Email</LabelViewing>
             <InputViewing
+              returnKeyType='next'
+              keyboardType='email-address'
+              maxLength={50}
               value={userEmail}
-              onChange={text => setUserEmail(text)}
+              onChangeText={text => setUserEmail(text)}
            />
             <LabelViewing>Senha</LabelViewing>
-            <InputViewing 
+            <InputViewing
+              returnKeyType='next'
+              secureTextEntry={true}
+              maxLength={20}
               value={userPwd}
-              onChange={text => setUserPwd(text)}
+              onChangeText={text => setUserPwd(text)}
             />
             <LabelViewing>Confirmar senha</LabelViewing>
-            <InputViewing 
+            <InputViewing
+              secureTextEntry={true}
+              maxLength={20}
               value={userConfirmPwd}
-              onChange={text => setUserConfirmPwd(text)}
+              onChangeText={text => setUserConfirmPwd(text)}
             />
-            <EditButton>
+            <EditButton onPress={handleUpdateProfile} >
               <SendLabel>Salvar</SendLabel>
             </EditButton>
           </LabelsContainer>
