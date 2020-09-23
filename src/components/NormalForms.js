@@ -40,18 +40,6 @@ export const Title = styled.Text`
     text-align: left;
 `;
 
-export const SelectWrapper = styled.View`
-    width: 80%;
-    flex-direction: row;
-    justify-content: space-between;
-`;
-
-export const NormalSelect = styled.View`
-    width: 48%;
-    flex-direction: column;
-    justify-content: space-between;
-`;
-
 export const NormalLabel = styled.Text`
     width: 80%;
     font-family: Trueno-SemiBold;
