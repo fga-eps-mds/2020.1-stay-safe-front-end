@@ -93,6 +93,7 @@ const Profile: React.FC = () => {
           <LabelsContainer>
             <LabelViewing>Username</LabelViewing>
             <InputViewing
+              editable={false}
               returnKeyType='next'
               maxLength={20}
               value={username}
