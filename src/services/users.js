@@ -50,26 +50,23 @@ export const createUser = async (data) => {
   return { status: response.status, body: await response.json() }
 };
 
-export const updateUser = async (id, data) => {
-  let user = {}
-  if (data.full_name) {
-    user.full_name = data.full_name
-  } else if (data.username) {
-    user.username = data.username
-  } else if (data.email) {
-    user.email = data.email
-  } else if (data.password) {
-    user.password = data.password
-  }
-
-  return await fetch(userApi + '/users/' + id, {
-    method: 'PUT',
+export const updateUser = async (data, token) => {
+  const response = await fetch(userApi + '/users/', {
+    method: 'PATCH',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `${token}`
     },
-    body: user
+    body: JSON.stringify({
+      full_name: data.full_name,
+      username: data.username,
+      email: data.email,
+      password: data.password
+    })
   })
+
+  return { status: response.status, body: await response.json() }
 };
 
 export const deleteUser = async (id) => {
