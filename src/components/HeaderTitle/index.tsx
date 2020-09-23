@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { HeaderTitleContainer, Title } from './styles';
+import { HeaderTitleContainer, Title } from "./styles";
 
 interface HeaderTitleProps {
   text?: string;
@@ -12,6 +12,6 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ text }) => {
       <Title>{text}</Title>
     </HeaderTitleContainer>
   );
-}
+};
 
 export default HeaderTitle;

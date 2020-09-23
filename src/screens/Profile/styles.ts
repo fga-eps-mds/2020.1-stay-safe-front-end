@@ -1,17 +1,17 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { 
-  NormalLabel, 
+import {
+  NormalLabel,
   NormalInput,
-  NormalSend
-} from '../../components/NormalForms';
+  NormalSend,
+} from "../../components/NormalForms";
 
-import { scale } from '../../utils/scalling';
+import { scale } from "../../utils/scalling";
 
 export const Container = styled.View`
   flex: 1;
   width: 100%;
-  background-color: #F0F0F5;
+  background-color: #f0f0f5;
 `;
 
 export const LogoWrapper = styled.View`
@@ -31,8 +31,7 @@ export const LabelViewing = styled(NormalLabel)`
 
 export const InputViewing = styled(NormalInput)`
   width: 100%;
-  border: ${scale(1)}px #7DBFE2;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   height: ${scale(40)}px;
 `;
 

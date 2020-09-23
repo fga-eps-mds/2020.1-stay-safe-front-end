@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { scale } from '../../utils/scalling';
+import { scale } from "../../utils/scalling";
 
 export const HeaderTitleContainer = styled.View`
   width: 100%;
@@ -14,7 +14,7 @@ export const HeaderTitleContainer = styled.View`
 
 export const Title = styled.Text`
   font-size: ${scale(16)}px;
-  color: #E83338;
+  color: #e83338;
   line-height: ${scale(20)}px;
   font-family: Trueno-SemiBold;
 `;
