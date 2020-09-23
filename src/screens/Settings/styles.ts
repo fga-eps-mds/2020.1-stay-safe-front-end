@@ -1,12 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { NormalSend, SendLabel } from '../../components/NormalForms';
+import { NormalSend, SendLabel } from "../../components/NormalForms";
+import Modal from "react-native-modalbox";
 
-import { scale } from '../../utils/scalling';
+import { scale } from "../../utils/scalling";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #F0F0F5;
+  background-color: #f0f0f5;
 `;
 
 export const ButtonsContainer = styled.View`
@@ -15,7 +16,7 @@ export const ButtonsContainer = styled.View`
 
 export const Button = styled.TouchableOpacity`
   padding: ${scale(15)}px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: ${scale(12)}px;
   flex-direction: row;
   margin-bottom: ${scale(17)}px;
@@ -47,4 +48,21 @@ export const DeleteButton = styled.TouchableOpacity`
 
 export const DeleteText = styled(SendLabel)`
   color: rgba(0, 0, 0, 0.3);
-`; 
+`;
+
+export const ModalDelete = styled(Modal)`
+  width: ${scale(230)}px;
+  height: ${scale(200)}px;
+  border-radius: ${scale(10)}px;
+  border: ${scale(2)}px #7dbfe2;
+  padding: ${scale(10)}px ${scale(20)}px;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+`;
+
+export const ModalText = styled.Text`
+  font-size: ${scale(14)}px;
+  color: #011640;
+  font-family: Trueno-SemiBold;
+`;

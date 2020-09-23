@@ -1,28 +1,30 @@
-import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import * as Font from 'expo-font';
-import { Feather } from '@expo/vector-icons';
+import React, { useRef, useState } from "react";
+import { SafeAreaView, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import * as Font from "expo-font";
+import { Feather } from "@expo/vector-icons";
 
-import { NormalSend, SendLabel } from '../../components/NormalForms';
-import HeaderTitle from '../../components/HeaderTitle';
+import { SendLabel } from "../../components/NormalForms";
+import HeaderTitle from "../../components/HeaderTitle";
 
-import { 
-  Container, 
-  ButtonsContainer, 
-  Button, 
-  ButtonText, 
+import {
+  Container,
+  ButtonsContainer,
+  Button,
+  ButtonText,
   LogoutButton,
   UserButtonsContainer,
   DeleteButton,
-  DeleteText
-} from './styles';
+  DeleteText,
+  ModalDelete,
+  ModalText,
+} from "./styles";
 
-import AsyncStorage from '@react-native-community/async-storage'
-import { deleteUser } from '../../services/users';
+import AsyncStorage from "@react-native-community/async-storage";
+import { deleteUser } from "../../services/users";
 
-import { scale } from '../../utils/scalling';
-import { buttonsObject } from './buttonsObject';
+import { scale } from "../../utils/scalling";
+import { buttonsObject } from "./buttonsObject";
 
 interface ButtonObject {
   title: string;
@@ -30,29 +32,30 @@ interface ButtonObject {
 }
 
 const Settings: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalRef = useRef();
   const navigation = useNavigation();
 
   const [loaded] = Font.useFonts({
-    'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
-    'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
-  })
+    "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
+    "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
+  });
 
   const handleLogout = () => {
-    AsyncStorage.removeItem('userToken');
-    navigation.navigate('Home');
+    AsyncStorage.removeItem("userToken");
+    navigation.navigate("Home");
   };
 
   const handleDeleteAccount = async () => {
     const token = await AsyncStorage.getItem("userToken");
-    AsyncStorage.removeItem('userToken');
+    AsyncStorage.removeItem("userToken");
 
     await deleteUser(token);
 
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
-  if(!loaded) 
-    return null;
+  if (!loaded) return null;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -61,7 +64,7 @@ const Settings: React.FC = () => {
         <ButtonsContainer>
           {buttonsObject.map((button: ButtonObject) => {
             return (
-              <Button key={button.title} >
+              <Button key={button.title}>
                 <Feather name={button.icon} size={scale(20)} color="#010A26" />
                 <ButtonText>{button.title}</ButtonText>
               </Button>
@@ -73,13 +76,27 @@ const Settings: React.FC = () => {
             <Feather name="log-out" size={scale(20)} color="#FFFFFF" />
             <SendLabel>Sair</SendLabel>
           </LogoutButton>
-          <DeleteButton onPress={() => handleDeleteAccount()} >
+          <DeleteButton onPress={() => setIsModalOpen(true)}>
             <DeleteText>Excluir conta</DeleteText>
           </DeleteButton>
         </UserButtonsContainer>
+        <ModalDelete
+          isOpen={isModalOpen}
+          ref={modalRef}
+          backButtonClose
+          backdropOpacity={0.8}
+          position={"center"}
+          onClosed={() => setIsModalOpen(false)}
+          swipeToClose={true}
+        >
+          <ModalText>Tem certeza que deseja excluir sua conta?</ModalText>
+          <LogoutButton onPress={handleDeleteAccount}>
+            <SendLabel>Excluir</SendLabel>
+          </LogoutButton>
+        </ModalDelete>
       </Container>
     </SafeAreaView>
   );
-}
+};
 
 export default Settings;
