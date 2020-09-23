@@ -31,6 +31,7 @@ export const LabelViewing = styled(NormalLabel)`
 
 export const InputViewing = styled(NormalInput)`
   width: 100%;
+  border: ${scale(1)}px #7DBFE2;
   background-color: #FFFFFF;
   height: ${scale(40)}px;
 `;
