@@ -9,23 +9,23 @@ export const DropDown = styled(DropDownPicker).attrs({
     containerStyle: {
         height: scale(42),
     },
-    style: {
-        backgroundColor: '#ffffff',
-        borderTopLeftRadius: scale(15),
-        borderTopRightRadius: scale(15),
-        borderBottomLeftRadius: scale(15),
-        borderBottomRightRadius: scale(15),
-    },
-    itemStyle: {
-        justifyContent: 'center',
-    },
     dropDownStyle: {
         backgroundColor: '#ffffff',
         borderTopLeftRadius: scale(15),
         borderTopRightRadius: scale(15),
         borderBottomLeftRadius: scale(15),
-        borderBottomRightRadius: scale(15),
-    }
+        borderBottomRightRadius: scale(15)
+    },
+    labelStyle: {
+        fontFamily: 'Trueno-Regular',
+        fontSize: scale(14),
+        textAlign: 'center',
+        color: '#011640'
+    },
+    activeLabelStyle: {
+        color: '#011640',
+        fontFamily: 'Trueno-SemiBold',
+    },
 })`
 `;
 
@@ -45,10 +45,11 @@ export const InputContainer = styled.View`
 export const TouchablePicker = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
 })`
+    height: ${scale(42)}px; 
     width: 100%;
     align-items: center;
     background-color: #FFFFFF;
-    border-radius: ${scale(28)}px;
+    border-radius: ${scale(15)}px;
     padding: ${scale(12)}px;
 `;
 

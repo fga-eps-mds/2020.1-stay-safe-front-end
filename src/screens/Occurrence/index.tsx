@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import DropDownPicker from 'react-native-dropdown-picker'
 
 import { scale } from '../../utils/scalling'
 import { validateOccurrence } from '../../utils/validateOccurrence'
@@ -20,6 +19,7 @@ import {
     NormalLabel,
 } from '../../components/NormalForms'
 import {
+    DropDown,
     InputContainer,
     InputWrapper,
     TouchablePicker,
@@ -28,12 +28,13 @@ import {
     TimePicker,
 } from './styles'
 import {
-    occurrence_type,
-    gun,
-    physicalAggression,
-    policeReport,
-    victim,
-} from './dropdownItems'
+    occurrenceTypeItems,
+    gunItems,
+    physicalAggressionItems,
+    policeReportItems,
+    victimItems,
+    dropdownStyle,
+} from './dropdownConstants'
 
 const Occurrence: React.FC = () => {
     const navigation = useNavigation()
@@ -121,23 +122,9 @@ const Occurrence: React.FC = () => {
 
                     <InputContainer style={{ width: '80%' }}>
                         <NormalLabel>Tipo de Ocorrência</NormalLabel>
-                        <DropDownPicker
-                            items={occurrence_type}
-                            placeholder="Selecionar"
-                            containerStyle={{ height: 42, width: 300 }}
-                            style={{
-                                backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                borderBottomRightRadius: 15
-                            }}
-                            itemStyle={{
-                                justifyContent: 'center',
-                            }}
-                            dropDownStyle={{
-                                backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                borderBottomRightRadius: 15
-                            }}
+                        <DropDown
+                            items={occurrenceTypeItems}
+                            style={dropdownStyle}
                             onChangeItem={item => setSelectedOccurenceType(item.value)}
                         />
                     </InputContainer>
@@ -145,46 +132,18 @@ const Occurrence: React.FC = () => {
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Tipo de Arma</NormalLabel>
-                            <DropDownPicker
-                                items={gun}
-                                placeholder="Selecionar"
-                                containerStyle={{ height: 42 }}
-                                style={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15
-                                }}
-                                itemStyle={{
-                                    justifyContent: 'center',
-                                }}
-                                dropDownStyle={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15
-                                }}
+                            <DropDown
+                                items={gunItems}
+                                style={dropdownStyle}
                                 onChangeItem={item => setSelectedGun(item.value)}
                             />
                         </InputContainer>
 
                         <InputContainer>
                             <NormalLabel>Vítima</NormalLabel>
-                            <DropDownPicker
-                                items={victim}
-                                placeholder="Selecionar"
-                                containerStyle={{ height: 42 }}
-                                style={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15
-                                }}
-                                itemStyle={{
-                                    justifyContent: 'center',
-                                }}
-                                dropDownStyle={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15
-                                }}
+                            <DropDown
+                                items={victimItems}
+                                style={dropdownStyle}
                                 onChangeItem={item => setSelectedVictim(item.value)}
                             />
                         </InputContainer>
@@ -193,46 +152,18 @@ const Occurrence: React.FC = () => {
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Agressão Física</NormalLabel>
-                            <DropDownPicker
-                                items={physicalAggression}
-                                placeholder="Selecionar"
-                                containerStyle={{ height: 42 }}
-                                style={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15
-                                }}
-                                itemStyle={{
-                                    justifyContent: 'center',
-                                }}
-                                dropDownStyle={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15
-                                }}
+                            <DropDown
+                                items={physicalAggressionItems}
+                                style={dropdownStyle}
                                 onChangeItem={item => setSelectedPhysicalAggression(item.value)}
                             />
                         </InputContainer>
 
                         <InputContainer>
                             <NormalLabel>Boletim de Ocorrência</NormalLabel>
-                            <DropDownPicker
-                                items={policeReport}
-                                placeholder="Selecionar"
-                                containerStyle={{ height: 42 }}
-                                style={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15,
-                                }}
-                                itemStyle={{
-                                    justifyContent: 'center',
-                                }}
-                                dropDownStyle={{
-                                    backgroundColor: '#ffffff', borderTopLeftRadius: 15,
-                                    borderTopRightRadius: 15, borderBottomLeftRadius: 15,
-                                    borderBottomRightRadius: 15,
-                                }}
+                            <DropDown
+                                items={policeReportItems}
+                                style={dropdownStyle}
                                 onChangeItem={item => setSelectedPoliceReport(item.value)}
                             />
                         </InputContainer>
