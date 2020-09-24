@@ -65,4 +65,5 @@ export const ModalText = styled.Text`
   font-size: ${scale(14)}px;
   color: #011640;
   font-family: Trueno-SemiBold;
+  text-align: center;
 `;

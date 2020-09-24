@@ -87,9 +87,11 @@ const Settings: React.FC = () => {
           backdropOpacity={0.8}
           position={"center"}
           onClosed={() => setIsModalOpen(false)}
-          swipeToClose={true}
+          swipeToClose={false}
         >
-          <ModalText>Tem certeza que deseja excluir sua conta?</ModalText>
+          <ModalText numberOfLines={2} >
+            Tem certeza que deseja excluir sua conta?
+          </ModalText>
           <LogoutButton onPress={handleDeleteAccount}>
             <SendLabel>Excluir</SendLabel>
           </LogoutButton>
