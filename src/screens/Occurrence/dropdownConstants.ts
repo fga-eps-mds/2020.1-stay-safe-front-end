@@ -1,4 +1,6 @@
-export const occurrence_type = [
+import { scale } from '../../utils/scalling'
+
+export const occurrenceTypeItems = [
     {
         label: "Latrocínio",
         value: "Latrocínio",
@@ -21,7 +23,7 @@ export const occurrence_type = [
     },
 ]
 
-export const gun = [
+export const gunItems = [
     {
         label: "Nenhuma",
         value: "None",
@@ -36,7 +38,7 @@ export const gun = [
     },
 ]
 
-export const victim = [
+export const victimItems = [
     {
         label: "Vítima",
         value: true,
@@ -47,7 +49,7 @@ export const victim = [
     },
 ]
 
-export const physicalAggression = [
+export const physicalAggressionItems = [
     {
         label: "Sim",
         value: true,
@@ -58,7 +60,7 @@ export const physicalAggression = [
     },
 ]
 
-export const policeReport = [
+export const policeReportItems = [
     {
         label: "Sim",
         value: true,
@@ -68,3 +70,12 @@ export const policeReport = [
         value: false,
     },
 ]
+
+export const dropdownStyle = {
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: scale(15),
+    borderTopRightRadius: scale(15),
+    borderBottomLeftRadius: scale(15),
+    borderBottomRightRadius: scale(15),
+    borderColor: '#ffffff',
+}
