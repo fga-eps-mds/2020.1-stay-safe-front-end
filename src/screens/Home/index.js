@@ -1,15 +1,10 @@
-import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet
-} from 'react-native';
-import MapView from 'react-native-maps';
+import React from 'react'
+import { View, StyleSheet } from 'react-native'
+import MapView from 'react-native-maps'
 
-export default function Home() {
-
-      return (
-          <View style = {{ flex: 1 }}>
-
+export default Home = () => {
+    return (
+        <View style={{ flex: 1 }}>
             <MapView
                 initialRegion={{
                     latitude: -15.9897883,
@@ -26,14 +21,14 @@ export default function Home() {
                     }}
                 />
             </MapView>
-          </View>    
-      );
-  };
+        </View>    
+    )
+}
 
-  const styles = StyleSheet.create({
-      MapView: {
-          flex: 1,
-          width: "100%",
-          padding: 32
-      }
-  })
+const styles = StyleSheet.create({
+    MapView: {
+        flex: 1,
+        width: "100%",
+        padding: 32
+    }
+})
