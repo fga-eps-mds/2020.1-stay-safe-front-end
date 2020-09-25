@@ -6,8 +6,8 @@ export const occurrenceTypeItems = [
         value: "Latrocínio",
     },
     {
-        label: "Roubo a Traseunte",
-        value: "Roubo a Traseunte",
+        label: "Roubo a Transeunte",
+        value: "Roubo a transeunte",
     },
     {
         label: "Roubo de Veículo",
