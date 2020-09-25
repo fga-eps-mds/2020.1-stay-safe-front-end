@@ -1,10 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import MapView from 'react-native-maps'
+import AwesomeAlert from 'react-native-awesome-alerts'
+import AsyncStorage from '@react-native-community/async-storage'
 
-export default Home = () => {
+export default Home = ({navigation}) => {
+    const [showAlert, changeAlert] = useState(true)
+
+    const verifyUserLoggedIn = async() => {
+        const userToken = await AsyncStorage.getItem('userToken')
+
+        if (!userToken) {
+            changeAlert(true)
+        }
+    }
+
     return (
         <View style={{ flex: 1 }}>
+            <AwesomeAlert
+                show={showAlert}
+                title="Você não está logado."
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={true}
+                confirmText="Fazer login"
+                confirmButtonColor="#E83338"
+                showCancelButton={true}
+                cancelText="Fechar"
+                cancelButtonColor="#7DBFE2"
+                onCancelPressed={() => {
+                    changeAlert(false);
+                }}
+                onConfirmPressed={() => {
+                    navigation.navigate('Login')
+                    changeAlert(false)
+                }}
+            />
+
             <MapView
                 initialRegion={{
                     latitude: -15.9897883,
