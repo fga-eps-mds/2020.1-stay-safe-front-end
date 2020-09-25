@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from '@react-native-community/async-storage'
 
 import { scale } from '../../utils/scalling'
 import { validateOccurrence } from '../../utils/validateOccurrence'
@@ -42,33 +42,33 @@ import {
 const Occurrence: React.FC = () => {
     const navigation = useNavigation()
 
-    const [selectedOccurrenceType, setSelectedOccurenceType] = useState('');
-    const [selectedGun, setSelectedGun] = useState('');
-    const [selectedVictim, setSelectedVictim] = useState(null);
-    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null);
-    const [selectedPoliceReport, setSelectedPoliceReport] = useState(null);
+    const [selectedOccurrenceType, setSelectedOccurenceType] = useState('')
+    const [selectedGun, setSelectedGun] = useState('')
+    const [selectedVictim, setSelectedVictim] = useState(null)
+    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null)
+    const [selectedPoliceReport, setSelectedPoliceReport] = useState(null)
 
-    const [datetime, setDatetime] = useState(new Date());
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [showTimePicker, setShowTimePicker] = useState(false);
+    const [datetime, setDatetime] = useState(new Date())
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const [showTimePicker, setShowTimePicker] = useState(false)
 
-    const currentDate = new Date();
+    const currentDate = new Date()
 
     const [loaded] = Font.useFonts({
         'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
         'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
     })
 
-    const onChange = (event, selectedDate) => {
-        setShowDatePicker(false);
-        setShowTimePicker(false);
-        const currentDate = selectedDate || datetime;
-        setDatetime(currentDate);
-    };
+    const onChangeOccurrenceDatetime = (event, selectedDate) => {
+        setShowDatePicker(false)
+        setShowTimePicker(false)
+        const currentDate = selectedDate || datetime
+        setDatetime(currentDate)
+    }
 
     const formatDate = (date: Date) => {
-        let day = ("0" + date.getDate()).slice(-2)
-        let month = ("0" + (date.getMonth() + 1)).slice(-2)
+        let day = ('0' + date.getDate()).slice(-2)
+        let month = ('0' + (date.getMonth() + 1)).slice(-2)
         let year = date.getFullYear()
 
         let formatedDate = `${day}/${month}/${year}`
@@ -77,8 +77,8 @@ const Occurrence: React.FC = () => {
     }
 
     const formatTime = (date: Date) => {
-        let hour = ("0" + date.getHours()).slice(-2)
-        let minutes = ("0" + (date.getMinutes())).slice(-2)
+        let hour = ('0' + date.getHours()).slice(-2)
+        let minutes = ('0' + (date.getMinutes())).slice(-2)
 
         let formatedTime = `${hour}:${minutes}`
 
@@ -107,7 +107,7 @@ const Occurrence: React.FC = () => {
             policeReport: selectedPoliceReport,
             occurrenceDateTime: datetime,
         })) {
-            const token = await AsyncStorage.getItem("userToken")
+            const token = await AsyncStorage.getItem('userToken')
             const response = await createOccurrence(
                 {
                     gun: selectedGun,
@@ -125,10 +125,10 @@ const Occurrence: React.FC = () => {
             )
 
             if (!response.body.error && response.status === 201) {
-                Alert.alert("Ocorrência cadastrada com sucesso!");
+                Alert.alert('Ocorrência cadastrada com sucesso!')
                 navigation.navigate('Home')
             } else {
-                Alert.alert("Erro ao cadastrar ocorrência", response.body.error);
+                Alert.alert('Erro ao cadastrar ocorrência', response.body.error)
             }
         }
     }
@@ -141,7 +141,11 @@ const Occurrence: React.FC = () => {
                 <KeyboardScrollView>
                     <Header>
                         <HeaderBackScreen onPress={() => navigation.goBack()}>
-                            <Feather name="arrow-left" size={scale(28)} color="#010A26" />
+                            <Feather 
+                                name='arrow-left' 
+                                size={scale(28)} 
+                                color='#010A26' 
+                            />
                         </HeaderBackScreen>
                         <HeaderTitle>Reportar Ocorrência</HeaderTitle>
                     </Header>
@@ -199,12 +203,14 @@ const Occurrence: React.FC = () => {
                         <InputContainer>
                             <NormalLabel>Data da Ocorrência</NormalLabel>
                             <TouchablePicker onPress={() => setShowDatePicker(true)}>
-                                <PlaceholderPicker>{formatDate(datetime)}</PlaceholderPicker>
+                                <PlaceholderPicker>
+                                    {formatDate(datetime)}
+                                </PlaceholderPicker>
                             </TouchablePicker>
                             {showDatePicker && (
                                 <DatePicker
                                     value={datetime}
-                                    onChange={onChange}
+                                    onChange={onChangeOccurrenceDatetime}
                                     maximumDate={currentDate}
                                     minimumDate={new Date(
                                         currentDate.getFullYear() - 1,
@@ -218,12 +224,14 @@ const Occurrence: React.FC = () => {
                         <InputContainer>
                             <NormalLabel>Hora da Ocorrência</NormalLabel>
                             <TouchablePicker onPress={() => setShowTimePicker(true)}>
-                                <PlaceholderPicker>{formatTime(datetime)}</PlaceholderPicker>
+                                <PlaceholderPicker>
+                                    {formatTime(datetime)}
+                                </PlaceholderPicker>
                             </TouchablePicker>
                             {showTimePicker && (
                                 <TimePicker
                                     value={datetime}
-                                    onChange={onChange}
+                                    onChange={onChangeOccurrenceDatetime}
                                 />
                             )}
                         </InputContainer>

@@ -19,4 +19,4 @@ export const createOccurrence = async (data, token) => {
         })
     })
     return { status: response.status, body: await response.json() }
-};
+}
