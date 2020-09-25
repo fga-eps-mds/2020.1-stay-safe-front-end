@@ -42,7 +42,7 @@ export const LabelViewing = styled(NormalLabel)`
 
 export const InputViewing = styled(NormalInput)<InputViewingProps>`
   width: 100%;
-  background-color: ${(props) => (props.isEditing ? "#ffffff" : "#C8C8C8")};
+  background-color: ${(props) => (props.isEditing ? "#ffffff" : "#F0F0F5")};
   border: ${(props) => (props.isEditing ? scale(1) : scale(0))}px #7dbfe2;
   height: ${scale(40)}px;
 `;

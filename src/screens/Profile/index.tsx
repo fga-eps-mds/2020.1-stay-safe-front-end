@@ -90,9 +90,7 @@ const Profile: React.FC = () => {
           <LogoWrapper>
             <Logo width={scale(70)} height={scale(70)} />
             <CanEditButton onPress={() => setIsEditing(!isEditing)}>
-              <SendLabel>
-                {isEditing ? "Voltar" : "Atualizar cadastro"}
-              </SendLabel>
+              <SendLabel>{isEditing ? "Voltar" : "Editar perfil"}</SendLabel>
             </CanEditButton>
           </LogoWrapper>
           <LabelsContainer>
