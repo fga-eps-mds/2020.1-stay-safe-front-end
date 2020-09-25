@@ -1,42 +1,13 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import MapView from 'react-native-maps'
-import AwesomeAlert from 'react-native-awesome-alerts'
-import AsyncStorage from '@react-native-community/async-storage'
 
-export default Home = ({navigation}) => {
-    const [showAlert, changeAlert] = useState(true)
+import LoggedInModal from '../../components/LoggedInModal'
 
-    const verifyUserLoggedIn = async() => {
-        const userToken = await AsyncStorage.getItem('userToken')
-
-        if (!userToken) {
-            changeAlert(true)
-        }
-    }
-
+export default Home = ({ navigation }) => {
     return (
-        <View style={{ flex: 1 }}>
-            <AwesomeAlert
-                show={showAlert}
-                title="Você não está logado."
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                showConfirmButton={true}
-                confirmText="Fazer login"
-                confirmButtonColor="#E83338"
-                showCancelButton={true}
-                cancelText="Fechar"
-                cancelButtonColor="#7DBFE2"
-                onCancelPressed={() => {
-                    changeAlert(false);
-                }}
-                onConfirmPressed={() => {
-                    navigation.navigate('Login')
-                    changeAlert(false)
-                }}
-            />
-
+        <SafeAreaView style={{ flex: 1 }}>
             <MapView
                 initialRegion={{
                     latitude: -15.9897883,
@@ -53,14 +24,15 @@ export default Home = ({navigation}) => {
                     }}
                 />
             </MapView>
-        </View>    
+
+            <LoggedInModal navObject={navigation} />
+        </SafeAreaView>    
     )
 }
 
 const styles = StyleSheet.create({
     MapView: {
         flex: 1,
-        width: "100%",
-        padding: 32
+        width: "100%"
     }
 })

@@ -3,6 +3,7 @@ import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 import { Feather } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import Logo from '../../img/logo.svg'
 import { scale } from '../../utils/scalling'
@@ -11,8 +12,6 @@ import { NormalLabel, NormalInput, NormalSend, SendLabel } from '../../component
 
 import { createUser, authUser } from '../../services/users'
 import { validateUser } from '../../utils/validateUser'
-
-import AsyncStorage from '@react-native-community/async-storage'
 
 export default Cadastro = ({ navigation }) => {
     const [username, setUsername] = useState("")
@@ -47,6 +46,7 @@ export default Cadastro = ({ navigation }) => {
                 })
                 if (!response.body.error && response.status === 200) {
                     AsyncStorage.setItem("userToken", response.body.token)
+                    navigation.navigate('Home')
                 } else {
                     Alert.alert("Erro ao logar usuário", response.body.error)
                 }
@@ -57,6 +57,7 @@ export default Cadastro = ({ navigation }) => {
     }
 
     if (!loaded) return null
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
