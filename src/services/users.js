@@ -1,4 +1,6 @@
-import { userApi } from './api'
+import {
+  userApi
+} from './api'
 import base64 from 'react-native-base64'
 
 export const authUser = async (data) => {
@@ -10,7 +12,10 @@ export const authUser = async (data) => {
       Authorization: `Basic ${base64.encode(`${data.username}:${data.password}`)}`
     }
   })
-  return { status: response.status, body: await response.json() }
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
 export const getAllUsers = async () => {
@@ -30,7 +35,10 @@ export const getUser = async (username) => {
     }
   })
 
-  return { status: response.status, body: await response.json() }
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
 export const createUser = async (data) => {
@@ -47,7 +55,10 @@ export const createUser = async (data) => {
       password: data.password
     })
   })
-  return { status: response.status, body: await response.json() }
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
 export const updateUser = async (data, token) => {
@@ -58,15 +69,13 @@ export const updateUser = async (data, token) => {
       'Content-Type': 'application/json',
       Authorization: `${token}`
     },
-    body: JSON.stringify({
-      full_name: data.full_name,
-      username: data.username,
-      email: data.email,
-      password: data.password
-    })
+    body: JSON.stringify(data)
   })
 
-  return { status: response.status, body: await response.json() }
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
 export const deleteUser = async (id) => {
