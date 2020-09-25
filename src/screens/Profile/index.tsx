@@ -19,7 +19,7 @@ import { getUser, updateUser, authUser } from "../../services/users";
 
 import Logo from "../../img/logo.svg";
 
-import { validateUser } from "../../utils/validateUser";
+import { validateUpdateUser } from "../../utils/validateUpdateUser";
 import { scale } from "../../utils/scalling";
 
 const Profile: React.FC = () => {
@@ -52,25 +52,29 @@ const Profile: React.FC = () => {
 
   const handleUpdateProfile = async () => {
     if (
-      validateUser({
+      validateUpdateUser({
         fullName: userFullName,
-        username: username,
         email: userEmail,
         password: userPwd,
         confirmPassword: userConfirmPwd,
       })
     ) {
       const token = await AsyncStorage.getItem("userToken");
-      console.log(token);
-      const response = await updateUser(
-        {
+      let editedUser;
+      if (userPwd === null || userPwd === "") {
+        editedUser = {
           full_name: userFullName,
-          username: username,
+          email: userEmail,
+        };
+      } else {
+        editedUser = {
+          full_name: userFullName,
           email: userEmail,
           password: userPwd,
-        },
-        token
-      );
+        };
+      }
+
+      const response = await updateUser(editedUser, token);
 
       if (!response.body.error && response.status === 200) {
         Alert.alert("Usuário atualizado com sucesso!");
