@@ -7,6 +7,7 @@ import Cadastro from './screens/Cadastro'
 import Login from './screens/Login'
 import Home from './screens/Home'
 import Occurrence from './screens/Occurrence'
+import Settings from './screens/Settings'
 
 export default Routes = () => {
     return (
@@ -16,6 +17,7 @@ export default Routes = () => {
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
                 <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Home" component={Home} />
+                <AppStack.Screen name="Settings" component={Settings} />
             </AppStack.Navigator>
         </>
     );
