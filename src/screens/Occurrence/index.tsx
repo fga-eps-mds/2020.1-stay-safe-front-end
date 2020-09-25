@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from "@react-native-community/async-storage"
 
 import { scale } from '../../utils/scalling'
 import { validateOccurrence } from '../../utils/validateOccurrence'
+import { createOccurrence } from '../../services/occurrences'
 import {
     Header,
     HeaderTitle,
@@ -56,8 +59,6 @@ const Occurrence: React.FC = () => {
         'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
     })
 
-    if (!loaded) return null
-
     const onChange = (event, selectedDate) => {
         setShowDatePicker(false);
         setShowTimePicker(false);
@@ -97,17 +98,42 @@ const Occurrence: React.FC = () => {
         return formatedDatetime
     }
 
-    const handleRegisterOccurrence = () => {
+    const handleRegisterOccurrence = async () => {
         if (validateOccurrence({
             occurrenceType: selectedOccurrenceType,
             gun: selectedGun,
             victim: selectedVictim,
             physicalAggression: selectedPhysicalAggression,
             policeReport: selectedPoliceReport,
+            occurrenceDateTime: datetime,
         })) {
-            console.log('Registro Feito')
+            const token = await AsyncStorage.getItem("userToken")
+            const response = await createOccurrence(
+                {
+                    gun: selectedGun,
+                    location: [
+                        -15.989564,
+                        -48.044175
+                    ],
+                    occurrence_date_time: formatDatetime(datetime),
+                    occurrence_type: selectedOccurrenceType,
+                    physical_aggression: selectedPhysicalAggression,
+                    police_report: selectedPoliceReport,
+                    victim: selectedVictim,
+                },
+                token
+            )
+
+            if (!response.body.error && response.status === 201) {
+                Alert.alert("Ocorrência cadastrada com sucesso!");
+                navigation.navigate('Home')
+            } else {
+                Alert.alert("Erro ao cadastrar ocorrência", response.body.error);
+            }
         }
     }
+
+    if (!loaded) return null
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -207,7 +233,7 @@ const Occurrence: React.FC = () => {
                         style={{ marginTop: 45 }}
                         onPress={handleRegisterOccurrence}
                     >
-                        <SendLabel>Enviar</SendLabel>
+                        <SendLabel>Registrar Ocorrência</SendLabel>
                     </NormalSend>
                 </KeyboardScrollView>
             </Container>
