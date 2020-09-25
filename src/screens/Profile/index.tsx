@@ -9,6 +9,7 @@ import {
   LabelViewing,
   LogoWrapper,
   EditButton,
+  CanEditButton,
 } from "./styles";
 import HeaderTitle from "../../components/HeaderTitle";
 import { KeyboardScrollView, SendLabel } from "../../components/NormalForms";
@@ -27,6 +28,8 @@ const Profile: React.FC = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPwd, setUserPwd] = useState("");
   const [userConfirmPwd, setUserConfirmPwd] = useState("");
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const [loaded] = Font.useFonts({
     "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -85,12 +88,18 @@ const Profile: React.FC = () => {
         <Container>
           <HeaderTitle text="Perfil" />
           <LogoWrapper>
-            <Logo width={scale(100)} height={scale(100)} />
+            <Logo width={scale(70)} height={scale(70)} />
+            <CanEditButton onPress={() => setIsEditing(!isEditing)}>
+              <SendLabel>
+                {isEditing ? "Voltar" : "Atualizar cadastro"}
+              </SendLabel>
+            </CanEditButton>
           </LogoWrapper>
           <LabelsContainer>
             <LabelViewing>Username</LabelViewing>
             <InputViewing
               editable={false}
+              isEditing={false}
               returnKeyType="next"
               maxLength={20}
               value={username}
@@ -98,6 +107,8 @@ const Profile: React.FC = () => {
             />
             <LabelViewing>Nome Completo</LabelViewing>
             <InputViewing
+              editable={isEditing}
+              isEditing={isEditing}
               returnKeyType="next"
               maxLength={200}
               value={userFullName}
@@ -105,30 +116,38 @@ const Profile: React.FC = () => {
             />
             <LabelViewing>Email</LabelViewing>
             <InputViewing
+              editable={isEditing}
+              isEditing={isEditing}
               returnKeyType="next"
               keyboardType="email-address"
               maxLength={50}
               value={userEmail}
               onChangeText={(text) => setUserEmail(text)}
             />
-            <LabelViewing>Senha</LabelViewing>
-            <InputViewing
-              returnKeyType="next"
-              secureTextEntry={true}
-              maxLength={20}
-              value={userPwd}
-              onChangeText={(text) => setUserPwd(text)}
-            />
-            <LabelViewing>Confirmar senha</LabelViewing>
-            <InputViewing
-              secureTextEntry={true}
-              maxLength={20}
-              value={userConfirmPwd}
-              onChangeText={(text) => setUserConfirmPwd(text)}
-            />
-            <EditButton onPress={handleUpdateProfile}>
-              <SendLabel>Salvar</SendLabel>
-            </EditButton>
+            {isEditing && (
+              <>
+                <LabelViewing>Senha</LabelViewing>
+                <InputViewing
+                  isEditing={isEditing}
+                  returnKeyType="next"
+                  secureTextEntry={true}
+                  maxLength={20}
+                  value={userPwd}
+                  onChangeText={(text) => setUserPwd(text)}
+                />
+                <LabelViewing>Confirmar senha</LabelViewing>
+                <InputViewing
+                  isEditing={isEditing}
+                  secureTextEntry={true}
+                  maxLength={20}
+                  value={userConfirmPwd}
+                  onChangeText={(text) => setUserConfirmPwd(text)}
+                />
+                <EditButton onPress={handleUpdateProfile}>
+                  <SendLabel>Salvar</SendLabel>
+                </EditButton>
+              </>
+            )}
           </LabelsContainer>
         </Container>
       </KeyboardScrollView>
