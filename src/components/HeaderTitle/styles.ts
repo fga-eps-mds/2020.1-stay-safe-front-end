@@ -9,7 +9,7 @@ export const HeaderTitleContainer = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: ${scale(25)}px;
 `;
 
 export const Title = styled.Text`
