@@ -78,11 +78,13 @@ export const updateUser = async (data, token) => {
   }
 };
 
-export const deleteUser = async (id) => {
-  return await fetch(userApi + '/users/' + id, {
+export const deleteUser = async (token) => {
+  return await fetch(userApi + '/users/', {
     method: 'DELETE',
     headers: {
-      Accept: 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `${token}`
     }
   })
 };
