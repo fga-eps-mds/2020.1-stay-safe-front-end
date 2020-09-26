@@ -7,12 +7,11 @@ import { scale } from "../../utils/scalling";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  padding-vertical: 5%;
   background-color: #f0f0f5;
 `;
 
 export const ButtonsContainer = styled.View`
-  padding: ${scale(43)}px ${scale(25)}px;
+  padding: ${scale(13)}px ${scale(25)}px;
 `;
 
 export const Button = styled.TouchableOpacity`

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Font from "expo-font";
-import { Alert, SafeAreaView, Text } from "react-native";
+import { Alert } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   Container,
@@ -89,9 +90,9 @@ const Profile: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <HeaderTitle text="Perfil" />
       <KeyboardScrollView>
         <Container>
-          <HeaderTitle text="Perfil" />
           <LogoWrapper>
             <Logo width={scale(70)} height={scale(70)} />
             <CanEditButton onPress={() => setIsEditing(!isEditing)}>

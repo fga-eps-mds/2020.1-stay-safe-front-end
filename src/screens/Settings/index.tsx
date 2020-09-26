@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
-import { SafeAreaView, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import { Feather } from "@expo/vector-icons";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SendLabel } from "../../components/NormalForms";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -59,8 +59,8 @@ const Settings: React.FC = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <HeaderTitle text="Configurações" />
       <Container>
-        <HeaderTitle text="Configurações" />
         <ButtonsContainer>
           {buttonsObject.map((button: ButtonObject) => {
             return (

@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
-import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { scale } from '../../utils/scalling'
 import { validateOccurrence } from '../../utils/validateOccurrence'
 import { createOccurrence } from '../../services/occurrences'
-import Header from '../../components/Header'
+import HeaderTitle from '../../components/HeaderTitle'
 import {
     Container,
     KeyboardScrollView,
@@ -134,14 +132,7 @@ const Occurrence: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
-                <Header title='Reportar Ocorrência'>
-                    <Feather
-                        onPress={() => navigation.goBack()}
-                        name='arrow-left' 
-                        size={scale(28)} 
-                        color='#010A26'
-                    />
-                </Header>
+                <HeaderTitle text='Reportar Ocorrência' goBack />
                 <KeyboardScrollView>
                     <InputContainer style={{ width: '80%',  marginTop: 0 }}>
                         <NormalLabel>Tipo de Ocorrência</NormalLabel>
