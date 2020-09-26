@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/native";
 
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import Modal from "react-native-modalbox";
@@ -7,6 +7,7 @@ import { scale } from "../../utils/scalling";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
+  padding-vertical: 5%;
   background-color: #f0f0f5;
 `;
 
