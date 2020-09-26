@@ -12,7 +12,7 @@ import Settings from './screens/Settings'
 export default Routes = () => {
     return (
         <>
-            <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={Login}>
+            <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
                 <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
                 <AppStack.Screen name="Home" component={Home} />

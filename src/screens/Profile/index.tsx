@@ -77,6 +77,7 @@ const Profile: React.FC = () => {
       const response = await updateUser(editedUser, token);
 
       if (!response.body.error && response.status === 200) {
+        setIsEditing(!isEditing);
         Alert.alert("Usuário atualizado com sucesso!");
       } else {
         Alert.alert("Erro ao atualizar usuário", response.body.error);

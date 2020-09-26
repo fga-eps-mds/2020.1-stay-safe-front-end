@@ -32,7 +32,7 @@ export default Login = ({ navigation }) => {
         if (!response.body.error && response.status === 200) {
             AsyncStorage.setItem("userToken", response.body.token)
             AsyncStorage.setItem("username", username);
-            navigation.navigate('Profile');
+            navigation.navigate('Home');
         } else {
             Alert.alert("Erro ao logar usuário", response.body.error)
         }
