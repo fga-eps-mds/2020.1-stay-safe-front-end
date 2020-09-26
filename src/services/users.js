@@ -1,4 +1,6 @@
-import { userApi } from './api'
+import {
+  userApi
+} from './api'
 import base64 from 'react-native-base64'
 
 export const authUser = async (data) => {
@@ -10,7 +12,10 @@ export const authUser = async (data) => {
       Authorization: `Basic ${base64.encode(`${data.username}:${data.password}`)}`
     }
   })
-  return { status: response.status, body: await response.json() }
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
 export const getAllUsers = async () => {
@@ -22,13 +27,18 @@ export const getAllUsers = async () => {
   })
 };
 
-export const getUser = async (id) => {
-  return await fetch(userApi + '/users/' + id, {
+export const getUser = async (username) => {
+  const response = await fetch(userApi + '/users/' + username, {
     method: 'GET',
     headers: {
       Accept: 'application/json'
     }
   })
+
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
 export const createUser = async (data) => {
@@ -45,36 +55,36 @@ export const createUser = async (data) => {
       password: data.password
     })
   })
-  return { status: response.status, body: await response.json() }
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
-export const updateUser = async (id, data) => {
-  let user = {}
-  if (data.full_name) {
-    user.full_name = data.full_name
-  } else if (data.username) {
-    user.username = data.username
-  } else if (data.email) {
-    user.email = data.email
-  } else if (data.password) {
-    user.password = data.password
-  }
-
-  return await fetch(userApi + '/users/' + id, {
-    method: 'PUT',
+export const updateUser = async (data, token) => {
+  const response = await fetch(userApi + '/users/', {
+    method: 'PATCH',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `${token}`
     },
-    body: user
+    body: JSON.stringify(data)
   })
+
+  return {
+    status: response.status,
+    body: await response.json()
+  }
 };
 
-export const deleteUser = async (id) => {
-  return await fetch(userApi + '/users/' + id, {
+export const deleteUser = async (token) => {
+  return await fetch(userApi + '/users/', {
     method: 'DELETE',
     headers: {
-      Accept: 'application/json'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `${token}`
     }
   })
 };
