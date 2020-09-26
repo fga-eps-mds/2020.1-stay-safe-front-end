@@ -19,7 +19,7 @@ export const Container = styled.View`
 `;
 
 export const LogoWrapper = styled.View`
-  margin-top: ${scale(35)}px;
+  margin-top: ${scale(5)}px;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;

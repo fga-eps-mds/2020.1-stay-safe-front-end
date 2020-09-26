@@ -4,12 +4,10 @@ import { scale } from "../../utils/scalling";
 
 export const HeaderTitleContainer = styled.View`
   width: 100%;
-  height: 100%;
-  max-height: ${scale(30)}px;
+  height: ${scale(60)}px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: ${scale(25)}px;
 `;
 
 export const Title = styled.Text`
@@ -17,4 +15,9 @@ export const Title = styled.Text`
   color: #e83338;
   line-height: ${scale(20)}px;
   font-family: Trueno-SemiBold;
+`;
+
+export const GoBackContainer = styled.View`
+  left: 10%;
+  position: absolute;
 `;
