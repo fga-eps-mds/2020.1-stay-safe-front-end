@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import MapView from 'react-native-maps'
 
-export default Home = () => {
+export default Home = ({ route }) => {
+    const [showReportModal, setReportModal] = useState(false)
+
+    useEffect(() => {
+        setReportModal(route.params.showReportModal)
+    }, [route.params]);
+
     return (
         <View style={{ flex: 1 }}>
             <MapView

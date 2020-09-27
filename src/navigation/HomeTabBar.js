@@ -3,15 +3,16 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Feather } from '@expo/vector-icons'
 import { scale } from '../utils/scalling'
 
-import { AlertButton } from './styles'
-
 const Tab = createBottomTabNavigator()
 
 import Home from '../screens/Home'
 import Search from '../screens/Search'
-import Report from '../screens/Report'
+import Report, { ReportButton } from '../screens/Report'
+import Occurrence from '../screens/Occurrence'
+import Profile from '../screens/Profile'
+import Settings from '../screens/Settings'
 
-export default HomeTabScreen = () => {
+export default HomeTabBar = () => {
     return (
         <Tab.Navigator 
             initialRouteName={"Home"}
@@ -25,12 +26,6 @@ export default HomeTabScreen = () => {
                     iconName = 'search';
                 } else if (route.name === 'Report') {
                     iconName = 'bell';
-                    return ( 
-                        <AlertButton>
-                            <Feather name={iconName} size={scale(24)} color="#ffffff" />
-                        </AlertButton>
-                    )
-
                 } else if (route.name === 'Profile') {
                     iconName = 'user';
                 } else if (route.name === 'Settings') {
@@ -45,7 +40,7 @@ export default HomeTabScreen = () => {
                 inactiveTintColor: '#C8C8C8',
                 showLabel: false,
                 style: {
-                    height: '8%',
+                    height: '8.5%',
                     backgroundColor: '#ffffff',
                     borderTopLeftRadius: scale(18),
                     borderTopRightRadius: scale(18),
@@ -55,7 +50,14 @@ export default HomeTabScreen = () => {
         >
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Search" component={Search} />
-            <Tab.Screen name="Report" component={Report} />
+            <Tab.Screen name="Report" component={Report}
+                options={({ navigation }) => ({
+                    tabBarButton: () => <ReportButton navObject={navigation} />
+                })}
+            />
+            <Tab.Screen name="Occurrence" component={Occurrence} />
+            <Tab.Screen name="Profile" component={Profile} />
+            <Tab.Screen name="Settings" component={Settings} />
         </Tab.Navigator>
     )
 }
