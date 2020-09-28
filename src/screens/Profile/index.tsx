@@ -89,7 +89,7 @@ const Profile: React.FC = () => {
   if (!loaded) return null;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#f0f0f5' }}>
       <HeaderTitle text="Perfil" />
       <KeyboardScrollView>
         <Container>
