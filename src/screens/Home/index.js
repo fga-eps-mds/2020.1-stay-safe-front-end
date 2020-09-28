@@ -1,10 +1,13 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import MapView from 'react-native-maps'
 
-export default Home = () => {
+import LoggedInModal from '../../components/LoggedInModal'
+
+export default Home = ({ navigation }) => {
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <MapView
                 initialRegion={{
                     latitude: -15.9897883,
@@ -21,14 +24,15 @@ export default Home = () => {
                     }}
                 />
             </MapView>
-        </View>    
+
+            <LoggedInModal navObject={navigation} />
+        </SafeAreaView>    
     )
 }
 
 const styles = StyleSheet.create({
     MapView: {
         flex: 1,
-        width: "100%",
-        padding: 32
+        width: "100%"
     }
 })
