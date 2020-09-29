@@ -44,7 +44,7 @@ const Home = () => {
           }
         });
       });
-    }, [route.params.showReportModal])
+    }, [route.params?.showReportModal])
   );
 
   // Function to use on modal closed.

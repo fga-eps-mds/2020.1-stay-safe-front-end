@@ -118,7 +118,7 @@ const Settings: React.FC = () => {
           confirmText="Excluir"
           onConfirmPressed={() => {
             setIsModalOpen(false);
-            handleDeleteAccount;
+            handleDeleteAccount();
           }}
           showCancelButton={true}
           cancelText="Voltar"
