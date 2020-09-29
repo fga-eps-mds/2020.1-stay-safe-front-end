@@ -105,7 +105,7 @@ const Profile: React.FC = () => {
 
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#f0f0f5' }}>
       {isFocused && <LoggedInModal navObject={navigation} />}
       <HeaderTitle text="Perfil" />
       <KeyboardScrollView>
