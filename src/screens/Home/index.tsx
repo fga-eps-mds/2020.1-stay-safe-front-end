@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   useFocusEffect,
   useRoute,
@@ -10,6 +10,9 @@ import { View, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
 import LoggedInModal from "../../components/LoggedInModal";
+import AsyncStorage from "@react-native-community/async-storage";
+
+import { getUser } from "../../services/users";
 
 type ParamList = {
   params: {
@@ -20,6 +23,8 @@ type ParamList = {
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const route = useRoute<RouteProp<ParamList, "params">>();
+  const [isLogged, setIsLogged] = useState(false);
+
   const navigation = useNavigation();
 
   useFocusEffect(() => {
@@ -27,6 +32,20 @@ const Home = () => {
       setIsModalOpen(route.params.showReportModal);
     }
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem("username").then((username) => {
+        getUser(username).then((response) => {
+          if (response.status === 200) {
+            setIsLogged(true);
+          } else {
+            setIsLogged(false);
+          }
+        });
+      });
+    }, [route.params.showReportModal])
+  );
 
   // Function to use on modal closed.
   const handleClosedModal = () => {
@@ -36,6 +55,7 @@ const Home = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      {!isLogged && <LoggedInModal navObject={navigation} />}
       <MapView
         initialRegion={{
           latitude: -15.9897883,
@@ -52,7 +72,6 @@ const Home = () => {
           }}
         />
       </MapView>
-      <LoggedInModal navObject={navigation} />
     </View>
   );
 };

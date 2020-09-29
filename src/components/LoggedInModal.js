@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import * as Font from 'expo-font'
 import StayAlert from './StayAlert'
 import AsyncStorage from '@react-native-community/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 
 export default LoggedInModal = (props) => {
     const [showAlert, changeAlert] = useState(false)
@@ -20,7 +21,7 @@ export default LoggedInModal = (props) => {
         }
     }
 
-    useEffect(() => {
+    useFocusEffect(() => {
         verifyUserLoggedIn()
     }, [])
 
