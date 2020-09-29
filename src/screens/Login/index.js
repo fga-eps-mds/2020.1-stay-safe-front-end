@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import Logo from '../../img/logo.svg'
 import { scale } from '../../utils/scalling'
@@ -9,8 +10,6 @@ import { Container, KeyboardScrollView, LogoWrapper, Title } from '../../compone
 import { NormalLabel, NormalInput, NormalSend, NormalCreate, SendLabel } from '../../components/NormalForms'
 
 import { authUser } from '../../services/users'
-
-import AsyncStorage from '@react-native-community/async-storage'
 
 export default Login = ({ navigation }) => {
     const [username, setUsername] = useState('')
