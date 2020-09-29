@@ -25,7 +25,6 @@ const Home = () => {
   useFocusEffect(() => {
     if (route.params) {
       setIsModalOpen(route.params.showReportModal);
-      console.log(route.params);
     }
   });
 

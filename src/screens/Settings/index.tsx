@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import { Feather } from "@expo/vector-icons";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { SendLabel } from "../../components/NormalForms";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -16,8 +16,7 @@ import {
   UserButtonsContainer,
   DeleteButton,
   DeleteText,
-  ModalDelete,
-  ModalText,
+  ModalStayAlert,
 } from "./styles";
 
 import AsyncStorage from "@react-native-community/async-storage";
@@ -80,22 +79,23 @@ const Settings: React.FC = () => {
             <DeleteText>Excluir conta</DeleteText>
           </DeleteButton>
         </UserButtonsContainer>
-        <ModalDelete
-          isOpen={isModalOpen}
-          ref={modalRef}
-          backButtonClose
-          backdropOpacity={0.8}
-          position={"center"}
-          onClosed={() => setIsModalOpen(false)}
-          swipeToClose={false}
-        >
-          <ModalText numberOfLines={2} >
-            Tem certeza que deseja excluir sua conta?
-          </ModalText>
-          <LogoutButton onPress={handleDeleteAccount}>
-            <SendLabel>Excluir</SendLabel>
-          </LogoutButton>
-        </ModalDelete>
+        <ModalStayAlert
+          show={isModalOpen}
+          title="Excluir conta"
+          message="Tem certeza que deseja excluir sua conta?"
+          showConfirmButton={true}
+          confirmText="Excluir"
+          onConfirmPressed={() => {
+            setIsModalOpen(false);
+            handleDeleteAccount;
+          }}
+          showCancelButton={true}
+          cancelText="Voltar"
+          onCancelPressed={() => {
+            setIsModalOpen(false);
+          }}
+          onDismiss={() => setIsModalOpen(false)}
+        />
       </Container>
     </SafeAreaView>
   );

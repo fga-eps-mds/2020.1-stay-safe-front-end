@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
 
+import AwesomeAlert from "react-native-awesome-alerts";
+
 import { NormalSend, SendLabel } from "../../components/NormalForms";
-import Modal from "react-native-modalbox";
 
 import { scale } from "../../utils/scalling";
 
@@ -50,20 +51,48 @@ export const DeleteText = styled(SendLabel)`
   color: rgba(0, 0, 0, 0.3);
 `;
 
-export const ModalDelete = styled(Modal)`
-  width: ${scale(230)}px;
-  height: ${scale(200)}px;
-  border-radius: ${scale(10)}px;
-  border: ${scale(2)}px #7dbfe2;
-  padding: ${scale(10)}px ${scale(20)}px;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-`;
-
-export const ModalText = styled.Text`
-  font-size: ${scale(14)}px;
-  color: #011640;
-  font-family: Trueno-SemiBold;
-  text-align: center;
-`;
+export const ModalStayAlert = styled(AwesomeAlert).attrs({
+  overlayStyle: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  progressColor: "#E83338",
+  contentContainerStyle: {
+    borderRadius: scale(16),
+    padding: scale(16),
+  },
+  titleStyle: {
+    fontFamily: "Trueno-SemiBold",
+    fontSize: scale(16),
+    color: "#010A26",
+    paddingVertical: 0,
+    paddingHorizontal: 0,
+    paddingBottom: scale(16),
+  },
+  messageStyle: {
+    fontFamily: "Trueno-Regular",
+    textAlign: "center",
+    fontSize: scale(14),
+    color: "#011640",
+    paddingTop: 0,
+  },
+  confirmButtonColor: "#E83338",
+  confirmButtonStyle: {
+    borderRadius: scale(10),
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(8),
+  },
+  confirmButtonTextStyle: {
+    fontFamily: "Trueno-SemiBold",
+    fontSize: scale(12),
+  },
+  cancelButtonColor: "#7DBFE2",
+  cancelButtonStyle: {
+    borderRadius: scale(10),
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(8),
+  },
+  cancelButtonTextStyle: {
+    fontFamily: "Trueno-SemiBold",
+    fontSize: scale(12),
+  },
+})``;
