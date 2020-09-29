@@ -16,5 +16,5 @@ export default Routes = () => {
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
             </AppStack.Navigator>
         </>
-    );
+    )
 }

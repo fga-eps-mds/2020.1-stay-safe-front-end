@@ -1,22 +1,27 @@
 export const buttonsObject = [
   {
     title: "Avaliações",
-    icon: "star"
+    icon: "star",
+    userLogged: true,
   },
   {
     title: "Ocorrências",
-    icon: "clipboard"
+    icon: "clipboard",
+    userLogged: true,
   },
   {
     title: "Notificações",
-    icon: "bell"
+    icon: "bell",
+    userLogged: false,
   },
   {
     title: "Sobre",
-    icon: "info"
+    icon: "info",
+    userLogged: false,
   },
   {
     title: "Ajuda",
-    icon: "help-circle"
-  }
-]
+    icon: "help-circle",
+    userLogged: false,
+  },
+];
