@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
+import { useFocusEffect, useNavigation, useIsFocused } from "@react-navigation/native";
 import * as Font from "expo-font";
 import { Alert } from "react-native";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
   Container,
@@ -14,14 +15,16 @@ import {
 } from "./styles";
 import HeaderTitle from "../../components/HeaderTitle";
 import { KeyboardScrollView, SendLabel } from "../../components/NormalForms";
+import LoggedInModal from '../../components/LoggedInModal';
 
 import AsyncStorage from "@react-native-community/async-storage";
-import { getUser, updateUser, authUser } from "../../services/users";
+import { getUser, updateUser } from "../../services/users";
 
 import Logo from "../../img/logo.svg";
 
 import { validateUpdateUser } from "../../utils/validateUpdateUser";
 import { scale } from "../../utils/scalling";
+
 
 const Profile: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -30,6 +33,12 @@ const Profile: React.FC = () => {
   const [userPwd, setUserPwd] = useState("");
   const [userConfirmPwd, setUserConfirmPwd] = useState("");
 
+  const isFocused = useIsFocused();
+
+  const [isLogged, setIsLogged] = useState(false);
+
+  const navigation = useNavigation();
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [loaded] = Font.useFonts({
@@ -37,19 +46,25 @@ const Profile: React.FC = () => {
     "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
   });
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     AsyncStorage.getItem("username").then((username) => {
       getUser(username).then((response) => {
         if (response.status === 200) {
           setUsername(response.body.username);
           setUserFullName(response.body.full_name);
           setUserEmail(response.body.email);
+          setIsLogged(true);
         } else {
-          Alert.alert("Erro ao visualizar usuário.");
+          setUsername("");
+          setUserFullName("");
+          setUserEmail("");
+          setUserPwd("");
+          setUserConfirmPwd("");
+          setIsLogged(false);
         }
       });
     });
-  }, []);
+  }, []));
 
   const handleUpdateProfile = async () => {
     if (
@@ -88,16 +103,20 @@ const Profile: React.FC = () => {
 
   if (!loaded) return null;
 
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f0f0f5' }}>
+      {isFocused && <LoggedInModal navObject={navigation} />}
       <HeaderTitle text="Perfil" />
       <KeyboardScrollView>
         <Container>
           <LogoWrapper>
             <Logo width={scale(70)} height={scale(70)} />
-            <CanEditButton onPress={() => setIsEditing(!isEditing)}>
-              <SendLabel>{isEditing ? "Voltar" : "Editar perfil"}</SendLabel>
-            </CanEditButton>
+            {isLogged && (
+              <CanEditButton onPress={() => setIsEditing(!isEditing)}>
+                <SendLabel>{isEditing ? "Voltar" : "Editar perfil"}</SendLabel>
+              </CanEditButton>
+            )}
           </LogoWrapper>
           <LabelsContainer>
             <LabelViewing>Username</LabelViewing>
