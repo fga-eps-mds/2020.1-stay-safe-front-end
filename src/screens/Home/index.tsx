@@ -5,14 +5,16 @@ import {
   RouteProp,
   useNavigation,
 } from "@react-navigation/native";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, MapEvent } from "react-native-maps";
+import { OccurrenceAlert } from "./styles";
 
 import LoggedInModal from "../../components/LoggedInModal";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { getUser } from "../../services/users";
+import { getAllUsersOccurrences } from "../../services/occurrences";
 
 type ParamList = {
   params: {
@@ -20,12 +22,32 @@ type ParamList = {
   };
 };
 
-const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const route = useRoute<RouteProp<ParamList, "params">>();
-  const [isLogged, setIsLogged] = useState(false);
+interface Occurrence {
+  id_occurrence: number;
+  location: [number, number];
+  gun: string;
+  occurrence_date_time: string;
+  register_date_time: string;
+  occurrence_type: string;
+  physical_aggression: boolean;
+  police_report: boolean;
+  victim: boolean;
+}
 
+const Home = () => {
+  const route = useRoute<RouteProp<ParamList, "params">>();
   const navigation = useNavigation();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  const [isReporting, setIsReporting] = useState(false);
+  const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsReporting(false);
+    }, [])
+  );
 
   useFocusEffect(() => {
     if (route.params) {
@@ -47,10 +69,27 @@ const Home = () => {
     }, [route.params?.showReportModal])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      getAllUsersOccurrences().then((response) => {
+        setOccurrences(response.body);
+      });
+    }, [])
+  );
+
   // Function to use on modal closed.
   const handleClosedModal = () => {
     setIsModalOpen(false);
     route.params = undefined;
+  };
+
+  const handleReportingCoordinatesOnMap = (e: MapEvent) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+
+    if (isReporting) {
+      setIsReporting(false);
+      navigation.navigate("Occurrence", { latitude, longitude });
+    }
   };
 
   return (
@@ -63,25 +102,35 @@ const Home = () => {
           latitudeDelta: 0.0042,
           longitudeDelta: 0.0031,
         }}
-        style={styles.MapView}
+        style={{ flex: 1 }}
+        onPress={(e) => handleReportingCoordinatesOnMap(e)}
       >
-        <Marker
-          coordinate={{
-            latitude: -15.9897883,
-            longitude: -48.0464073,
-          }}
-        />
+        {occurrences?.map((occurrence: Occurrence) => {
+          return (
+            <Marker
+              key={occurrence.id_occurrence}
+              coordinate={{
+                latitude: occurrence.location[0],
+                longitude: occurrence.location[1],
+              }}
+            />
+          );
+        })}
       </MapView>
+      <OccurrenceAlert
+        show={isModalOpen && isLogged}
+        title="Reportar Ocorrência"
+        message="Toque para selecionar o local no mapa com o marcador"
+        showConfirmButton={true}
+        confirmText="Entendido"
+        onConfirmPressed={() => {
+          handleClosedModal();
+          setIsReporting(true);
+        }}
+        onDismiss={() => handleClosedModal()}
+      />
     </View>
   );
 };
 
 export default Home;
-
-const styles = StyleSheet.create({
-  MapView: {
-    flex: 1,
-    width: "100%",
-    padding: 32,
-  },
-});
