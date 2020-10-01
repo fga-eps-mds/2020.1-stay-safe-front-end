@@ -1,12 +1,12 @@
-import { userApi } from './api'
+import { userApi } from "./api";
 
 export const createOccurrence = async (data, token) => {
-    const response = await fetch(userApi + '/occurrences/', {
-        method: 'POST',
+    const response = await fetch(userApi + "/occurrences/", {
+        method: "POST",
         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `${token}`
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
         },
         body: JSON.stringify({
             gun: data.gun,
@@ -15,8 +15,8 @@ export const createOccurrence = async (data, token) => {
             occurrence_type: data.occurrence_type,
             physical_aggression: data.physical_aggression,
             police_report: data.police_report,
-            victim: data.victim
-        })
-    })
-    return { status: response.status, body: await response.json() }
-}
+            victim: data.victim,
+        }),
+    });
+    return { status: response.status, body: await response.json() };
+};
