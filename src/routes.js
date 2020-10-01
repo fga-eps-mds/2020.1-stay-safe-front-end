@@ -6,6 +6,7 @@ const AppStack = createStackNavigator()
 import HomeTabBar from './navigation/HomeTabBar'
 import Login from './screens/Login'
 import Cadastro from './screens/Cadastro'
+import HeatMap from './screens/HeatMap'
 
 export default Routes = () => {
     return (

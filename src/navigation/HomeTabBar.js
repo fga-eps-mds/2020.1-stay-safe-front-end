@@ -8,6 +8,7 @@ import { AlertButton } from './styles'
 const Tab = createBottomTabNavigator()
 
 import Home from '../screens/Home'
+import HeatMap from '../screens/HeatMap'
 import Search from '../screens/Search'
 import Report from '../screens/Report'
 
@@ -35,6 +36,8 @@ export default HomeTabScreen = () => {
                     iconName = 'user';
                 } else if (route.name === 'Settings') {
                     iconName = 'settings';
+                } else if (route.name === 'HeatMap') {
+                    iconName = 'fire';
                 }
 
                 return <Feather name={iconName} size={scale(24)} color={color} />
@@ -56,6 +59,7 @@ export default HomeTabScreen = () => {
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Search" component={Search} />
             <Tab.Screen name="Report" component={Report} />
+            <Tab.Screen name="HeatMap" component={HeatMap} />
         </Tab.Navigator>
     )
 }
