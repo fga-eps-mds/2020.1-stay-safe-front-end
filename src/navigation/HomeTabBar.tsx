@@ -10,6 +10,7 @@ import Search from "../screens/Search";
 import Report, { ReportButton } from "../screens/Report";
 import Profile from "../screens/Profile";
 import Settings from "../screens/Settings";
+import Occurrences from "../screens/Occurrences";
 
 const HomeTabBar = () => {
 
@@ -29,9 +30,12 @@ const HomeTabBar = () => {
               iconName = "bell";
             } else if (route.name === "Profile") {
               iconName = "user";
-            } else if (route.name === "Settings") {
+            } else if (route.name === "Occurrences") {
               iconName = "settings";
             }
+            // } else if (route.name === "Settings") {
+            //   iconName = "settings";
+            // }
 
             return <Feather name={iconName} size={scale(24)} color={color} />;
           },
@@ -62,7 +66,8 @@ const HomeTabBar = () => {
           name="Profile"
           component={Profile}
         />
-        <Tab.Screen name="Settings" component={Settings} />
+        {/* <Tab.Screen name="Settings" component={Settings} /> */}
+        <Tab.Screen name="Occurrences" component={Occurrences} />
       </Tab.Navigator>
     </>
   );

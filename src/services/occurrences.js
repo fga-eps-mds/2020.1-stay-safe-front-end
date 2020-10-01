@@ -20,3 +20,14 @@ export const createOccurrence = async (data, token) => {
     })
     return { status: response.status, body: await response.json() }
 }
+
+export const getOccurrences = async (username) => {
+    const response = await fetch(userApi + `/occurrences?user=${username}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    return { status: response.status, body: await response.json() }
+}
