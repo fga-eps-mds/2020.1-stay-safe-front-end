@@ -9,17 +9,17 @@ import Cadastro from "./screens/Cadastro";
 import Occurrence from "./screens/Occurrence";
 
 const Routes = () => {
-  return (
-    <AppStack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName={"HomeTabBar"}
-    >
-      <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
-      <AppStack.Screen name="Login" component={Login} />
-      <AppStack.Screen name="Cadastro" component={Cadastro} />
-      <AppStack.Screen name="Occurrence" component={Occurrence} />
-    </AppStack.Navigator>
-  );
+    return (
+        <AppStack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName={"HomeTabBar"}
+        >
+            <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
+            <AppStack.Screen name="Login" component={Login} />
+            <AppStack.Screen name="Cadastro" component={Cadastro} />
+            <AppStack.Screen name="Occurrence" component={Occurrence} />
+        </AppStack.Navigator>
+    );
 };
 
 export default Routes;

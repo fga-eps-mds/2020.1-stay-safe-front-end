@@ -19,18 +19,16 @@ It should print 'nvm' if the installation was successful
 
 * <code>npm install expo-cli --global</code>
 
-## Starting the project
-
-* <code>expo start</code>
-
-## Useful libraries
-
-* [React Native Elements](https://react-native-elements.github.io/react-native-elements/)
-* [Native Base](https://nativebase.io)
-* [React Navigation](https://reactnavigation.org)
-
 ### Possible problems
 
 #### System limit for number of file watchers reached 
 
 * <code>echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p</code>
+
+## Usage
+
+### Start project
+* <code>expo start</code>
+
+### Run ESLint
+* <code>npx eslint src/** --fix --no-error-on-unmatched-pattern</code>
