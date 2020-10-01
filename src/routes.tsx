@@ -1,20 +1,25 @@
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
 
-const AppStack = createStackNavigator()
+import HomeTabBar from "./navigation/HomeTabBar";
+import Cadastro from "./screens/Cadastro";
+import Login from "./screens/Login";
 
-import HomeTabBar from './navigation/HomeTabBar'
-import Login from './screens/Login'
-import Cadastro from './screens/Cadastro'
+const AppStack = createStackNavigator();
 
-export default Routes = () => {
+const Routes = () => {
     return (
         <>
-            <AppStack.Navigator screenOptions={{ headerShown: false }} initialRouteName={"HomeTabBar"}>
+            <AppStack.Navigator
+                screenOptions={{ headerShown: false }}
+                initialRouteName="HomeTabBar"
+            >
                 <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
                 <AppStack.Screen name="Login" component={Login} />
                 <AppStack.Screen name="Cadastro" component={Cadastro} />
             </AppStack.Navigator>
         </>
-    )
-}
+    );
+};
+
+export default Routes;
