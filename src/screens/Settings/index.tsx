@@ -19,8 +19,8 @@ import {
     UserButtonsContainer,
     DeleteButton,
     DeleteText,
-    ModalStayAlert,
 } from "./styles";
+import StayAlert from "../../components/StayAlert";
 
 interface ButtonObject {
     title: string;
@@ -115,7 +115,7 @@ const Settings: React.FC = () => {
                         </DeleteButton>
                     </UserButtonsContainer>
                 )}
-                <ModalStayAlert
+                <StayAlert
                     show={isModalOpen}
                     title="Excluir conta"
                     message="Tem certeza que deseja excluir sua conta?"

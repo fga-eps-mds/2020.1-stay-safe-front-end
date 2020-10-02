@@ -7,7 +7,7 @@ export const occurrenceTypeItems = [
     },
     {
         label: "Roubo a Transeunte",
-        value: "Roubo a transeunte",
+        value: "Roubo a Transeunte",
     },
     {
         label: "Roubo de Veículo",

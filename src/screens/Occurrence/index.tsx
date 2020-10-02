@@ -1,10 +1,12 @@
-import AsyncStorage from "@react-native-community/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Font from "expo-font";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from "@react-native-community/async-storage";
 
+import { validateOccurrence } from "../../utils/validateOccurrence";
+import { createOccurrence } from "../../services/occurrences";
 import HeaderTitle from "../../components/HeaderTitle";
 import {
     Container,
@@ -13,16 +15,6 @@ import {
     SendLabel,
     NormalLabel,
 } from "../../components/NormalForms";
-import { createOccurrence } from "../../services/occurrences";
-import { validateOccurrence } from "../../utils/validateOccurrence";
-import {
-    occurrenceTypeItems,
-    gunItems,
-    physicalAggressionItems,
-    policeReportItems,
-    victimItems,
-    dropdownStyle,
-} from "./dropdownConstants";
 import {
     DropDown,
     InputContainer,
@@ -32,9 +24,25 @@ import {
     DatePicker,
     TimePicker,
 } from "./styles";
+import {
+    occurrenceTypeItems,
+    gunItems,
+    physicalAggressionItems,
+    policeReportItems,
+    victimItems,
+    dropdownStyle,
+} from "./dropdownConstants";
+
+type ParamList = {
+    params: {
+        latitude: number;
+        longitude: number;
+    };
+};
 
 const Occurrence: React.FC = () => {
     const navigation = useNavigation();
+    const route = useRoute<RouteProp<ParamList, "params">>();
 
     const [selectedOccurrenceType, setSelectedOccurenceType] = useState("");
     const [selectedGun, setSelectedGun] = useState("");
@@ -51,6 +59,8 @@ const Occurrence: React.FC = () => {
 
     const currentDate = new Date();
 
+    const { latitude, longitude } = route.params;
+
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
@@ -64,33 +74,33 @@ const Occurrence: React.FC = () => {
     };
 
     const formatDate = (date: Date) => {
-        const day = ("0" + date.getDate()).slice(-2);
-        const month = ("0" + (date.getMonth() + 1)).slice(-2);
-        const year = date.getFullYear();
+        let day = ("0" + date.getDate()).slice(-2);
+        let month = ("0" + (date.getMonth() + 1)).slice(-2);
+        let year = date.getFullYear();
 
-        const formatedDate = `${day}/${month}/${year}`;
+        let formatedDate = `${day}/${month}/${year}`;
 
         return formatedDate;
     };
 
     const formatTime = (date: Date) => {
-        const hour = ("0" + date.getHours()).slice(-2);
-        const minutes = ("0" + date.getMinutes()).slice(-2);
+        let hour = ("0" + date.getHours()).slice(-2);
+        let minutes = ("0" + date.getMinutes()).slice(-2);
 
-        const formatedTime = `${hour}:${minutes}`;
+        let formatedTime = `${hour}:${minutes}`;
 
         return formatedTime;
     };
 
     const formatDatetime = (datetime: Date) => {
-        const date = datetime.toLocaleDateString().split("/");
-        const time = datetime.toLocaleTimeString();
+        let date = datetime.toLocaleDateString().split("/");
+        let time = datetime.toLocaleTimeString();
 
-        const month = date[0];
-        const day = date[1];
-        const year = `20${date[2]}`;
+        let month = date[0];
+        let day = date[1];
+        let year = `20${date[2]}`;
 
-        const formatedDatetime = `${year}-${month}-${day} ${time}`;
+        let formatedDatetime = `${year}-${month}-${day} ${time}`;
 
         return formatedDatetime;
     };
@@ -110,7 +120,7 @@ const Occurrence: React.FC = () => {
             const response = await createOccurrence(
                 {
                     gun: selectedGun,
-                    location: [-15.989564, -48.044175],
+                    location: [latitude, longitude],
                     occurrence_date_time: formatDatetime(datetime),
                     occurrence_type: selectedOccurrenceType,
                     physical_aggression: selectedPhysicalAggression,
