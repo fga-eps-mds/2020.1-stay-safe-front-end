@@ -19,4 +19,4 @@ jobs:
         run: npm ci
 
       - name: ESLint + Prettier
-        run: npx eslint src/** --fix --no-error-on-unmatched-pattern
+        run: npx eslint src/** --no-error-on-unmatched-pattern
