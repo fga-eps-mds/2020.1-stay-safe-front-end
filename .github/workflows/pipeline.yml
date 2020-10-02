@@ -16,7 +16,7 @@ jobs:
           node-version: 14.x
 
       - name: Build
-      - run: npm ci
+        run: npm ci
 
       - name: ESLint + Prettier
-      - run: npx eslint src/** --fix --no-error-on-unmatched-pattern
+        run: npx eslint src/** --fix --no-error-on-unmatched-pattern
