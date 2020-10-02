@@ -8,13 +8,14 @@ import {
 import { View } from "react-native";
 
 import MapView, { Marker, MapEvent } from "react-native-maps";
-import { OccurrenceAlert } from "./styles";
+import { StayNormalMap } from "./styles";
 
 import LoggedInModal from "../../components/LoggedInModal";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { getUser } from "../../services/users";
 import { getAllUsersOccurrences } from "../../services/occurrences";
+import StayAlert from "../../components/StayAlert";
 
 type ParamList = {
     params: {
@@ -95,7 +96,7 @@ const Home = () => {
     return (
         <View style={{ flex: 1 }}>
             {!isLogged && <LoggedInModal navObject={navigation} />}
-            <MapView
+            <StayNormalMap
                 initialRegion={{
                     latitude: -15.9897883,
                     longitude: -48.0464073,
@@ -116,8 +117,8 @@ const Home = () => {
                         />
                     );
                 })}
-            </MapView>
-            <OccurrenceAlert
+            </StayNormalMap>
+            <StayAlert
                 show={isModalOpen && isLogged}
                 title="Reportar Ocorrência"
                 message="Toque para selecionar o local no mapa com o marcador"

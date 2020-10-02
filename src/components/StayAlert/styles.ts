@@ -1,9 +1,9 @@
 import AwesomeAlert from "react-native-awesome-alerts";
 import styled from "styled-components";
 
-import { scale } from "../utils/scalling";
+import { scale } from "../../utils/scalling";
 
-const StayAlert = styled(AwesomeAlert).attrs((props) => ({
+export const Alert = styled(AwesomeAlert).attrs((props) => ({
     overlayStyle: {
         backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
@@ -25,6 +25,7 @@ const StayAlert = styled(AwesomeAlert).attrs((props) => ({
         fontSize: scale(14),
         color: "#011640",
         paddingTop: 0,
+        textAlign: "center",
     },
     confirmButtonColor: "#E83338",
     confirmButtonStyle: {
@@ -47,5 +48,3 @@ const StayAlert = styled(AwesomeAlert).attrs((props) => ({
         fontSize: scale(12),
     },
 }))``;
-
-export default StayAlert;
