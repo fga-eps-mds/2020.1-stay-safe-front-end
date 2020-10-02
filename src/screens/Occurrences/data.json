@@ -1,0 +1,44 @@
+[
+  {
+    "gun": "None",
+    "id_occurrence": 1,
+    "location": [
+      -15.989558,
+      -48.044206
+    ],
+    "occurrence_date_time": "2019-11-23 17:48:29",
+    "occurrence_type": "Roubo a Transeunte",
+    "physical_aggression": false,
+    "police_report": true,
+    "register_date_time": "2020-09-28 16:43:06.996598",
+    "victim": false
+  },
+  {
+    "gun": "None",
+    "id_occurrence": 2,
+    "location": [
+      -15.989558,
+      -48.044206
+    ],
+    "occurrence_date_time": "2019-11-23 17:48:29",
+    "occurrence_type": "Roubo a Transeunte",
+    "physical_aggression": false,
+    "police_report": true,
+    "register_date_time": "2020-09-28 16:43:06.996598",
+    "victim": false
+  },
+  {
+    "gun": "None",
+    "id_occurrence": 3,
+    "location": [
+      -15.989558,
+      -48.044206
+    ],
+    "occurrence_date_time": "2019-11-23 17:48:29",
+    "occurrence_type": "Roubo a Transeunte",
+    "physical_aggression": false,
+    "police_report": true,
+    "register_date_time": "2020-09-28 16:43:06.996598",
+    "victim": false
+  }
+]

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { scale } from "../utils/scalling";
@@ -62,10 +62,7 @@ const HomeTabBar = () => {
             tabBarButton: () => <ReportButton navObject={navigation} />,
           })}
         />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-        />
+        <Tab.Screen name="Profile" component={Profile} />
         {/* <Tab.Screen name="Settings" component={Settings} /> */}
         <Tab.Screen name="Occurrences" component={Occurrences} />
       </Tab.Navigator>

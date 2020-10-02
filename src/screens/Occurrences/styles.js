@@ -4,13 +4,40 @@ import { scale } from "../../utils/scalling"
 
 export const CardContainer = styled.View`
     flex: 1;
-    align-items: flex-start;
-    justify-content: space-between;
+    padding: ${scale(18)}px;
 `;
 
 export const Card = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
     background-color: #ffffff;
+    width: 100%;
     border-radius: ${scale(16)}px;
-    margin-bottom: ${scale(20)}px;
-    padding: ${scale(8)}px;
+    margin-bottom: ${scale(18)}px;
+    padding: ${scale(18)}px;
+`;
+
+export const CardData = styled.View`
+    justify-content: space-between;
+`;
+
+export const Title = styled.Text`
+    font-family: Trueno-SemiBold;
+    font-size: ${scale(16)}px;
+    color: #011640;
+    margin-bottom: 4%;
+    text-align: left;
+`;
+
+export const Date = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(16)}px;
+    color: #011640;
+    margin-bottom: 4%;
+    text-align: left;
+`;
+
+export const CardActions = styled.View`
+    justify-content: space-between;
+    min-height: ${scale(50)}px;
 `;
