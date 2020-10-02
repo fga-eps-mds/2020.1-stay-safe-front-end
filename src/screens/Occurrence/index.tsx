@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as Font from 'expo-font'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import AsyncStorage from '@react-native-community/async-storage'
 
+import { formatDateTime } from '../../utils/dates'
 import { validateOccurrence } from '../../utils/validateOccurrence'
-import { createOccurrence } from '../../services/occurrences'
+import { updateOccurrence, createOccurrence } from '../../services/occurrences'
 import HeaderTitle from '../../components/HeaderTitle'
 import {
     Container,
@@ -35,12 +36,16 @@ import {
 
 const Occurrence: React.FC = () => {
     const navigation = useNavigation()
+    const route = useRoute()
 
-    const [selectedOccurrenceType, setSelectedOccurenceType] = useState('')
+    const [isEditing, setIsEditing] = useState(false)
+    const [idOccurrence, setIdOccurrence] = useState(0)
+
+    const [selectedOccurrenceType, setSelectedOccurrenceType] = useState('')
     const [selectedGun, setSelectedGun] = useState('')
-    const [selectedVictim, setSelectedVictim] = useState(null)
-    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null)
-    const [selectedPoliceReport, setSelectedPoliceReport] = useState(null)
+    const [selectedVictim, setSelectedVictim] = useState(false)
+    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(false)
+    const [selectedPoliceReport, setSelectedPoliceReport] = useState(false)
 
     const [datetime, setDatetime] = useState(new Date())
     const [showDatePicker, setShowDatePicker] = useState(false)
@@ -52,6 +57,28 @@ const Occurrence: React.FC = () => {
         'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
         'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
     })
+
+    const fetchData = () => {
+        if (!route.params || !route.params.occurrence) {
+            return null
+        }
+
+        const occurrence = route.params.occurrence
+
+        setIsEditing(true)
+        setIdOccurrence(occurrence.id_occurrence)
+        setSelectedOccurrenceType(occurrence.occurrence_type)
+        setSelectedVictim(occurrence.victim)
+        setSelectedGun(occurrence.gun)
+        setSelectedPhysicalAggression(occurrence.physical_aggression)
+        setSelectedPoliceReport(occurrence.police_report)
+        const d = formatDateTime(occurrence.occurrence_date_time)
+        setDatetime(d)
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [route])
 
     const onChangeOccurrenceDatetime = (event, selectedDate) => {
         setShowDatePicker(false)
@@ -93,33 +120,30 @@ const Occurrence: React.FC = () => {
     }
 
     const handleRegisterOccurrence = async () => {
-        if (validateOccurrence({
-            occurrenceType: selectedOccurrenceType,
+        const data = {
+            occurrence_type: selectedOccurrenceType,
             gun: selectedGun,
             victim: selectedVictim,
-            physicalAggression: selectedPhysicalAggression,
-            policeReport: selectedPoliceReport,
-            occurrenceDateTime: datetime,
-        })) {
+            physical_aggression: selectedPhysicalAggression,
+            police_report: selectedPoliceReport,
+            occurrence_date_time: formatDatetime(datetime),
+            location: [
+                -15.989558,
+                -48.044206
+            ]
+        }
+        if (validateOccurrence(data)) {
+            console.warn(data)
             const token = await AsyncStorage.getItem('userToken')
-            const response = await createOccurrence(
-                {
-                    gun: selectedGun,
-                    location: [
-                        -15.989564,
-                        -48.044175
-                    ],
-                    occurrence_date_time: formatDatetime(datetime),
-                    occurrence_type: selectedOccurrenceType,
-                    physical_aggression: selectedPhysicalAggression,
-                    police_report: selectedPoliceReport,
-                    victim: selectedVictim,
-                },
-                token
-            )
+            const response = isEditing ? await updateOccurrence(idOccurrence, token, data) :
+                                         await createOccurrence(data, token)
 
+            console.warn(response)
             if (!response.body.error && response.status === 201) {
                 Alert.alert('Ocorrência cadastrada com sucesso!')
+                navigation.navigate('Home')
+            } else if (!response.body.error && response.status === 200) {
+                Alert.alert('Ocorrência atualizada com sucesso!')
                 navigation.navigate('Home')
             } else {
                 Alert.alert('Erro ao cadastrar ocorrência', response.body.error)
@@ -132,14 +156,15 @@ const Occurrence: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
-                <HeaderTitle text='Reportar Ocorrência' goBack />
+                <HeaderTitle text={isEditing ? 'Editar Ocorrência' : 'Reportar Ocorrência'} goBack />
                 <KeyboardScrollView>
                     <InputContainer style={{ width: '80%',  marginTop: 0 }}>
                         <NormalLabel>Tipo de Ocorrência</NormalLabel>
                         <DropDown
                             items={occurrenceTypeItems}
                             style={dropdownStyle}
-                            onChangeItem={item => setSelectedOccurenceType(item.value)}
+                            defaultValue={selectedOccurrenceType}
+                            onChangeItem={item => setSelectedOccurrenceType(item.value)}
                         />
                     </InputContainer>
 
@@ -149,6 +174,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={gunItems}
                                 style={dropdownStyle}
+                                defaultValue={selectedGun}
                                 onChangeItem={item => setSelectedGun(item.value)}
                             />
                         </InputContainer>
@@ -158,6 +184,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={victimItems}
                                 style={dropdownStyle}
+                                defaultValue={selectedVictim}
                                 onChangeItem={item => setSelectedVictim(item.value)}
                             />
                         </InputContainer>
@@ -169,6 +196,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={physicalAggressionItems}
                                 style={dropdownStyle}
+                                defaultValue={selectedPhysicalAggression}
                                 onChangeItem={item => setSelectedPhysicalAggression(item.value)}
                             />
                         </InputContainer>
@@ -178,6 +206,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={policeReportItems}
                                 style={dropdownStyle}
+                                defaultValue={selectedPoliceReport}
                                 onChangeItem={item => setSelectedPoliceReport(item.value)}
                             />
                         </InputContainer>
@@ -225,7 +254,7 @@ const Occurrence: React.FC = () => {
                         style={{ marginTop: 45 }}
                         onPress={handleRegisterOccurrence}
                     >
-                        <SendLabel>Registrar Ocorrência</SendLabel>
+                        <SendLabel>{isEditing ? 'Editar Ocorrência' : 'Registrar Ocorrência'}</SendLabel>
                     </NormalSend>
                 </KeyboardScrollView>
             </Container>

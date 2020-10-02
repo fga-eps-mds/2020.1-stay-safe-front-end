@@ -2,6 +2,11 @@ import styled from 'styled-components/native'
 
 import { scale } from "../../utils/scalling"
 
+export const ScrollViewStyled = styled.ScrollView`
+    flex: 1;
+    background-color: #F0F0F5;
+`;
+
 export const CardContainer = styled.View`
     flex: 1;
     padding: ${scale(18)}px;

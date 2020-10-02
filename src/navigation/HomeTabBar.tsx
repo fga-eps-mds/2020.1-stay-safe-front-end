@@ -10,7 +10,9 @@ import Search from "../screens/Search";
 import Report, { ReportButton } from "../screens/Report";
 import Profile from "../screens/Profile";
 import Settings from "../screens/Settings";
+
 import Occurrences from "../screens/Occurrences";
+import Occurrence from "../screens/Occurrence";
 
 const HomeTabBar = () => {
 
@@ -28,7 +30,7 @@ const HomeTabBar = () => {
               iconName = "search";
             } else if (route.name === "Report") {
               iconName = "bell";
-            } else if (route.name === "Profile") {
+            } else if (route.name === "Occurrence") {
               iconName = "user";
             } else if (route.name === "Occurrences") {
               iconName = "settings";
@@ -62,9 +64,10 @@ const HomeTabBar = () => {
             tabBarButton: () => <ReportButton navObject={navigation} />,
           })}
         />
-        <Tab.Screen name="Profile" component={Profile} />
+        {/* <Tab.Screen name="Profile" component={Profile} /> */}
         {/* <Tab.Screen name="Settings" component={Settings} /> */}
         <Tab.Screen name="Occurrences" component={Occurrences} />
+        <Tab.Screen name="Occurrence" component={Occurrence} />
       </Tab.Navigator>
     </>
   );
