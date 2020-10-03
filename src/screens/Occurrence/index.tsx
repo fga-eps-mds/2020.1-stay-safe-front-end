@@ -42,21 +42,11 @@ type ParamList = {
 };
 
 const Occurrence: React.FC = () => {
-<<<<<<< HEAD
-    const navigation = useNavigation()
-    const route = useRoute()
+    const navigation = useNavigation();
+    const route = useRoute<RouteProp<ParamList, "params">>();
 
     const [isEditing, setIsEditing] = useState(false)
     const [idOccurrence, setIdOccurrence] = useState(0)
-
-    const [selectedOccurrenceType, setSelectedOccurrenceType] = useState('')
-    const [selectedGun, setSelectedGun] = useState('')
-    const [selectedVictim, setSelectedVictim] = useState(null)
-    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null)
-    const [selectedPoliceReport, setSelectedPoliceReport] = useState(null)
-=======
-    const navigation = useNavigation();
-    const route = useRoute<RouteProp<ParamList, "params">>();
 
     const [selectedOccurrenceType, setSelectedOccurenceType] = useState("");
     const [selectedGun, setSelectedGun] = useState("");
@@ -70,7 +60,6 @@ const Occurrence: React.FC = () => {
     const [datetime, setDatetime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
->>>>>>> develop
 
     const currentDate = new Date();
 
@@ -158,7 +147,6 @@ const Occurrence: React.FC = () => {
         return formatedDatetime;
     };
 
-<<<<<<< HEAD
     const handleSubmit = async () => {
         const data = {
             occurrence_type: selectedOccurrenceType,
@@ -185,36 +173,6 @@ const Occurrence: React.FC = () => {
                 Alert.alert('Ocorrência atualizada com sucesso!')
                 navigation.setParams({occurrence: null})
                 navigation.navigate('Occurrences')
-=======
-    const handleRegisterOccurrence = async () => {
-        if (
-            validateOccurrence({
-                occurrenceType: selectedOccurrenceType,
-                gun: selectedGun,
-                victim: selectedVictim,
-                physicalAggression: selectedPhysicalAggression,
-                policeReport: selectedPoliceReport,
-                occurrenceDateTime: datetime,
-            })
-        ) {
-            const token = await AsyncStorage.getItem("userToken");
-            const response = await createOccurrence(
-                {
-                    gun: selectedGun,
-                    location: [latitude, longitude],
-                    occurrence_date_time: formatDatetime(datetime),
-                    occurrence_type: selectedOccurrenceType,
-                    physical_aggression: selectedPhysicalAggression,
-                    police_report: selectedPoliceReport,
-                    victim: selectedVictim,
-                },
-                token
-            );
-
-            if (!response.body.error && response.status === 201) {
-                Alert.alert("Ocorrência cadastrada com sucesso!");
-                navigation.navigate("Home");
->>>>>>> develop
             } else {
                 Alert.alert(
                     "Erro ao cadastrar ocorrência",
@@ -229,25 +187,17 @@ const Occurrence: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
-<<<<<<< HEAD
                 <HeaderTitle text={isEditing ? 'Editar Ocorrência' : 'Reportar Ocorrência'} goBack />
-=======
-                <HeaderTitle text="Reportar Ocorrência" goBack />
->>>>>>> develop
                 <KeyboardScrollView>
                     <InputContainer style={{ width: "80%", marginTop: 0 }}>
                         <NormalLabel>Tipo de Ocorrência</NormalLabel>
                         <DropDown
                             items={occurrenceTypeItems}
                             style={dropdownStyle}
-<<<<<<< HEAD
                             defaultValue={selectedOccurrenceType}
-                            onChangeItem={item => setSelectedOccurrenceType(item.value)}
-=======
                             onChangeItem={(item) =>
                                 setSelectedOccurenceType(item.value)
                             }
->>>>>>> develop
                         />
                     </InputContainer>
 
@@ -257,14 +207,10 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={gunItems}
                                 style={dropdownStyle}
-<<<<<<< HEAD
                                 defaultValue={selectedGun}
-                                onChangeItem={item => setSelectedGun(item.value)}
-=======
                                 onChangeItem={(item) =>
                                     setSelectedGun(item.value)
                                 }
->>>>>>> develop
                             />
                         </InputContainer>
 
@@ -273,14 +219,10 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={victimItems}
                                 style={dropdownStyle}
-<<<<<<< HEAD
                                 defaultValue={selectedVictim}
-                                onChangeItem={item => setSelectedVictim(item.value)}
-=======
                                 onChangeItem={(item) =>
                                     setSelectedVictim(item.value)
                                 }
->>>>>>> develop
                             />
                         </InputContainer>
                     </InputWrapper>
@@ -291,14 +233,10 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={physicalAggressionItems}
                                 style={dropdownStyle}
-<<<<<<< HEAD
                                 defaultValue={selectedPhysicalAggression}
-                                onChangeItem={item => setSelectedPhysicalAggression(item.value)}
-=======
                                 onChangeItem={(item) =>
                                     setSelectedPhysicalAggression(item.value)
                                 }
->>>>>>> develop
                             />
                         </InputContainer>
 
@@ -307,14 +245,10 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={policeReportItems}
                                 style={dropdownStyle}
-<<<<<<< HEAD
                                 defaultValue={selectedPoliceReport}
-                                onChangeItem={item => setSelectedPoliceReport(item.value)}
-=======
                                 onChangeItem={(item) =>
                                     setSelectedPoliceReport(item.value)
                                 }
->>>>>>> develop
                             />
                         </InputContainer>
                     </InputWrapper>
