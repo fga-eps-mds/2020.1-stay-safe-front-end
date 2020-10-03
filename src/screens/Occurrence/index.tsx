@@ -34,17 +34,16 @@ import {
     dropdownStyle,
 } from "./dropdownConstants";
 
-// type ParamList = {
-//     params: {
-//         latitude: number;
-//         longitude: number;
-//     };
-// };
+type ParamList = {
+    params: {
+        latitude: number;
+        longitude: number;
+    };
+};
 
 const Occurrence: React.FC = () => {
     const navigation = useNavigation();
-    // const route = useRoute<RouteProp<ParamList, "params">>();
-    const route = useRoute();
+    const route = useRoute<RouteProp<ParamList, "params">>();
 
 
     const [isEditing, setIsEditing] = useState(false)
