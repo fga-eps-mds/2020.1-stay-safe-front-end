@@ -43,9 +43,9 @@ const Occurrence: React.FC = () => {
 
     const [selectedOccurrenceType, setSelectedOccurrenceType] = useState('')
     const [selectedGun, setSelectedGun] = useState('')
-    const [selectedVictim, setSelectedVictim] = useState(false)
-    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(false)
-    const [selectedPoliceReport, setSelectedPoliceReport] = useState(false)
+    const [selectedVictim, setSelectedVictim] = useState(null)
+    const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null)
+    const [selectedPoliceReport, setSelectedPoliceReport] = useState(null)
 
     const [datetime, setDatetime] = useState(new Date())
     const [showDatePicker, setShowDatePicker] = useState(false)
@@ -58,8 +58,24 @@ const Occurrence: React.FC = () => {
         'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
     })
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('blur', () => {
+            navigation.setParams({occurrence: null})
+        });
+    
+        return unsubscribe;
+    }, [navigation]);
+
     const fetchData = () => {
         if (!route.params || !route.params.occurrence) {
+            setIsEditing(false)
+            setIdOccurrence(null)
+            setSelectedOccurrenceType(null)
+            setSelectedVictim(null)
+            setSelectedGun(null)
+            setSelectedPhysicalAggression(null)
+            setSelectedPoliceReport(null)
+            setDatetime(new Date())
             return null
         }
 
@@ -119,7 +135,7 @@ const Occurrence: React.FC = () => {
         return formatedDatetime
     }
 
-    const handleRegisterOccurrence = async () => {
+    const handleSubmit = async () => {
         const data = {
             occurrence_type: selectedOccurrenceType,
             gun: selectedGun,
@@ -133,18 +149,18 @@ const Occurrence: React.FC = () => {
             ]
         }
         if (validateOccurrence(data)) {
-            console.warn(data)
             const token = await AsyncStorage.getItem('userToken')
             const response = isEditing ? await updateOccurrence(idOccurrence, token, data) :
                                          await createOccurrence(data, token)
 
-            console.warn(response)
             if (!response.body.error && response.status === 201) {
                 Alert.alert('Ocorrência cadastrada com sucesso!')
+                navigation.setParams({occurrence: null})
                 navigation.navigate('Home')
             } else if (!response.body.error && response.status === 200) {
                 Alert.alert('Ocorrência atualizada com sucesso!')
-                navigation.navigate('Home')
+                navigation.setParams({occurrence: null})
+                navigation.navigate('Occurrences')
             } else {
                 Alert.alert('Erro ao cadastrar ocorrência', response.body.error)
             }
@@ -252,7 +268,7 @@ const Occurrence: React.FC = () => {
 
                     <NormalSend
                         style={{ marginTop: 45 }}
-                        onPress={handleRegisterOccurrence}
+                        onPress={handleSubmit}
                     >
                         <SendLabel>{isEditing ? 'Editar Ocorrência' : 'Registrar Ocorrência'}</SendLabel>
                     </NormalSend>

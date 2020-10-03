@@ -47,7 +47,8 @@ export const updateOccurrence = async (id, token, data) => {
         method: 'PATCH',
         headers: {
             Accept: 'application/json',
-            'Authorization': `${token}`
+            'Authorization': `${token}`,
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             gun: data.gun,

@@ -11,9 +11,6 @@ import Report, { ReportButton } from "../screens/Report";
 import Profile from "../screens/Profile";
 import Settings from "../screens/Settings";
 
-import Occurrences from "../screens/Occurrences";
-import Occurrence from "../screens/Occurrence";
-
 const HomeTabBar = () => {
 
   return (
@@ -30,14 +27,11 @@ const HomeTabBar = () => {
               iconName = "search";
             } else if (route.name === "Report") {
               iconName = "bell";
-            } else if (route.name === "Occurrence") {
+            } else if (route.name === "Profile") {
               iconName = "user";
-            } else if (route.name === "Occurrences") {
+            } else if (route.name === "Settings") {
               iconName = "settings";
             }
-            // } else if (route.name === "Settings") {
-            //   iconName = "settings";
-            // }
 
             return <Feather name={iconName} size={scale(24)} color={color} />;
           },
@@ -64,10 +58,8 @@ const HomeTabBar = () => {
             tabBarButton: () => <ReportButton navObject={navigation} />,
           })}
         />
-        {/* <Tab.Screen name="Profile" component={Profile} /> */}
-        {/* <Tab.Screen name="Settings" component={Settings} /> */}
-        <Tab.Screen name="Occurrences" component={Occurrences} />
-        <Tab.Screen name="Occurrence" component={Occurrence} />
+        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     </>
   );

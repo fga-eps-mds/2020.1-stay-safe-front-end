@@ -16,6 +16,14 @@ const Occurrences = ({ navigation }) => {
     const [showConfirmModal, setConfirmModal] = useState(false)
     const [idOccurrence, setIdOccurrence] = useState(0)
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData()
+        });
+    
+        return unsubscribe;
+    }, [navigation]);
+
     const fetchData = async () => {
         const username = await AsyncStorage.getItem('username')
         const response = await getOccurrences(username)
