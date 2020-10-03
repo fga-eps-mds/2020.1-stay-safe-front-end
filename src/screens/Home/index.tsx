@@ -1,21 +1,19 @@
-import React, { useCallback, useState } from "react";
+import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
     useRoute,
     RouteProp,
     useNavigation,
 } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
 import { View } from "react-native";
-
-import MapView, { Marker, MapEvent } from "react-native-maps";
-import { StayNormalMap } from "./styles";
+import { Marker, MapEvent } from "react-native-maps";
 
 import LoggedInModal from "../../components/LoggedInModal";
-import AsyncStorage from "@react-native-community/async-storage";
-
-import { getUser } from "../../services/users";
-import { getAllUsersOccurrences } from "../../services/occurrences";
 import StayAlert from "../../components/StayAlert";
+import { getAllUsersOccurrences } from "../../services/occurrences";
+import { getUser } from "../../services/users";
+import { StayNormalMap } from "./styles";
 
 type ParamList = {
     params: {
@@ -122,7 +120,7 @@ const Home = () => {
                 show={isModalOpen && isLogged}
                 title="Reportar Ocorrência"
                 message="Toque para selecionar o local no mapa com o marcador"
-                showConfirmButton={true}
+                showConfirmButton
                 confirmText="Entendido"
                 onConfirmPressed={() => {
                     handleClosedModal();

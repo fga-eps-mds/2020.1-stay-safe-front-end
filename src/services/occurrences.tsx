@@ -44,31 +44,26 @@ export const getAllUsersOccurrences = async () => {
     return { status: response.status, body: await response.json() };
 };
 
-export const getUserOccurrences = async (
-    username: string
-) => {
+export const getUserOccurrences = async (username: string) => {
     const response = await fetch(userApi + `/occurrences?user=${username}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-            Accept: 'application/json'
-        }
-    })
-    return { status: response.status, body: await response.json() }
-}
+            Accept: "application/json",
+        },
+    });
+    return { status: response.status, body: await response.json() };
+};
 
-export const deleteOccurrence = async (
-    id: number,
-    token: string
-) => {
+export const deleteOccurrence = async (id: number, token: string) => {
     const response = await fetch(userApi + `/occurrences/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-            Accept: 'application/json',
-            'Authorization': `${token}`
-        }
-    })
-    return { status: response.status }
-}
+            Accept: "application/json",
+            Authorization: `${token}`,
+        },
+    });
+    return { status: response.status };
+};
 
 export const updateOccurrence = async (
     id: number,
@@ -76,11 +71,11 @@ export const updateOccurrence = async (
     data: CreateOccurrenceProps
 ) => {
     const response = await fetch(userApi + `/occurrences/${id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-            Accept: 'application/json',
-            'Authorization': `${token}`,
-            'Content-Type': 'application/json'
+            Accept: "application/json",
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
             gun: data.gun,
@@ -89,8 +84,8 @@ export const updateOccurrence = async (
             occurrence_type: data.occurrence_type,
             physical_aggression: data.physical_aggression,
             police_report: data.police_report,
-            victim: data.victim
-        })
-    })
-    return { status: response.status, body: {} }
-}
+            victim: data.victim,
+        }),
+    });
+    return { status: response.status, body: {} };
+};

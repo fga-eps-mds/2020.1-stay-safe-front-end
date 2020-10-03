@@ -1,10 +1,10 @@
-import styled from 'styled-components/native'
+import styled from "styled-components/native";
 
-import { scale } from "../../utils/scalling"
+import { scale } from "../../utils/scalling";
 
 export const ScrollViewStyled = styled.ScrollView`
     flex: 1;
-    background-color: #F0F0F5;
+    background-color: #f0f0f5;
 `;
 
 export const CardContainer = styled.View`
