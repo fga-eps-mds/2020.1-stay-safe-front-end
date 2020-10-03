@@ -71,7 +71,7 @@ const Occurrence: React.FC = () => {
     });
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener("blur", () => {
+        const unsubscribe = navigation.addListener("beforeRemove", () => {
             navigation.setParams({ occurrence: null });
         });
 

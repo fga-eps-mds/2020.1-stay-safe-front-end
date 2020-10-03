@@ -1,3 +1,4 @@
+import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
@@ -5,8 +6,8 @@ import {
     RouteProp,
     useNavigation,
 } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
-import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import * as Font from "expo-font";
 import { Marker, MapEvent } from "react-native-maps";
 
 import LoggedInModal from "../../components/LoggedInModal";
@@ -41,6 +42,11 @@ const Home = () => {
     const [isLogged, setIsLogged] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
+
+    const [loaded] = Font.useFonts({
+        "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
+        "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
+    });
 
     useFocusEffect(
         useCallback(() => {
@@ -79,7 +85,7 @@ const Home = () => {
     // Function to use on modal closed.
     const handleClosedModal = () => {
         setIsModalOpen(false);
-        route.params = undefined;
+        navigation.setParams({ showReportModal: null });
     };
 
     const handleReportingCoordinatesOnMap = (e: MapEvent) => {
@@ -91,8 +97,10 @@ const Home = () => {
         }
     };
 
+    if (!loaded) return null;
+
     return (
-        <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
             {!isLogged && <LoggedInModal navObject={navigation} />}
             <StayNormalMap
                 initialRegion={{
@@ -128,7 +136,7 @@ const Home = () => {
                 }}
                 onDismiss={() => handleClosedModal()}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

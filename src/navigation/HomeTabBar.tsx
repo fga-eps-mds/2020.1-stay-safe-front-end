@@ -1,13 +1,13 @@
+import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React from "react";
+import { scale } from "../utils/scalling";
 
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
 import Report, { ReportButton } from "../screens/Report";
 import Search from "../screens/Search";
 import Settings from "../screens/Settings";
-import { scale } from "../utils/scalling";
 
 const Tab = createBottomTabNavigator();
 

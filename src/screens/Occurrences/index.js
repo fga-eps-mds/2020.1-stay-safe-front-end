@@ -27,6 +27,8 @@ const Occurrences = ({ navigation }) => {
     const [idOccurrence, setIdOccurrence] = useState(0);
 
     useEffect(() => {
+        setConfirmModal(false);
+
         const unsubscribe = navigation.addListener("focus", () => {
             fetchData();
         });
@@ -53,11 +55,6 @@ const Occurrences = ({ navigation }) => {
                 )
             );
     };
-
-    useEffect(() => {
-        fetchData();
-        setConfirmModal(false);
-    }, []);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
