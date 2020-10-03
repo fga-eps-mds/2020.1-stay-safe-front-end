@@ -9,7 +9,7 @@ import StayAlert from '../../components/StayAlert'
 import { scale } from '../../utils/scalling'
 import { ScrollViewStyled, CardContainer, Card, CardData, Title, Date, CardActions } from './styles'
 
-import { getOccurrences, deleteOccurrence } from '../../services/occurrences'
+import { getUserOccurrences, deleteOccurrence } from '../../services/occurrences'
 
 const Occurrences = ({ navigation }) => {
     const [occurrences, setOccurrences] = useState([])
@@ -26,7 +26,7 @@ const Occurrences = ({ navigation }) => {
 
     const fetchData = async () => {
         const username = await AsyncStorage.getItem('username')
-        const response = await getOccurrences(username)
+        const response = await getUserOccurrences(username)
         if (!response.body.errors && response.status == 200)
             setOccurrences(response.body)
         else

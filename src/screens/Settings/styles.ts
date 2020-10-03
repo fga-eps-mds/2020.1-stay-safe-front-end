@@ -1,98 +1,49 @@
 import styled from "styled-components/native";
 
-import AwesomeAlert from "react-native-awesome-alerts";
-
 import { NormalSend, SendLabel } from "../../components/NormalForms";
-
 import { scale } from "../../utils/scalling";
 
 export const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #f0f0f5;
+    flex: 1;
+    background-color: #f0f0f5;
 `;
 
 export const ButtonsContainer = styled.View`
-  padding: ${scale(13)}px ${scale(25)}px;
+    padding: ${scale(13)}px ${scale(25)}px;
 `;
 
 export const Button = styled.TouchableOpacity`
-  padding: ${scale(15)}px;
-  background-color: #ffffff;
-  border-radius: ${scale(12)}px;
-  flex-direction: row;
-  margin-bottom: ${scale(17)}px;
-  align-items: center;
+    padding: ${scale(15)}px;
+    background-color: #ffffff;
+    border-radius: ${scale(12)}px;
+    flex-direction: row;
+    margin-bottom: ${scale(17)}px;
+    align-items: center;
 `;
 
 export const ButtonText = styled.Text`
-  font-size: ${scale(14)}px;
-  color: #011640;
-  font-family: Trueno-SemiBold;
-  margin-left: ${scale(10)}px;
+    font-size: ${scale(14)}px;
+    color: #011640;
+    font-family: Trueno-SemiBold;
+    margin-left: ${scale(10)}px;
 `;
 
 export const UserButtonsContainer = styled.View`
-  padding: ${scale(30)}px ${scale(110)}px;
-  justify-content: center;
-  align-items: center;
+    padding: ${scale(30)}px ${scale(110)}px;
+    justify-content: center;
+    align-items: center;
 `;
 
 export const LogoutButton = styled(NormalSend)`
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 `;
 
 export const DeleteButton = styled.TouchableOpacity`
-  margin-top: ${scale(28)}px;
+    margin-top: ${scale(28)}px;
 `;
 
 export const DeleteText = styled(SendLabel)`
-  color: rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.3);
 `;
-
-export const ModalStayAlert = styled(AwesomeAlert).attrs({
-  overlayStyle: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  progressColor: "#E83338",
-  contentContainerStyle: {
-    borderRadius: scale(16),
-    padding: scale(16),
-  },
-  titleStyle: {
-    fontFamily: "Trueno-SemiBold",
-    fontSize: scale(16),
-    color: "#010A26",
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    paddingBottom: scale(16),
-  },
-  messageStyle: {
-    fontFamily: "Trueno-Regular",
-    textAlign: "center",
-    fontSize: scale(14),
-    color: "#011640",
-    paddingTop: 0,
-  },
-  confirmButtonColor: "#E83338",
-  confirmButtonStyle: {
-    borderRadius: scale(10),
-    paddingHorizontal: scale(10),
-    paddingVertical: scale(8),
-  },
-  confirmButtonTextStyle: {
-    fontFamily: "Trueno-SemiBold",
-    fontSize: scale(12),
-  },
-  cancelButtonColor: "#7DBFE2",
-  cancelButtonStyle: {
-    borderRadius: scale(10),
-    paddingHorizontal: scale(10),
-    paddingVertical: scale(8),
-  },
-  cancelButtonTextStyle: {
-    fontFamily: "Trueno-SemiBold",
-    fontSize: scale(12),
-  },
-})``;

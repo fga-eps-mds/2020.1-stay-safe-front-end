@@ -15,7 +15,7 @@ import {
     NormalSend,
     SendLabel,
     NormalLabel,
-} from '../../components/NormalForms'
+} from "../../components/NormalForms";
 import {
     DropDown,
     InputContainer,
@@ -24,7 +24,7 @@ import {
     PlaceholderPicker,
     DatePicker,
     TimePicker,
-} from './styles'
+} from "./styles";
 import {
     occurrenceTypeItems,
     gunItems,
@@ -32,9 +32,17 @@ import {
     policeReportItems,
     victimItems,
     dropdownStyle,
-} from './dropdownConstants'
+} from "./dropdownConstants";
+
+type ParamList = {
+    params: {
+        latitude: number;
+        longitude: number;
+    };
+};
 
 const Occurrence: React.FC = () => {
+<<<<<<< HEAD
     const navigation = useNavigation()
     const route = useRoute()
 
@@ -46,17 +54,32 @@ const Occurrence: React.FC = () => {
     const [selectedVictim, setSelectedVictim] = useState(null)
     const [selectedPhysicalAggression, setSelectedPhysicalAggression] = useState(null)
     const [selectedPoliceReport, setSelectedPoliceReport] = useState(null)
+=======
+    const navigation = useNavigation();
+    const route = useRoute<RouteProp<ParamList, "params">>();
 
-    const [datetime, setDatetime] = useState(new Date())
-    const [showDatePicker, setShowDatePicker] = useState(false)
-    const [showTimePicker, setShowTimePicker] = useState(false)
+    const [selectedOccurrenceType, setSelectedOccurenceType] = useState("");
+    const [selectedGun, setSelectedGun] = useState("");
+    const [selectedVictim, setSelectedVictim] = useState(null);
+    const [
+        selectedPhysicalAggression,
+        setSelectedPhysicalAggression,
+    ] = useState(null);
+    const [selectedPoliceReport, setSelectedPoliceReport] = useState(null);
 
-    const currentDate = new Date()
+    const [datetime, setDatetime] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showTimePicker, setShowTimePicker] = useState(false);
+>>>>>>> develop
+
+    const currentDate = new Date();
+
+    const { latitude, longitude } = route.params;
 
     const [loaded] = Font.useFonts({
-        'Trueno-SemiBold': require('../../fonts/TruenoSBd.otf'),
-        'Trueno-Regular': require('../../fonts/TruenoRg.otf'),
-    })
+        "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
+        "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
+    });
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
@@ -97,44 +120,45 @@ const Occurrence: React.FC = () => {
     }, [route])
 
     const onChangeOccurrenceDatetime = (event, selectedDate) => {
-        setShowDatePicker(false)
-        setShowTimePicker(false)
-        const currentDate = selectedDate || datetime
-        setDatetime(currentDate)
-    }
+        setShowDatePicker(false);
+        setShowTimePicker(false);
+        const currentDate = selectedDate || datetime;
+        setDatetime(currentDate);
+    };
 
     const formatDate = (date: Date) => {
-        let day = ('0' + date.getDate()).slice(-2)
-        let month = ('0' + (date.getMonth() + 1)).slice(-2)
-        let year = date.getFullYear()
+        let day = ("0" + date.getDate()).slice(-2);
+        let month = ("0" + (date.getMonth() + 1)).slice(-2);
+        let year = date.getFullYear();
 
-        let formatedDate = `${day}/${month}/${year}`
+        let formatedDate = `${day}/${month}/${year}`;
 
-        return formatedDate
-    }
+        return formatedDate;
+    };
 
     const formatTime = (date: Date) => {
-        let hour = ('0' + date.getHours()).slice(-2)
-        let minutes = ('0' + (date.getMinutes())).slice(-2)
+        let hour = ("0" + date.getHours()).slice(-2);
+        let minutes = ("0" + date.getMinutes()).slice(-2);
 
-        let formatedTime = `${hour}:${minutes}`
+        let formatedTime = `${hour}:${minutes}`;
 
-        return formatedTime
-    }
+        return formatedTime;
+    };
 
     const formatDatetime = (datetime: Date) => {
-        let date = datetime.toLocaleDateString().split('/')
-        let time = datetime.toLocaleTimeString()
+        let date = datetime.toLocaleDateString().split("/");
+        let time = datetime.toLocaleTimeString();
 
-        let month = date[0]
-        let day = date[1]
-        let year = `20${date[2]}`
+        let month = date[0];
+        let day = date[1];
+        let year = `20${date[2]}`;
 
-        let formatedDatetime = `${year}-${month}-${day} ${time}`
+        let formatedDatetime = `${year}-${month}-${day} ${time}`;
 
-        return formatedDatetime
-    }
+        return formatedDatetime;
+    };
 
+<<<<<<< HEAD
     const handleSubmit = async () => {
         const data = {
             occurrence_type: selectedOccurrenceType,
@@ -161,26 +185,69 @@ const Occurrence: React.FC = () => {
                 Alert.alert('Ocorrência atualizada com sucesso!')
                 navigation.setParams({occurrence: null})
                 navigation.navigate('Occurrences')
+=======
+    const handleRegisterOccurrence = async () => {
+        if (
+            validateOccurrence({
+                occurrenceType: selectedOccurrenceType,
+                gun: selectedGun,
+                victim: selectedVictim,
+                physicalAggression: selectedPhysicalAggression,
+                policeReport: selectedPoliceReport,
+                occurrenceDateTime: datetime,
+            })
+        ) {
+            const token = await AsyncStorage.getItem("userToken");
+            const response = await createOccurrence(
+                {
+                    gun: selectedGun,
+                    location: [latitude, longitude],
+                    occurrence_date_time: formatDatetime(datetime),
+                    occurrence_type: selectedOccurrenceType,
+                    physical_aggression: selectedPhysicalAggression,
+                    police_report: selectedPoliceReport,
+                    victim: selectedVictim,
+                },
+                token
+            );
+
+            if (!response.body.error && response.status === 201) {
+                Alert.alert("Ocorrência cadastrada com sucesso!");
+                navigation.navigate("Home");
+>>>>>>> develop
             } else {
-                Alert.alert('Erro ao cadastrar ocorrência', response.body.error)
+                Alert.alert(
+                    "Erro ao cadastrar ocorrência",
+                    response.body.error
+                );
             }
         }
-    }
+    };
 
-    if (!loaded) return null
+    if (!loaded) return null;
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
+<<<<<<< HEAD
                 <HeaderTitle text={isEditing ? 'Editar Ocorrência' : 'Reportar Ocorrência'} goBack />
+=======
+                <HeaderTitle text="Reportar Ocorrência" goBack />
+>>>>>>> develop
                 <KeyboardScrollView>
-                    <InputContainer style={{ width: '80%',  marginTop: 0 }}>
+                    <InputContainer style={{ width: "80%", marginTop: 0 }}>
                         <NormalLabel>Tipo de Ocorrência</NormalLabel>
                         <DropDown
                             items={occurrenceTypeItems}
                             style={dropdownStyle}
+<<<<<<< HEAD
                             defaultValue={selectedOccurrenceType}
                             onChangeItem={item => setSelectedOccurrenceType(item.value)}
+=======
+                            onChangeItem={(item) =>
+                                setSelectedOccurenceType(item.value)
+                            }
+>>>>>>> develop
                         />
                     </InputContainer>
 
@@ -190,8 +257,14 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={gunItems}
                                 style={dropdownStyle}
+<<<<<<< HEAD
                                 defaultValue={selectedGun}
                                 onChangeItem={item => setSelectedGun(item.value)}
+=======
+                                onChangeItem={(item) =>
+                                    setSelectedGun(item.value)
+                                }
+>>>>>>> develop
                             />
                         </InputContainer>
 
@@ -200,8 +273,14 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={victimItems}
                                 style={dropdownStyle}
+<<<<<<< HEAD
                                 defaultValue={selectedVictim}
                                 onChangeItem={item => setSelectedVictim(item.value)}
+=======
+                                onChangeItem={(item) =>
+                                    setSelectedVictim(item.value)
+                                }
+>>>>>>> develop
                             />
                         </InputContainer>
                     </InputWrapper>
@@ -212,8 +291,14 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={physicalAggressionItems}
                                 style={dropdownStyle}
+<<<<<<< HEAD
                                 defaultValue={selectedPhysicalAggression}
                                 onChangeItem={item => setSelectedPhysicalAggression(item.value)}
+=======
+                                onChangeItem={(item) =>
+                                    setSelectedPhysicalAggression(item.value)
+                                }
+>>>>>>> develop
                             />
                         </InputContainer>
 
@@ -222,8 +307,14 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={policeReportItems}
                                 style={dropdownStyle}
+<<<<<<< HEAD
                                 defaultValue={selectedPoliceReport}
                                 onChangeItem={item => setSelectedPoliceReport(item.value)}
+=======
+                                onChangeItem={(item) =>
+                                    setSelectedPoliceReport(item.value)
+                                }
+>>>>>>> develop
                             />
                         </InputContainer>
                     </InputWrapper>
@@ -231,7 +322,9 @@ const Occurrence: React.FC = () => {
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Data da Ocorrência</NormalLabel>
-                            <TouchablePicker onPress={() => setShowDatePicker(true)}>
+                            <TouchablePicker
+                                onPress={() => setShowDatePicker(true)}
+                            >
                                 <PlaceholderPicker>
                                     {formatDate(datetime)}
                                 </PlaceholderPicker>
@@ -241,10 +334,12 @@ const Occurrence: React.FC = () => {
                                     value={datetime}
                                     onChange={onChangeOccurrenceDatetime}
                                     maximumDate={currentDate}
-                                    minimumDate={new Date(
-                                        currentDate.getFullYear() - 1,
-                                        currentDate.getMonth(),
-                                        currentDate.getDate())
+                                    minimumDate={
+                                        new Date(
+                                            currentDate.getFullYear() - 1,
+                                            currentDate.getMonth(),
+                                            currentDate.getDate()
+                                        )
                                     }
                                 />
                             )}
@@ -252,7 +347,9 @@ const Occurrence: React.FC = () => {
 
                         <InputContainer>
                             <NormalLabel>Hora da Ocorrência</NormalLabel>
-                            <TouchablePicker onPress={() => setShowTimePicker(true)}>
+                            <TouchablePicker
+                                onPress={() => setShowTimePicker(true)}
+                            >
                                 <PlaceholderPicker>
                                     {formatTime(datetime)}
                                 </PlaceholderPicker>
@@ -275,7 +372,7 @@ const Occurrence: React.FC = () => {
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Occurrence
+export default Occurrence;
