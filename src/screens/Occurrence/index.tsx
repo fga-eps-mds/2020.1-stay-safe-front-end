@@ -34,21 +34,23 @@ import {
     dropdownStyle,
 } from "./dropdownConstants";
 
-type ParamList = {
-    params: {
-        latitude: number;
-        longitude: number;
-    };
-};
+// type ParamList = {
+//     params: {
+//         latitude: number;
+//         longitude: number;
+//     };
+// };
 
 const Occurrence: React.FC = () => {
     const navigation = useNavigation();
-    const route = useRoute<RouteProp<ParamList, "params">>();
+    // const route = useRoute<RouteProp<ParamList, "params">>();
+    const route = useRoute();
+
 
     const [isEditing, setIsEditing] = useState(false)
     const [idOccurrence, setIdOccurrence] = useState(0)
 
-    const [selectedOccurrenceType, setSelectedOccurenceType] = useState("");
+    const [selectedOccurrenceType, setSelectedOccurrenceType] = useState("");
     const [selectedGun, setSelectedGun] = useState("");
     const [selectedVictim, setSelectedVictim] = useState(null);
     const [
@@ -72,19 +74,19 @@ const Occurrence: React.FC = () => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('blur', () => {
-            navigation.setParams({occurrence: null})
+            navigation.setParams({ occurrence: null })
         });
     
         return unsubscribe;
     }, [navigation]);
 
-    const fetchData = () => {
+    const fetchData = (reset=false) => {
         if (!route.params || !route.params.occurrence) {
             setIsEditing(false)
-            setIdOccurrence(null)
-            setSelectedOccurrenceType(null)
+            setIdOccurrence(0)
+            setSelectedOccurrenceType("")
             setSelectedVictim(null)
-            setSelectedGun(null)
+            setSelectedGun("")
             setSelectedPhysicalAggression(null)
             setSelectedPoliceReport(null)
             setDatetime(new Date())
@@ -194,9 +196,9 @@ const Occurrence: React.FC = () => {
                         <DropDown
                             items={occurrenceTypeItems}
                             style={dropdownStyle}
-                            defaultValue={selectedOccurrenceType}
+                            defaultValue={selectedOccurrenceType ? selectedOccurrenceType : null}
                             onChangeItem={(item) =>
-                                setSelectedOccurenceType(item.value)
+                                setSelectedOccurrenceType(item.value)
                             }
                         />
                     </InputContainer>
@@ -207,7 +209,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={gunItems}
                                 style={dropdownStyle}
-                                defaultValue={selectedGun}
+                                defaultValue={selectedGun ? selectedGun : null}
                                 onChangeItem={(item) =>
                                     setSelectedGun(item.value)
                                 }
@@ -219,7 +221,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={victimItems}
                                 style={dropdownStyle}
-                                defaultValue={selectedVictim}
+                                defaultValue={selectedVictim ? selectedVictim : null}
                                 onChangeItem={(item) =>
                                     setSelectedVictim(item.value)
                                 }
@@ -233,7 +235,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={physicalAggressionItems}
                                 style={dropdownStyle}
-                                defaultValue={selectedPhysicalAggression}
+                                defaultValue={selectedPhysicalAggression ? selectedPhysicalAggression : null}
                                 onChangeItem={(item) =>
                                     setSelectedPhysicalAggression(item.value)
                                 }
@@ -245,7 +247,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={policeReportItems}
                                 style={dropdownStyle}
-                                defaultValue={selectedPoliceReport}
+                                defaultValue={selectedPoliceReport ? selectedPoliceReport : null}
                                 onChangeItem={(item) =>
                                     setSelectedPoliceReport(item.value)
                                 }
