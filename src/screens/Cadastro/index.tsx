@@ -62,7 +62,7 @@ const Cadastro = ({ navigation }) => {
                 if (!response.body.error && response.status === 200) {
                     AsyncStorage.setItem("userToken", response.body.token);
                     AsyncStorage.setItem("username", username);
-                    navigation.navigate("Home");
+                    navigation.navigate("HomeTabBar");
                 } else {
                     Alert.alert("Erro ao logar usuário", response.body.error);
                 }

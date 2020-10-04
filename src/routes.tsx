@@ -5,6 +5,7 @@ import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
 import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
+import Occurrences from "./screens/Occurrences";
 
 const AppStack = createStackNavigator();
 
@@ -12,12 +13,13 @@ const Routes = () => {
     return (
         <AppStack.Navigator
             screenOptions={{ headerShown: false }}
-            initialRouteName="HomeTabBar"
+            initialRouteName="Login"
         >
             <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
             <AppStack.Screen name="Login" component={Login} />
             <AppStack.Screen name="Cadastro" component={Cadastro} />
             <AppStack.Screen name="Occurrence" component={Occurrence} />
+            <AppStack.Screen name="Occurrences" component={Occurrences} />
         </AppStack.Navigator>
     );
 };

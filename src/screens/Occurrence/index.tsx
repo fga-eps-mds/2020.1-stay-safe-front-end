@@ -155,7 +155,7 @@ const Occurrence: React.FC = () => {
             physical_aggression: selectedPhysicalAggression,
             police_report: selectedPoliceReport,
             occurrence_date_time: formatDatetime(datetime),
-            location: [-15.989558, -48.044206],
+            location: [latitude, longitude],
         };
         if (validateOccurrence(data)) {
             const token = await AsyncStorage.getItem("userToken");
