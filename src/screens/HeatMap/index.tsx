@@ -1,16 +1,32 @@
-import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import MapView, { Heatmap, Polygon, PROVIDER_GOOGLE, Marker } from 'react-native-maps'
-import { coordinatesGama } from './coordinates'
-import LoggedInModal from '../../components/LoggedInModal'
-import { useNavigation } from '@react-navigation/native'
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import MapView, {
+    Heatmap,
+    Polygon,
+    PROVIDER_GOOGLE,
+    Marker,
+} from "react-native-maps";
+import { coordinates } from "./coordinates";
+import LoggedInModal from "../../components/LoggedInModal";
+import { useNavigation } from "@react-navigation/native";
+
+interface CoordinateCitiesDF {
+    name: string;
+    color: string;
+    coordinates: Array<Coordinate>;
+}
+
+interface Coordinate {
+    longitude: number;
+    latitude: number;
+}
 
 const HeatMap = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <MapView 
+            <MapView
                 loadingEnabled={true}
                 initialRegion={{
                     latitude: -15.9897883,
@@ -20,25 +36,23 @@ const HeatMap = () => {
                 }}
                 style={{ flex: 1 }}
             >
-                <Marker
-                    coordinate={{
-                        latitude: -48.005184173584,
-                        longitude: -15.9778680801392
-                    }}
-                />
-                <Polygon
-                    coordinates={coordinatesGama}
-                    strokeColor='rgba(0.1, 0.2, 0.3, 0.5)'
-                    fillColor='rgba(255, 0, 0, 0.4)'
-
-                    
-                />
+                {coordinates.map((coordinate: CoordinateCitiesDF) => {
+                    return (
+                        <Polygon
+                            key={coordinate.name}
+                            coordinates={coordinate.coordinates.map(
+                                (coordinate) => coordinate
+                            )}
+                            strokeColor="transparent"
+                            fillColor={coordinate.color}
+                        />
+                    );
+                })}
             </MapView>
 
             <LoggedInModal navObject={navigation} />
-        </SafeAreaView>    
-    )
-}
+        </SafeAreaView>
+    );
+};
 
 export default HeatMap;
-
