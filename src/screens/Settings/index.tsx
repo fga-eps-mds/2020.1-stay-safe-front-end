@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import { SendLabel } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
 import { deleteUser, getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
@@ -20,7 +21,6 @@ import {
     DeleteButton,
     DeleteText,
 } from "./styles";
-import StayAlert from "../../components/StayAlert";
 
 interface ButtonObject {
     title: string;

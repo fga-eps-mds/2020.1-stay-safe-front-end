@@ -1,18 +1,18 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-
-const AppStack = createStackNavigator();
+import React from "react";
 
 import HomeTabBar from "./navigation/HomeTabBar";
-import Login from "./screens/Login";
 import Cadastro from "./screens/Cadastro";
+import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
+
+const AppStack = createStackNavigator();
 
 const Routes = () => {
     return (
         <AppStack.Navigator
             screenOptions={{ headerShown: false }}
-            initialRouteName={"HomeTabBar"}
+            initialRouteName="HomeTabBar"
         >
             <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
             <AppStack.Screen name="Login" component={Login} />
