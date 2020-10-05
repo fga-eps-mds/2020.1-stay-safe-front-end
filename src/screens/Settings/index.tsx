@@ -1,104 +1,140 @@
-import React, { useRef, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import * as Font from "expo-font";
 import { Feather } from "@expo/vector-icons";
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { SendLabel } from "../../components/NormalForms";
-import HeaderTitle from "../../components/HeaderTitle";
-
-import {
-  Container,
-  ButtonsContainer,
-  Button,
-  ButtonText,
-  LogoutButton,
-  UserButtonsContainer,
-  DeleteButton,
-  DeleteText,
-  ModalDelete,
-  ModalText,
-} from "./styles";
-
 import AsyncStorage from "@react-native-community/async-storage";
-import { deleteUser } from "../../services/users";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import * as Font from "expo-font";
+import React, { useCallback, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+import HeaderTitle from "../../components/HeaderTitle";
+import { SendLabel } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
+import { deleteUser, getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
+import {
+    Container,
+    ButtonsContainer,
+    Button,
+    ButtonText,
+    LogoutButton,
+    UserButtonsContainer,
+    DeleteButton,
+    DeleteText,
+} from "./styles";
 
 interface ButtonObject {
-  title: string;
-  icon: string;
+    title: string;
+    icon: string;
+    userLogged: boolean;
 }
 
 const Settings: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const modalRef = useRef();
-  const navigation = useNavigation();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigation = useNavigation();
 
-  const [loaded] = Font.useFonts({
-    "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
-    "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
-  });
+    const [isLogged, setIsLogged] = useState(false);
 
-  const handleLogout = () => {
-    AsyncStorage.removeItem("userToken");
-    navigation.navigate("Home");
-  };
+    const [loaded] = Font.useFonts({
+        "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
+        "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
+    });
 
-  const handleDeleteAccount = async () => {
-    const token = await AsyncStorage.getItem("userToken");
-    AsyncStorage.removeItem("userToken");
+    useFocusEffect(
+        useCallback(() => {
+            AsyncStorage.getItem("username").then((username) => {
+                getUser(username).then((response) => {
+                    if (response.status === 200) {
+                        setIsLogged(true);
+                    } else {
+                        setIsLogged(false);
+                    }
+                });
+            });
+        }, [])
+    );
 
-    await deleteUser(token);
+    const handleLogout = () => {
+        AsyncStorage.removeItem("userToken");
+        AsyncStorage.removeItem("username");
+        navigation.navigate("Home");
+    };
 
-    navigation.navigate("Home");
-  };
+    const handleDeleteAccount = async () => {
+        const token = await AsyncStorage.getItem("userToken");
+        AsyncStorage.removeItem("userToken");
+        AsyncStorage.removeItem("username");
 
-  if (!loaded) return null;
+        await deleteUser(token);
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <HeaderTitle text="Configurações" />
-      <Container>
-        <ButtonsContainer>
-          {buttonsObject.map((button: ButtonObject) => {
-            return (
-              <Button key={button.title}>
-                <Feather name={button.icon} size={scale(20)} color="#010A26" />
-                <ButtonText>{button.title}</ButtonText>
-              </Button>
-            );
-          })}
-        </ButtonsContainer>
-        <UserButtonsContainer>
-          <LogoutButton onPress={() => handleLogout()}>
-            <Feather name="log-out" size={scale(20)} color="#FFFFFF" />
-            <SendLabel>Sair</SendLabel>
-          </LogoutButton>
-          <DeleteButton onPress={() => setIsModalOpen(true)}>
-            <DeleteText>Excluir conta</DeleteText>
-          </DeleteButton>
-        </UserButtonsContainer>
-        <ModalDelete
-          isOpen={isModalOpen}
-          ref={modalRef}
-          backButtonClose
-          backdropOpacity={0.8}
-          position={"center"}
-          onClosed={() => setIsModalOpen(false)}
-          swipeToClose={false}
-        >
-          <ModalText numberOfLines={2} >
-            Tem certeza que deseja excluir sua conta?
-          </ModalText>
-          <LogoutButton onPress={handleDeleteAccount}>
-            <SendLabel>Excluir</SendLabel>
-          </LogoutButton>
-        </ModalDelete>
-      </Container>
-    </SafeAreaView>
-  );
+        navigation.navigate("Home");
+    };
+
+    if (!loaded) return null;
+
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f5" }}>
+            <HeaderTitle text="Configurações" />
+            <Container>
+                <ButtonsContainer>
+                    {buttonsObject.map((button: ButtonObject) => {
+                        return button.userLogged ? (
+                            isLogged && (
+                                <Button key={button.title}>
+                                    <Feather
+                                        name={button.icon}
+                                        size={scale(20)}
+                                        color="#010A26"
+                                    />
+                                    <ButtonText>{button.title}</ButtonText>
+                                </Button>
+                            )
+                        ) : (
+                            <Button key={button.title}>
+                                <Feather
+                                    name={button.icon}
+                                    size={scale(20)}
+                                    color="#010A26"
+                                />
+                                <ButtonText>{button.title}</ButtonText>
+                            </Button>
+                        );
+                    })}
+                </ButtonsContainer>
+                {isLogged && (
+                    <UserButtonsContainer>
+                        <LogoutButton onPress={() => handleLogout()}>
+                            <Feather
+                                name="log-out"
+                                size={scale(20)}
+                                color="#FFFFFF"
+                            />
+                            <SendLabel>Sair</SendLabel>
+                        </LogoutButton>
+                        <DeleteButton onPress={() => setIsModalOpen(true)}>
+                            <DeleteText>Excluir conta</DeleteText>
+                        </DeleteButton>
+                    </UserButtonsContainer>
+                )}
+                <StayAlert
+                    show={isModalOpen}
+                    title="Excluir conta"
+                    message="Tem certeza que deseja excluir sua conta?"
+                    showConfirmButton
+                    confirmText="Excluir"
+                    onConfirmPressed={() => {
+                        setIsModalOpen(false);
+                        handleDeleteAccount();
+                    }}
+                    showCancelButton
+                    cancelText="Voltar"
+                    onCancelPressed={() => {
+                        setIsModalOpen(false);
+                    }}
+                    onDismiss={() => setIsModalOpen(false)}
+                />
+            </Container>
+        </SafeAreaView>
+    );
 };
 
 export default Settings;
