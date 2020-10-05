@@ -14,7 +14,10 @@ import LoggedInModal from "../../components/LoggedInModal";
 import StayAlert from "../../components/StayAlert";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getUser } from "../../services/users";
-import { StayNormalMap } from "./styles";
+import { FilterButton, StayNormalMap } from "./styles";
+import HeatMap from "../HeatMap";
+import { scale } from "../../utils/scalling";
+import { Feather } from "@expo/vector-icons";
 
 type ParamList = {
     params: {
@@ -42,6 +45,8 @@ const Home = () => {
     const [isLogged, setIsLogged] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
+
+    const [isHeatMap, setIsHeatMap] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -101,29 +106,41 @@ const Home = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {!isLogged && <LoggedInModal navObject={navigation} />}
-            <StayNormalMap
-                initialRegion={{
-                    latitude: -15.9897883,
-                    longitude: -48.0464073,
-                    latitudeDelta: 0.0042,
-                    longitudeDelta: 0.0031,
+            <FilterButton
+                style={{
+                    elevation: 20,
                 }}
-                style={{ flex: 1 }}
-                onPress={(e) => handleReportingCoordinatesOnMap(e)}
+                onPress={() => setIsHeatMap(!isHeatMap)}
             >
-                {occurrences?.map((occurrence: Occurrence) => {
-                    return (
-                        <Marker
-                            key={occurrence.id_occurrence}
-                            coordinate={{
-                                latitude: occurrence.location[0],
-                                longitude: occurrence.location[1],
-                            }}
-                        />
-                    );
-                })}
-            </StayNormalMap>
+                <Feather name="filter" size={scale(30)} color="#C8C8C8" />
+            </FilterButton>
+            {!isLogged && <LoggedInModal navObject={navigation} />}
+            {isHeatMap ? (
+                <HeatMap />
+            ) : (
+                <StayNormalMap
+                    loadingEnabled={true}
+                    initialRegion={{
+                        latitude: -15.780311,
+                        longitude: -47.768043,
+                        latitudeDelta: 1,
+                        longitudeDelta: 1,
+                    }}
+                    onPress={(e) => handleReportingCoordinatesOnMap(e)}
+                >
+                    {occurrences?.map((occurrence: Occurrence) => {
+                        return (
+                            <Marker
+                                key={occurrence.id_occurrence}
+                                coordinate={{
+                                    latitude: occurrence.location[0],
+                                    longitude: occurrence.location[1],
+                                }}
+                            />
+                        );
+                    })}
+                </StayNormalMap>
+            )}
             <StayAlert
                 show={isModalOpen && isLogged}
                 title="Reportar Ocorrência"

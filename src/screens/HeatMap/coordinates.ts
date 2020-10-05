@@ -1970,7 +1970,7 @@ export const coordinates = [
     },
     {
         name: "Sobradinho I",
-        color: "rgba(0, 255, 255, 0.6)",
+        color: "rgba(255, 255, 0, 0.6)",
         coordinates: coordinatesSobradinhoI,
     },
     {
