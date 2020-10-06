@@ -1,5 +1,3 @@
-import { scale } from "../../utils/scalling";
-
 export const occurrenceTypeItems = [
     {
         label: "Latrocínio",

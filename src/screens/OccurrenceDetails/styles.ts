@@ -1,5 +1,3 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
-import DropDownPicker from "react-native-dropdown-picker";
 import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
