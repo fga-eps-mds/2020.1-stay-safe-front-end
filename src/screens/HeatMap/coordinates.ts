@@ -1869,7 +1869,7 @@ export const coordinates = [
         coordinates: coordinatesBrasilia,
     },
     {
-        name: "Sudoeste/Octogonal",
+        name: "Sudoeste Octogonal",
         color: "rgba(0, 0, 255, 0.6)",
         coordinates: coordinatesSudoesteOctogonal,
     },
@@ -1889,8 +1889,8 @@ export const coordinates = [
         coordinates: coordinatesCruzeiro,
     },
     {
-        name: "Estrutural/SCIA",
-        color: "rgba(191, 131, 50, 0.6)",
+        name: "Estrutural SCIA",
+        color: "rgba(0, 0, 255, 0.6)",
         coordinates: coordinatesEstruturalSCIA,
     },
     {
