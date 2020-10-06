@@ -81,6 +81,7 @@ const Home = () => {
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
+    const [isOccurrencesOk, setOccurrencesOk] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -149,6 +150,7 @@ const Home = () => {
         useCallback(() => {
             getAllUsersOccurrences().then((response) => {
                 setOccurrences(response.body);
+                setOccurrencesOk(true);
             });
         }, [])
     );
@@ -190,7 +192,9 @@ const Home = () => {
                     <Feather name="filter" size={scale(30)} color="#C8C8C8" />
                 </FilterButton>
             )}
-            {!isLogged && <LoggedInModal navObject={navigation} />}
+            {!isLogged && !isFilterOpen && selectedOption <= 0 && (
+                <LoggedInModal navObject={navigation} />
+            )}
             {selectedOption > 0 && !isFilterOpen ? (
                 <HeatMap secretaryOccurrences={secretaryOccurrences} />
             ) : (
@@ -204,17 +208,18 @@ const Home = () => {
                     }}
                     onPress={(e) => handleReportingCoordinatesOnMap(e)}
                 >
-                    {occurrences?.map((occurrence: Occurrence) => {
-                        return (
-                            <Marker
-                                key={occurrence.id_occurrence}
-                                coordinate={{
-                                    latitude: occurrence.location[0],
-                                    longitude: occurrence.location[1],
-                                }}
-                            />
-                        );
-                    })}
+                    {isOccurrencesOk &&
+                        occurrences?.map((occurrence: Occurrence) => {
+                            return (
+                                <Marker
+                                    key={occurrence.id_occurrence}
+                                    coordinate={{
+                                        latitude: occurrence.location[0],
+                                        longitude: occurrence.location[1],
+                                    }}
+                                />
+                            );
+                        })}
                 </StayNormalMap>
             )}
             <StayAlert
