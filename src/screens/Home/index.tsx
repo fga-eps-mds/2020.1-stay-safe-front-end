@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
@@ -14,10 +14,21 @@ import LoggedInModal from "../../components/LoggedInModal";
 import StayAlert from "../../components/StayAlert";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getUser } from "../../services/users";
-import { FilterButton, StayNormalMap } from "./styles";
+import {
+    FilterButton,
+    FilterModal,
+    StayNormalMap,
+    ButtonOptionContainer,
+    ButtonOptionText,
+    OptionCircleButton,
+} from "./styles";
 import HeatMap from "../HeatMap";
 import { scale } from "../../utils/scalling";
 import { Feather } from "@expo/vector-icons";
+
+import { searchOptions } from "./searchOptions";
+import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
+import { Alert } from "react-native";
 
 type ParamList = {
     params: {
@@ -37,6 +48,23 @@ interface Occurrence {
     victim: boolean;
 }
 
+interface SecretaryOccurrence {
+    capture_data: string;
+    cities: Array<CityCrimes>;
+    period: Year;
+}
+
+interface CityCrimes {
+    [city: string]: {
+        crime_nature: string;
+        quantity: number;
+    };
+}
+
+interface Year {
+    year: number;
+}
+
 const Home = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
@@ -46,7 +74,10 @@ const Home = () => {
     const [isReporting, setIsReporting] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
-    const [isHeatMap, setIsHeatMap] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState(0);
+
+    const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -64,6 +95,33 @@ const Home = () => {
             setIsModalOpen(route.params.showReportModal);
         }
     });
+
+    useEffect(() => {
+        async function loadData() {
+            const option = searchOptions[selectedOption - 1];
+
+            const response = await getOccurrencesByCrimeNature(
+                "df",
+                option.label
+            );
+
+            if (response.status === 200) {
+                const responseOfYear2019 = response.body.map(
+                    (year: SecretaryOccurrence) => {
+                        if (year.period.year === 2019) {
+                            return year;
+                        }
+                    }
+                );
+
+                setSecretaryOccurrences(responseOfYear2019);
+            }
+        }
+
+        if (selectedOption > 0) {
+            loadData();
+        }
+    }, [selectedOption]);
 
     useFocusEffect(
         useCallback(() => {
@@ -102,21 +160,31 @@ const Home = () => {
         }
     };
 
+    const handleSelectOption = (id: number) => {
+        if (selectedOption === id) {
+            setSelectedOption(0);
+        } else {
+            setSelectedOption(id);
+        }
+    };
+
     if (!loaded) return null;
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <FilterButton
-                style={{
-                    elevation: 20,
-                }}
-                onPress={() => setIsHeatMap(!isHeatMap)}
-            >
-                <Feather name="filter" size={scale(30)} color="#C8C8C8" />
-            </FilterButton>
+            {!isFilterOpen && (
+                <FilterButton
+                    style={{
+                        elevation: 20,
+                    }}
+                    onPress={() => setIsFilterOpen(true)}
+                >
+                    <Feather name="filter" size={scale(30)} color="#C8C8C8" />
+                </FilterButton>
+            )}
             {!isLogged && <LoggedInModal navObject={navigation} />}
-            {isHeatMap ? (
-                <HeatMap />
+            {selectedOption > 0 && !isFilterOpen ? (
+                <HeatMap secretaryOccurrences={secretaryOccurrences} />
             ) : (
                 <StayNormalMap
                     loadingEnabled={true}
@@ -153,6 +221,36 @@ const Home = () => {
                 }}
                 onDismiss={() => handleClosedModal()}
             />
+            <FilterModal
+                style={{ elevation: 20 }}
+                isOpen={isFilterOpen}
+                onClosed={() => setIsFilterOpen(false)}
+                swipeToClose={false}
+                position="top"
+                backdropOpacity={0}
+                backButtonClose
+            >
+                {searchOptions.map((option) => {
+                    return (
+                        <ButtonOptionContainer key={option.id}>
+                            <OptionCircleButton
+                                onPress={() => handleSelectOption(option.id)}
+                            >
+                                <Feather
+                                    name={
+                                        selectedOption === option.id
+                                            ? "check-circle"
+                                            : "circle"
+                                    }
+                                    size={scale(20)}
+                                    color="#000000"
+                                />
+                            </OptionCircleButton>
+                            <ButtonOptionText>{option.name}</ButtonOptionText>
+                        </ButtonOptionContainer>
+                    );
+                })}
+            </FilterModal>
         </SafeAreaView>
     );
 };
