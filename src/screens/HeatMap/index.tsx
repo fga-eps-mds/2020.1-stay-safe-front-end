@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
-import { coordinates } from "./coordinates";
+
 import { StayNormalMap } from "../Home/styles";
+import { coordinates } from "./coordinates";
 
 interface CoordinateCitiesDF {
     name: string;
@@ -48,12 +49,12 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
     const [citiesCrimes, setCitiesCrimes] = useState<CitiesCrimes[]>([]);
 
     useEffect(() => {
-        if (secretaryOccurrences) {
+        if (secretaryOccurrences && secretaryOccurrences[1]) {
             const cities = coordinates.map((coordinate) => {
                 return coordinate.name;
             });
 
-            let crimesUpdated: CitiesCrimes[] = [];
+            const crimesUpdated: CitiesCrimes[] = [];
             let crime_nature = "";
 
             secretaryOccurrences[1].cities.forEach((cityCrimes) =>
@@ -80,7 +81,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
         crimesUpdated: CitiesCrimes[],
         crime_nature: string
     ) => {
-        let citiesColors: CitiesCrimes[] = [];
+        const citiesColors: CitiesCrimes[] = [];
         crimesUpdated.map((city) => {
             if (crime_nature === "Latrocinio") {
                 if (city.quantity === 0) {
@@ -220,7 +221,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
 
     return (
         <StayNormalMap
-            loadingEnabled={true}
+            loadingEnabled
             initialRegion={{
                 latitude: -15.780311,
                 longitude: -47.768043,
