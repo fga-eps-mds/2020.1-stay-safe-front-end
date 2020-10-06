@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
@@ -6,14 +6,21 @@ import {
     RouteProp,
     useNavigation,
 } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import * as Font from "expo-font";
+import React, { useCallback, useState } from "react";
+import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import LoggedInModal from "../../components/LoggedInModal";
+import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { getAllUsersOccurrences } from "../../services/occurrences";
+import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import { getUser } from "../../services/users";
+import { scale } from "../../utils/scalling";
+import HeatMap from "../HeatMap";
+import { searchOptions } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
@@ -21,14 +28,8 @@ import {
     ButtonOptionContainer,
     ButtonOptionText,
     OptionCircleButton,
+    FilterTitle,
 } from "./styles";
-import HeatMap from "../HeatMap";
-import { scale } from "../../utils/scalling";
-import { Feather } from "@expo/vector-icons";
-
-import { searchOptions } from "./searchOptions";
-import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
-import { Alert } from "react-native";
 
 type ParamList = {
     params: {
@@ -79,6 +80,8 @@ const Home = () => {
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
+    const [isWarningOpen, setIsWarningOpen] = useState(false);
+
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
@@ -96,7 +99,7 @@ const Home = () => {
         }
     });
 
-    useEffect(() => {
+    const handleFilterHeatMap = () => {
         async function loadData() {
             const option = searchOptions[selectedOption - 1];
 
@@ -115,13 +118,18 @@ const Home = () => {
                 );
 
                 setSecretaryOccurrences(responseOfYear2019);
+                return "Stay Safe";
             }
         }
 
         if (selectedOption > 0) {
-            loadData();
+            loadData().then((res) => {
+                setIsFilterOpen(false);
+            });
+        } else {
+            setIsWarningOpen(true);
         }
-    }, [selectedOption]);
+    };
 
     useFocusEffect(
         useCallback(() => {
@@ -187,7 +195,7 @@ const Home = () => {
                 <HeatMap secretaryOccurrences={secretaryOccurrences} />
             ) : (
                 <StayNormalMap
-                    loadingEnabled={true}
+                    loadingEnabled
                     initialRegion={{
                         latitude: -15.780311,
                         longitude: -47.768043,
@@ -221,6 +229,17 @@ const Home = () => {
                 }}
                 onDismiss={() => handleClosedModal()}
             />
+            <StayAlert
+                show={isWarningOpen}
+                title="Opa!"
+                message={
+                    "Selecione uma opção de filtro.\nPara voltar ao mapa, clique fora da janela."
+                }
+                showConfirmButton
+                confirmText="Entendido"
+                onConfirmPressed={() => setIsWarningOpen(false)}
+                onDismiss={() => setIsWarningOpen(false)}
+            />
             <FilterModal
                 style={{ elevation: 20 }}
                 isOpen={isFilterOpen}
@@ -230,6 +249,14 @@ const Home = () => {
                 backdropOpacity={0}
                 backButtonClose
             >
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <FilterTitle>Filtrar crimes</FilterTitle>
+                </View>
                 {searchOptions.map((option) => {
                     return (
                         <ButtonOptionContainer key={option.id}>
@@ -250,6 +277,14 @@ const Home = () => {
                         </ButtonOptionContainer>
                     );
                 })}
+                <View style={{ alignItems: "center" }}>
+                    <NormalSend
+                        style={{ width: "50%" }}
+                        onPress={() => handleFilterHeatMap()}
+                    >
+                        <SendLabel>Filtrar</SendLabel>
+                    </NormalSend>
+                </View>
             </FilterModal>
         </SafeAreaView>
     );

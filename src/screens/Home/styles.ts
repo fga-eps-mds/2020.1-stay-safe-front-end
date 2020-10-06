@@ -1,6 +1,6 @@
-import styled from "styled-components/native";
 import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
+import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
 
@@ -23,11 +23,17 @@ export const FilterButton = styled.TouchableOpacity`
 
 export const FilterModal = styled(Modal)`
     position: absolute;
-    height: ${scale(230)}px;
+    height: ${scale(350)}px;
     width: ${scale(300)}px;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(30)}px;
     padding: ${scale(20)}px ${scale(28)}px;
+`;
+
+export const FilterTitle = styled.Text`
+    font-size: ${scale(20)}px;
+    font-family: Trueno-SemiBold;
+    margin-bottom: ${scale(15)}px;
 `;
 
 export const ButtonOptionContainer = styled.View`
@@ -45,4 +51,5 @@ export const OptionCircleButton = styled.TouchableOpacity`
 
 export const ButtonOptionText = styled.Text`
     font-size: ${scale(16)}px;
+    font-family: Trueno-Regular;
 `;
