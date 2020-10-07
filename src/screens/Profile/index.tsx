@@ -191,7 +191,7 @@ const Profile: React.FC = () => {
                             }
                         >
                             <Feather
-                                name={isEditing ? "save" : "edit-2"}
+                                name={isEditing ? "save" : "edit-3"}
                                 size={scale(18)}
                                 color="#ffffff"
                             />
@@ -209,7 +209,7 @@ const Profile: React.FC = () => {
                                 }
                             >
                                 <Feather
-                                    name="book"
+                                    name="clipboard"
                                     size={scale(18)}
                                     color="#ffffff"
                                 />
