@@ -18,6 +18,7 @@ import {
     LogoWrapper,
     NormalLabel,
 } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
 import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
@@ -44,6 +45,7 @@ const Profile: React.FC = () => {
     const navigation = useNavigation();
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isUserEdited, setIsUserEdited] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -99,12 +101,16 @@ const Profile: React.FC = () => {
             const response = await updateUser(editedUser, token);
 
             if (!response.body.error && response.status === 200) {
-                setIsEditing(!isEditing);
-                Alert.alert("Usuário atualizado com sucesso!");
+                setIsUserEdited(true);
             } else {
                 Alert.alert("Erro ao atualizar usuário", response.body.error);
             }
         }
+    };
+
+    const handleClosedModal = () => {
+        setIsUserEdited(false);
+        setIsEditing(false);
     };
 
     if (!loaded) return null;
@@ -220,6 +226,16 @@ const Profile: React.FC = () => {
                             </ProfileButton>
                         </ButtonsContainer>
                     )}
+
+                    <StayAlert
+                        show={isUserEdited}
+                        title="Editar Perfil"
+                        message="Usuário atualizado com sucesso!"
+                        showConfirmButton
+                        confirmText="Entendido"
+                        onConfirmPressed={() => handleClosedModal()}
+                        onDismiss={() => handleClosedModal()}
+                    />
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>
