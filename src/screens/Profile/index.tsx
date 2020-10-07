@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
@@ -11,19 +12,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import LoggedInModal from "../../components/LoggedInModal";
-import { KeyboardScrollView, SendLabel } from "../../components/NormalForms";
+import {
+    Container,
+    KeyboardScrollView,
+    LogoWrapper,
+    NormalLabel,
+} from "../../components/NormalForms";
 import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUpdateUser } from "../../utils/validateUpdateUser";
 import {
-    Container,
     InputViewing,
-    LabelsContainer,
-    LabelViewing,
-    LogoWrapper,
+    ProfileButton,
     EditButton,
-    CanEditButton,
+    ButtonLabel,
+    ButtonsContainer,
 } from "./styles";
 
 const Profile: React.FC = () => {
@@ -108,79 +112,116 @@ const Profile: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f5" }}>
             {isFocused && <LoggedInModal navObject={navigation} />}
-            <HeaderTitle text="Perfil" />
-            <KeyboardScrollView>
-                <Container>
+            <Container>
+                <HeaderTitle
+                    text="Perfil"
+                    goBack={isEditing}
+                    onPressGoBack={() => setIsEditing(false)}
+                />
+
+                <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(70)} height={scale(70)} />
-                        {isLogged && (
-                            <CanEditButton
-                                onPress={() => setIsEditing(!isEditing)}
-                            >
-                                <SendLabel>
-                                    {isEditing ? "Voltar" : "Editar perfil"}
-                                </SendLabel>
-                            </CanEditButton>
-                        )}
+                        <Logo width={scale(75)} height={scale(75)} />
                     </LogoWrapper>
-                    <LabelsContainer>
-                        <LabelViewing>Username</LabelViewing>
-                        <InputViewing
-                            editable={false}
-                            isEditing={false}
-                            returnKeyType="next"
-                            maxLength={20}
-                            value={username}
-                            onChangeText={(text) => setUsername(text)}
-                        />
-                        <LabelViewing>Nome Completo</LabelViewing>
-                        <InputViewing
-                            editable={isEditing}
+
+                    <NormalLabel>Username</NormalLabel>
+                    <InputViewing
+                        editable={false}
+                        isEditing={false}
+                        returnKeyType="next"
+                        maxLength={20}
+                        value={username}
+                        onChangeText={(text) => setUsername(text)}
+                    />
+                    <NormalLabel>Nome Completo</NormalLabel>
+                    <InputViewing
+                        editable={isEditing}
+                        isEditing={isEditing}
+                        returnKeyType="next"
+                        maxLength={200}
+                        value={userFullName}
+                        onChangeText={(text) => setUserFullName(text)}
+                    />
+                    <NormalLabel>Email</NormalLabel>
+                    <InputViewing
+                        editable={isEditing}
+                        isEditing={isEditing}
+                        returnKeyType="next"
+                        keyboardType="email-address"
+                        maxLength={50}
+                        value={userEmail}
+                        onChangeText={(text) => setUserEmail(text)}
+                    />
+
+                    {isLogged && isEditing && (
+                        <>
+                            <NormalLabel>Senha</NormalLabel>
+                            <InputViewing
+                                isEditing={isEditing}
+                                returnKeyType="next"
+                                secureTextEntry
+                                maxLength={20}
+                                value={userPwd}
+                                onChangeText={(text) => setUserPwd(text)}
+                            />
+                            <NormalLabel>Confirmar senha</NormalLabel>
+                            <InputViewing
+                                isEditing={isEditing}
+                                secureTextEntry
+                                maxLength={20}
+                                value={userConfirmPwd}
+                                onChangeText={(text) => setUserConfirmPwd(text)}
+                            />
+                        </>
+                    )}
+
+                    {isLogged && (
+                        <EditButton
                             isEditing={isEditing}
-                            returnKeyType="next"
-                            maxLength={200}
-                            value={userFullName}
-                            onChangeText={(text) => setUserFullName(text)}
-                        />
-                        <LabelViewing>Email</LabelViewing>
-                        <InputViewing
-                            editable={isEditing}
-                            isEditing={isEditing}
-                            returnKeyType="next"
-                            keyboardType="email-address"
-                            maxLength={50}
-                            value={userEmail}
-                            onChangeText={(text) => setUserEmail(text)}
-                        />
-                        {isEditing && (
-                            <>
-                                <LabelViewing>Senha</LabelViewing>
-                                <InputViewing
-                                    isEditing={isEditing}
-                                    returnKeyType="next"
-                                    secureTextEntry
-                                    maxLength={20}
-                                    value={userPwd}
-                                    onChangeText={(text) => setUserPwd(text)}
+                            onPress={
+                                isEditing
+                                    ? () => handleUpdateProfile()
+                                    : () => setIsEditing(true)
+                            }
+                        >
+                            <Feather
+                                name={isEditing ? "save" : "edit-2"}
+                                size={scale(18)}
+                                color="#ffffff"
+                            />
+                            <ButtonLabel>
+                                {isEditing ? "Salvar" : "Editar Perfil"}
+                            </ButtonLabel>
+                        </EditButton>
+                    )}
+
+                    {isLogged && !isEditing && (
+                        <ButtonsContainer>
+                            <ProfileButton
+                                onPress={() =>
+                                    navigation.navigate("Occurrences")
+                                }
+                            >
+                                <Feather
+                                    name="book"
+                                    size={scale(18)}
+                                    color="#ffffff"
                                 />
-                                <LabelViewing>Confirmar senha</LabelViewing>
-                                <InputViewing
-                                    isEditing={isEditing}
-                                    secureTextEntry
-                                    maxLength={20}
-                                    value={userConfirmPwd}
-                                    onChangeText={(text) =>
-                                        setUserConfirmPwd(text)
-                                    }
+                                <ButtonLabel>Minhas Ocorrências</ButtonLabel>
+                            </ProfileButton>
+
+                            <ProfileButton onPress={() => {}}>
+                                <Feather
+                                    name="star"
+                                    size={scale(18)}
+                                    color="#ffffff"
                                 />
-                                <EditButton onPress={handleUpdateProfile}>
-                                    <SendLabel>Salvar</SendLabel>
-                                </EditButton>
-                            </>
-                        )}
-                    </LabelsContainer>
-                </Container>
-            </KeyboardScrollView>
+                                <ButtonLabel>Minhas Avaliações</ButtonLabel>
+                            </ProfileButton>
+                        </ButtonsContainer>
+                    )}
+                </KeyboardScrollView>
+            </Container>
         </SafeAreaView>
     );
 };
