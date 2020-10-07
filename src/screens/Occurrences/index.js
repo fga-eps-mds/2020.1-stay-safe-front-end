@@ -58,7 +58,7 @@ const Occurrences = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <HeaderTitle text="Minhas Ocorrências" />
+            <HeaderTitle text="Minhas Ocorrências" goBack />
             <ScrollViewStyled>
                 <CardContainer>
                     {occurrences.map((occurrence) => {

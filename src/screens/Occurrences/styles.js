@@ -9,14 +9,15 @@ export const ScrollViewStyled = styled.ScrollView`
 
 export const CardContainer = styled.View`
     flex: 1;
-    padding: ${scale(18)}px;
+    padding-top: ${scale(18)}px;
+    align-items: center;
 `;
 
 export const Card = styled.View`
     flex-direction: row;
     justify-content: space-between;
     background-color: #ffffff;
-    width: 100%;
+    width: 80%;
     border-radius: ${scale(16)}px;
     margin-bottom: ${scale(18)}px;
     padding: ${scale(18)}px;
