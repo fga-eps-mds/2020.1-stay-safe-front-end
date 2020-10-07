@@ -52,7 +52,7 @@ const Login = ({ navigation }) => {
             <Container>
                 <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(52)} height={scale(52)} />
+                        <Logo width={scale(75)} height={scale(75)} />
                     </LogoWrapper>
 
                     <Title>Entrar</Title>
@@ -82,7 +82,7 @@ const Login = ({ navigation }) => {
                     <NormalCreate
                         onPress={() => navigation.navigate("Cadastro")}
                     >
-                        <SendLabel>Criar conta</SendLabel>
+                        <SendLabel>Criar Conta</SendLabel>
                     </NormalCreate>
                 </KeyboardScrollView>
             </Container>
