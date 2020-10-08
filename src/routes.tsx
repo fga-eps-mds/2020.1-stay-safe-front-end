@@ -13,7 +13,7 @@ const Routes = () => {
     return (
         <AppStack.Navigator
             screenOptions={{ headerShown: false }}
-            initialRouteName="Login"
+            initialRouteName="HomeTabBar"
         >
             <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
             <AppStack.Screen name="Login" component={Login} />
