@@ -32,7 +32,6 @@ interface Occurrence {
     victim: boolean;
 }
 
-
 const Occurrences = ({ navigation }) => {
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
@@ -49,7 +48,7 @@ const Occurrences = ({ navigation }) => {
     }, [navigation]);
 
     const fetchData = async () => {
-        const username = await AsyncStorage.getItem("username") as string;
+        const username = await AsyncStorage.getItem("username");
         const response = await getUserOccurrences(username);
         if (!response.body.errors && response.status === 200)
             setOccurrences(response.body);
@@ -57,7 +56,7 @@ const Occurrences = ({ navigation }) => {
     };
 
     const handleDelete = async (id: number) => {
-        const userToken = await AsyncStorage.getItem("userToken") as string;
+        const userToken = await AsyncStorage.getItem("userToken");
         setConfirmModal(false);
         const response = await deleteOccurrence(id, userToken);
 
