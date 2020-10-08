@@ -6,13 +6,16 @@ import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderTitle from "../../components/HeaderTitle";
-import { SendLabel } from "../../components/NormalForms";
+import {
+    SendLabel,
+    Container,
+    KeyboardScrollView,
+} from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { deleteUser, getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
 import {
-    Container,
     ButtonsContainer,
     Button,
     ButtonText,
@@ -73,12 +76,23 @@ const Settings: React.FC = () => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f5" }}>
-            <HeaderTitle text="Configurações" />
             <Container>
-                <ButtonsContainer>
-                    {buttonsObject.map((button: ButtonObject) => {
-                        return button.userLogged ? (
-                            isLogged && (
+                <HeaderTitle text="Configurações" />
+                <KeyboardScrollView>
+                    <ButtonsContainer>
+                        {buttonsObject.map((button: ButtonObject) => {
+                            return button.userLogged ? (
+                                isLogged && (
+                                    <Button key={button.title}>
+                                        <Feather
+                                            name={button.icon}
+                                            size={scale(20)}
+                                            color="#010A26"
+                                        />
+                                        <ButtonText>{button.title}</ButtonText>
+                                    </Button>
+                                )
+                            ) : (
                                 <Button key={button.title}>
                                     <Feather
                                         name={button.icon}
@@ -87,51 +101,44 @@ const Settings: React.FC = () => {
                                     />
                                     <ButtonText>{button.title}</ButtonText>
                                 </Button>
-                            )
-                        ) : (
-                            <Button key={button.title}>
+                            );
+                        })}
+                    </ButtonsContainer>
+
+                    {isLogged && (
+                        <UserButtonsContainer>
+                            <LogoutButton onPress={() => handleLogout()}>
                                 <Feather
-                                    name={button.icon}
+                                    name="log-out"
                                     size={scale(20)}
-                                    color="#010A26"
+                                    color="#FFFFFF"
                                 />
-                                <ButtonText>{button.title}</ButtonText>
-                            </Button>
-                        );
-                    })}
-                </ButtonsContainer>
-                {isLogged && (
-                    <UserButtonsContainer>
-                        <LogoutButton onPress={() => handleLogout()}>
-                            <Feather
-                                name="log-out"
-                                size={scale(20)}
-                                color="#FFFFFF"
-                            />
-                            <SendLabel>Sair</SendLabel>
-                        </LogoutButton>
-                        <DeleteButton onPress={() => setIsModalOpen(true)}>
-                            <DeleteText>Excluir conta</DeleteText>
-                        </DeleteButton>
-                    </UserButtonsContainer>
-                )}
-                <StayAlert
-                    show={isModalOpen}
-                    title="Excluir conta"
-                    message="Tem certeza que deseja excluir sua conta?"
-                    showConfirmButton
-                    confirmText="Excluir"
-                    onConfirmPressed={() => {
-                        setIsModalOpen(false);
-                        handleDeleteAccount();
-                    }}
-                    showCancelButton
-                    cancelText="Voltar"
-                    onCancelPressed={() => {
-                        setIsModalOpen(false);
-                    }}
-                    onDismiss={() => setIsModalOpen(false)}
-                />
+                                <SendLabel>Sair</SendLabel>
+                            </LogoutButton>
+                            <DeleteButton onPress={() => setIsModalOpen(true)}>
+                                <DeleteText>Excluir conta</DeleteText>
+                            </DeleteButton>
+                        </UserButtonsContainer>
+                    )}
+
+                    <StayAlert
+                        show={isModalOpen}
+                        title="Excluir conta"
+                        message="Tem certeza que deseja excluir sua conta?"
+                        showConfirmButton
+                        confirmText="Excluir"
+                        onConfirmPressed={() => {
+                            setIsModalOpen(false);
+                            handleDeleteAccount();
+                        }}
+                        showCancelButton
+                        cancelText="Voltar"
+                        onCancelPressed={() => {
+                            setIsModalOpen(false);
+                        }}
+                        onDismiss={() => setIsModalOpen(false)}
+                    />
+                </KeyboardScrollView>
             </Container>
         </SafeAreaView>
     );

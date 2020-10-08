@@ -26,6 +26,8 @@ export const DropDown = styled(DropDownPicker).attrs({
         color: "#011640",
         fontFamily: "Trueno-SemiBold",
     },
+    arrowColor: "#e83338",
+    arrowSize: 18,
 })``;
 
 export const InputWrapper = styled.View`

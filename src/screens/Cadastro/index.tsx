@@ -1,14 +1,13 @@
-import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import HeaderTitle from "../../components/HeaderTitle";
 import {
     Container,
     KeyboardScrollView,
-    BackScreen,
     LogoWrapper,
     Title,
     NormalLabel,
@@ -77,17 +76,11 @@ const Cadastro = ({ navigation }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
-                <KeyboardScrollView>
-                    <BackScreen onPress={() => navigation.goBack()}>
-                        <Feather
-                            name="arrow-left"
-                            size={scale(28)}
-                            color="#010A26"
-                        />
-                    </BackScreen>
+                <HeaderTitle text="" goBack />
 
+                <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(52)} height={scale(52)} />
+                        <Logo width={scale(75)} height={scale(75)} />
                     </LogoWrapper>
 
                     <Title>Cadastro</Title>

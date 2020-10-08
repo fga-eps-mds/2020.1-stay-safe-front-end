@@ -13,6 +13,7 @@ import {
     SendLabel,
     NormalLabel,
 } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
 import { updateOccurrence, createOccurrence } from "../../services/occurrences";
 import { formatDateTime } from "../../utils/dates";
 import { validateOccurrence } from "../../utils/validateOccurrence";
@@ -61,6 +62,8 @@ const Occurrence: React.FC = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
+    const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
+
     const currentDate = new Date();
 
     const { latitude, longitude } = route.params;
@@ -80,7 +83,6 @@ const Occurrence: React.FC = () => {
 
     const fetchData = (reset = false) => {
         if (!route.params || !route.params.occurrence) {
-            setIsEditing(false);
             setIdOccurrence(0);
             setSelectedOccurrenceType("");
             setSelectedVictim(null);
@@ -164,19 +166,27 @@ const Occurrence: React.FC = () => {
                 : await createOccurrence(data, token);
 
             if (!response.body.error && response.status === 201) {
-                Alert.alert("Ocorrência cadastrada com sucesso!");
                 navigation.setParams({ occurrence: null });
-                navigation.navigate("Home");
+                setShowSuccessfullyModal(true);
             } else if (!response.body.error && response.status === 200) {
-                Alert.alert("Ocorrência atualizada com sucesso!");
                 navigation.setParams({ occurrence: null });
-                navigation.navigate("Occurrences");
+                setShowSuccessfullyModal(true);
             } else {
                 Alert.alert(
                     "Erro ao cadastrar ocorrência",
                     response.body.error
                 );
             }
+        }
+    };
+
+    const handleClosedModal = () => {
+        setShowSuccessfullyModal(false);
+
+        if (isEditing) {
+            navigation.navigate("Occurrences");
+        } else {
+            navigation.navigate("Home");
         }
     };
 
@@ -324,6 +334,24 @@ const Occurrence: React.FC = () => {
                                 : "Registrar Ocorrência"}
                         </SendLabel>
                     </NormalSend>
+
+                    <StayAlert
+                        show={showSuccessfullyModal}
+                        title={
+                            isEditing
+                                ? "Editar Ocorrência"
+                                : "Registrar Ocorrência"
+                        }
+                        message={
+                            isEditing
+                                ? "Ocorrência editada com sucesso!"
+                                : "Ocorrência cadastrada com sucesso!"
+                        }
+                        showConfirmButton
+                        confirmText="Entendido"
+                        onConfirmPressed={() => handleClosedModal()}
+                        onDismiss={() => handleClosedModal()}
+                    />
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>
