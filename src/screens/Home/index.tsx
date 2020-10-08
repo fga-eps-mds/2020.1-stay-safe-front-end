@@ -1,4 +1,3 @@
-import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
@@ -6,9 +5,10 @@ import {
     RouteProp,
     useNavigation,
 } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import * as Font from "expo-font";
+import React, { useCallback, useState } from "react";
 import { Marker, MapEvent } from "react-native-maps";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import LoggedInModal from "../../components/LoggedInModal";
 import StayAlert from "../../components/StayAlert";
@@ -120,6 +120,11 @@ const Home = () => {
                                 latitude: occurrence.location[0],
                                 longitude: occurrence.location[1],
                             }}
+                            onPress={() =>
+                                navigation.navigate("OccurrenceDetails", {
+                                    occurrence,
+                                })
+                            }
                         />
                     );
                 })}

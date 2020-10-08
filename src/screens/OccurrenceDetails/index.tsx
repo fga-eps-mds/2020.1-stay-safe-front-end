@@ -16,7 +16,8 @@ import {
     physicalAggressionItems,
     policeReportItems,
     victimItems,
-} from "./constants";
+    dropdownStyle,
+} from "../Occurrence/dropdownConstants";
 import { InputContainer, Field, InputWrapper } from "./styles";
 
 type ParamList = {
