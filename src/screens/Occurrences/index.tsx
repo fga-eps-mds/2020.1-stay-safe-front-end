@@ -21,8 +21,20 @@ import {
     CardActions,
 } from "./styles";
 
+interface Occurrence {
+    gun: string;
+    id_occurrence: number;
+    location: [number, number];
+    occurrence_date_time: string;
+    occurrence_type: string;
+    physical_aggression: boolean;
+    police_report: boolean;
+    victim: boolean;
+}
+
+
 const Occurrences = ({ navigation }) => {
-    const [occurrences, setOccurrences] = useState([]);
+    const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
     const [idOccurrence, setIdOccurrence] = useState(0);
 
@@ -37,18 +49,19 @@ const Occurrences = ({ navigation }) => {
     }, [navigation]);
 
     const fetchData = async () => {
-        const username = await AsyncStorage.getItem("username");
+        const username = await AsyncStorage.getItem("username") as string;
         const response = await getUserOccurrences(username);
         if (!response.body.errors && response.status === 200)
             setOccurrences(response.body);
         else console.warn("Falha ao carregar as ocorrências do usuário.");
     };
 
-    const handleDelete = async (id) => {
-        const userToken = await AsyncStorage.getItem("userToken");
+    const handleDelete = async (id: number) => {
+        const userToken = await AsyncStorage.getItem("userToken") as string;
         setConfirmModal(false);
         const response = await deleteOccurrence(id, userToken);
-        if (response.errors && response.status === 204)
+
+        if (response.status === 204)
             setOccurrences(
                 occurrences.filter(
                     (occurrence) => occurrence.id_occurrence !== id
