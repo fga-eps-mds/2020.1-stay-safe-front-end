@@ -15,10 +15,17 @@ export const InputContainer = styled.View`
     justify-content: space-between;
 `;
 
+export const FieldContainer = styled.View`
+    width: 100%;
+    background: #e0e0e0;
+    justify-content: center;
+    align-items: center;
+    height: ${scale(35)}px;
+    border-radius: ${scale(15)}px;
+`;
+
 export const Field = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(15)}px;
     color: #011640;
-    margin-bottom: 4%;
-    text-align: left;
 `;

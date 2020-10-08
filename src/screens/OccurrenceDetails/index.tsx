@@ -9,16 +9,14 @@ import {
     KeyboardScrollView,
     NormalLabel,
 } from "../../components/NormalForms";
-import { scale } from "../../utils/scalling";
 import {
     occurrenceTypeItems,
     gunItems,
     physicalAggressionItems,
     policeReportItems,
     victimItems,
-    dropdownStyle,
 } from "../Occurrence/dropdownConstants";
-import { InputContainer, Field, InputWrapper } from "./styles";
+import { InputContainer, Field, InputWrapper, FieldContainer } from "./styles";
 
 type ParamList = {
     params: {
@@ -96,49 +94,59 @@ const OccurrenceDetails: React.FC = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <HeaderTitle text="Detalhes da Ocorrência" goBack />
-                <KeyboardScrollView
-                    style={{ width: "100%", alignSelf: "center" }}
-                >
+                <KeyboardScrollView>
                     <InputContainer style={{ width: "80%", marginTop: 0 }}>
-                        <NormalLabel style={{ fontSize: scale(16) }}>
-                            Tipo de Ocorrência
-                        </NormalLabel>
-                        <Field>{occurrenceType}</Field>
+                        <NormalLabel>Tipo de Ocorrência</NormalLabel>
+                        <FieldContainer>
+                            <Field>{occurrenceType}</Field>
+                        </FieldContainer>
                     </InputContainer>
 
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Tipo de Arma</NormalLabel>
-                            <Field>{gun}</Field>
+                            <FieldContainer>
+                                <Field>{gun}</Field>
+                            </FieldContainer>
                         </InputContainer>
 
                         <InputContainer>
                             <NormalLabel>Vítima</NormalLabel>
-                            <Field>{victim}</Field>
+                            <FieldContainer>
+                                <Field>{victim}</Field>
+                            </FieldContainer>
                         </InputContainer>
                     </InputWrapper>
 
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Agressão Física</NormalLabel>
-                            <Field>{physicalAggression}</Field>
+                            <FieldContainer>
+                                <Field>{physicalAggression}</Field>
+                            </FieldContainer>
                         </InputContainer>
 
                         <InputContainer>
                             <NormalLabel>Boletim de Ocorrência</NormalLabel>
-                            <Field>{policeReport}</Field>
+                            <FieldContainer>
+                                <Field>{policeReport}</Field>
+                            </FieldContainer>
                         </InputContainer>
                     </InputWrapper>
 
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Data da Ocorrência</NormalLabel>
-                            <Field>{date}</Field>
+                            <FieldContainer>
+                                <Field>{date}</Field>
+                            </FieldContainer>
                         </InputContainer>
 
                         <InputContainer>
                             <NormalLabel>Hora da Ocorrência</NormalLabel>
-                            <Field>{time}</Field>
+                            <FieldContainer>
+                                <Field>{time}</Field>
+                            </FieldContainer>
                         </InputContainer>
                     </InputWrapper>
                 </KeyboardScrollView>
