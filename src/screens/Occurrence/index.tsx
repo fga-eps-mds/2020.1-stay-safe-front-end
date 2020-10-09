@@ -62,6 +62,18 @@ const Occurrence: React.FC = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
 
+    const [availableVictimOptions, setAvailableVictimOptions] = useState(
+        victimItems
+    );
+    const [
+        availablePhysicalAgressionOptions,
+        setAvailablePhysicalAgression,
+    ] = useState(physicalAggressionItems);
+    const [
+        availablePoliceReportOptions,
+        setAvailablePoliceReportOptions,
+    ] = useState(policeReportItems);
+
     const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
 
     const currentDate = new Date();
@@ -104,6 +116,45 @@ const Occurrence: React.FC = () => {
         setSelectedPoliceReport(occurrence.police_report);
         const d = formatDateTime(occurrence.occurrence_date_time);
         setDatetime(d);
+        setAvailableVictimOptions(
+            victimItems.map((victimItem) => {
+                if (occurrence.victim || victimItem.label === "Vítima")
+                    return victimItem;
+                return {
+                    label: victimItem.label,
+                    value: victimItem.value,
+                    selected: true,
+                };
+            })
+        );
+        setAvailablePhysicalAgression(
+            physicalAggressionItems.map((physicalAgressionItem) => {
+                if (
+                    occurrence.physical_aggression ||
+                    physicalAgressionItem.label === "Sim"
+                )
+                    return physicalAgressionItem;
+                return {
+                    label: physicalAgressionItem.label,
+                    value: physicalAgressionItem.value,
+                    selected: true,
+                };
+            })
+        );
+        setAvailablePoliceReportOptions(
+            policeReportItems.map((policeReportItem) => {
+                if (
+                    occurrence.police_report ||
+                    policeReportItem.label === "Sim"
+                )
+                    return policeReportItem;
+                return {
+                    label: policeReportItem.label,
+                    value: policeReportItem.value,
+                    selected: true,
+                };
+            })
+        );
     };
 
     useEffect(() => {
@@ -234,11 +285,9 @@ const Occurrence: React.FC = () => {
                         <InputContainer>
                             <NormalLabel>Vítima</NormalLabel>
                             <DropDown
-                                items={victimItems}
+                                items={availableVictimOptions}
                                 style={dropdownStyle}
-                                defaultValue={
-                                    selectedVictim ? selectedVictim : null
-                                }
+                                defaultValue={selectedVictim}
                                 onChangeItem={(item) =>
                                     setSelectedVictim(item.value)
                                 }
@@ -250,13 +299,9 @@ const Occurrence: React.FC = () => {
                         <InputContainer>
                             <NormalLabel>Agressão Física</NormalLabel>
                             <DropDown
-                                items={physicalAggressionItems}
+                                items={availablePhysicalAgressionOptions}
                                 style={dropdownStyle}
-                                defaultValue={
-                                    selectedPhysicalAggression
-                                        ? selectedPhysicalAggression
-                                        : null
-                                }
+                                defaultValue={selectedPhysicalAggression}
                                 onChangeItem={(item) =>
                                     setSelectedPhysicalAggression(item.value)
                                 }
@@ -266,13 +311,9 @@ const Occurrence: React.FC = () => {
                         <InputContainer>
                             <NormalLabel>Boletim de Ocorrência</NormalLabel>
                             <DropDown
-                                items={policeReportItems}
+                                items={availablePoliceReportOptions}
                                 style={dropdownStyle}
-                                defaultValue={
-                                    selectedPoliceReport
-                                        ? selectedPoliceReport
-                                        : null
-                                }
+                                defaultValue={selectedPoliceReport}
                                 onChangeItem={(item) =>
                                     setSelectedPoliceReport(item.value)
                                 }
