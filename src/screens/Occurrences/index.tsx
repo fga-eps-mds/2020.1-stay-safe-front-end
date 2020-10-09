@@ -38,8 +38,6 @@ const Occurrences = ({ navigation }) => {
     const [idOccurrence, setIdOccurrence] = useState(0);
 
     useEffect(() => {
-        setConfirmModal(false);
-
         const unsubscribe = navigation.addListener("focus", () => {
             fetchData();
         });
@@ -56,8 +54,8 @@ const Occurrences = ({ navigation }) => {
     };
 
     const handleDelete = async (id: number) => {
-        const userToken = await AsyncStorage.getItem("userToken");
         setConfirmModal(false);
+        const userToken = await AsyncStorage.getItem("userToken");
         const response = await deleteOccurrence(id, userToken);
 
         if (response.status === 204)
