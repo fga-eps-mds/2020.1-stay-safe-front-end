@@ -287,9 +287,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={availableVictimOptions}
                                 style={dropdownStyle}
-                                defaultValue={
-                                    selectedVictim ? selectedVictim : null
-                                }
+                                defaultValue={selectedVictim}
                                 onChangeItem={(item) =>
                                     setSelectedVictim(item.value)
                                 }
@@ -303,11 +301,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={availablePhysicalAgressionOptions}
                                 style={dropdownStyle}
-                                defaultValue={
-                                    selectedPhysicalAggression
-                                        ? selectedPhysicalAggression
-                                        : null
-                                }
+                                defaultValue={selectedPhysicalAggression}
                                 onChangeItem={(item) =>
                                     setSelectedPhysicalAggression(item.value)
                                 }
@@ -319,11 +313,7 @@ const Occurrence: React.FC = () => {
                             <DropDown
                                 items={availablePoliceReportOptions}
                                 style={dropdownStyle}
-                                defaultValue={
-                                    selectedPoliceReport
-                                        ? selectedPoliceReport
-                                        : null
-                                }
+                                defaultValue={selectedPoliceReport}
                                 onChangeItem={(item) =>
                                     setSelectedPoliceReport(item.value)
                                 }
