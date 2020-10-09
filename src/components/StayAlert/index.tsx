@@ -12,7 +12,7 @@ interface StayAlertProps {
     showCancelButton?: boolean;
     cancelText?: string;
     onCancelPressed?: () => void;
-    onDismiss: () => void;
+    onDismiss?: () => void;
 }
 
 const StayAlert: React.FC<StayAlertProps> = ({
