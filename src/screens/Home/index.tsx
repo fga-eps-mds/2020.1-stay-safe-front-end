@@ -217,6 +217,11 @@ const Home = () => {
                                         latitude: occurrence.location[0],
                                         longitude: occurrence.location[1],
                                     }}
+                                    onPress={() =>
+                                        navigation.navigate("OccurrenceDetails", {
+                                            occurrence,
+                                        })
+                                    }
                                 />
                             );
                         })}
