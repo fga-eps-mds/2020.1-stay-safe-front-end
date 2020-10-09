@@ -8,9 +8,14 @@ import { HeaderTitleContainer, Title, GoBackContainer } from "./styles";
 interface HeaderTitleProps {
     text: string;
     goBack?: boolean;
+    onPressGoBack?: Function;
 }
 
-const HeaderTitle: React.FC<HeaderTitleProps> = ({ text, goBack = false }) => {
+const HeaderTitle: React.FC<HeaderTitleProps> = ({
+    text,
+    goBack = false,
+    onPressGoBack = null,
+}) => {
     const navigation = useNavigation();
 
     return (
@@ -18,7 +23,13 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ text, goBack = false }) => {
             {goBack && (
                 <GoBackContainer>
                     <Feather
-                        onPress={() => navigation.goBack()}
+                        onPress={() => {
+                            if (onPressGoBack != null) {
+                                onPressGoBack();
+                            } else {
+                                navigation.goBack();
+                            }
+                        }}
                         name="arrow-left"
                         size={scale(28)}
                         color="#010A26"

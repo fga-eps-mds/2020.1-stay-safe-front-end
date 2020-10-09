@@ -3,13 +3,8 @@ import styled from "styled-components/native";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 
-export const Container = styled.SafeAreaView`
-    flex: 1;
-    background-color: #f0f0f5;
-`;
-
 export const ButtonsContainer = styled.View`
-    padding: ${scale(13)}px ${scale(25)}px;
+    width: 80%;
 `;
 
 export const Button = styled.TouchableOpacity`
