@@ -9,6 +9,7 @@ import {
     KeyboardScrollView,
     NormalLabel,
 } from "../../components/NormalForms";
+import { getFormattedDate, getformattedTime } from "../../utils/dates";
 import {
     occurrenceTypeItems,
     gunItems,
@@ -16,21 +17,26 @@ import {
     policeReportItems,
     victimItems,
 } from "../Occurrence/dropdownConstants";
-import {
-    getFormattedDate,
-    getformattedTime,
-} from "../../utils/dates";
 import { InputContainer, Field, InputWrapper, FieldContainer } from "./styles";
 
-type ParamList = {
+type ParamOccurrence = {
     params: {
-        latitude: number;
-        longitude: number;
+        occurrence: {
+            id_occurrence: number;
+            location: [number, number];
+            gun: string;
+            occurrence_date_time: string;
+            register_date_time: string;
+            occurrence_type: string;
+            physical_aggression: boolean;
+            police_report: boolean;
+            victim: boolean;
+        };
     };
 };
 
 const OccurrenceDetails: React.FC = () => {
-    const route = useRoute<RouteProp<ParamList, "params">>();
+    const route = useRoute<RouteProp<ParamOccurrence, "params">>();
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -46,7 +52,7 @@ const OccurrenceDetails: React.FC = () => {
     const [time, setTime] = useState("");
 
     const fetchData = () => {
-        if (!route.params && !route.params.occurrence) return null;
+        if (!route.params || !route.params.occurrence) return null;
 
         const occurrence = route.params.occurrence;
         occurrenceTypeItems.forEach((occur_type) => {
@@ -70,7 +76,7 @@ const OccurrenceDetails: React.FC = () => {
 
         const date = occurrence.occurrence_date_time.split(" ")[0];
         const time = occurrence.occurrence_date_time.split(" ")[1];
-        setDate(getFormattedDate(date, '/'));
+        setDate(getFormattedDate(date, "/"));
         setTime(getformattedTime(time));
     };
 
