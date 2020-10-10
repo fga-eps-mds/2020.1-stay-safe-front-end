@@ -239,7 +239,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                 if (cityColor.length === 0) {
                     color = coordinate.color;
                 } else {
-                    color = cityColor[0].color;
+                    if (cityColor[0].color) color = cityColor[0].color;
                 }
 
                 return (

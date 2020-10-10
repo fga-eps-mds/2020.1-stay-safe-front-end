@@ -135,13 +135,15 @@ const Home: React.FC = () => {
     useFocusEffect(
         useCallback(() => {
             AsyncStorage.getItem("username").then((username) => {
-                getUser(username).then((response) => {
-                    if (response.status === 200) {
-                        setIsLogged(true);
-                    } else {
-                        setIsLogged(false);
-                    }
-                });
+                if (username !== null) {
+                    getUser(username).then((response) => {
+                        if (response.status === 200) {
+                            setIsLogged(true);
+                        } else {
+                            setIsLogged(false);
+                        }
+                    });
+                }
             });
         }, [route.params?.showReportModal])
     );
@@ -218,9 +220,12 @@ const Home: React.FC = () => {
                                         longitude: occurrence.location[1],
                                     }}
                                     onPress={() =>
-                                        navigation.navigate("OccurrenceDetails", {
-                                            occurrence,
-                                        })
+                                        navigation.navigate(
+                                            "OccurrenceDetails",
+                                            {
+                                                occurrence,
+                                            }
+                                        )
                                     }
                                 />
                             );
