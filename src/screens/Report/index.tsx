@@ -10,7 +10,7 @@ const Report: React.FC = () => {
 
 export default Report;
 
-export const ReportButton = (props) => {
+export const ReportButton = (props: { navObject: any }) => {
     const { navObject } = props;
 
     // Pass the param to open the modal in Home screen

@@ -10,6 +10,13 @@ export const getFormattedDate = (date: string, separator: string) => {
     );
 };
 
+export const getformattedTime = (time: string) => {
+    const hours = time.slice(0, 2);
+    const minutes = time.slice(3, 5);
+
+    return `${hours}:${minutes}`;
+};
+
 export const getOcurrenceDateTime = (datetime: string) => {
     const [date, time] = datetime.split(" ");
     const [year, month, day] = date.split("-");

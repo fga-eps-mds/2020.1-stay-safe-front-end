@@ -16,6 +16,10 @@ import {
     policeReportItems,
     victimItems,
 } from "../Occurrence/dropdownConstants";
+import {
+    getFormattedDate,
+    getformattedTime,
+} from "../../utils/dates";
 import { InputContainer, Field, InputWrapper, FieldContainer } from "./styles";
 
 type ParamList = {
@@ -40,20 +44,6 @@ const OccurrenceDetails: React.FC = () => {
     const [policeReport, setPoliceReport] = useState("");
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
-
-    const formatDate = (date: string) => {
-        const year = date.slice(0, 4);
-        const month = date.slice(5, 7);
-        const day = date.slice(8, 10);
-        return `${day}/${month}/${year}`;
-    };
-
-    const formatTime = (time: string) => {
-        const hours = time.slice(0, 2);
-        const minutes = time.slice(3, 5);
-
-        return `${hours}:${minutes}`;
-    };
 
     const fetchData = () => {
         if (!route.params && !route.params.occurrence) return null;
@@ -80,8 +70,8 @@ const OccurrenceDetails: React.FC = () => {
 
         const date = occurrence.occurrence_date_time.split(" ")[0];
         const time = occurrence.occurrence_date_time.split(" ")[1];
-        setDate(formatDate(date));
-        setTime(formatTime(time));
+        setDate(getFormattedDate(date, '/'));
+        setTime(getformattedTime(time));
     };
 
     useFocusEffect(() => {
