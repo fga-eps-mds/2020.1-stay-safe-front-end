@@ -71,6 +71,13 @@ const Profile: React.FC = () => {
                             setIsLogged(false);
                         }
                     });
+                } else {
+                    setUsername("");
+                    setUserFullName("");
+                    setUserEmail("");
+                    setUserPwd("");
+                    setUserConfirmPwd("");
+                    setIsLogged(false);
                 }
             });
         }, [])
