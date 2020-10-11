@@ -60,9 +60,7 @@ const Occurrences: React.FC = () => {
     };
 
     const handleDelete = async (id: number) => {
-        setConfirmModal(false);
         const userToken = await AsyncStorage.getItem("userToken");
-
         if (userToken != null) {
             const response = await deleteOccurrence(id, userToken);
             if (response.status === 204) {
@@ -73,6 +71,7 @@ const Occurrences: React.FC = () => {
                 );
             }
         }
+        setConfirmModal(false);
     };
 
     return (
@@ -100,7 +99,7 @@ const Occurrences: React.FC = () => {
                                     >
                                         <Feather
                                             name="edit-3"
-                                            size={scale(24)}
+                                            size={scale(22)}
                                             color="#010A26"
                                         />
                                     </TouchableOpacity>
@@ -114,7 +113,7 @@ const Occurrences: React.FC = () => {
                                     >
                                         <Feather
                                             name="trash-2"
-                                            size={scale(24)}
+                                            size={scale(22)}
                                             color="#010A26"
                                         />
                                     </TouchableOpacity>
@@ -123,20 +122,20 @@ const Occurrences: React.FC = () => {
                         );
                     })}
                 </CardContainer>
+                <StayAlert
+                    show={showConfirmModal}
+                    title="Apagar Ocorrência"
+                    message="Tem certeza que deseja apagar essa ocorrência? A ação não pode ser desfeita."
+                    showConfirmButton
+                    confirmText="Apagar"
+                    onConfirmPressed={() => handleDelete(idOccurrence)}
+                    showCancelButton
+                    cancelText="Cancelar"
+                    onCancelPressed={() => setConfirmModal(false)}
+                    onDismiss={() => setConfirmModal(false)}
+                />
             </ScrollViewStyled>
 
-            <StayAlert
-                show={showConfirmModal}
-                title="Apagar Ocorrência"
-                message="Tem certeza que deseja apagar essa ocorrência? A ação não pode ser desfeita."
-                showConfirmButton
-                confirmText="Apagar"
-                onConfirmPressed={() => handleDelete(idOccurrence)}
-                showCancelButton
-                cancelText="Cancelar"
-                onCancelPressed={() => setConfirmModal(false)}
-                onDismiss={() => setConfirmModal(false)}
-            />
         </SafeAreaView>
     );
 };
