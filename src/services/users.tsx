@@ -2,7 +2,19 @@ import base64 from "react-native-base64";
 
 import { userApi } from "./api";
 
-export const authUser = async (data) => {
+interface UserProps {
+    full_name: string;
+    username: string;
+    email: string;
+    password: string;
+}
+
+interface authUserProps {
+    username: string;
+    password?: string;
+}
+
+export const authUser = async (data: authUserProps) => {
     const response = await fetch(userApi + "/auth/", {
         method: "POST",
         headers: {
@@ -28,7 +40,7 @@ export const getAllUsers = async () => {
     });
 };
 
-export const getUser = async (username) => {
+export const getUser = async (username: string) => {
     const response = await fetch(userApi + "/users/" + username, {
         method: "GET",
         headers: {
@@ -42,7 +54,7 @@ export const getUser = async (username) => {
     };
 };
 
-export const createUser = async (data) => {
+export const createUser = async (data: UserProps) => {
     const response = await fetch(userApi + "/users/", {
         method: "POST",
         headers: {
@@ -62,7 +74,7 @@ export const createUser = async (data) => {
     };
 };
 
-export const updateUser = async (data, token) => {
+export const updateUser = async (data: UserProps, token: string) => {
     const response = await fetch(userApi + "/users/", {
         method: "PATCH",
         headers: {
@@ -79,7 +91,7 @@ export const updateUser = async (data, token) => {
     };
 };
 
-export const deleteUser = async (token) => {
+export const deleteUser = async (token: string) => {
     return await fetch(userApi + "/users/", {
         method: "DELETE",
         headers: {

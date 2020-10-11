@@ -55,21 +55,23 @@ const Profile: React.FC = () => {
     useFocusEffect(
         useCallback(() => {
             AsyncStorage.getItem("username").then((username) => {
-                getUser(username).then((response) => {
-                    if (response.status === 200) {
-                        setUsername(response.body.username);
-                        setUserFullName(response.body.full_name);
-                        setUserEmail(response.body.email);
-                        setIsLogged(true);
-                    } else {
-                        setUsername("");
-                        setUserFullName("");
-                        setUserEmail("");
-                        setUserPwd("");
-                        setUserConfirmPwd("");
-                        setIsLogged(false);
-                    }
-                });
+                if (username !== null) {
+                    getUser(username).then((response) => {
+                        if (response.status === 200) {
+                            setUsername(response.body.username);
+                            setUserFullName(response.body.full_name);
+                            setUserEmail(response.body.email);
+                            setIsLogged(true);
+                        } else {
+                            setUsername("");
+                            setUserFullName("");
+                            setUserEmail("");
+                            setUserPwd("");
+                            setUserConfirmPwd("");
+                            setIsLogged(false);
+                        }
+                    });
+                }
             });
         }, [])
     );
@@ -98,12 +100,17 @@ const Profile: React.FC = () => {
                 };
             }
 
-            const response = await updateUser(editedUser, token);
+            if (token !== null) {
+                const response = await updateUser(editedUser, token);
 
-            if (!response.body.error && response.status === 200) {
-                setIsUserEdited(true);
-            } else {
-                Alert.alert("Erro ao atualizar usuário", response.body.error);
+                if (!response.body.error && response.status === 200) {
+                    setIsUserEdited(true);
+                } else {
+                    Alert.alert(
+                        "Erro ao atualizar usuário",
+                        response.body.error
+                    );
+                }
             }
         }
     };

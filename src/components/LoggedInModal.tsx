@@ -24,7 +24,7 @@ const LoggedInModal = (props) => {
 
     useFocusEffect(() => {
         verifyUserLoggedIn();
-    }, []);
+    });
 
     if (!loaded) return null;
 

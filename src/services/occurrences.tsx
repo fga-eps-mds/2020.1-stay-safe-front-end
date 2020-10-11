@@ -1,17 +1,17 @@
 import { userApi } from "./api";
 
-interface CreateOccurrenceProps {
+interface OccurrenceProps {
     gun: string;
     location: [number, number];
     occurrence_date_time: string;
     occurrence_type: string;
-    physical_aggression: boolean;
-    police_report: boolean;
-    victim: boolean;
+    physical_aggression: boolean | undefined;
+    police_report: boolean | undefined;
+    victim: boolean | undefined;
 }
 
 export const createOccurrence = async (
-    data: CreateOccurrenceProps,
+    data: OccurrenceProps,
     token: string
 ) => {
     const response = await fetch(userApi + "/occurrences/", {
@@ -68,7 +68,7 @@ export const deleteOccurrence = async (id: number, token: string) => {
 export const updateOccurrence = async (
     id: number,
     token: string,
-    data: CreateOccurrenceProps
+    data: OccurrenceProps
 ) => {
     const response = await fetch(userApi + `/occurrences/${id}`, {
         method: "PATCH",

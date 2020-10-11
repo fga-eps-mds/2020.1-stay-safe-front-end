@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,17 +23,20 @@ import {
 } from "./styles";
 
 interface Occurrence {
-    gun: string;
     id_occurrence: number;
     location: [number, number];
+    gun: string;
     occurrence_date_time: string;
+    register_date_time: string;
     occurrence_type: string;
     physical_aggression: boolean;
     police_report: boolean;
     victim: boolean;
 }
 
-const Occurrences = ({ navigation }) => {
+const Occurrences: React.FC = () => {
+    const navigation = useNavigation();
+
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
     const [idOccurrence, setIdOccurrence] = useState(0);
@@ -47,23 +51,28 @@ const Occurrences = ({ navigation }) => {
 
     const fetchData = async () => {
         const username = await AsyncStorage.getItem("username");
-        const response = await getUserOccurrences(username);
-        if (!response.body.errors && response.status === 200)
-            setOccurrences(response.body);
-        else console.warn("Falha ao carregar as ocorrências do usuário.");
+        if (username != null) {
+            const response = await getUserOccurrences(username);
+            if (!response.body.errors && response.status === 200)
+                setOccurrences(response.body);
+            else console.warn("Falha ao carregar as ocorrências do usuário.");
+        }
     };
 
     const handleDelete = async (id: number) => {
         setConfirmModal(false);
         const userToken = await AsyncStorage.getItem("userToken");
-        const response = await deleteOccurrence(id, userToken);
 
-        if (response.status === 204)
-            setOccurrences(
-                occurrences.filter(
-                    (occurrence) => occurrence.id_occurrence !== id
-                )
-            );
+        if (userToken != null) {
+            const response = await deleteOccurrence(id, userToken);
+            if (response.status === 204) {
+                setOccurrences(
+                    occurrences.filter(
+                        (occurrence) => occurrence.id_occurrence !== id
+                    )
+                );
+            }
+        }
     };
 
     return (
@@ -126,6 +135,7 @@ const Occurrences = ({ navigation }) => {
                 showCancelButton
                 cancelText="Cancelar"
                 onCancelPressed={() => setConfirmModal(false)}
+                onDismiss={() => setConfirmModal(false)}
             />
         </SafeAreaView>
     );

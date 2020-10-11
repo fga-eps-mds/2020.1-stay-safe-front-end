@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
@@ -19,7 +20,9 @@ import Logo from "../../img/logo.svg";
 import { authUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 
-const Login = ({ navigation }) => {
+const Login: React.FC = () => {
+    const navigation = useNavigation();
+
     const [username, setUsername] = useState("");
     const [userPwd, setUserPwd] = useState("");
 
@@ -89,4 +92,5 @@ const Login = ({ navigation }) => {
         </SafeAreaView>
     );
 };
+
 export default Login;

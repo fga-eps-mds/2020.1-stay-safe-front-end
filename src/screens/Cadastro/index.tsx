@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
@@ -20,7 +21,9 @@ import { createUser, authUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 
-const Cadastro = ({ navigation }) => {
+const Cadastro: React.FC = () => {
+    const navigation = useNavigation();
+
     const [username, setUsername] = useState("");
     const [userFullName, setUserFullName] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -139,4 +142,5 @@ const Cadastro = ({ navigation }) => {
         </SafeAreaView>
     );
 };
+
 export default Cadastro;

@@ -11,7 +11,7 @@ import { scale } from "../utils/scalling";
 
 const Tab = createBottomTabNavigator();
 
-const HomeTabBar = () => {
+const HomeTabBar: React.FC = () => {
     return (
         <>
             <Tab.Navigator

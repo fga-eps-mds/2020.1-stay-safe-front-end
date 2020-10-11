@@ -1,6 +1,14 @@
 import { Alert } from "react-native";
 
-export const validateUser = (data) => {
+interface UserProps {
+    fullName: string;
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+export const validateUser = (data: UserProps) => {
     const error = ["Campo Inválido", ""];
     if (data.username === null || data.username === "") {
         error[1] = "Username não pode ficar em branco";
