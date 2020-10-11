@@ -45,13 +45,15 @@ const Settings: React.FC = () => {
     useFocusEffect(
         useCallback(() => {
             AsyncStorage.getItem("username").then((username) => {
-                getUser(username).then((response) => {
-                    if (response.status === 200) {
-                        setIsLogged(true);
-                    } else {
-                        setIsLogged(false);
-                    }
-                });
+                if (username !== null) {
+                    getUser(username).then((response) => {
+                        if (response.status === 200) {
+                            setIsLogged(true);
+                        } else {
+                            setIsLogged(false);
+                        }
+                    });
+                }
             });
         }, [])
     );
@@ -67,7 +69,7 @@ const Settings: React.FC = () => {
         AsyncStorage.removeItem("userToken");
         AsyncStorage.removeItem("username");
 
-        await deleteUser(token);
+        if (token !== null) await deleteUser(token);
 
         navigation.navigate("Home");
     };

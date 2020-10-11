@@ -66,7 +66,7 @@ interface Year {
     year: number;
 }
 
-const Home = () => {
+const Home: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
 
@@ -135,13 +135,15 @@ const Home = () => {
     useFocusEffect(
         useCallback(() => {
             AsyncStorage.getItem("username").then((username) => {
-                getUser(username).then((response) => {
-                    if (response.status === 200) {
-                        setIsLogged(true);
-                    } else {
-                        setIsLogged(false);
-                    }
-                });
+                if (username !== null) {
+                    getUser(username).then((response) => {
+                        if (response.status === 200) {
+                            setIsLogged(true);
+                        } else {
+                            setIsLogged(false);
+                        }
+                    });
+                }
             });
         }, [route.params?.showReportModal])
     );
@@ -218,9 +220,12 @@ const Home = () => {
                                         longitude: occurrence.location[1],
                                     }}
                                     onPress={() =>
-                                        navigation.navigate("OccurrenceDetails", {
-                                            occurrence,
-                                        })
+                                        navigation.navigate(
+                                            "OccurrenceDetails",
+                                            {
+                                                occurrence,
+                                            }
+                                        )
                                     }
                                 />
                             );

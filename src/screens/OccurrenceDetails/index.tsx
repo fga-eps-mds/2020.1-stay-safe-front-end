@@ -9,6 +9,7 @@ import {
     KeyboardScrollView,
     NormalLabel,
 } from "../../components/NormalForms";
+import { getFormattedDate, getformattedTime } from "../../utils/dates";
 import {
     occurrenceTypeItems,
     gunItems,
@@ -18,15 +19,24 @@ import {
 } from "../Occurrence/dropdownConstants";
 import { InputContainer, Field, InputWrapper, FieldContainer } from "./styles";
 
-type ParamList = {
+type ParamOccurrence = {
     params: {
-        latitude: number;
-        longitude: number;
+        occurrence: {
+            id_occurrence: number;
+            location: [number, number];
+            gun: string;
+            occurrence_date_time: string;
+            register_date_time: string;
+            occurrence_type: string;
+            physical_aggression: boolean;
+            police_report: boolean;
+            victim: boolean;
+        };
     };
 };
 
 const OccurrenceDetails: React.FC = () => {
-    const route = useRoute<RouteProp<ParamList, "params">>();
+    const route = useRoute<RouteProp<ParamOccurrence, "params">>();
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -41,22 +51,8 @@ const OccurrenceDetails: React.FC = () => {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
 
-    const formatDate = (date: string) => {
-        const year = date.slice(0, 4);
-        const month = date.slice(5, 7);
-        const day = date.slice(8, 10);
-        return `${day}/${month}/${year}`;
-    };
-
-    const formatTime = (time: string) => {
-        const hours = time.slice(0, 2);
-        const minutes = time.slice(3, 5);
-
-        return `${hours}:${minutes}`;
-    };
-
     const fetchData = () => {
-        if (!route.params && !route.params.occurrence) return null;
+        if (!route.params || !route.params.occurrence) return null;
 
         const occurrence = route.params.occurrence;
         occurrenceTypeItems.forEach((occur_type) => {
@@ -80,8 +76,8 @@ const OccurrenceDetails: React.FC = () => {
 
         const date = occurrence.occurrence_date_time.split(" ")[0];
         const time = occurrence.occurrence_date_time.split(" ")[1];
-        setDate(formatDate(date));
-        setTime(formatTime(time));
+        setDate(getFormattedDate(date, "/"));
+        setTime(getformattedTime(time));
     };
 
     useFocusEffect(() => {
