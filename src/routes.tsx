@@ -3,11 +3,11 @@ import React from "react";
 
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
+import CityStatistics from "./screens/CityStatistics";
 import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
 import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
-import CityStatistics from "./screens/CityStatistics";
 
 const AppStack = createStackNavigator();
 

@@ -254,9 +254,10 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         strokeColor="#000"
                         fillColor={color}
                         tappable
-                        onPress={() => 
-                            navigation.navigate(
-                                'CityStatistics', { city: coordinate.name })
+                        onPress={() =>
+                            navigation.navigate("CityStatistics", {
+                                city: coordinate.name,
+                            })
                         }
                     />
                 );
