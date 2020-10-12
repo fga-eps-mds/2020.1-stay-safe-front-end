@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
 
@@ -46,6 +47,8 @@ interface CitiesCrimes {
 }
 
 const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
+    const navigation = useNavigation();
+
     const [citiesCrimes, setCitiesCrimes] = useState<CitiesCrimes[]>([]);
 
     useEffect(() => {
@@ -251,7 +254,10 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         strokeColor="#000"
                         fillColor={color}
                         tappable
-                        onPress={() => console.log(coordinate.name)}
+                        onPress={() => 
+                            navigation.navigate(
+                                'CityStatistics', { city: coordinate.name })
+                        }
                     />
                 );
             })}
