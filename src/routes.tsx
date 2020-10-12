@@ -7,6 +7,7 @@ import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
 import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
+import CityStatistics from "./screens/CityStatistics";
 
 const AppStack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const Routes = () => {
                 name="OccurrenceDetails"
                 component={OccurrenceDetails}
             />
+            <AppStack.Screen name="CityStatistics" component={CityStatistics} />
         </AppStack.Navigator>
     );
 };
