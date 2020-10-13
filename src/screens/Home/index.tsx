@@ -81,7 +81,6 @@ const Home: React.FC = () => {
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
-    const [isOccurrencesOk, setOccurrencesOk] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -152,7 +151,6 @@ const Home: React.FC = () => {
         useCallback(() => {
             getAllUsersOccurrences().then((response) => {
                 setOccurrences(response.body);
-                setOccurrencesOk(true);
             });
         }, [])
     );
@@ -210,7 +208,7 @@ const Home: React.FC = () => {
                     }}
                     onPress={(e) => handleReportingCoordinatesOnMap(e)}
                 >
-                    {isOccurrencesOk &&
+                    {occurrences !== undefined &&
                         occurrences?.map((occurrence: Occurrence) => {
                             return (
                                 <Marker
