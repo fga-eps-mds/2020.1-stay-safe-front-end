@@ -20,7 +20,7 @@ export const Card = styled.View`
     width: 80%;
     border-radius: ${scale(16)}px;
     margin-bottom: ${scale(18)}px;
-    padding: ${scale(18)}px;
+    padding: ${scale(12)}px ${scale(17)}px;
 `;
 
 export const CardData = styled.View`
@@ -31,7 +31,7 @@ export const Title = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
     color: #011640;
-    margin-bottom: 4%;
+    margin-bottom: ${scale(18)}px;
     text-align: left;
 `;
 
@@ -39,7 +39,6 @@ export const Date = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(16)}px;
     color: #011640;
-    margin-bottom: 4%;
     text-align: left;
 `;
 

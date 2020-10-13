@@ -53,6 +53,8 @@ const Settings: React.FC = () => {
                             setIsLogged(false);
                         }
                     });
+                } else {
+                    setIsLogged(false);
                 }
             });
         }, [])

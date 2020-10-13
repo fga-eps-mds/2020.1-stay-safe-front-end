@@ -5,6 +5,7 @@ import { scale } from "../../utils/scalling";
 export const HeaderTitleContainer = styled.View`
     width: 100%;
     height: ${scale(60)}px;
+    background-color: #f0f0f5;
     flex-direction: row;
     align-items: center;
     justify-content: center;
