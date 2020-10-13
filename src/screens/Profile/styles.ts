@@ -11,6 +11,10 @@ interface InputViewingProps {
     isEditing?: boolean;
 }
 
+interface ButtonProps {
+    isEditing?: boolean;
+}
+
 export const InputViewing = styled(NormalInput)<InputViewingProps>`
     width: 80%;
     background-color: ${(props) => (props.isEditing ? "#ffffff" : "#e0e0e0")};
@@ -31,7 +35,7 @@ export const ProfileButton = styled(NormalSend)`
     background-color: #011640;
 `;
 
-export const EditButton = styled(ProfileButton)`
+export const EditButton = styled(ProfileButton)<ButtonProps>`
     width: 45%;
     background-color: #e83338;
     margin-bottom: ${(props) => (props.isEditing ? `${scale(30)}px` : "0px")};
