@@ -9,5 +9,6 @@
     "resolveJsonModule": true,
     "strict": true,
     "noImplicitAny": false
-  }
+  },
+  "include": ["src/custom.d.ts"]
 }
