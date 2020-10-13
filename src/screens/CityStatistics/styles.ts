@@ -1,5 +1,5 @@
 import DropDownPicker from "react-native-dropdown-picker";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
 
@@ -7,8 +7,12 @@ interface CrimeBarProps {
     percentage: number;
 }
 
+interface CrimeStatisticsProps {
+    loading: boolean;
+}
+
 export const StatisticsCard = styled.View`
-    width: 80%;
+    width: 85%;
     background-color: #ffffff;
     border-radius: ${scale(20)}px;
     align-items: center;
@@ -17,7 +21,7 @@ export const StatisticsCard = styled.View`
 export const YearContainer = styled.View`
     width: 90%;
     height: ${scale(50)}px;
-    margin-top: ${scale(32)}px;
+    margin-top: ${scale(20)}px;
     padding-left: ${scale(20)}px;
     padding-right: ${scale(12)}px;
     padding-top: ${scale(2)}px;
@@ -68,21 +72,31 @@ export const YearDropDown = styled(DropDownPicker).attrs({
     border: 0;
 `;
 
-export const CrimeStatistics = styled.View`
+export const CrimeStatistics = styled.View<CrimeStatisticsProps>`
     width: 90%;
-    border: ${scale(1.5)}px #011640;
-    margin-top: ${scale(41)}px;
+    border-top-width: ${(props) => (props.loading ? scale(0) : scale(1))}px;
+    border-top-color: #011640;
+    margin-top: ${scale(5)}px;
     border-radius: ${scale(20)}px;
     align-items: center;
-    padding-bottom: ${scale(15)};
     margin-bottom: ${scale(20)}px;
+    padding: ${scale(5)}px;
+
+    ${(props) =>
+        props.loading
+            ? css`
+                  padding: ${scale(5)}px;
+              `
+            : css`
+                  padding: ${scale(0)}px;
+                  padding-bottom: ${scale(15)}px;
+              `};
 `;
 
 export const CrimeContainer = styled.View`
     width: 90%;
     height: ${scale(50)}px;
     margin-top: ${scale(15)}px;
-    /* background-color: #000; */
     flex-direction: column;
 `;
 
@@ -94,7 +108,7 @@ export const CrimeText = styled.Text`
 `;
 
 export const CrimeBar = styled.View<CrimeBarProps>`
-    width: ${(props) => props.percentage * 0.95}%;
+    width: ${(props) => props.percentage * 0.87}%;
     height: ${scale(21)}px;
     background-color: #7dbfe2;
     justify-content: center;
