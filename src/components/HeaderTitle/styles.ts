@@ -18,6 +18,6 @@ export const Title = styled.Text`
 `;
 
 export const GoBackContainer = styled.View`
-    left: 10%;
+    left: 5%;
     position: absolute;
 `;
