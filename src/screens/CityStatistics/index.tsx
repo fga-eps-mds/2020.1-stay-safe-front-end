@@ -1,11 +1,12 @@
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
+import { getAllOccurrences } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
 import {
     StatisticsCard,
@@ -29,11 +30,46 @@ type ParamList = {
     };
 };
 
+interface Data {
+    [index: number]: SecretaryOccurrence;
+}
+
+interface SecretaryOccurrence {
+    capture_data: string;
+    cities: Array<CityCrimes>;
+    period: Year;
+}
+
+interface CityCrimes {
+    [city: string]: {
+        crime_nature: string;
+        quantity: number;
+    };
+}
+
+interface Year {
+    year: number;
+}
+
 const CityStatistics: React.FC = () => {
     const [selectedYear, setSelectedYear] = useState("");
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const cityName = route.params.city;
+
+    const [data, setData] = useState<Data>([]);
+
+    const [cityStatistics, setCityStatistics] = useState([]);
+
+    useEffect(() => {
+        getAllOccurrences("df").then((response) => {
+            setData(response.body);
+        });
+    }, []);
+
+    useEffect(() => {
+        console.log("trocou data2");
+    }, [data]);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -69,7 +105,7 @@ const CityStatistics: React.FC = () => {
                             <CrimeContainer>
                                 <CrimeText>Roubo a Transeunte</CrimeText>
                                 <View style={{ flexDirection: "row" }}>
-                                    <CrimeBar percentage={54} />
+                                    <CrimeBar percentage={95} />
                                     <CrimeBarNumber>20</CrimeBarNumber>
                                 </View>
                             </CrimeContainer>
