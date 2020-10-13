@@ -94,8 +94,7 @@ export const CrimeText = styled.Text`
 `;
 
 export const CrimeBar = styled.View<CrimeBarProps>`
-    width: ${(props) =>
-        props.percentage > 95 ? props.percentage - 5 : props.percentage}%;
+    width: ${(props) => props.percentage * 0.95}%;
     height: ${scale(21)}px;
     background-color: #7dbfe2;
     justify-content: center;
