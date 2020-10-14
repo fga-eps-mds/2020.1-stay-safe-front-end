@@ -29,6 +29,9 @@ import {
     ButtonOptionText,
     OptionCircleButton,
     FilterTitle,
+    TabFilter,
+    Tab,
+    TabTitle
 } from "./styles";
 
 type ParamList = {
@@ -82,6 +85,8 @@ const Home: React.FC = () => {
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
+    const [selectedFilter, setSelectedFilter] = useState("heat");
+
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
@@ -98,6 +103,24 @@ const Home: React.FC = () => {
             setIsModalOpen(route.params.showReportModal);
         }
     });
+
+    const handleSubmitFilter = () => {
+        if (selectedFilter == "heat")
+            handleFilterHeatMap();
+        else if (selectedFilter === "pins")
+            handleFilterPins();
+    }
+
+    const handleFilterPins = async () => {
+        const occurrence_type = searchOptions[selectedOption - 1];
+        const response = await getAllUsersOccurrences(occurrence_type.name);
+        if (response.status === 200) {
+            setOccurrences(response.body)
+            setIsFilterOpen(false);
+        }
+        else
+            console.warn("Erro ao pegar todas as ocorrências")
+    }
 
     const handleFilterHeatMap = () => {
         async function loadData() {
@@ -195,7 +218,7 @@ const Home: React.FC = () => {
             {!isLogged && !isFilterOpen && selectedOption <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
-            {selectedOption > 0 && !isFilterOpen ? (
+            {selectedOption > 0 && !isFilterOpen && selectedFilter === "heat"? (
                 <HeatMap secretaryOccurrences={secretaryOccurrences} />
             ) : (
                 <StayNormalMap
@@ -264,11 +287,26 @@ const Home: React.FC = () => {
             >
                 <View
                     style={{
-                        justifyContent: "center",
-                        alignItems: "center",
+                        alignItems: "center"
                     }}
                 >
-                    <FilterTitle>Filtrar crimes</FilterTitle>
+                    <TabFilter>
+                        <Tab onPress={() => setSelectedFilter("heat")} focus={selectedFilter === "heat" ? true : false}>
+                            <TabTitle focus={selectedFilter === "heat" ? true : false}>
+                                Cidade
+                            </TabTitle>
+                        </Tab>
+                        <Tab onPress={() => setSelectedFilter("neighborhood")} focus={selectedFilter === "neighborhood" ? true : false}>
+                            <TabTitle focus={selectedFilter === "neighborhood" ? true : false}>
+                                Bairro
+                            </TabTitle>
+                        </Tab>
+                        <Tab onPress={() => setSelectedFilter("pins")} focus={selectedFilter === "pins" ? true : false}>
+                            <TabTitle focus={selectedFilter === "pins" ? true : false}>
+                                Local
+                            </TabTitle>
+                        </Tab>
+                    </TabFilter>
                 </View>
                 {searchOptions.map((option) => {
                     return (
@@ -290,10 +328,10 @@ const Home: React.FC = () => {
                         </ButtonOptionContainer>
                     );
                 })}
-                <View style={{ alignItems: "center" }}>
+                <View style={{ alignItems: "center",  }}>
                     <NormalSend
                         style={{ width: "50%" }}
-                        onPress={() => handleFilterHeatMap()}
+                        onPress={() => handleSubmitFilter()}
                     >
                         <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
