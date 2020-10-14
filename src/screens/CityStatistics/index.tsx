@@ -156,7 +156,7 @@ const CityStatistics: React.FC = () => {
                         </YearContainer>
                         <CrimeStatistics loading={isLoading}>
                             {isLoading ? (
-                                <CircularLoader />
+                                <CircularLoader size={40} />
                             ) : (
                                 cityStatistics.map((cityStatistic) => {
                                     const percentage =

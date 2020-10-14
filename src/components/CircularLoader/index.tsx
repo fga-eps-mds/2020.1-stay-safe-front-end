@@ -14,7 +14,7 @@ const CircularLoader: React.FC<CircularLoaderProps> = ({
 }) => {
     return (
         <Container>
-            <ActivityIndicator size={40} color={color} />
+            <ActivityIndicator size={size} color={color} />
         </Container>
     );
 };
