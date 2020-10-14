@@ -51,6 +51,9 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
 
     const [citiesCrimes, setCitiesCrimes] = useState<CitiesCrimes[]>([]);
 
+    const [isSelected, setIsSelected] = useState(false);
+    const [selectedRegion, setSelectedRegion] = useState("");
+
     useEffect(() => {
         if (secretaryOccurrences && secretaryOccurrences[1]) {
             const cities = coordinates.map((coordinate) => {
@@ -245,6 +248,21 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                     if (cityColor[0].color) color = cityColor[0].color;
                 }
 
+                if (isSelected && coordinate.name === selectedRegion) {
+                    const lastProp = color.split(", ");
+                    color = "";
+
+                    lastProp.pop();
+
+                    color += lastProp[0];
+                    color += ", ";
+                    color += lastProp[1];
+                    color += ", ";
+                    color += lastProp[2];
+                    color += ", ";
+                    color += "0.2)";
+                }
+
                 return (
                     <Polygon
                         key={coordinate.name}
@@ -254,11 +272,16 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         strokeColor="#000"
                         fillColor={color}
                         tappable
-                        onPress={() =>
-                            navigation.navigate("CityStatistics", {
-                                city: coordinate.name,
-                            })
-                        }
+                        onPress={() => {
+                            setIsSelected(true);
+                            setSelectedRegion(coordinate.name);
+                            setTimeout(() => {
+                                setIsSelected(false);
+                                navigation.navigate("CityStatistics", {
+                                    city: coordinate.name,
+                                });
+                            }, 2000);
+                        }}
                     />
                 );
             })}
