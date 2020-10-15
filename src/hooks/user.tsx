@@ -60,7 +60,7 @@ export const UserProvider: React.FC = ({ children }) => {
         async function loadStorageData(): Promise<void> {
             const [token, username] = await AsyncStorage.multiGet([
                 "@StaySafe:token",
-                "StaySafe:username",
+                "@StaySafe:username",
             ]);
 
             console.log(token, username);
@@ -88,7 +88,7 @@ export const UserProvider: React.FC = ({ children }) => {
 
             await AsyncStorage.multiSet([
                 ["@StaySafe:token", token],
-                ["StaySafe:username", username],
+                ["@StaySafe:username", username],
             ]);
 
             setData({ username, token });
@@ -100,7 +100,7 @@ export const UserProvider: React.FC = ({ children }) => {
     const signOut = useCallback(async () => {
         await AsyncStorage.multiRemove([
             "@StaySafe:token",
-            "StaySafe:username",
+            "@StaySafe:username",
         ]);
 
         setData({ token: "", username: "" });
