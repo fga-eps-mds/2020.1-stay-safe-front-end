@@ -3,6 +3,7 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -55,6 +56,8 @@ interface Year {
 }
 
 const CityStatistics: React.FC = () => {
+    const theme = useTheme();
+
     const [selectedYear, setSelectedYear] = useState("2020");
     const route = useRoute<RouteProp<ParamList, "params">>();
 
@@ -142,7 +145,7 @@ const CityStatistics: React.FC = () => {
                                 <Feather
                                     name="calendar"
                                     size={scale(18)}
-                                    color="#E83338"
+                                    color={theme.primaryRed}
                                 />
                                 <YearTitle>Ano</YearTitle>
                             </YearTitleContainer>
@@ -198,7 +201,7 @@ const CityStatistics: React.FC = () => {
                         <MaterialCommunityIcons
                             name="sort-variant"
                             size={scale(25)}
-                            color="#FFFFFF"
+                            color={theme.primaryWhite}
                         />
                         <SortButtontText>Ordenar Cidades</SortButtontText>
                     </SortButton>
