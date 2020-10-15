@@ -16,3 +16,14 @@ export const getOccurrencesByCrimeNature = async (
     );
     return { status: response.status, body: await response.json() };
 };
+
+export const getAllOccurrences = async (uf: string) => {
+    const response = await fetch(secretaryApi + `?secretary=${uf}`, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    });
+    return { status: response.status, body: await response.json() };
+};

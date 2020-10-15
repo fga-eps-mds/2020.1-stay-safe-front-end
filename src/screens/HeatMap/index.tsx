@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
 import { useTheme } from "styled-components";
@@ -47,9 +48,13 @@ interface CitiesCrimes {
 }
 
 const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
+    const navigation = useNavigation();
     const theme = useTheme();
 
     const [citiesCrimes, setCitiesCrimes] = useState<CitiesCrimes[]>([]);
+
+    const [isSelected, setIsSelected] = useState(false);
+    const [selectedRegion, setSelectedRegion] = useState("");
 
     useEffect(() => {
         if (secretaryOccurrences && secretaryOccurrences[1]) {
@@ -245,6 +250,21 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                     if (cityColor[0].color) color = cityColor[0].color;
                 }
 
+                if (isSelected && coordinate.name === selectedRegion) {
+                    const lastProp = color.split(", ");
+                    color = "";
+
+                    lastProp.pop();
+
+                    color += lastProp[0];
+                    color += ", ";
+                    color += lastProp[1];
+                    color += ", ";
+                    color += lastProp[2];
+                    color += ", ";
+                    color += "0.2)";
+                }
+
                 return (
                     <Polygon
                         key={coordinate.name}
@@ -254,7 +274,16 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         strokeColor={theme.primaryBlack}
                         fillColor={color}
                         tappable
-                        onPress={() => console.log(coordinate.name)}
+                        onPress={() => {
+                            setIsSelected(true);
+                            setSelectedRegion(coordinate.name);
+                            setTimeout(() => {
+                                setIsSelected(false);
+                                navigation.navigate("CityStatistics", {
+                                    city: coordinate.name,
+                                });
+                            }, 2000);
+                        }}
                     />
                 );
             })}
