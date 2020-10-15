@@ -6,7 +6,6 @@ import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import { useGeneralAppContext } from "../../../App";
 import HeaderTitle from "../../components/HeaderTitle";
 import {
     SendLabel,
@@ -14,6 +13,7 @@ import {
     KeyboardScrollView,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import { deleteUser, getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
@@ -34,7 +34,7 @@ interface ButtonObject {
 }
 
 const Settings: React.FC = () => {
-    const { switchTheme } = useGeneralAppContext();
+    const { switchTheme } = useUser();
     const theme = useTheme();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -120,7 +120,11 @@ const Settings: React.FC = () => {
                                 size={scale(20)}
                                 color={theme.primarySuperDarkBlue}
                             />
-                            <ButtonText>Modo Escuro</ButtonText>
+                            <ButtonText>
+                                {theme.type === "dark"
+                                    ? "Modo Claro"
+                                    : "Modo Escuro"}
+                            </ButtonText>
                         </Button>
                     </ButtonsContainer>
 
