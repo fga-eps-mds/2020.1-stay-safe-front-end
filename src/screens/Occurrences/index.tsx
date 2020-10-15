@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
@@ -8,6 +7,7 @@ import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import {
     getUserOccurrences,
     deleteOccurrence,
@@ -38,6 +38,7 @@ interface Occurrence {
 const Occurrences: React.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
+    const { data } = useUser();
 
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
@@ -52,9 +53,8 @@ const Occurrences: React.FC = () => {
     }, [navigation]);
 
     const fetchData = async () => {
-        const username = await AsyncStorage.getItem("username");
-        if (username != null) {
-            const response = await getUserOccurrences(username);
+        if (data.username !== "") {
+            const response = await getUserOccurrences(data.username);
             if (!response.body.errors && response.status === 200)
                 setOccurrences(response.body);
             else console.warn("Falha ao carregar as ocorrências do usuário.");
@@ -62,9 +62,8 @@ const Occurrences: React.FC = () => {
     };
 
     const handleDelete = async (id: number) => {
-        const userToken = await AsyncStorage.getItem("userToken");
-        if (userToken != null) {
-            const response = await deleteOccurrence(id, userToken);
+        if (data.token !== "") {
+            const response = await deleteOccurrence(id, data.token);
             if (response.status === 204) {
                 setOccurrences(
                     occurrences.filter(

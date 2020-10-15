@@ -1,11 +1,12 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import { useUser } from "../hooks/user";
 import StayAlert from "./StayAlert";
 
 const LoggedInModal = (props) => {
+    const { data } = useUser();
     const [showAlert, changeAlert] = useState(false);
     const { navObject, show } = props;
 
@@ -15,14 +16,12 @@ const LoggedInModal = (props) => {
     });
 
     const verifyUserLoggedIn = async () => {
-        const userToken = await AsyncStorage.getItem("userToken");
-
-        if (!userToken || show) {
+        if (data.token === "" && data.username === "") {
             changeAlert(true);
         }
     };
 
-    useFocusEffect(() => {
+    useEffect(() => {
         verifyUserLoggedIn();
     });
 

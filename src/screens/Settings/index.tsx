@@ -6,6 +6,7 @@ import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
 import {
     SendLabel,
@@ -34,40 +35,25 @@ interface ButtonObject {
 }
 
 const Settings: React.FC = () => {
-    const { switchTheme } = useUser();
+    const { switchTheme, data, signOut } = useUser();
     const theme = useTheme();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigation = useNavigation();
 
-    const [isLogged, setIsLogged] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
 
-    useFocusEffect(
-        useCallback(() => {
-            AsyncStorage.getItem("username").then((username) => {
-                if (username !== null) {
-                    getUser(username).then((response) => {
-                        if (response.status === 200) {
-                            setIsLogged(true);
-                        } else {
-                            setIsLogged(false);
-                        }
-                    });
-                } else {
-                    setIsLogged(false);
-                }
-            });
-        }, [])
-    );
+    const handleLogout = async () => {
+        setIsLoading(true);
 
-    const handleLogout = () => {
-        AsyncStorage.removeItem("userToken");
-        AsyncStorage.removeItem("username");
+        await signOut();
+
+        setIsLoading(false);
         navigation.navigate("Home");
     };
 
@@ -93,7 +79,7 @@ const Settings: React.FC = () => {
                     <ButtonsContainer>
                         {buttonsObject.map((button: ButtonObject) => {
                             return button.userLogged ? (
-                                isLogged && (
+                                data.token !== "" && (
                                     <Button key={button.title}>
                                         <Feather
                                             name={button.icon}
@@ -128,15 +114,21 @@ const Settings: React.FC = () => {
                         </Button>
                     </ButtonsContainer>
 
-                    {isLogged && (
+                    {data.token !== "" && (
                         <UserButtonsContainer>
                             <LogoutButton onPress={() => handleLogout()}>
-                                <Feather
-                                    name="log-out"
-                                    size={scale(20)}
-                                    color={theme.primaryWhite}
-                                />
-                                <SendLabel>Sair</SendLabel>
+                                {isLoading ? (
+                                    <CircularLoader size={30} />
+                                ) : (
+                                    <>
+                                        <Feather
+                                            name="log-out"
+                                            size={scale(20)}
+                                            color={theme.primaryWhite}
+                                        />
+                                        <SendLabel>Sair</SendLabel>
+                                    </>
+                                )}
                             </LogoutButton>
                             <DeleteButton onPress={() => setIsModalOpen(true)}>
                                 <DeleteText>Excluir conta</DeleteText>

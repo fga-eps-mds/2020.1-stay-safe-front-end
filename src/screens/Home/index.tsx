@@ -16,6 +16,7 @@ import { useTheme } from "styled-components";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import { getUser } from "../../services/users";
@@ -69,12 +70,12 @@ interface Year {
 
 const Home: React.FC = () => {
     const theme = useTheme();
+    const { data } = useUser();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLogged, setIsLogged] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
@@ -136,22 +137,6 @@ const Home: React.FC = () => {
 
     useFocusEffect(
         useCallback(() => {
-            AsyncStorage.getItem("username").then((username) => {
-                if (username !== null) {
-                    getUser(username).then((response) => {
-                        if (response.status === 200) {
-                            setIsLogged(true);
-                        } else {
-                            setIsLogged(false);
-                        }
-                    });
-                }
-            });
-        }, [route.params?.showReportModal])
-    );
-
-    useFocusEffect(
-        useCallback(() => {
             getAllUsersOccurrences().then((response) => {
                 setOccurrences(response.body);
             });
@@ -199,7 +184,7 @@ const Home: React.FC = () => {
                     />
                 </FilterButton>
             )}
-            {!isLogged && !isFilterOpen && selectedOption <= 0 && (
+            {data.token === "" && !isFilterOpen && selectedOption <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
             {selectedOption > 0 && !isFilterOpen ? (
@@ -238,7 +223,7 @@ const Home: React.FC = () => {
                 </StayNormalMap>
             )}
             <StayAlert
-                show={isModalOpen && isLogged}
+                show={isModalOpen && data.token !== ""}
                 title="Reportar Ocorrência"
                 message="Toque para selecionar o local no mapa com o marcador"
                 showConfirmButton

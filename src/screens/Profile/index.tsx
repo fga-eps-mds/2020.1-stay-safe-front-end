@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
     useNavigation,
@@ -20,6 +19,7 @@ import {
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
@@ -34,6 +34,7 @@ import {
 
 const Profile: React.FC = () => {
     const theme = useTheme();
+    const { data } = useUser();
 
     const [username, setUsername] = useState("");
     const [userFullName, setUserFullName] = useState("");
@@ -42,8 +43,6 @@ const Profile: React.FC = () => {
     const [userConfirmPwd, setUserConfirmPwd] = useState("");
 
     const isFocused = useIsFocused();
-
-    const [isLogged, setIsLogged] = useState(false);
 
     const navigation = useNavigation();
 
@@ -57,33 +56,28 @@ const Profile: React.FC = () => {
 
     useFocusEffect(
         useCallback(() => {
-            AsyncStorage.getItem("username").then((username) => {
-                if (username !== null) {
-                    getUser(username).then((response) => {
-                        if (response.status === 200) {
-                            setUsername(response.body.username);
-                            setUserFullName(response.body.full_name);
-                            setUserEmail(response.body.email);
-                            setIsLogged(true);
-                        } else {
-                            setUsername("");
-                            setUserFullName("");
-                            setUserEmail("");
-                            setUserPwd("");
-                            setUserConfirmPwd("");
-                            setIsLogged(false);
-                        }
-                    });
-                } else {
-                    setUsername("");
-                    setUserFullName("");
-                    setUserEmail("");
-                    setUserPwd("");
-                    setUserConfirmPwd("");
-                    setIsLogged(false);
-                }
-            });
-        }, [])
+            if (data.username !== "" && data.token !== "") {
+                getUser(data.username).then((response) => {
+                    if (response.status === 200) {
+                        setUsername(response.body.username);
+                        setUserFullName(response.body.full_name);
+                        setUserEmail(response.body.email);
+                    } else {
+                        setUsername("");
+                        setUserFullName("");
+                        setUserEmail("");
+                        setUserPwd("");
+                        setUserConfirmPwd("");
+                    }
+                });
+            } else {
+                setUsername("");
+                setUserFullName("");
+                setUserEmail("");
+                setUserPwd("");
+                setUserConfirmPwd("");
+            }
+        }, [data])
     );
 
     const handleUpdateProfile = async () => {
@@ -95,7 +89,6 @@ const Profile: React.FC = () => {
                 confirmPassword: userConfirmPwd,
             })
         ) {
-            const token = await AsyncStorage.getItem("userToken");
             let editedUser;
             if (userPwd === null || userPwd === "") {
                 editedUser = {
@@ -110,8 +103,8 @@ const Profile: React.FC = () => {
                 };
             }
 
-            if (token !== null) {
-                const response = await updateUser(editedUser, token);
+            if (data.token !== "") {
+                const response = await updateUser(editedUser, data.token);
 
                 if (!response.body.error && response.status === 200) {
                     setIsUserEdited(true);
@@ -136,7 +129,9 @@ const Profile: React.FC = () => {
         <SafeAreaView
             style={{ flex: 1, backgroundColor: theme.primaryBackground }}
         >
-            {isFocused && <LoggedInModal navObject={navigation} />}
+            {isFocused && data.token === "" && (
+                <LoggedInModal navObject={navigation} />
+            )}
             <Container>
                 <HeaderTitle
                     text="Perfil"
@@ -182,7 +177,7 @@ const Profile: React.FC = () => {
                         onChangeText={(text) => setUserEmail(text)}
                     />
 
-                    {isLogged && isEditing && (
+                    {data.token !== "" && isEditing && (
                         <>
                             <NormalLabel>Senha</NormalLabel>
                             <InputViewing
@@ -204,7 +199,7 @@ const Profile: React.FC = () => {
                         </>
                     )}
 
-                    {isLogged && (
+                    {data.token !== "" && (
                         <EditButton
                             isEditing={isEditing}
                             onPress={
@@ -224,7 +219,7 @@ const Profile: React.FC = () => {
                         </EditButton>
                     )}
 
-                    {isLogged && !isEditing && (
+                    {data.token !== "" && !isEditing && (
                         <ButtonsContainer>
                             <ProfileButton
                                 onPress={() =>
