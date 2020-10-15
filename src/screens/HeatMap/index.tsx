@@ -282,7 +282,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                                 navigation.navigate("CityStatistics", {
                                     city: coordinate.name,
                                 });
-                            }, 2000);
+                            }, 1000);
                         }}
                     />
                 );
