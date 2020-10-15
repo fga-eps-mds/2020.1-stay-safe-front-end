@@ -1,8 +1,6 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -20,7 +18,6 @@ import {
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
-import { authUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 
 const Login: React.FC = () => {

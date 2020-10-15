@@ -1,4 +1,3 @@
-import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useEffect, useState } from "react";
 
@@ -8,7 +7,7 @@ import StayAlert from "./StayAlert";
 const LoggedInModal = (props) => {
     const { data } = useUser();
     const [showAlert, changeAlert] = useState(false);
-    const { navObject, show } = props;
+    const { navObject } = props;
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../fonts/TruenoSBd.otf"),

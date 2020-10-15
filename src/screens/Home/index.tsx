@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
     useRoute,
@@ -19,7 +18,6 @@ import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
-import { getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import HeatMap from "../HeatMap";
 import { searchOptions } from "./searchOptions";

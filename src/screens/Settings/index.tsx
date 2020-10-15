@@ -1,8 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-community/async-storage";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -15,7 +15,7 @@ import {
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
-import { deleteUser, getUser } from "../../services/users";
+import { deleteUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
 import {
