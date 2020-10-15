@@ -1,6 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useTheme } from "styled-components";
 
 import { scale } from "../../utils/scalling";
 import { HeaderTitleContainer, Title, GoBackContainer } from "./styles";
@@ -17,6 +18,7 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({
     onPressGoBack = null,
 }) => {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     return (
         <HeaderTitleContainer>
@@ -32,7 +34,7 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({
                         }}
                         name="arrow-left"
                         size={scale(28)}
-                        color="#010A26"
+                        color={theme.primarySuperDarkBlue}
                     />
                 </GoBackContainer>
             )}

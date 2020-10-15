@@ -4,7 +4,9 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import { useGeneralAppContext } from "../../../App";
 import HeaderTitle from "../../components/HeaderTitle";
 import {
     SendLabel,
@@ -32,6 +34,9 @@ interface ButtonObject {
 }
 
 const Settings: React.FC = () => {
+    const { switchTheme } = useGeneralAppContext();
+    const theme = useTheme();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigation = useNavigation();
 
@@ -79,7 +84,9 @@ const Settings: React.FC = () => {
     if (!loaded) return null;
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f5" }}>
+        <SafeAreaView
+            style={{ flex: 1, backgroundColor: theme.primaryBackground }}
+        >
             <Container>
                 <HeaderTitle text="Configurações" />
                 <KeyboardScrollView>
@@ -91,7 +98,7 @@ const Settings: React.FC = () => {
                                         <Feather
                                             name={button.icon}
                                             size={scale(20)}
-                                            color="#010A26"
+                                            color={theme.primarySuperDarkBlue}
                                         />
                                         <ButtonText>{button.title}</ButtonText>
                                     </Button>
@@ -101,12 +108,20 @@ const Settings: React.FC = () => {
                                     <Feather
                                         name={button.icon}
                                         size={scale(20)}
-                                        color="#010A26"
+                                        color={theme.primarySuperDarkBlue}
                                     />
                                     <ButtonText>{button.title}</ButtonText>
                                 </Button>
                             );
                         })}
+                        <Button onPress={switchTheme}>
+                            <Feather
+                                name={theme.type === "dark" ? "moon" : "sun"}
+                                size={scale(20)}
+                                color={theme.primarySuperDarkBlue}
+                            />
+                            <ButtonText>Modo Escuro</ButtonText>
+                        </Button>
                     </ButtonsContainer>
 
                     {isLogged && (
@@ -115,7 +130,7 @@ const Settings: React.FC = () => {
                                 <Feather
                                     name="log-out"
                                     size={scale(20)}
-                                    color="#FFFFFF"
+                                    color={theme.primaryWhite}
                                 />
                                 <SendLabel>Sair</SendLabel>
                             </LogoutButton>

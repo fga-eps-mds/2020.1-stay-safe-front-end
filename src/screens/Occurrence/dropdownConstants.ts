@@ -72,10 +72,8 @@ export const policeReportItems = [
 ];
 
 export const dropdownStyle = {
-    backgroundColor: "#ffffff",
     borderTopLeftRadius: scale(15),
     borderTopRightRadius: scale(15),
     borderBottomLeftRadius: scale(15),
     borderBottomRightRadius: scale(15),
-    borderColor: "#ffffff",
 };

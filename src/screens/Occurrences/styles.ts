@@ -4,7 +4,7 @@ import { scale } from "../../utils/scalling";
 
 export const ScrollViewStyled = styled.ScrollView`
     flex: 1;
-    background-color: #f0f0f5;
+    background-color: ${(props) => props.theme.primaryBackground};
 `;
 
 export const CardContainer = styled.View`
@@ -16,7 +16,7 @@ export const CardContainer = styled.View`
 export const Card = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.primaryWhite};
     width: 80%;
     border-radius: ${scale(16)}px;
     margin-bottom: ${scale(18)}px;
@@ -30,7 +30,7 @@ export const CardData = styled.View`
 export const Title = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
     margin-bottom: ${scale(18)}px;
     text-align: left;
 `;
@@ -38,7 +38,7 @@ export const Title = styled.Text`
 export const Date = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(16)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
     text-align: left;
 `;
 

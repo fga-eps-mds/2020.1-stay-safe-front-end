@@ -1,6 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Route, useLinkProps } from "@react-navigation/native";
 import React from "react";
+import { useTheme } from "styled-components";
 
 import Home from "../screens/Home";
 import Profile from "../screens/Profile";
@@ -12,6 +14,7 @@ import { scale } from "../utils/scalling";
 const Tab = createBottomTabNavigator();
 
 const HomeTabBar: React.FC = () => {
+    const theme = useTheme();
     return (
         <>
             <Tab.Navigator
@@ -42,12 +45,12 @@ const HomeTabBar: React.FC = () => {
                     },
                 })}
                 tabBarOptions={{
-                    activeTintColor: "#7DBFE2",
-                    inactiveTintColor: "#C8C8C8",
+                    activeTintColor: theme.primaryLightBlue,
+                    inactiveTintColor: theme.primaryGray,
                     showLabel: false,
                     style: {
                         height: "8.5%",
-                        backgroundColor: "#ffffff",
+                        backgroundColor: theme.primaryWhite,
                         borderTopLeftRadius: scale(18),
                         borderTopRightRadius: scale(18),
                         marginTop: -scale(18),

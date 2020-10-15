@@ -10,7 +10,7 @@ import Occurrences from "./screens/Occurrences";
 
 const AppStack = createStackNavigator();
 
-const Routes = () => {
+const Routes: React.FC = () => {
     return (
         <AppStack.Navigator
             screenOptions={{ headerShown: false }}

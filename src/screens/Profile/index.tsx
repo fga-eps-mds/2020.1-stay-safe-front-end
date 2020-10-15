@@ -9,6 +9,7 @@ import * as Font from "expo-font";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import LoggedInModal from "../../components/LoggedInModal";
@@ -32,6 +33,8 @@ import {
 } from "./styles";
 
 const Profile: React.FC = () => {
+    const theme = useTheme();
+
     const [username, setUsername] = useState("");
     const [userFullName, setUserFullName] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -130,7 +133,9 @@ const Profile: React.FC = () => {
     if (!loaded) return null;
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f5" }}>
+        <SafeAreaView
+            style={{ flex: 1, backgroundColor: theme.primaryBackground }}
+        >
             {isFocused && <LoggedInModal navObject={navigation} />}
             <Container>
                 <HeaderTitle
@@ -207,7 +212,7 @@ const Profile: React.FC = () => {
                             <Feather
                                 name={isEditing ? "save" : "edit-3"}
                                 size={scale(18)}
-                                color="#ffffff"
+                                color={theme.primaryWhite}
                             />
                             <ButtonLabel>
                                 {isEditing ? "Salvar" : "Editar Perfil"}
@@ -225,7 +230,7 @@ const Profile: React.FC = () => {
                                 <Feather
                                     name="clipboard"
                                     size={scale(18)}
-                                    color="#ffffff"
+                                    color={theme.primaryWhite}
                                 />
                                 <ButtonLabel>Minhas Ocorrências</ButtonLabel>
                             </ProfileButton>
@@ -234,7 +239,7 @@ const Profile: React.FC = () => {
                                 <Feather
                                     name="star"
                                     size={scale(18)}
-                                    color="#ffffff"
+                                    color={theme.primaryWhite}
                                 />
                                 <ButtonLabel>Minhas Avaliações</ButtonLabel>
                             </ProfileButton>

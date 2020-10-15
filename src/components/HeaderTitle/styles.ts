@@ -5,7 +5,7 @@ import { scale } from "../../utils/scalling";
 export const HeaderTitleContainer = styled.View`
     width: 100%;
     height: ${scale(60)}px;
-    background-color: #f0f0f5;
+    background-color: ${(props) => props.theme.primaryBackground};
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -13,7 +13,7 @@ export const HeaderTitleContainer = styled.View`
 
 export const Title = styled.Text`
     font-size: ${scale(16)}px;
-    color: #e83338;
+    color: ${(props) => props.theme.primaryRed};
     line-height: ${scale(20)}px;
     font-family: Trueno-SemiBold;
 `;

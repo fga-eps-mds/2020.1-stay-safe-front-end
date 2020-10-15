@@ -4,13 +4,13 @@ import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
 
-export const DropDown = styled(DropDownPicker).attrs({
+export const DropDown = styled(DropDownPicker).attrs((props) => ({
     placeholder: "Selecionar",
     containerStyle: {
         height: scale(42),
     },
     dropDownStyle: {
-        backgroundColor: "#ffffff",
+        backgroundColor: props.theme.primaryWhite,
         borderTopLeftRadius: scale(15),
         borderTopRightRadius: scale(15),
         borderBottomLeftRadius: scale(15),
@@ -20,15 +20,15 @@ export const DropDown = styled(DropDownPicker).attrs({
         fontFamily: "Trueno-Regular",
         fontSize: scale(14),
         textAlign: "center",
-        color: "#011640",
+        color: props.theme.primaryDarkBlue,
     },
     activeLabelStyle: {
-        color: "#011640",
+        color: props.theme.primaryDarkBlue,
         fontFamily: "Trueno-SemiBold",
     },
-    arrowColor: "#e83338",
+    arrowColor: props.theme.primaryRed,
     arrowSize: 18,
-})``;
+}))``;
 
 export const InputWrapper = styled.View`
     width: 80%;
@@ -49,7 +49,7 @@ export const TouchablePicker = styled.TouchableOpacity.attrs({
     height: ${scale(42)}px;
     width: 100%;
     align-items: center;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(15)}px;
     padding: ${scale(12)}px;
 `;
@@ -57,7 +57,7 @@ export const TouchablePicker = styled.TouchableOpacity.attrs({
 export const PlaceholderPicker = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(14)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
 `;
 
 export const DatePicker = styled(DateTimePicker).attrs({

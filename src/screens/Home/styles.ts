@@ -16,7 +16,7 @@ export const FilterButton = styled.TouchableOpacity`
     justify-content: center;
     top: 8%;
     right: 7%;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.primaryWhite};
     z-index: 6;
     border-radius: ${scale(50)}px;
 `;
@@ -28,12 +28,14 @@ export const FilterModal = styled(Modal)`
     margin-top: ${scale(50)}px;
     border-radius: ${scale(30)}px;
     padding: ${scale(20)}px ${scale(28)}px;
+    background-color: ${(props) => props.theme.primaryWhite};
 `;
 
 export const FilterTitle = styled.Text`
     font-size: ${scale(20)}px;
     font-family: Trueno-SemiBold;
     margin-bottom: ${scale(15)}px;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
 export const ButtonOptionContainer = styled.View`
@@ -52,4 +54,5 @@ export const OptionCircleButton = styled.TouchableOpacity`
 export const ButtonOptionText = styled.Text`
     font-size: ${scale(16)}px;
     font-family: Trueno-Regular;
+    color: ${(props) => props.theme.primaryBlack};
 `;

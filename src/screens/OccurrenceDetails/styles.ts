@@ -27,5 +27,5 @@ export const FieldContainer = styled.View`
 export const Field = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(15)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
 `;

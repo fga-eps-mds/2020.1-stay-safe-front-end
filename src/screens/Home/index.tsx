@@ -11,6 +11,7 @@ import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
@@ -67,6 +68,8 @@ interface Year {
 }
 
 const Home: React.FC = () => {
+    const theme = useTheme();
+
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
 
@@ -189,7 +192,11 @@ const Home: React.FC = () => {
                     }}
                     onPress={() => setIsFilterOpen(true)}
                 >
-                    <Feather name="filter" size={scale(30)} color="#C8C8C8" />
+                    <Feather
+                        name="filter"
+                        size={scale(30)}
+                        color={theme.primaryGray}
+                    />
                 </FilterButton>
             )}
             {!isLogged && !isFilterOpen && selectedOption <= 0 && (
@@ -283,7 +290,7 @@ const Home: React.FC = () => {
                                             : "circle"
                                     }
                                     size={scale(20)}
-                                    color="#000000"
+                                    color={theme.primaryBlack}
                                 />
                             </OptionCircleButton>
                             <ButtonOptionText>{option.name}</ButtonOptionText>

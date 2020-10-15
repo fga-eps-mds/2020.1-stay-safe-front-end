@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import StayAlert from "../../components/StayAlert";
@@ -36,6 +37,7 @@ interface Occurrence {
 
 const Occurrences: React.FC = () => {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
@@ -100,7 +102,7 @@ const Occurrences: React.FC = () => {
                                         <Feather
                                             name="edit-3"
                                             size={scale(22)}
-                                            color="#010A26"
+                                            color={theme.primarySuperDarkBlue}
                                         />
                                     </TouchableOpacity>
                                     <TouchableOpacity
@@ -114,7 +116,7 @@ const Occurrences: React.FC = () => {
                                         <Feather
                                             name="trash-2"
                                             size={scale(22)}
-                                            color="#010A26"
+                                            color={theme.primarySuperDarkBlue}
                                         />
                                     </TouchableOpacity>
                                 </CardActions>
@@ -135,7 +137,6 @@ const Occurrences: React.FC = () => {
                     onDismiss={() => setConfirmModal(false)}
                 />
             </ScrollViewStyled>
-
         </SafeAreaView>
     );
 };
