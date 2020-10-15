@@ -3,6 +3,7 @@ import React from "react";
 
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
+import CityStatistics from "./screens/CityStatistics";
 import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
 import OccurrenceDetails from "./screens/OccurrenceDetails";
@@ -25,6 +26,7 @@ const Routes = () => {
                 name="OccurrenceDetails"
                 component={OccurrenceDetails}
             />
+            <AppStack.Screen name="CityStatistics" component={CityStatistics} />
         </AppStack.Navigator>
     );
 };
