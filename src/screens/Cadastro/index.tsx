@@ -4,6 +4,7 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import {
@@ -23,6 +24,7 @@ import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const [username, setUsername] = useState("");
     const [userFullName, setUserFullName] = useState("");
@@ -83,7 +85,11 @@ const Cadastro: React.FC = () => {
 
                 <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(75)} height={scale(75)} />
+                        <Logo
+                            style={{ color: theme.primaryRed }}
+                            width={scale(75)}
+                            height={scale(75)}
+                        />
                     </LogoWrapper>
 
                     <Title>Cadastro</Title>

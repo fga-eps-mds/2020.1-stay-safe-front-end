@@ -4,6 +4,7 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import {
     Container,
@@ -22,6 +23,7 @@ import { scale } from "../../utils/scalling";
 
 const Login: React.FC = () => {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const [username, setUsername] = useState("");
     const [userPwd, setUserPwd] = useState("");
@@ -55,7 +57,11 @@ const Login: React.FC = () => {
             <Container>
                 <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(75)} height={scale(75)} />
+                        <Logo
+                            style={{ color: theme.primaryRed }}
+                            width={scale(75)}
+                            height={scale(75)}
+                        />
                     </LogoWrapper>
 
                     <Title>Entrar</Title>
