@@ -1,6 +1,5 @@
 import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Route, useLinkProps } from "@react-navigation/native";
 import React from "react";
 import { useTheme } from "styled-components";
 
