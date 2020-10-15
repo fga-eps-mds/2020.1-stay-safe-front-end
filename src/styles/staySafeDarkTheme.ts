@@ -1,12 +1,12 @@
 export default {
     type: "dark",
-    primaryDarkBlue: "#8257E6",
-    primarySuperDarkBlue: "#BE375F",
-    primaryLightBlue: "#ED8554",
+    primaryDarkBlue: "#BB86FC",
+    primarySuperDarkBlue: "#03DAC3",
+    primaryLightBlue: "#3700B3",
     primaryWhite: "#000000",
-    primaryRed: "#E4443F",
+    primaryRed: "#8257E6",
     primaryGray: "#F5EB6D",
-    primaryBackground: "#8C8C8C",
+    primaryBackground: "#121212",
     primaryBlack: "#FFFFFF",
 
     heatMapGreen: "rgba(101, 239, 0, 0.6)",
