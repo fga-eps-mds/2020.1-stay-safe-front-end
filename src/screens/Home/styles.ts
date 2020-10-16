@@ -23,7 +23,7 @@ export const FilterButton = styled.TouchableOpacity`
 
 export const FilterModal = styled(Modal)`
     position: absolute;
-    height: ${scale(375)}px;
+    height: ${scale(465)}px;
     width: ${scale(300)}px;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;

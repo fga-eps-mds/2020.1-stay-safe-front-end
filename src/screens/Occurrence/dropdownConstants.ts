@@ -21,6 +21,14 @@ export const occurrenceTypeItems = [
         label: "Estupro",
         value: "Estupro",
     },
+    {
+        label: "Furto a Transeunte",
+        value: "Furto a Transeunte",
+    },
+    {
+        label: "Furto de Veículo",
+        value: "Furto de Veículo",
+    },
 ];
 
 export const gunItems = [

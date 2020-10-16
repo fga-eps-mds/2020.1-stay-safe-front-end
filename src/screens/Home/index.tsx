@@ -34,6 +34,8 @@ import {
     TabTitle
 } from "./styles";
 
+import Logo from '../../img/logo.svg';
+
 type ParamList = {
     params: {
         showReportModal: boolean;
@@ -79,7 +81,7 @@ const Home: React.FC = () => {
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(0);
+    const [selectedOption, setSelectedOption] = useState([0]);
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
@@ -104,6 +106,10 @@ const Home: React.FC = () => {
         }
     });
 
+    const getPinColor = (occurrence) => {
+        return searchOptions.filter(op => op.name === occurrence.occurrence_type)[0].color
+    }
+
     const handleSubmitFilter = () => {
         if (selectedFilter == "heat")
             handleFilterHeatMap();
@@ -112,7 +118,7 @@ const Home: React.FC = () => {
     }
 
     const handleFilterPins = async () => {
-        const occurrence_type = searchOptions[selectedOption - 1];
+        // const occurrence_type = searchOptions[selectedOption - 1];
         const response = await getAllUsersOccurrences(occurrence_type.name);
         if (response.status === 200) {
             setOccurrences(response.body)
@@ -124,7 +130,7 @@ const Home: React.FC = () => {
 
     const handleFilterHeatMap = () => {
         async function loadData() {
-            const option = searchOptions[selectedOption - 1];
+            const option = searchOptions[selectedOption[0] - 1];
 
             const response = await getOccurrencesByCrimeNature(
                 "df",
@@ -145,7 +151,7 @@ const Home: React.FC = () => {
             }
         }
 
-        if (selectedOption > 0) {
+        if (selectedOption[0] > 0) {
             loadData().then((res) => {
                 setIsFilterOpen(false);
             });
@@ -194,10 +200,16 @@ const Home: React.FC = () => {
     };
 
     const handleSelectOption = (id: number) => {
-        if (selectedOption === id) {
-            setSelectedOption(0);
+        if (selectedOption.indexOf(id) >= 0) {
+            let aux = selectedOption;
+            aux = aux.filter(i => i !== id)
+            if (aux.length === 0)
+                aux = [0]
+            setSelectedOption(aux)
         } else {
-            setSelectedOption(id);
+            let aux = selectedOption[0] === 0 ? [] : selectedOption;
+            aux.push(id)
+            setSelectedOption(aux);
         }
     };
 
@@ -215,10 +227,10 @@ const Home: React.FC = () => {
                     <Feather name="filter" size={scale(30)} color="#C8C8C8" />
                 </FilterButton>
             )}
-            {!isLogged && !isFilterOpen && selectedOption <= 0 && (
+            {!isLogged && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
-            {selectedOption > 0 && !isFilterOpen && selectedFilter === "heat"? (
+            {selectedOption[0] > 0 && !isFilterOpen && selectedFilter === "heat"? (
                 <HeatMap secretaryOccurrences={secretaryOccurrences} />
             ) : (
                 <StayNormalMap
@@ -248,9 +260,17 @@ const Home: React.FC = () => {
                                             }
                                         )
                                     }
-                                />
+                                    tracksViewChanges={false}
+                                >
+                                    <Logo
+                                        width={scale(40)}      
+                                        height={scale(40)}
+                                        color={getPinColor(occurrence)}
+                                    />
+                                </Marker>
                             );
-                        })}
+                        })
+                    }
                 </StayNormalMap>
             )}
             <StayAlert
@@ -268,9 +288,7 @@ const Home: React.FC = () => {
             <StayAlert
                 show={isWarningOpen}
                 title="Opa!"
-                message={
-                    "Selecione uma opção de filtro.\nPara voltar ao mapa, clique fora da janela."
-                }
+                message={"Selecione uma opção de filtro.\nPara voltar ao mapa, clique fora da janela."}
                 showConfirmButton
                 confirmText="Entendido"
                 onConfirmPressed={() => setIsWarningOpen(false)}
@@ -316,7 +334,7 @@ const Home: React.FC = () => {
                             >
                                 <Feather
                                     name={
-                                        selectedOption === option.id
+                                        selectedOption.indexOf(option.id) >= 0
                                             ? "check-circle"
                                             : "circle"
                                     }

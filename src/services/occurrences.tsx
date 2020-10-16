@@ -36,7 +36,7 @@ export const createOccurrence = async (
 
 export const getAllUsersOccurrences = async (occurrence_type: string) => {
     if (occurrence_type) {
-        const response = await fetch(userApi + `/occurrences?occurrences_types=${occurrence_type}`, {
+        const response = await fetch(userApi + `/occurrences?occurrence_type=${occurrence_type}`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
