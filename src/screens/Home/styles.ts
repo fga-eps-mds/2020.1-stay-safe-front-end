@@ -43,6 +43,12 @@ export const ButtonOptionContainer = styled.View`
     margin-bottom: ${scale(16)}px;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+`;
+
+export const Option = styled.View`
+    flex-direction: row;
+    align-items: center;
 `;
 
 export const OptionCircleButton = styled.TouchableOpacity`
@@ -54,6 +60,14 @@ export const OptionCircleButton = styled.TouchableOpacity`
 export const ButtonOptionText = styled.Text`
     font-size: ${scale(16)}px;
     font-family: Trueno-Regular;
+`;
+
+export const OptionColor = styled.View`
+    background-color: ${(props) =>
+        (props.color ? props.color : '#000000')};
+    border-radius: ${scale(30)}px;
+    height: ${scale(15)}px;
+    width: ${scale(15)}px;
 `;
 
 export const TabFilter = styled.View`

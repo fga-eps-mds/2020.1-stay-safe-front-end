@@ -28,7 +28,9 @@ import {
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
+    Option,
     OptionCircleButton,
+    OptionColor,
     TabFilter,
     Tab,
     TabTitle,
@@ -273,9 +275,9 @@ const Home: React.FC = () => {
                                     tracksViewChanges={false}
                                 >
                                     <Logo
-                                        width={scale(40)}
-                                        height={scale(40)}
-                                        color={getPinColor(occurrence)}
+                                        width={scale(38)}
+                                        height={scale(38)}
+                                        fill={getPinColor(occurrence)}
                                     />
                                 </Marker>
                             );
@@ -349,27 +351,34 @@ const Home: React.FC = () => {
                 {searchOptions.map((option) => {
                     return (
                         <ButtonOptionContainer key={option.id}>
-                            <OptionCircleButton
-                                onPress={() => handleSelectOption(option.id)}
-                            >
-                                <Feather
-                                    name={
-                                        selectedOption.indexOf(option.id) >= 0
-                                            ? "check-circle"
-                                            : "circle"
-                                    }
-                                    size={scale(20)}
-                                    color="#000000"
-                                />
-                            </OptionCircleButton>
-                            <ButtonOptionText>{option.name}</ButtonOptionText>
+                            <Option>
+                                <OptionCircleButton
+                                    onPress={() => handleSelectOption(option.id)}
+                                >
+                                    <Feather
+                                        name={
+                                            selectedOption.indexOf(option.id) >= 0
+                                                ? "check-circle"
+                                                : "circle"
+                                        }
+                                        size={scale(20)}
+                                        color="#000000"
+                                    />
+                                </OptionCircleButton>
+
+                                <ButtonOptionText>{option.name}</ButtonOptionText>
+                            </Option>
+
+                            {selectedFilter === "pins" &&
+                                <OptionColor color={option.color}/>
+                            }
                         </ButtonOptionContainer>
                     );
                 })}
                 <View>
                     <Span
                         show={
-                            !!(
+                            (
                                 selectedFilter === "heat" &&
                                 selectedOption.length > 1
                             )

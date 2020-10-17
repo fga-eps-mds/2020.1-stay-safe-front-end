@@ -21,7 +21,7 @@ export const ReportButton = (props: { navObject: any }) => {
     return (
         <ButtonContainer>
             <AlertButton onPress={() => handleOccurrence()}>
-                <Logo width={scale(35)} height={scale(35)} />
+                <Logo width={scale(35)} height={scale(35)} fill="#e83338" />
             </AlertButton>
         </ButtonContainer>
     );

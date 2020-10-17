@@ -141,7 +141,7 @@ const Profile: React.FC = () => {
 
                 <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(75)} height={scale(75)} />
+                        <Logo width={scale(75)} height={scale(75)} fill="#e83338" />
                     </LogoWrapper>
 
                     <NormalLabel>Username</NormalLabel>
