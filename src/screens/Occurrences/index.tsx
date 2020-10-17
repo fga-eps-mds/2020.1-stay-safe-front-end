@@ -135,7 +135,6 @@ const Occurrences: React.FC = () => {
                     onDismiss={() => setConfirmModal(false)}
                 />
             </ScrollViewStyled>
-
         </SafeAreaView>
     );
 };

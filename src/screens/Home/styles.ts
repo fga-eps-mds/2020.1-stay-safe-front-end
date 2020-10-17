@@ -31,16 +31,11 @@ export const FilterModal = styled(Modal)`
     padding-vertical: ${scale(20)}px;
 `;
 
-export const FilterTitle = styled.Text`
-    font-size: ${scale(20)}px;
-    font-family: Trueno-SemiBold;
-    margin-bottom: ${scale(15)}px;
-`;
-
 export const Span = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(10)}px;
     color: #e83338;
+    opacity: ${(props) => (props.show ? 1 : 0)};
 `;
 
 export const ButtonOptionContainer = styled.View`
@@ -67,7 +62,8 @@ export const TabFilter = styled.View`
 `;
 
 export const Tab = styled.TouchableOpacity`
-    border-bottom-color: ${props => props.focus === true ? '#e83338' : '#011640'};
+    border-bottom-color: ${(props) =>
+        props.focus === true ? "#e83338" : "#011640"};
     border-bottom-width: ${scale(2)}px;
     margin-bottom: ${scale(20)}px;
     height: ${scale(50)}px;
@@ -79,6 +75,6 @@ export const Tab = styled.TouchableOpacity`
 export const TabTitle = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
-    color: ${props => props.focus === true ? '#e83338' : '#011640'};
+    color: ${(props) => (props.focus === true ? "#e83338" : "#011640")};
     include-font-padding: false;
 `;
