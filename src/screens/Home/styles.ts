@@ -37,6 +37,12 @@ export const FilterTitle = styled.Text`
     margin-bottom: ${scale(15)}px;
 `;
 
+export const Span = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(10)}px;
+    color: #e83338;
+`;
+
 export const ButtonOptionContainer = styled.View`
     height: ${scale(24)}px;
     margin-bottom: ${scale(16)}px;

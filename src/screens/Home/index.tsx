@@ -31,7 +31,8 @@ import {
     FilterTitle,
     TabFilter,
     Tab,
-    TabTitle
+    TabTitle,
+    Span    
 } from "./styles";
 
 import Logo from '../../img/logo.svg';
@@ -111,15 +112,22 @@ const Home: React.FC = () => {
     }
 
     const handleSubmitFilter = () => {
-        if (selectedFilter == "heat")
+        if (selectedFilter == "heat") {
+            if (selectedOption.length > 1)
+                return null
             handleFilterHeatMap();
-        else if (selectedFilter === "pins")
+        } else if (selectedFilter === "pins")
             handleFilterPins();
     }
 
     const handleFilterPins = async () => {
-        // const occurrence_type = searchOptions[selectedOption - 1];
-        const response = await getAllUsersOccurrences(occurrence_type.name);
+        let occurrence_type = ""
+        let end = ""
+        for(let i = 0; i < selectedOption.length; i++) {
+            end = (i === selectedOption.length-1 ? "" : ", ")
+            occurrence_type = occurrence_type.concat(searchOptions[selectedOption[i]-1].name, end);
+        }
+        const response = await getAllUsersOccurrences(occurrence_type);
         if (response.status === 200) {
             setOccurrences(response.body)
             setIsFilterOpen(false);
@@ -201,16 +209,16 @@ const Home: React.FC = () => {
 
     const handleSelectOption = (id: number) => {
         if (selectedOption.indexOf(id) >= 0) {
-            let aux = selectedOption;
+            let aux = [...selectedOption];
             aux = aux.filter(i => i !== id)
             if (aux.length === 0)
                 aux = [0]
-            setSelectedOption(aux)
-        } else {
-            let aux = selectedOption[0] === 0 ? [] : selectedOption;
-            aux.push(id)
             setSelectedOption(aux);
+            return null
         }
+        let aux = selectedOption[0] === 0 ? [] : [...selectedOption];
+        aux.push(id)
+        setSelectedOption(aux);
     };
 
     if (!loaded) return null;
@@ -346,6 +354,13 @@ const Home: React.FC = () => {
                         </ButtonOptionContainer>
                     );
                 })}
+                <View>
+                    {selectedFilter === "heat" && selectedOption.length > 1 ? 
+                        <Span>
+                            Selecione apenas uma opção
+                        </Span>
+                    : null}
+                </View>
                 <View style={{ alignItems: "center",  }}>
                     <NormalSend
                         style={{ width: "50%" }}
@@ -353,6 +368,9 @@ const Home: React.FC = () => {
                     >
                         <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
+                    <Span>
+                        ou clique no mapa para voltar
+                    </Span>
                 </View>
             </FilterModal>
         </SafeAreaView>
