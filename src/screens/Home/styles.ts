@@ -63,8 +63,7 @@ export const ButtonOptionText = styled.Text`
 `;
 
 export const OptionColor = styled.View`
-    background-color: ${(props) =>
-        (props.color ? props.color : '#000000')};
+    background-color: ${(props) => (props.color ? props.color : "#000000")};
     border-radius: ${scale(30)}px;
     height: ${scale(15)}px;
     width: ${scale(15)}px;

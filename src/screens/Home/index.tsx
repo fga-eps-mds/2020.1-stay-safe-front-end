@@ -15,7 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
-import Logo from "../../img/logo.svg";
+import Logo from "../../img/logo-thief.svg";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import { getUser } from "../../services/users";
@@ -212,14 +212,12 @@ const Home: React.FC = () => {
 
     const handleSelectOption = (id: number) => {
         if (selectedOption.indexOf(id) >= 0) {
-            let aux = [...selectedOption];
-            aux = aux.filter((i) => i !== id);
+            let aux = selectedOption.filter((i) => i !== id);
             if (aux.length === 0) aux = [0];
             setSelectedOption(aux);
             return null;
         }
-        const aux = selectedOption[0] === 0 ? [] : [...selectedOption];
-        aux.push(id);
+        const aux = selectedOption[0] === 0 ? [id] : [...selectedOption, id];
         setSelectedOption(aux);
     };
 
@@ -353,11 +351,14 @@ const Home: React.FC = () => {
                         <ButtonOptionContainer key={option.id}>
                             <Option>
                                 <OptionCircleButton
-                                    onPress={() => handleSelectOption(option.id)}
+                                    onPress={() =>
+                                        handleSelectOption(option.id)
+                                    }
                                 >
                                     <Feather
                                         name={
-                                            selectedOption.indexOf(option.id) >= 0
+                                            selectedOption.indexOf(option.id) >=
+                                            0
                                                 ? "check-circle"
                                                 : "circle"
                                         }
@@ -366,22 +367,22 @@ const Home: React.FC = () => {
                                     />
                                 </OptionCircleButton>
 
-                                <ButtonOptionText>{option.name}</ButtonOptionText>
+                                <ButtonOptionText>
+                                    {option.name}
+                                </ButtonOptionText>
                             </Option>
 
-                            {selectedFilter === "pins" &&
-                                <OptionColor color={option.color}/>
-                            }
+                            {selectedFilter === "pins" && (
+                                <OptionColor color={option.color} />
+                            )}
                         </ButtonOptionContainer>
                     );
                 })}
                 <View>
                     <Span
                         show={
-                            (
-                                selectedFilter === "heat" &&
-                                selectedOption.length > 1
-                            )
+                            selectedFilter === "heat" &&
+                            selectedOption.length > 1
                         }
                     >
                         Selecione apenas uma opção

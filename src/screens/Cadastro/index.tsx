@@ -83,7 +83,11 @@ const Cadastro: React.FC = () => {
 
                 <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(75)} height={scale(75)} fill="#e83338" />
+                        <Logo
+                            width={scale(75)}
+                            height={scale(75)}
+                            fill="#e83338"
+                        />
                     </LogoWrapper>
 
                     <Title>Cadastro</Title>

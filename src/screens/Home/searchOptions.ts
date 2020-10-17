@@ -15,7 +15,7 @@ export const searchOptions = [
         id: 3,
         name: "Roubo de Veículo",
         label: "Roubo de Veiculo",
-        color: "#51FF00",
+        color: "#ffa500",
     },
     {
         id: 4,
