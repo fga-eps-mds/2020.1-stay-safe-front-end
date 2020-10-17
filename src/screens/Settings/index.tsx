@@ -102,7 +102,7 @@ const Settings: React.FC = () => {
                         })}
                         <Button onPress={switchTheme}>
                             <Feather
-                                name={theme.type === "dark" ? "moon" : "sun"}
+                                name={theme.type === "dark" ? "sun" : "moon"}
                                 size={scale(20)}
                                 color={theme.primarySuperDarkBlue}
                             />
