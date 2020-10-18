@@ -17,7 +17,7 @@ export const InputContainer = styled.View`
 
 export const FieldContainer = styled.View`
     width: 100%;
-    background: #e0e0e0;
+    background: ${(props) => props.theme.primaryLightGray};
     justify-content: center;
     align-items: center;
     height: ${scale(35)}px;

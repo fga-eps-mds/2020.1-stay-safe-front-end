@@ -28,7 +28,9 @@ export const DropDown = styled(DropDownPicker).attrs((props) => ({
     },
     arrowColor: props.theme.primaryRed,
     arrowSize: 18,
-}))``;
+}))`
+    border: 0;
+`;
 
 export const InputWrapper = styled.View`
     width: 80%;

@@ -95,7 +95,7 @@ const Cadastro: React.FC = () => {
                         <Logo
                             width={scale(75)}
                             height={scale(75)}
-                            fill="#e83338"
+                            fill={theme.primaryRed}
                         />
                     </LogoWrapper>
 

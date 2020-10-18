@@ -12,6 +12,7 @@ import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import CircularLoader from "../../components/CircularLoader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -92,6 +93,8 @@ const Home: React.FC = () => {
 
     const [selectedFilter, setSelectedFilter] = useState("heat");
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
@@ -142,6 +145,8 @@ const Home: React.FC = () => {
     };
 
     const handleFilterHeatMap = () => {
+        setIsLoading(true);
+
         async function loadData() {
             const option = searchOptions[selectedOption[0] - 1];
 
@@ -166,6 +171,7 @@ const Home: React.FC = () => {
 
         if (selectedOption[0] > 0) {
             loadData().then((res) => {
+                setIsLoading(false);
                 setIsFilterOpen(false);
             });
         } else {
@@ -353,7 +359,7 @@ const Home: React.FC = () => {
                                                 : "circle"
                                         }
                                         size={scale(20)}
-                                        color="#000000"
+                                        color={theme.primaryBlack}
                                     />
                                 </OptionCircleButton>
 
@@ -369,23 +375,26 @@ const Home: React.FC = () => {
                     );
                 })}
                 <View>
-                    <Span
-                        show={
-                            selectedFilter === "heat" &&
-                            selectedOption.length > 1
-                        }
-                    >
-                        Selecione apenas uma opção
-                    </Span>
+                    {selectedFilter === "heat" && selectedOption.length > 1 ? (
+                        <Span show>Selecione apenas uma opção</Span>
+                    ) : (
+                        <Span show>ou clique no mapa para voltar</Span>
+                    )}
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
-                        style={{ width: "50%" }}
+                        style={[
+                            { width: "50%" },
+                            isLoading && { padding: scale(9) },
+                        ]}
                         onPress={() => handleSubmitFilter()}
                     >
-                        <SendLabel>Filtrar</SendLabel>
+                        {isLoading ? (
+                            <CircularLoader size={28} />
+                        ) : (
+                            <SendLabel>Filtrar</SendLabel>
+                        )}
                     </NormalSend>
-                    <Span>ou clique no mapa para voltar</Span>
                 </View>
             </FilterModal>
         </SafeAreaView>
