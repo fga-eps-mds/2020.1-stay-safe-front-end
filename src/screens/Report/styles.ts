@@ -13,5 +13,5 @@ export const AlertButton = styled.TouchableOpacity.attrs({
 })`
     background-color: ${(props) => props.theme.primaryRed};
     border-radius: ${scale(28)}px;
-    padding: ${scale(8)}px;
+    padding: ${scale(3)}px;
 `;

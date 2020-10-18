@@ -16,6 +16,7 @@ import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import Logo from "../../img/logo-thief.svg";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
@@ -27,8 +28,13 @@ import {
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
+    Option,
     OptionCircleButton,
-    FilterTitle,
+    OptionColor,
+    TabFilter,
+    Tab,
+    TabTitle,
+    Span,
 } from "./styles";
 
 type ParamList = {
@@ -78,11 +84,13 @@ const Home: React.FC = () => {
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState(0);
+    const [selectedOption, setSelectedOption] = useState([0]);
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
+
+    const [selectedFilter, setSelectedFilter] = useState("heat");
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -101,9 +109,41 @@ const Home: React.FC = () => {
         }
     });
 
+    const getPinColor = (occurrence) => {
+        return searchOptions.filter(
+            (op) => op.name === occurrence.occurrence_type
+        )[0].color;
+    };
+
+    const handleSubmitFilter = () => {
+        if (selectedFilter === "heat") {
+            if (selectedOption.length > 1) return null;
+            handleFilterHeatMap();
+        } else if (selectedFilter === "pins") handleFilterPins();
+    };
+
+    const handleFilterPins = async () => {
+        let occurrence_type = "";
+        let end;
+        if (selectedOption[0] !== 0) {
+            for (let i = 0; i < selectedOption.length; i++) {
+                end = i === selectedOption.length - 1 ? "" : ", ";
+                occurrence_type = occurrence_type.concat(
+                    searchOptions[selectedOption[i] - 1].name,
+                    end
+                );
+            }
+        }
+        const response = await getAllUsersOccurrences(occurrence_type);
+        if (response.status === 200) {
+            setOccurrences(response.body);
+            setIsFilterOpen(false);
+        } else console.warn("Erro ao pegar todas as ocorrências");
+    };
+
     const handleFilterHeatMap = () => {
         async function loadData() {
-            const option = searchOptions[selectedOption - 1];
+            const option = searchOptions[selectedOption[0] - 1];
 
             const response = await getOccurrencesByCrimeNature(
                 "df",
@@ -124,7 +164,7 @@ const Home: React.FC = () => {
             }
         }
 
-        if (selectedOption > 0) {
+        if (selectedOption[0] > 0) {
             loadData().then((res) => {
                 setIsFilterOpen(false);
             });
@@ -157,11 +197,14 @@ const Home: React.FC = () => {
     };
 
     const handleSelectOption = (id: number) => {
-        if (selectedOption === id) {
-            setSelectedOption(0);
-        } else {
-            setSelectedOption(id);
+        if (selectedOption.indexOf(id) >= 0) {
+            let aux = selectedOption.filter((i) => i !== id);
+            if (aux.length === 0) aux = [0];
+            setSelectedOption(aux);
+            return null;
         }
+        const aux = selectedOption[0] === 0 ? [id] : [...selectedOption, id];
+        setSelectedOption(aux);
     };
 
     if (!loaded) return null;
@@ -182,10 +225,12 @@ const Home: React.FC = () => {
                     />
                 </FilterButton>
             )}
-            {data.token === "" && !isFilterOpen && selectedOption <= 0 && (
+            {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
-            {selectedOption > 0 && !isFilterOpen ? (
+            {selectedOption[0] > 0 &&
+            !isFilterOpen &&
+            selectedFilter === "heat" ? (
                 <HeatMap secretaryOccurrences={secretaryOccurrences} />
             ) : (
                 <StayNormalMap
@@ -215,7 +260,14 @@ const Home: React.FC = () => {
                                             }
                                         )
                                     }
-                                />
+                                    tracksViewChanges={false}
+                                >
+                                    <Logo
+                                        width={scale(38)}
+                                        height={scale(38)}
+                                        fill={getPinColor(occurrence)}
+                                    />
+                                </Marker>
                             );
                         })}
                 </StayNormalMap>
@@ -254,39 +306,86 @@ const Home: React.FC = () => {
             >
                 <View
                     style={{
-                        justifyContent: "center",
                         alignItems: "center",
                     }}
                 >
-                    <FilterTitle>Filtrar crimes</FilterTitle>
+                    <TabFilter>
+                        <Tab
+                            onPress={() => setSelectedFilter("heat")}
+                            focus={selectedFilter === "heat"}
+                        >
+                            <TabTitle focus={selectedFilter === "heat"}>
+                                Cidade
+                            </TabTitle>
+                        </Tab>
+                        <Tab
+                            onPress={() => setSelectedFilter("neighborhood")}
+                            focus={selectedFilter === "neighborhood"}
+                        >
+                            <TabTitle focus={selectedFilter === "neighborhood"}>
+                                Bairro
+                            </TabTitle>
+                        </Tab>
+                        <Tab
+                            onPress={() => setSelectedFilter("pins")}
+                            focus={selectedFilter === "pins"}
+                        >
+                            <TabTitle focus={selectedFilter === "pins"}>
+                                Local
+                            </TabTitle>
+                        </Tab>
+                    </TabFilter>
                 </View>
                 {searchOptions.map((option) => {
                     return (
                         <ButtonOptionContainer key={option.id}>
-                            <OptionCircleButton
-                                onPress={() => handleSelectOption(option.id)}
-                            >
-                                <Feather
-                                    name={
-                                        selectedOption === option.id
-                                            ? "check-circle"
-                                            : "circle"
+                            <Option>
+                                <OptionCircleButton
+                                    onPress={() =>
+                                        handleSelectOption(option.id)
                                     }
-                                    size={scale(20)}
-                                    color={theme.primaryBlack}
-                                />
-                            </OptionCircleButton>
-                            <ButtonOptionText>{option.name}</ButtonOptionText>
+                                >
+                                    <Feather
+                                        name={
+                                            selectedOption.indexOf(option.id) >=
+                                            0
+                                                ? "check-circle"
+                                                : "circle"
+                                        }
+                                        size={scale(20)}
+                                        color="#000000"
+                                    />
+                                </OptionCircleButton>
+
+                                <ButtonOptionText>
+                                    {option.name}
+                                </ButtonOptionText>
+                            </Option>
+
+                            {selectedFilter === "pins" && (
+                                <OptionColor color={option.color} />
+                            )}
                         </ButtonOptionContainer>
                     );
                 })}
+                <View>
+                    <Span
+                        show={
+                            selectedFilter === "heat" &&
+                            selectedOption.length > 1
+                        }
+                    >
+                        Selecione apenas uma opção
+                    </Span>
+                </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
                         style={{ width: "50%" }}
-                        onPress={() => handleFilterHeatMap()}
+                        onPress={() => handleSubmitFilter()}
                     >
                         <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
+                    <Span>ou clique no mapa para voltar</Span>
                 </View>
             </FilterModal>
         </SafeAreaView>

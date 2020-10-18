@@ -54,9 +54,9 @@ const Login: React.FC = () => {
                 <KeyboardScrollView>
                     <LogoWrapper>
                         <Logo
-                            style={{ color: theme.primaryRed }}
                             width={scale(75)}
                             height={scale(75)}
+                            fill="#e83338"
                         />
                     </LogoWrapper>
 
