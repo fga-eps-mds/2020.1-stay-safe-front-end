@@ -58,16 +58,21 @@ export const UserProvider: React.FC = ({ children }) => {
 
     useEffect(() => {
         async function loadStorageData(): Promise<void> {
-            const [token, username] = await AsyncStorage.multiGet([
+            const [token, username, themeType] = await AsyncStorage.multiGet([
                 "@StaySafe:token",
                 "@StaySafe:username",
+                "@StaySafe:theme",
             ]);
 
-            console.log(token, username);
+            console.log(token, username, themeType);
 
             if (token[1] && username[1]) {
                 setData({ token: token[1], username: username[1] });
             }
+
+            setTheme(
+                themeType[1] === "default" ? staySafeTheme : staySafeDarkTheme
+            );
 
             setIsLoading(false);
         }
@@ -106,13 +111,13 @@ export const UserProvider: React.FC = ({ children }) => {
         setData({ token: "", username: "" });
     }, []);
 
-    const switchTheme = useCallback(
-        () =>
-            setTheme(
-                theme === staySafeTheme ? staySafeDarkTheme : staySafeTheme
-            ),
-        [theme]
-    );
+    const switchTheme = useCallback(async () => {
+        await AsyncStorage.setItem(
+            "@StaySafe:theme",
+            theme.type === "default" ? "dark" : "default"
+        );
+        setTheme(theme === staySafeTheme ? staySafeDarkTheme : staySafeTheme);
+    }, [theme]);
 
     return (
         <UserContext.Provider
