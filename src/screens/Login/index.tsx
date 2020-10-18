@@ -55,7 +55,11 @@ const Login: React.FC = () => {
             <Container>
                 <KeyboardScrollView>
                     <LogoWrapper>
-                        <Logo width={scale(75)} height={scale(75)} />
+                        <Logo
+                            width={scale(75)}
+                            height={scale(75)}
+                            fill="#e83338"
+                        />
                     </LogoWrapper>
 
                     <Title>Entrar</Title>

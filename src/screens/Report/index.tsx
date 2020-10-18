@@ -1,6 +1,6 @@
-import { Feather } from "@expo/vector-icons";
 import React from "react";
 
+import Logo from "../../img/logo.svg";
 import { scale } from "../../utils/scalling";
 import { AlertButton, ButtonContainer } from "./styles";
 
@@ -21,7 +21,7 @@ export const ReportButton = (props: { navObject: any }) => {
     return (
         <ButtonContainer>
             <AlertButton onPress={() => handleOccurrence()}>
-                <Feather name="bell" size={scale(24)} color="#ffffff" />
+                <Logo width={scale(35)} height={scale(35)} fill="#e83338" />
             </AlertButton>
         </ButtonContainer>
     );
