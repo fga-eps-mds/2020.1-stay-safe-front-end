@@ -64,8 +64,6 @@ export const UserProvider: React.FC = ({ children }) => {
                 "@StaySafe:theme",
             ]);
 
-            console.log(token, username, themeType);
-
             if (token[1] && username[1]) {
                 setData({ token: token[1], username: username[1] });
             }
