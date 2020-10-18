@@ -375,11 +375,14 @@ const Home: React.FC = () => {
                     );
                 })}
                 <View>
-                    {selectedFilter === "heat" && selectedOption.length > 1 ? (
-                        <Span show>Selecione apenas uma opção</Span>
-                    ) : (
-                        <Span show>ou clique no mapa para voltar</Span>
-                    )}
+                    <Span
+                        show={
+                            selectedFilter === "heat" &&
+                            selectedOption.length > 1
+                        }
+                    >
+                        Selecione apenas uma opção
+                    </Span>
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
@@ -395,6 +398,9 @@ const Home: React.FC = () => {
                             <SendLabel>Filtrar</SendLabel>
                         )}
                     </NormalSend>
+                    <Span show style={{ marginTop: scale(5) }}>
+                        ou clique no mapa para voltar
+                    </Span>
                 </View>
             </FilterModal>
         </SafeAreaView>

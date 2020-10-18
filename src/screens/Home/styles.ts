@@ -39,7 +39,7 @@ export const FilterButton = styled.TouchableOpacity`
 
 export const FilterModal = styled(Modal)`
     position: absolute;
-    height: ${scale(465)}px;
+    height: ${scale(480)}px;
     width: ${scale(300)}px;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;
@@ -51,7 +51,7 @@ export const FilterModal = styled(Modal)`
 export const Span = styled.Text<SpanProps>`
     font-family: Trueno-Regular;
     font-size: ${scale(10)}px;
-    color: ${(props) => props.theme.primaryRed};
+    color: ${(props) => props.theme.primarySuperDarkBlue};
     opacity: ${(props) => (props.show ? 1 : 0)};
 `;
 
