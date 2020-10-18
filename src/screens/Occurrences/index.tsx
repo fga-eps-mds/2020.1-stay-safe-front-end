@@ -80,48 +80,72 @@ const Occurrences: React.FC = () => {
             <HeaderTitle text="Minhas Ocorrências" goBack />
             <ScrollViewStyled>
                 <CardContainer>
-                    {occurrences.map((occurrence) => {
-                        return (
-                            <Card key={occurrence.id_occurrence}>
-                                <CardData>
-                                    <Title>{occurrence.occurrence_type}</Title>
-                                    <Date>
-                                        {occurrence.occurrence_date_time}
-                                    </Date>
-                                </CardData>
+                    {occurrences.length === 0 ? (
+                        <Card>
+                            <CardData>
+                                <Title
+                                    style={{
+                                        textAlign: "center",
+                                        marginBottom: 0,
+                                    }}
+                                >
+                                    Usuário não possui ocorrências
+                                </Title>
+                            </CardData>
+                        </Card>
+                    ) : (
+                        occurrences.map((occurrence) => {
+                            return (
+                                <Card key={occurrence.id_occurrence}>
+                                    <CardData>
+                                        <Title>
+                                            {occurrence.occurrence_type}
+                                        </Title>
+                                        <Date>
+                                            {occurrence.occurrence_date_time}
+                                        </Date>
+                                    </CardData>
 
-                                <CardActions>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            navigation.navigate("Occurrence", {
-                                                occurrence,
-                                            });
-                                        }}
-                                    >
-                                        <Feather
-                                            name="edit-3"
-                                            size={scale(22)}
-                                            color={theme.primarySuperDarkBlue}
-                                        />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setConfirmModal(true);
-                                            setIdOccurrence(
-                                                occurrence.id_occurrence
-                                            );
-                                        }}
-                                    >
-                                        <Feather
-                                            name="trash-2"
-                                            size={scale(22)}
-                                            color={theme.primarySuperDarkBlue}
-                                        />
-                                    </TouchableOpacity>
-                                </CardActions>
-                            </Card>
-                        );
-                    })}
+                                    <CardActions>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    "Occurrence",
+                                                    {
+                                                        occurrence,
+                                                    }
+                                                );
+                                            }}
+                                        >
+                                            <Feather
+                                                name="edit-3"
+                                                size={scale(22)}
+                                                color={
+                                                    theme.primarySuperDarkBlue
+                                                }
+                                            />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                setConfirmModal(true);
+                                                setIdOccurrence(
+                                                    occurrence.id_occurrence
+                                                );
+                                            }}
+                                        >
+                                            <Feather
+                                                name="trash-2"
+                                                size={scale(22)}
+                                                color={
+                                                    theme.primarySuperDarkBlue
+                                                }
+                                            />
+                                        </TouchableOpacity>
+                                    </CardActions>
+                                </Card>
+                            );
+                        })
+                    )}
                 </CardContainer>
                 <StayAlert
                     show={showConfirmModal}
