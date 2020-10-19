@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
     useRoute,
@@ -11,14 +10,16 @@ import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import CircularLoader from "../../components/CircularLoader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo-thief.svg";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
-import { getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import HeatMap from "../HeatMap";
 import { searchOptions } from "./searchOptions";
@@ -73,11 +74,13 @@ interface Year {
 }
 
 const Home: React.FC = () => {
+    const theme = useTheme();
+    const { data } = useUser();
+
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLogged, setIsLogged] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
@@ -89,6 +92,8 @@ const Home: React.FC = () => {
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
     const [selectedFilter, setSelectedFilter] = useState("heat");
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -140,6 +145,8 @@ const Home: React.FC = () => {
     };
 
     const handleFilterHeatMap = () => {
+        setIsLoading(true);
+
         async function loadData() {
             const option = searchOptions[selectedOption[0] - 1];
 
@@ -164,28 +171,13 @@ const Home: React.FC = () => {
 
         if (selectedOption[0] > 0) {
             loadData().then((res) => {
+                setIsLoading(false);
                 setIsFilterOpen(false);
             });
         } else {
             setIsWarningOpen(true);
         }
     };
-
-    useFocusEffect(
-        useCallback(() => {
-            AsyncStorage.getItem("username").then((username) => {
-                if (username !== null) {
-                    getUser(username).then((response) => {
-                        if (response.status === 200) {
-                            setIsLogged(true);
-                        } else {
-                            setIsLogged(false);
-                        }
-                    });
-                }
-            });
-        }, [route.params?.showReportModal])
-    );
 
     useFocusEffect(
         useCallback(() => {
@@ -232,10 +224,14 @@ const Home: React.FC = () => {
                     }}
                     onPress={() => setIsFilterOpen(true)}
                 >
-                    <Feather name="filter" size={scale(30)} color="#C8C8C8" />
+                    <Feather
+                        name="filter"
+                        size={scale(30)}
+                        color={theme.primaryGray}
+                    />
                 </FilterButton>
             )}
-            {!isLogged && !isFilterOpen && selectedOption[0] <= 0 && (
+            {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
             {selectedOption[0] > 0 &&
@@ -283,7 +279,7 @@ const Home: React.FC = () => {
                 </StayNormalMap>
             )}
             <StayAlert
-                show={isModalOpen && isLogged}
+                show={isModalOpen && data.token !== ""}
                 title="Reportar Ocorrência"
                 message="Toque para selecionar o local no mapa com o marcador"
                 showConfirmButton
@@ -363,7 +359,7 @@ const Home: React.FC = () => {
                                                 : "circle"
                                         }
                                         size={scale(20)}
-                                        color="#000000"
+                                        color={theme.primaryBlack}
                                     />
                                 </OptionCircleButton>
 
@@ -390,12 +386,21 @@ const Home: React.FC = () => {
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
-                        style={{ width: "50%" }}
+                        style={[
+                            { width: "50%" },
+                            isLoading && { padding: scale(9) },
+                        ]}
                         onPress={() => handleSubmitFilter()}
                     >
-                        <SendLabel>Filtrar</SendLabel>
+                        {isLoading ? (
+                            <CircularLoader size={28} />
+                        ) : (
+                            <SendLabel>Filtrar</SendLabel>
+                        )}
                     </NormalSend>
-                    <Span>ou clique no mapa para voltar</Span>
+                    <Span show style={{ marginTop: scale(5) }}>
+                        ou clique no mapa para voltar
+                    </Span>
                 </View>
             </FilterModal>
         </SafeAreaView>

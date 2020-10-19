@@ -5,17 +5,19 @@ import { scale } from "../../utils/scalling";
 
 export const Alert = styled(AwesomeAlert).attrs((props) => ({
     overlayStyle: {
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        backgroundColor: props.theme.primaryBlack,
+        opacity: 0.5,
     },
-    progressColor: "#E83338",
+    progressColor: props.theme.primaryRed,
     contentContainerStyle: {
+        backgroundColor: props.theme.primaryWhite,
         borderRadius: scale(16),
         padding: scale(16),
     },
     titleStyle: {
         fontFamily: "Trueno-SemiBold",
         fontSize: scale(16),
-        color: "#010A26",
+        color: props.theme.primarySuperDarkBlue,
         paddingVertical: 0,
         paddingHorizontal: 0,
         paddingBottom: props.showProgress ? 0 : scale(16),
@@ -23,11 +25,11 @@ export const Alert = styled(AwesomeAlert).attrs((props) => ({
     messageStyle: {
         fontFamily: "Trueno-Regular",
         fontSize: scale(14),
-        color: "#011640",
+        color: props.theme.primaryDarkBlue,
         paddingTop: 0,
         textAlign: "center",
     },
-    confirmButtonColor: "#E83338",
+    confirmButtonColor: props.theme.primaryRed,
     confirmButtonStyle: {
         borderRadius: scale(10),
         paddingHorizontal: scale(10),
@@ -37,7 +39,7 @@ export const Alert = styled(AwesomeAlert).attrs((props) => ({
         fontFamily: "Trueno-SemiBold",
         fontSize: scale(12),
     },
-    cancelButtonColor: "#7DBFE2",
+    cancelButtonColor: props.theme.primaryLightBlue,
     cancelButtonStyle: {
         borderRadius: scale(10),
         paddingHorizontal: scale(10),

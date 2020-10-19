@@ -1,10 +1,11 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
 import {
     Container,
@@ -14,6 +15,7 @@ import {
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import { updateOccurrence, createOccurrence } from "../../services/occurrences";
 import {
     formatDate,
@@ -21,6 +23,7 @@ import {
     formatDateTime,
     getOcurrenceDateTime,
 } from "../../utils/dates";
+import { scale } from "../../utils/scalling";
 import { validateOccurrence } from "../../utils/validateOccurrence";
 import {
     occurrenceTypeItems,
@@ -65,6 +68,9 @@ type ParamOccurrence = {
 
 const Occurrence: React.FC = () => {
     const navigation = useNavigation();
+    const { data } = useUser();
+    const theme = useTheme();
+
     const registerOccurrenceRoute = useRoute<RouteProp<ParamList, "params">>();
     const editOccurrenceRoute = useRoute<
         RouteProp<ParamOccurrence, "params">
@@ -101,6 +107,8 @@ const Occurrence: React.FC = () => {
     ] = useState(policeReportItems);
 
     const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const currentDate = new Date();
 
@@ -195,7 +203,7 @@ const Occurrence: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        const data = {
+        const dataOccurrence = {
             occurrence_type: selectedOccurrenceType,
             gun: selectedGun,
             victim: selectedVictim,
@@ -204,12 +212,16 @@ const Occurrence: React.FC = () => {
             occurrence_date_time: formatDateTime(datetime),
             location,
         };
-        if (validateOccurrence(data)) {
-            const token = await AsyncStorage.getItem("userToken");
-            if (token != null) {
+        if (validateOccurrence(dataOccurrence)) {
+            if (data.token !== "") {
+                setIsLoading(true);
                 const response = isEditing
-                    ? await updateOccurrence(idOccurrence, token, data)
-                    : await createOccurrence(data, token);
+                    ? await updateOccurrence(
+                          idOccurrence,
+                          data.token,
+                          dataOccurrence
+                      )
+                    : await createOccurrence(dataOccurrence, data.token);
 
                 if (!response.body.error && response.status === 201) {
                     navigation.setParams({ occurrence: null });
@@ -223,6 +235,7 @@ const Occurrence: React.FC = () => {
                         response.body.error
                     );
                 }
+                setIsLoading(false);
             }
         }
     };
@@ -253,7 +266,10 @@ const Occurrence: React.FC = () => {
                         <NormalLabel>Tipo de Ocorrência</NormalLabel>
                         <DropDown
                             items={occurrenceTypeItems}
-                            style={dropdownStyle}
+                            style={[
+                                dropdownStyle,
+                                { backgroundColor: theme.primaryWhite },
+                            ]}
                             defaultValue={
                                 selectedOccurrenceType
                                     ? selectedOccurrenceType
@@ -270,7 +286,10 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Tipo de Arma</NormalLabel>
                             <DropDown
                                 items={gunItems}
-                                style={dropdownStyle}
+                                style={[
+                                    dropdownStyle,
+                                    { backgroundColor: theme.primaryWhite },
+                                ]}
                                 defaultValue={selectedGun ? selectedGun : null}
                                 onChangeItem={(item) =>
                                     setSelectedGun(item.value)
@@ -282,7 +301,10 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Vítima</NormalLabel>
                             <DropDown
                                 items={availableVictimOptions}
-                                style={dropdownStyle}
+                                style={[
+                                    dropdownStyle,
+                                    { backgroundColor: theme.primaryWhite },
+                                ]}
                                 defaultValue={selectedVictim}
                                 onChangeItem={(item) =>
                                     setSelectedVictim(item.value)
@@ -296,7 +318,10 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Agressão Física</NormalLabel>
                             <DropDown
                                 items={availablePhysicalAgressionOptions}
-                                style={dropdownStyle}
+                                style={[
+                                    dropdownStyle,
+                                    { backgroundColor: theme.primaryWhite },
+                                ]}
                                 defaultValue={selectedPhysicalAggression}
                                 onChangeItem={(item) =>
                                     setSelectedPhysicalAggression(item.value)
@@ -308,7 +333,10 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Boletim de Ocorrência</NormalLabel>
                             <DropDown
                                 items={availablePoliceReportOptions}
-                                style={dropdownStyle}
+                                style={[
+                                    dropdownStyle,
+                                    { backgroundColor: theme.primaryWhite },
+                                ]}
                                 defaultValue={selectedPoliceReport}
                                 onChangeItem={(item) =>
                                     setSelectedPoliceReport(item.value)
@@ -362,14 +390,21 @@ const Occurrence: React.FC = () => {
                     </InputWrapper>
 
                     <NormalSend
-                        style={{ marginTop: 45 }}
+                        style={[
+                            { marginTop: 45 },
+                            isLoading && { padding: scale(9) },
+                        ]}
                         onPress={handleSubmit}
                     >
-                        <SendLabel>
-                            {isEditing
-                                ? "Editar Ocorrência"
-                                : "Registrar Ocorrência"}
-                        </SendLabel>
+                        {isLoading ? (
+                            <CircularLoader size={28} />
+                        ) : (
+                            <SendLabel>
+                                {isEditing
+                                    ? "Editar Ocorrência"
+                                    : "Registrar Ocorrência"}
+                            </SendLabel>
+                        )}
                     </NormalSend>
 
                     <StayAlert

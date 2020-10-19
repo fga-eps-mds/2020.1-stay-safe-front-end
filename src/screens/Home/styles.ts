@@ -4,6 +4,22 @@ import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
 
+interface TabProps {
+    focus: boolean;
+}
+
+interface TabTitleProps {
+    focus: boolean;
+}
+
+interface OptionColorProps {
+    color: string;
+}
+
+interface SpanProps {
+    show: boolean;
+}
+
 export const StayNormalMap = styled(MapView)`
     flex: 1;
 `;
@@ -16,25 +32,26 @@ export const FilterButton = styled.TouchableOpacity`
     justify-content: center;
     top: 8%;
     right: 7%;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.primaryWhite};
     z-index: 6;
     border-radius: ${scale(50)}px;
 `;
 
 export const FilterModal = styled(Modal)`
     position: absolute;
-    height: ${scale(465)}px;
+    height: ${scale(480)}px;
     width: ${scale(300)}px;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;
+    background-color: ${(props) => props.theme.primaryWhite};
     padding-horizontal: ${scale(28)}px;
     padding-vertical: ${scale(20)}px;
 `;
 
-export const Span = styled.Text`
+export const Span = styled.Text<SpanProps>`
     font-family: Trueno-Regular;
     font-size: ${scale(10)}px;
-    color: #e83338;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
     opacity: ${(props) => (props.show ? 1 : 0)};
 `;
 
@@ -60,23 +77,27 @@ export const OptionCircleButton = styled.TouchableOpacity`
 export const ButtonOptionText = styled.Text`
     font-size: ${scale(16)}px;
     font-family: Trueno-Regular;
+    color: ${(props) => props.theme.primaryBlack};
 `;
 
-export const OptionColor = styled.View`
-    background-color: ${(props) => (props.color ? props.color : "#000000")};
+export const OptionColor = styled.View<OptionColorProps>`
+    background-color: ${(props) =>
+        props.color ? props.color : props.theme.primaryBlack};
     border-radius: ${scale(30)}px;
     height: ${scale(15)}px;
     width: ${scale(15)}px;
+    border: ${scale(1)}px ${(props) => props.theme.primaryDarkBlue};
 `;
 
 export const TabFilter = styled.View`
     flex-direction: row;
-    elevation: 1;
 `;
 
-export const Tab = styled.TouchableOpacity`
+export const Tab = styled.TouchableOpacity<TabProps>`
     border-bottom-color: ${(props) =>
-        props.focus === true ? "#e83338" : "#011640"};
+        props.focus === true
+            ? props.theme.primaryRed
+            : props.theme.primaryDarkBlue};
     border-bottom-width: ${scale(2)}px;
     margin-bottom: ${scale(20)}px;
     height: ${scale(50)}px;
@@ -85,9 +106,12 @@ export const Tab = styled.TouchableOpacity`
     width: 32%;
 `;
 
-export const TabTitle = styled.Text`
+export const TabTitle = styled.Text<TabTitleProps>`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
-    color: ${(props) => (props.focus === true ? "#e83338" : "#011640")};
+    color: ${(props) =>
+        props.focus === true
+            ? props.theme.primaryRed
+            : props.theme.primaryDarkBlue};
     include-font-padding: false;
 `;

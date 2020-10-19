@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "styled-components";
 
 import Logo from "../../img/logo.svg";
 import { scale } from "../../utils/scalling";
@@ -13,6 +14,8 @@ export default Report;
 export const ReportButton = (props: { navObject: any }) => {
     const { navObject } = props;
 
+    const theme = useTheme();
+
     // Pass the param to open the modal in Home screen
     const handleOccurrence = () => {
         navObject.navigate("Home", { showReportModal: true });
@@ -21,7 +24,11 @@ export const ReportButton = (props: { navObject: any }) => {
     return (
         <ButtonContainer>
             <AlertButton onPress={() => handleOccurrence()}>
-                <Logo width={scale(35)} height={scale(35)} fill="#e83338" />
+                <Logo
+                    width={scale(35)}
+                    height={scale(35)}
+                    fill={theme.primaryRed}
+                />
             </AlertButton>
         </ButtonContainer>
     );

@@ -11,7 +11,7 @@ export const ButtonContainer = styled.View`
 export const AlertButton = styled.TouchableOpacity.attrs({
     activeOpacity: 0.5,
 })`
-    background-color: #e83338;
+    background-color: ${(props) => props.theme.primaryRed};
     border-radius: ${scale(28)}px;
     padding: ${scale(3)}px;
 `;

@@ -17,7 +17,14 @@ interface ButtonProps {
 
 export const InputViewing = styled(NormalInput)<InputViewingProps>`
     width: 80%;
-    background-color: ${(props) => (props.isEditing ? "#ffffff" : "#e0e0e0")};
+    background-color: ${(props) =>
+        props.isEditing
+            ? props.theme.type === "dark"
+                ? props.theme.primaryBlack
+                : props.theme.primaryWhite
+            : props.theme.type === "dark"
+            ? props.theme.primaryWhite
+            : props.theme.primaryBackground};
     height: ${scale(40)}px;
 `;
 
@@ -32,12 +39,12 @@ export const ProfileButton = styled(NormalSend)`
     width: 70%;
     flex-direction: row;
     justify-content: center;
-    background-color: #011640;
+    background-color: ${(props) => props.theme.primaryDarkBlue};
 `;
 
 export const EditButton = styled(ProfileButton)<ButtonProps>`
     width: 45%;
-    background-color: #e83338;
+    background-color: ${(props) => props.theme.primaryRed};
     margin-bottom: ${(props) => (props.isEditing ? `${scale(30)}px` : "0px")};
 `;
 

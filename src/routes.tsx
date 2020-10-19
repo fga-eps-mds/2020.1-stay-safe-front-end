@@ -1,6 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
+import CircularLoader from "./components/CircularLoader";
+import { useUser } from "./hooks/user";
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
 import CityStatistics from "./screens/CityStatistics";
@@ -11,7 +13,13 @@ import Occurrences from "./screens/Occurrences";
 
 const AppStack = createStackNavigator();
 
-const Routes = () => {
+const Routes: React.FC = () => {
+    const { isLoading } = useUser();
+
+    if (isLoading) {
+        return <CircularLoader size={50} />;
+    }
+
     return (
         <AppStack.Navigator
             screenOptions={{ headerShown: false }}

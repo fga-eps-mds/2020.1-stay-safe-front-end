@@ -1,13 +1,17 @@
-import 'react-native-gesture-handler'
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
 
-import Routes from './src/routes'
+import AppProvider from "./src/hooks/";
+import Routes from "./src/routes";
 
-export default function App() {
+const App = () => {
     return (
         <NavigationContainer>
-            <Routes />
+            <AppProvider>
+                <Routes />
+            </AppProvider>
         </NavigationContainer>
     );
-}
+};
+
+export default App;

@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import {
     useFocusEffect,
     useNavigation,
@@ -9,6 +8,7 @@ import * as Font from "expo-font";
 import React, { useCallback, useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import LoggedInModal from "../../components/LoggedInModal";
@@ -19,6 +19,7 @@ import {
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
@@ -32,6 +33,9 @@ import {
 } from "./styles";
 
 const Profile: React.FC = () => {
+    const theme = useTheme();
+    const { data } = useUser();
+
     const [username, setUsername] = useState("");
     const [userFullName, setUserFullName] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -39,8 +43,6 @@ const Profile: React.FC = () => {
     const [userConfirmPwd, setUserConfirmPwd] = useState("");
 
     const isFocused = useIsFocused();
-
-    const [isLogged, setIsLogged] = useState(false);
 
     const navigation = useNavigation();
 
@@ -54,33 +56,28 @@ const Profile: React.FC = () => {
 
     useFocusEffect(
         useCallback(() => {
-            AsyncStorage.getItem("username").then((username) => {
-                if (username !== null) {
-                    getUser(username).then((response) => {
-                        if (response.status === 200) {
-                            setUsername(response.body.username);
-                            setUserFullName(response.body.full_name);
-                            setUserEmail(response.body.email);
-                            setIsLogged(true);
-                        } else {
-                            setUsername("");
-                            setUserFullName("");
-                            setUserEmail("");
-                            setUserPwd("");
-                            setUserConfirmPwd("");
-                            setIsLogged(false);
-                        }
-                    });
-                } else {
-                    setUsername("");
-                    setUserFullName("");
-                    setUserEmail("");
-                    setUserPwd("");
-                    setUserConfirmPwd("");
-                    setIsLogged(false);
-                }
-            });
-        }, [])
+            if (data.username !== "" && data.token !== "") {
+                getUser(data.username).then((response) => {
+                    if (response.status === 200) {
+                        setUsername(response.body.username);
+                        setUserFullName(response.body.full_name);
+                        setUserEmail(response.body.email);
+                    } else {
+                        setUsername("");
+                        setUserFullName("");
+                        setUserEmail("");
+                        setUserPwd("");
+                        setUserConfirmPwd("");
+                    }
+                });
+            } else {
+                setUsername("");
+                setUserFullName("");
+                setUserEmail("");
+                setUserPwd("");
+                setUserConfirmPwd("");
+            }
+        }, [data])
     );
 
     const handleUpdateProfile = async () => {
@@ -92,7 +89,6 @@ const Profile: React.FC = () => {
                 confirmPassword: userConfirmPwd,
             })
         ) {
-            const token = await AsyncStorage.getItem("userToken");
             let editedUser;
             if (userPwd === null || userPwd === "") {
                 editedUser = {
@@ -107,8 +103,8 @@ const Profile: React.FC = () => {
                 };
             }
 
-            if (token !== null) {
-                const response = await updateUser(editedUser, token);
+            if (data.token !== "") {
+                const response = await updateUser(editedUser, data.token);
 
                 if (!response.body.error && response.status === 200) {
                     setIsUserEdited(true);
@@ -130,8 +126,12 @@ const Profile: React.FC = () => {
     if (!loaded) return null;
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#f0f0f5" }}>
-            {isFocused && <LoggedInModal navObject={navigation} />}
+        <SafeAreaView
+            style={{ flex: 1, backgroundColor: theme.primaryBackground }}
+        >
+            {isFocused && data.token === "" && (
+                <LoggedInModal navObject={navigation} />
+            )}
             <Container>
                 <HeaderTitle
                     text="Perfil"
@@ -144,7 +144,7 @@ const Profile: React.FC = () => {
                         <Logo
                             width={scale(75)}
                             height={scale(75)}
-                            fill="#e83338"
+                            fill={theme.primaryRed}
                         />
                     </LogoWrapper>
 
@@ -177,7 +177,7 @@ const Profile: React.FC = () => {
                         onChangeText={(text) => setUserEmail(text)}
                     />
 
-                    {isLogged && isEditing && (
+                    {data.token !== "" && isEditing && (
                         <>
                             <NormalLabel>Senha</NormalLabel>
                             <InputViewing
@@ -199,7 +199,7 @@ const Profile: React.FC = () => {
                         </>
                     )}
 
-                    {isLogged && (
+                    {data.token !== "" && (
                         <EditButton
                             isEditing={isEditing}
                             onPress={
@@ -211,7 +211,7 @@ const Profile: React.FC = () => {
                             <Feather
                                 name={isEditing ? "save" : "edit-3"}
                                 size={scale(18)}
-                                color="#ffffff"
+                                color={theme.primaryWhite}
                             />
                             <ButtonLabel>
                                 {isEditing ? "Salvar" : "Editar Perfil"}
@@ -219,7 +219,7 @@ const Profile: React.FC = () => {
                         </EditButton>
                     )}
 
-                    {isLogged && !isEditing && (
+                    {data.token !== "" && !isEditing && (
                         <ButtonsContainer>
                             <ProfileButton
                                 onPress={() =>
@@ -229,7 +229,7 @@ const Profile: React.FC = () => {
                                 <Feather
                                     name="clipboard"
                                     size={scale(18)}
-                                    color="#ffffff"
+                                    color={theme.primaryWhite}
                                 />
                                 <ButtonLabel>Minhas Ocorrências</ButtonLabel>
                             </ProfileButton>
@@ -238,7 +238,7 @@ const Profile: React.FC = () => {
                                 <Feather
                                     name="star"
                                     size={scale(18)}
-                                    color="#ffffff"
+                                    color={theme.primaryWhite}
                                 />
                                 <ButtonLabel>Minhas Avaliações</ButtonLabel>
                             </ProfileButton>

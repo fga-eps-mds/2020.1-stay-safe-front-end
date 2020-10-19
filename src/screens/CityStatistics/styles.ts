@@ -13,7 +13,7 @@ interface CrimeStatisticsProps {
 
 export const StatisticsCard = styled.View`
     width: 85%;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(20)}px;
     align-items: center;
 `;
@@ -41,16 +41,17 @@ export const YearTitle = styled.Text`
     font-size: ${scale(16)}px;
     font-family: "Trueno-Regular";
     margin-left: ${scale(7)}px;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
-export const YearDropDown = styled(DropDownPicker).attrs({
+export const YearDropDown = styled(DropDownPicker).attrs((props) => ({
     placeholder: "Selecionar",
     containerStyle: {
         height: scale(42),
         width: scale(80),
     },
     dropDownStyle: {
-        backgroundColor: "#ffffff",
+        backgroundColor: props.theme.primaryWhite,
         borderTopLeftRadius: scale(15),
         borderTopRightRadius: scale(15),
         borderBottomLeftRadius: scale(15),
@@ -60,22 +61,24 @@ export const YearDropDown = styled(DropDownPicker).attrs({
         fontFamily: "Trueno-Regular",
         fontSize: scale(16),
         textAlign: "center",
-        color: "#011640",
+        color: props.theme.primaryDarkBlue,
     },
     activeLabelStyle: {
-        color: "#011640",
+        color: props.theme.primaryDarkBlue,
+        fontSize: scale(17),
         fontFamily: "Trueno-SemiBold",
     },
-    arrowColor: "#e83338",
+    arrowColor: props.theme.primaryRed,
     arrowSize: 18,
-})`
+}))`
     border: 0;
+    background-color: ${(props) => props.theme.primaryWhite};
 `;
 
 export const CrimeStatistics = styled.View<CrimeStatisticsProps>`
     width: 90%;
     border-top-width: ${(props) => (props.loading ? scale(0) : scale(1))}px;
-    border-top-color: #011640;
+    border-top-color: ${(props) => props.theme.primaryDarkBlue};
     margin-top: ${scale(5)}px;
     border-radius: ${scale(20)}px;
     align-items: center;
@@ -103,14 +106,14 @@ export const CrimeContainer = styled.View`
 export const CrimeText = styled.Text`
     font-family: "Trueno-SemiBold";
     font-size: ${scale(14)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
     margin-bottom: ${scale(5)}px;
 `;
 
 export const CrimeBar = styled.View<CrimeBarProps>`
     width: ${(props) => props.percentage * 0.87}%;
     height: ${scale(21)}px;
-    background-color: #7dbfe2;
+    background-color: ${(props) => props.theme.primaryLightBlue};
     justify-content: center;
     align-items: flex-end;
 `;
@@ -118,7 +121,7 @@ export const CrimeBar = styled.View<CrimeBarProps>`
 export const CrimeBarNumber = styled.Text`
     font-family: "Trueno-Regular";
     font-size: ${scale(14)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
     margin-left: ${scale(2)}px;
 `;
 
@@ -126,7 +129,7 @@ export const SortButton = styled.TouchableOpacity`
     width: 60%;
     height: ${scale(41)}px;
     margin-top: ${scale(27)}px;
-    background-color: #e83338;
+    background-color: ${(props) => props.theme.primaryRed};
     border-radius: ${scale(25)}px;
     flex-direction: row;
     align-items: center;
@@ -136,6 +139,6 @@ export const SortButton = styled.TouchableOpacity`
 export const SortButtontText = styled.Text`
     font-family: "Trueno-SemiBold";
     font-size: ${scale(15)}px;
-    color: #ffffff;
+    color: ${(props) => props.theme.primaryWhite};
     margin-left: ${scale(5)}px;
 `;

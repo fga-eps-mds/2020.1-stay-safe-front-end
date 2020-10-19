@@ -1,10 +1,10 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import CircularLoader from "../../components/CircularLoader";
 import {
     Container,
     KeyboardScrollView,
@@ -16,15 +16,19 @@ import {
     NormalCreate,
     SendLabel,
 } from "../../components/NormalForms";
+import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
-import { authUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 
 const Login: React.FC = () => {
     const navigation = useNavigation();
+    const theme = useTheme();
+    const { signIn } = useUser();
 
     const [username, setUsername] = useState("");
     const [userPwd, setUserPwd] = useState("");
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -34,18 +38,12 @@ const Login: React.FC = () => {
     const [passwordInput, setPasswordInput] = useState(NormalInput);
 
     const handleLogin = async () => {
-        const response = await authUser({
-            username,
-            password: userPwd,
-        });
+        setIsLoading(true);
 
-        if (!response.body.error && response.status === 200) {
-            AsyncStorage.setItem("userToken", response.body.token);
-            AsyncStorage.setItem("username", username);
-            navigation.navigate("HomeTabBar");
-        } else {
-            Alert.alert("Erro ao logar usuário", response.body.error);
-        }
+        await signIn({ username, password: userPwd });
+
+        setIsLoading(false);
+        navigation.navigate("HomeTabBar");
     };
 
     if (!loaded) return null;
@@ -58,7 +56,7 @@ const Login: React.FC = () => {
                         <Logo
                             width={scale(75)}
                             height={scale(75)}
-                            fill="#e83338"
+                            fill={theme.primaryRed}
                         />
                     </LogoWrapper>
 
@@ -83,7 +81,11 @@ const Login: React.FC = () => {
                     />
 
                     <NormalSend onPress={() => handleLogin()}>
-                        <SendLabel>Entrar</SendLabel>
+                        {isLoading ? (
+                            <CircularLoader size={20} />
+                        ) : (
+                            <SendLabel>Entrar</SendLabel>
+                        )}
                     </NormalSend>
 
                     <NormalCreate

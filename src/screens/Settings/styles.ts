@@ -9,7 +9,7 @@ export const ButtonsContainer = styled.View`
 
 export const Button = styled.TouchableOpacity`
     padding: ${scale(15)}px;
-    background-color: #ffffff;
+    background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(12)}px;
     flex-direction: row;
     margin-bottom: ${scale(17)}px;
@@ -18,7 +18,7 @@ export const Button = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
     font-size: ${scale(14)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
     font-family: Trueno-SemiBold;
     margin-left: ${scale(10)}px;
 `;
@@ -40,5 +40,6 @@ export const DeleteButton = styled.TouchableOpacity`
 `;
 
 export const DeleteText = styled(SendLabel)`
-    color: rgba(0, 0, 0, 0.3);
+    color: ${(props) => props.theme.primaryBlack};
+    opacity: 0.3;
 `;

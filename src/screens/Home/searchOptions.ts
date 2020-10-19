@@ -2,7 +2,7 @@ export const searchOptions = [
     {
         id: 1,
         name: "Latrocínio",
-        label: "Latrocinio",
+        label: "Latrocínio",
         color: "#336EFF",
     },
     {
@@ -14,13 +14,13 @@ export const searchOptions = [
     {
         id: 3,
         name: "Roubo de Veículo",
-        label: "Roubo de Veiculo",
+        label: "Roubo de Veículo",
         color: "#ffa500",
     },
     {
         id: 4,
         name: "Roubo de Residência",
-        label: "Roubo de Residencia",
+        label: "Roubo de Residência",
         color: "#00FFDC",
     },
     {

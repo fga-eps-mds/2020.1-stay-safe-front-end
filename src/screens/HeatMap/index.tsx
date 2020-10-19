@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
+import { useTheme } from "styled-components";
 
 import { StayNormalMap } from "../Home/styles";
 import { coordinates } from "./coordinates";
@@ -48,6 +49,7 @@ interface CitiesCrimes {
 
 const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const [citiesCrimes, setCitiesCrimes] = useState<CitiesCrimes[]>([]);
 
@@ -95,7 +97,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(101, 239, 0, 0.6)",
+                        color: theme.heatMapGreen,
                     };
                     citiesColors.push(cityCoordinate);
                 } else if (city.quantity > 0 && city.quantity <= 2) {
@@ -103,7 +105,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(232, 140, 0, 0.6)",
+                        color: theme.heatMapOrange,
                     };
                     citiesColors.push(cityCoordinate);
                 } else {
@@ -111,7 +113,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(239, 0, 0, 0.6)",
+                        color: theme.heatMapRed,
                     };
                     citiesColors.push(cityCoordinate);
                 }
@@ -121,7 +123,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(101, 239, 0, 0.6)",
+                        color: theme.heatMapGreen,
                     };
                     citiesColors.push(cityCoordinate);
                 } else if (city.quantity > 10 && city.quantity <= 30) {
@@ -129,7 +131,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(232, 140, 0, 0.6)",
+                        color: theme.heatMapOrange,
                     };
                     citiesColors.push(cityCoordinate);
                 } else {
@@ -137,7 +139,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(239, 0, 0, 0.6)",
+                        color: theme.heatMapRed,
                     };
                     citiesColors.push(cityCoordinate);
                 }
@@ -147,7 +149,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(101, 239, 0, 0.6)",
+                        color: theme.heatMapGreen,
                     };
                     citiesColors.push(cityCoordinate);
                 } else if (city.quantity > 500 && city.quantity <= 1800) {
@@ -155,7 +157,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(232, 140, 0, 0.6)",
+                        color: theme.heatMapOrange,
                     };
                     citiesColors.push(cityCoordinate);
                 } else {
@@ -163,7 +165,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(239, 0, 0, 0.6)",
+                        color: theme.heatMapRed,
                     };
                     citiesColors.push(cityCoordinate);
                 }
@@ -173,7 +175,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(101, 239, 0, 0.6)",
+                        color: theme.heatMapGreen,
                     };
                     citiesColors.push(cityCoordinate);
                 } else if (city.quantity > 60 && city.quantity <= 200) {
@@ -181,7 +183,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(232, 140, 0, 0.6)",
+                        color: theme.heatMapOrange,
                     };
                     citiesColors.push(cityCoordinate);
                 } else {
@@ -189,7 +191,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(239, 0, 0, 0.6)",
+                        color: theme.heatMapRed,
                     };
                     citiesColors.push(cityCoordinate);
                 }
@@ -199,7 +201,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(101, 239, 0, 0.6)",
+                        color: theme.heatMapGreen,
                     };
                     citiesColors.push(cityCoordinate);
                 } else if (city.quantity > 15 && city.quantity <= 50) {
@@ -207,7 +209,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(232, 140, 0, 0.6)",
+                        color: theme.heatMapOrange,
                     };
                     citiesColors.push(cityCoordinate);
                 } else {
@@ -215,7 +217,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         name: city.name,
                         quantity: city.quantity,
                         crime_nature: city.crime_nature,
-                        color: "rgba(239, 0, 0, 0.6)",
+                        color: theme.heatMapRed,
                     };
                     citiesColors.push(cityCoordinate);
                 }
@@ -240,7 +242,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                     (cityCrimes) => cityCrimes.name === coordinate.name
                 );
 
-                let color = "rgba(239, 91, 0, 0.6)";
+                let color = theme.heatMapOrange;
 
                 if (cityColor.length === 0) {
                     color = coordinate.color;
@@ -269,7 +271,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                         coordinates={coordinate.coordinates.map(
                             (coordinate) => coordinate
                         )}
-                        strokeColor="#000"
+                        strokeColor={theme.primaryBlack}
                         fillColor={color}
                         tappable
                         onPress={() => {
@@ -280,7 +282,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                                 navigation.navigate("CityStatistics", {
                                     city: coordinate.name,
                                 });
-                            }, 2000);
+                            }, 1000);
                         }}
                     />
                 );

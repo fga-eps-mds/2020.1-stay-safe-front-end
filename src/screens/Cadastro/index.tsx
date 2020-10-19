@@ -1,10 +1,11 @@
-import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
 import {
     Container,
@@ -16,6 +17,7 @@ import {
     NormalSend,
     SendLabel,
 } from "../../components/NormalForms";
+import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
 import { createUser, authUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
@@ -23,6 +25,8 @@ import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
     const navigation = useNavigation();
+    const theme = useTheme();
+    const { signIn } = useUser();
 
     const [username, setUsername] = useState("");
     const [userFullName, setUserFullName] = useState("");
@@ -34,6 +38,8 @@ const Cadastro: React.FC = () => {
     const [emailInput, setEmailInput] = useState(NormalInput);
     const [pwdInput, setPwdInput] = useState(NormalInput);
     const [confirmPwdInput, setConfirmPwdInput] = useState(NormalInput);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -62,8 +68,11 @@ const Cadastro: React.FC = () => {
                     password: userPwd,
                 });
                 if (!response.body.error && response.status === 200) {
-                    AsyncStorage.setItem("userToken", response.body.token);
-                    AsyncStorage.setItem("username", username);
+                    setIsLoading(true);
+
+                    await signIn({ username, password: userPwd });
+
+                    setIsLoading(false);
                     navigation.navigate("HomeTabBar");
                 } else {
                     Alert.alert("Erro ao logar usuário", response.body.error);
@@ -86,7 +95,7 @@ const Cadastro: React.FC = () => {
                         <Logo
                             width={scale(75)}
                             height={scale(75)}
-                            fill="#e83338"
+                            fill={theme.primaryRed}
                         />
                     </LogoWrapper>
 
@@ -139,7 +148,11 @@ const Cadastro: React.FC = () => {
                     />
 
                     <NormalSend onPress={() => handleRegister()}>
-                        <SendLabel>Criar Conta</SendLabel>
+                        {isLoading ? (
+                            <CircularLoader size={20} />
+                        ) : (
+                            <SendLabel>Criar Conta</SendLabel>
+                        )}
                     </NormalSend>
                 </KeyboardScrollView>
             </Container>
