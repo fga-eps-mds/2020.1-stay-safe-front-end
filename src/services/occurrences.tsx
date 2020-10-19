@@ -31,10 +31,11 @@ export const createOccurrence = async (
             victim: data.victim,
         }),
     });
+
     return { status: response.status, body: await response.json() };
 };
 
-export const getAllUsersOccurrences = async (occurrence_type: string) => {
+export const getAllUsersOccurrences = async (occurrence_type?: string) => {
     if (occurrence_type && occurrence_type !== "") {
         const response = await fetch(
             userApi + `/occurrences?occurrence_type=${occurrence_type}`,
@@ -45,14 +46,17 @@ export const getAllUsersOccurrences = async (occurrence_type: string) => {
                 },
             }
         );
+
         return { status: response.status, body: await response.json() };
     }
+
     const response = await fetch(userApi + "/occurrences", {
         method: "GET",
         headers: {
             Accept: "application/json",
         },
     });
+
     return { status: response.status, body: await response.json() };
 };
 
@@ -63,6 +67,7 @@ export const getUserOccurrences = async (username: string) => {
             Accept: "application/json",
         },
     });
+
     return { status: response.status, body: await response.json() };
 };
 
@@ -74,6 +79,7 @@ export const deleteOccurrence = async (id: number, token: string) => {
             Authorization: `${token}`,
         },
     });
+
     return { status: response.status };
 };
 
@@ -99,5 +105,6 @@ export const updateOccurrence = async (
             victim: data.victim,
         }),
     });
+
     return { status: response.status, body: {} };
 };
