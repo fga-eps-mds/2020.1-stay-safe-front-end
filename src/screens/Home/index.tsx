@@ -59,18 +59,17 @@ interface Occurrence {
 interface SecretaryOccurrence {
     capture_data: string;
     cities: Array<CityCrimes>;
-    period: Year;
+    period: string;
 }
 
 interface CityCrimes {
-    [city: string]: {
-        crime_nature: string;
-        quantity: number;
-    };
+    name: string;
+    crimes: Array<Crimes>;
 }
 
-interface Year {
-    year: number;
+interface Crimes {
+    nature: string;
+    quantity: number;
 }
 
 const Home: React.FC = () => {
@@ -156,13 +155,9 @@ const Home: React.FC = () => {
             );
 
             if (response.status === 200) {
-                const responseOfYear2019 = response.body.map(
-                    (year: SecretaryOccurrence) => {
-                        if (year.period.year === 2019) {
-                            return year;
-                        }
-                    }
-                );
+                const responseOfYear2019 = response.body.filter(
+                    (year: SecretaryOccurrence) => year.period === "1/2019"
+                )[0].cities;
 
                 setSecretaryOccurrences(responseOfYear2019);
                 return "Stay Safe";
