@@ -39,20 +39,17 @@ interface Data {
 interface SecretaryOccurrence {
     capture_data: string;
     cities: Array<CityCrimes>;
-    period: Year;
+    period: string;
 }
 
 interface CityCrimes {
-    [city: string]: Array<Crime>;
+    name: string;
+    crimes: Array<Crimes>;
 }
 
-interface Crime {
-    crime_nature: string;
+interface Crimes {
+    nature: string;
     quantity: number;
-}
-
-interface Year {
-    year: number;
 }
 
 const CityStatistics: React.FC = () => {
@@ -67,7 +64,7 @@ const CityStatistics: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [cityStatistics, setCityStatistics] = useState<Crime[]>([]);
+    const [cityStatistics, setCityStatistics] = useState<Crimes[]>([]);
     const [higherStatistic, setHigherStatistic] = useState(0);
 
     useEffect(() => {
@@ -98,32 +95,28 @@ const CityStatistics: React.FC = () => {
             setData(response.body);
 
             response.body.map((year: SecretaryOccurrence) => {
-                if (year.period.year === Number(selectedYear)) {
+                if (year.period === "1/" + selectedYear) {
                     year.cities.map((city) => {
-                        if (city[cityName]) {
+                        if (city.name === cityName) {
                             setCityStatistics(
-                                city[cityName].sort(function (
-                                    a: Crime,
-                                    b: Crime
+                                city.crimes.sort(function (
+                                    a: Crimes,
+                                    b: Crimes
                                 ) {
                                     return b.quantity - a.quantity;
                                 })
                             );
-
                             let higher = -1;
                             let higherName = "";
-
-                            city[cityName].map((crime: Crime) => {
+                            city.crimes.map((crime: Crimes) => {
                                 if (higher < crime.quantity) {
                                     higher = crime.quantity;
-                                    higherName = crime.crime_nature;
+                                    higherName = crime.nature;
                                 }
                             });
-
                             setHigherStatistic(
-                                city[cityName].filter(
-                                    (city: Crime) =>
-                                        city.crime_nature === higherName
+                                city.crimes.filter(
+                                    (city: Crimes) => city.nature === higherName
                                 )[0].quantity
                             );
                         }
@@ -168,15 +161,15 @@ const CityStatistics: React.FC = () => {
                                         100.0;
 
                                     if (
-                                        cityStatistic.crime_nature !==
+                                        cityStatistic.nature !==
                                         "Trafico de Entorpecentes"
                                     ) {
                                         return (
                                             <CrimeContainer
-                                                key={cityStatistic.crime_nature}
+                                                key={cityStatistic.nature}
                                             >
                                                 <CrimeText>
-                                                    {cityStatistic.crime_nature}
+                                                    {cityStatistic.nature}
                                                 </CrimeText>
                                                 <View
                                                     style={{
