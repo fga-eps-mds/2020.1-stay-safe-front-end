@@ -42,3 +42,15 @@ export const searchOptions = [
         color: "#FF00B6",
     },
 ];
+
+export const ufs = [
+    {
+        label: "DF",
+        value: "df",
+        selected: true,
+    },
+    {
+        label: "SP",
+        value: "sp",
+    },
+];

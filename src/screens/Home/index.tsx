@@ -24,7 +24,7 @@ import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import { searchOptions } from "./searchOptions";
+import { searchOptions, ufs } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
@@ -38,6 +38,9 @@ import {
     Tab,
     TabTitle,
     Span,
+    UfDropDown,
+    DropDownContainer,
+    DropDownTitle,
 } from "./styles";
 
 type ParamList = {
@@ -93,6 +96,8 @@ const Home: React.FC = () => {
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
     const [selectedFilter, setSelectedFilter] = useState("heat");
+
+    const [selectedUf, setSelectedUf] = useState("df");
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -152,7 +157,7 @@ const Home: React.FC = () => {
             const option = searchOptions[selectedOption[0] - 1];
 
             const response = await getOccurrencesByCrimeNature(
-                "df",
+                selectedUf,
                 option.label
             );
 
@@ -317,12 +322,28 @@ const Home: React.FC = () => {
                 position="top"
                 backdropOpacity={0}
                 backButtonClose
+                ufOptionOpen={selectedFilter === "heat"}
             >
                 <View
                     style={{
                         alignItems: "center",
                     }}
                 >
+                    {selectedFilter === "heat" && (
+                        <DropDownContainer>
+                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
+                            <UfDropDown
+                                style={{
+                                    backgroundColor: theme.primaryLightGray,
+                                }}
+                                items={ufs}
+                                defaultValue={selectedUf}
+                                onChangeItem={(item) =>
+                                    setSelectedUf(item.value)
+                                }
+                            />
+                        </DropDownContainer>
+                    )}
                     <TabFilter>
                         <Tab
                             onPress={() => setSelectedFilter("heat")}
