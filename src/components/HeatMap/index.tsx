@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
 import { useTheme } from "styled-components";
 
-import { StayNormalMap } from "../Home/styles";
+import { StayNormalMap } from "../../screens/Home/styles";
+import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { coordinates } from "./coordinates";
 
 interface CoordinateCitiesDF {
@@ -267,6 +268,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                 latitudeDelta: 1,
                 longitudeDelta: 1,
             }}
+            customMapStyle={theme.type === "dark" ? staySafeDarkMapStyle : []}
         >
             {coordinates.map((coordinate: CoordinateCitiesDF) => {
                 const cityColor = citiesCrimes.filter(
