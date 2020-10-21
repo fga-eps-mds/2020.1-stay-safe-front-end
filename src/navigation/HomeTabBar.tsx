@@ -44,7 +44,10 @@ const HomeTabBar: React.FC = () => {
                     },
                 })}
                 tabBarOptions={{
-                    activeTintColor: theme.primaryLightBlue,
+                    activeTintColor:
+                        theme.type === "dark"
+                            ? theme.primarySuperDarkBlue
+                            : theme.primaryLightBlue,
                     inactiveTintColor: theme.primaryGray,
                     showLabel: false,
                     style: {
@@ -52,6 +55,7 @@ const HomeTabBar: React.FC = () => {
                         backgroundColor: theme.primaryWhite,
                         borderTopLeftRadius: scale(18),
                         borderTopRightRadius: scale(18),
+                        borderTopWidth: 0,
                         marginTop: -scale(18),
                     },
                 }}

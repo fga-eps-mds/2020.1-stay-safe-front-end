@@ -13,15 +13,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import CircularLoader from "../../components/CircularLoader";
+import HeatMap from "../../components/HeatMap";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
+import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import HeatMap from "../HeatMap";
 import { searchOptions } from "./searchOptions";
 import {
     FilterButton,
@@ -243,6 +245,9 @@ const Home: React.FC = () => {
                         longitudeDelta: 1,
                     }}
                     onPress={(e) => handleReportingCoordinatesOnMap(e)}
+                    customMapStyle={
+                        theme.type === "dark" ? staySafeDarkMapStyle : []
+                    }
                 >
                     {occurrences !== undefined &&
                         occurrences?.map((occurrence: Occurrence) => {
@@ -263,11 +268,19 @@ const Home: React.FC = () => {
                                     }
                                     tracksViewChanges={false}
                                 >
-                                    <Logo
-                                        width={scale(38)}
-                                        height={scale(38)}
-                                        fill={getPinColor(occurrence)}
-                                    />
+                                    {theme.type === "dark" ? (
+                                        <DarkLogo
+                                            width={scale(38)}
+                                            height={scale(38)}
+                                            fill={getPinColor(occurrence)}
+                                        />
+                                    ) : (
+                                        <Logo
+                                            width={scale(38)}
+                                            height={scale(38)}
+                                            fill={getPinColor(occurrence)}
+                                        />
+                                    )}
                                 </Marker>
                             );
                         })}
