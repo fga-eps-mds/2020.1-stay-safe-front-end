@@ -148,32 +148,27 @@ const CityStatistics: React.FC = () => {
                                             higherStatistic) *
                                         100.0;
 
-                                    if (
-                                        cityStatistic.nature !==
-                                        "Trafico de Entorpecentes"
-                                    ) {
-                                        return (
-                                            <CrimeContainer
-                                                key={cityStatistic.nature}
+                                    return (
+                                        <CrimeContainer
+                                            key={cityStatistic.nature}
+                                        >
+                                            <CrimeText>
+                                                {cityStatistic.nature}
+                                            </CrimeText>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                }}
                                             >
-                                                <CrimeText>
-                                                    {cityStatistic.nature}
-                                                </CrimeText>
-                                                <View
-                                                    style={{
-                                                        flexDirection: "row",
-                                                    }}
-                                                >
-                                                    <CrimeBar
-                                                        percentage={percentage}
-                                                    />
-                                                    <CrimeBarNumber>
-                                                        {cityStatistic.quantity}
-                                                    </CrimeBarNumber>
-                                                </View>
-                                            </CrimeContainer>
-                                        );
-                                    }
+                                                <CrimeBar
+                                                    percentage={percentage}
+                                                />
+                                                <CrimeBarNumber>
+                                                    {cityStatistic.quantity}
+                                                </CrimeBarNumber>
+                                            </View>
+                                        </CrimeContainer>
+                                    );
                                 })
                             )}
                         </CrimeStatistics>
