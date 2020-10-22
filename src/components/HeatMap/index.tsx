@@ -69,12 +69,15 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
     }, []);
 
     const getHeatColor = (classification: number) => {
-        if (classification === 1) return theme.heatMapGreen1;
-        else if (classification === 2) return theme.heatMapYellow2;
-        else if (classification === 3) return theme.heatMapOrange3;
-        else if (classification === 4) return theme.heatMapOrange4;
-        else if (classification === 5) return theme.heatMapOrange5;
-        else if (classification === 6) return theme.heatMapRed6;
+        let color = "";
+        if (classification === 1) color = theme.heatMapGreen1;
+        else if (classification === 2) color = theme.heatMapYellow2;
+        else if (classification === 3) color = theme.heatMapOrange3;
+        else if (classification === 4) color = theme.heatMapOrange4;
+        else if (classification === 5) color = theme.heatMapOrange5;
+        else if (classification === 6) color = theme.heatMapRed6;
+
+        return color;
     };
 
     return (
