@@ -23,6 +23,7 @@ import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary
 import { scale } from "../../utils/scalling";
 import HeatMap from "../HeatMap";
 import { searchOptions } from "./searchOptions";
+import { tabs } from "./tabs";
 import {
     FilterButton,
     FilterModal,
@@ -300,30 +301,20 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        <Tab
-                            onPress={() => setSelectedFilter("heat")}
-                            focus={selectedFilter === "heat"}
-                        >
-                            <TabTitle focus={selectedFilter === "heat"}>
-                                Cidade
-                            </TabTitle>
-                        </Tab>
-                        <Tab
-                            onPress={() => setSelectedFilter("neighborhood")}
-                            focus={selectedFilter === "neighborhood"}
-                        >
-                            <TabTitle focus={selectedFilter === "neighborhood"}>
-                                Bairro
-                            </TabTitle>
-                        </Tab>
-                        <Tab
-                            onPress={() => setSelectedFilter("pins")}
-                            focus={selectedFilter === "pins"}
-                        >
-                            <TabTitle focus={selectedFilter === "pins"}>
-                                Local
-                            </TabTitle>
-                        </Tab>
+                        {
+                            tabs.map((item) => {
+                                return (
+                                    <Tab
+                                        onPress={() => setSelectedFilter(item.name)}
+                                        focus={selectedFilter === item.name}
+                                    >
+                                        <TabTitle focus={selectedFilter === item.name}>
+                                            {item.text}
+                                        </TabTitle>
+                                    </Tab>
+                                )
+                            })
+                        }
                     </TabFilter>
                 </View>
                 {searchOptions.map((option) => {
