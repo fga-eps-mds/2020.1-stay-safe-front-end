@@ -30,12 +30,14 @@ interface CityCrimes {
 interface Crime {
     nature: string;
     quantity: number;
+    classification: number;
 }
 
 interface CitiesCrimes {
     name: string;
     nature: string;
     quantity: number;
+    classification: number;
     color?: string;
 }
 
@@ -50,213 +52,29 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
 
     useEffect(() => {
         if (secretaryOccurrences) {
-            const crimesUpdated: CitiesCrimes[] = [];
-            let nature = "";
+            setCitiesCrimes(
+                secretaryOccurrences.map((city) => {
+                    const crime = {
+                        name: city.name,
+                        nature: city.crimes[0].nature,
+                        quantity: city.crimes[0].quantity,
+                        classification: city.crimes[0].classification,
+                        color: getHeatColor(city.crimes[0].classification),
+                    };
 
-            secretaryOccurrences.forEach((city) => {
-                nature = city.crimes[0].nature;
-
-                const crime = {
-                    name: city.name,
-                    nature: city.crimes[0].nature,
-                    quantity: city.crimes[0].quantity,
-                };
-                crimesUpdated.push(crime);
-            });
-
-            createHeatScale(crimesUpdated, nature);
+                    return crime;
+                })
+            );
         }
     }, []);
 
-    const createHeatScale = (crimesUpdated: CitiesCrimes[], nature: string) => {
-        const citiesColors: CitiesCrimes[] = [];
-        crimesUpdated.map((city) => {
-            if (nature === "Latrocínio") {
-                if (city.quantity === 0) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity === 1) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            } else if (nature === "Estupro") {
-                if (city.quantity <= 2) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity > 2 && city.quantity <= 5) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            } else if (nature === "Roubo a Transeunte") {
-                if (city.quantity <= 100) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity > 100 && city.quantity <= 200) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            } else if (nature === "Roubo de Veículo") {
-                if (city.quantity <= 5) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity > 5 && city.quantity <= 20) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            } else if (nature === "Roubo de Residência") {
-                if (city.quantity <= 2) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity > 2 && city.quantity <= 5) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            } else if (nature === "Furto a Transeunte") {
-                if (city.quantity <= 5) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity > 5 && city.quantity <= 15) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            } else if (nature === "Furto de Veículo") {
-                if (city.quantity <= 20) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapGreen6,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else if (city.quantity > 20 && city.quantity <= 50) {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapOrange3,
-                    };
-                    citiesColors.push(cityCoordinate);
-                } else {
-                    const cityCoordinate = {
-                        name: city.name,
-                        quantity: city.quantity,
-                        nature: city.nature,
-                        color: theme.heatMapRed1,
-                    };
-                    citiesColors.push(cityCoordinate);
-                }
-            }
-        });
-
-        setCitiesCrimes(citiesColors);
+    const getHeatColor = (classification: number) => {
+        if (classification === 1) return theme.heatMapGreen1;
+        else if (classification === 2) return theme.heatMapYellow2;
+        else if (classification === 3) return theme.heatMapOrange3;
+        else if (classification === 4) return theme.heatMapOrange4;
+        else if (classification === 5) return theme.heatMapOrange5;
+        else if (classification === 6) return theme.heatMapRed6;
     };
 
     return (
@@ -314,6 +132,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences }) => {
                                 setIsSelected(false);
                                 navigation.navigate("CityStatistics", {
                                     city: coordinate.name,
+                                    uf: "df",
                                 });
                             }, 1000);
                         }}
