@@ -32,10 +32,6 @@ type ParamList = {
     };
 };
 
-interface Data {
-    [index: number]: SecretaryOccurrence;
-}
-
 interface SecretaryOccurrence {
     capture_data: string;
     cities: Array<CityCrimes>;
@@ -59,8 +55,6 @@ const CityStatistics: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const cityName = route.params.city;
-
-    const [data, setData] = useState<Data>([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -92,8 +86,6 @@ const CityStatistics: React.FC = () => {
         const response = await getAllOccurrences("df");
 
         if (response.status === 200) {
-            setData(response.body);
-
             response.body.map((year: SecretaryOccurrence) => {
                 if (year.period === "1/" + selectedYear) {
                     year.cities.map((city) => {

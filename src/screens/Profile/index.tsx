@@ -23,7 +23,7 @@ import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
-import { validateUpdateUser } from "../../utils/validateUpdateUser";
+import { validateUser } from "../../utils/validateUser";
 import {
     InputViewing,
     ProfileButton,
@@ -82,7 +82,7 @@ const Profile: React.FC = () => {
 
     const handleUpdateProfile = async () => {
         if (
-            validateUpdateUser({
+            validateUser({
                 fullName: userFullName,
                 email: userEmail,
                 password: userPwd,
