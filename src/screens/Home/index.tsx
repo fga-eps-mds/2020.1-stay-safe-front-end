@@ -61,22 +61,6 @@ interface Occurrence {
     victim: boolean;
 }
 
-interface SecretaryOccurrence {
-    capture_data: string;
-    cities: Array<CityCrimes>;
-    period: string;
-}
-
-interface CityCrimes {
-    name: string;
-    crimes: Array<Crimes>;
-}
-
-interface Crimes {
-    nature: string;
-    quantity: number;
-}
-
 const Home: React.FC = () => {
     const theme = useTheme();
     const { data } = useUser();
@@ -158,15 +142,16 @@ const Home: React.FC = () => {
 
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
-                option.label
+                option.label,
+                "1/2020",
+                "12/2020",
+                1
             );
 
             if (response.status === 200) {
-                const responseOfYear2019 = response.body.filter(
-                    (year: SecretaryOccurrence) => year.period === "1/2019"
-                )[0].cities;
+                const responseOfCurrentYear = response.body[0].cities;
 
-                setSecretaryOccurrences(responseOfYear2019);
+                setSecretaryOccurrences(responseOfCurrentYear);
                 return "Stay Safe";
             }
         }
