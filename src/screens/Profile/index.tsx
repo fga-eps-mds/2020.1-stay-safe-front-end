@@ -15,12 +15,10 @@ import LoggedInModal from "../../components/LoggedInModal";
 import {
     Container,
     KeyboardScrollView,
-    LogoWrapper,
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
-import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
@@ -31,6 +29,7 @@ import {
     ButtonLabel,
     ButtonsContainer,
 } from "./styles";
+import LogoContainer from "../../components/LogoContainer";
 
 const Profile: React.FC = () => {
     const theme = useTheme();
@@ -140,13 +139,7 @@ const Profile: React.FC = () => {
                 />
 
                 <KeyboardScrollView>
-                    <LogoWrapper>
-                        <Logo
-                            width={scale(75)}
-                            height={scale(75)}
-                            fill={theme.primaryRed}
-                        />
-                    </LogoWrapper>
+                    <LogoContainer/>
 
                     <NormalLabel>Username</NormalLabel>
                     <InputViewing
