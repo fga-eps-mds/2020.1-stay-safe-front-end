@@ -18,22 +18,7 @@ import {
     victimItems,
 } from "../Occurrence/dropdownConstants";
 import { InputContainer, Field, InputWrapper, FieldContainer } from "./styles";
-
-type ParamOccurrence = {
-    params: {
-        occurrence: {
-            id_occurrence: number;
-            location: [number, number];
-            gun: string;
-            occurrence_date_time: string;
-            register_date_time: string;
-            occurrence_type: string;
-            physical_aggression: boolean;
-            police_report: boolean;
-            victim: boolean;
-        };
-    };
-};
+import { ParamOccurrence } from "../../interfaces/occurrence";
 
 const OccurrenceDetails: React.FC = () => {
     const route = useRoute<RouteProp<ParamOccurrence, "params">>();
