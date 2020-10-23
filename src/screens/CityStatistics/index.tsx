@@ -95,8 +95,7 @@ const CityStatistics: React.FC = () => {
             uf,
             cityName,
             "1/" + selectedYear,
-            "12/" + selectedYear,
-            0
+            "12/" + selectedYear
         );
 
         if (response.status === 200) {
