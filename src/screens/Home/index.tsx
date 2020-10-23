@@ -317,21 +317,6 @@ const Home: React.FC = () => {
                         alignItems: "center",
                     }}
                 >
-                    {selectedFilter === "heat" && (
-                        <DropDownContainer>
-                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
-                            <UfDropDown
-                                style={{
-                                    backgroundColor: theme.primaryLightGray,
-                                }}
-                                items={ufs}
-                                defaultValue={selectedUf}
-                                onChangeItem={(item) =>
-                                    setSelectedUf(item.value)
-                                }
-                            />
-                        </DropDownContainer>
-                    )}
                     <TabFilter>
                         <Tab
                             onPress={() => setSelectedFilter("heat")}
@@ -358,6 +343,21 @@ const Home: React.FC = () => {
                             </TabTitle>
                         </Tab>
                     </TabFilter>
+                    {selectedFilter === "heat" && (
+                        <DropDownContainer>
+                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
+                            <UfDropDown
+                                style={{
+                                    backgroundColor: theme.primaryLightGray,
+                                }}
+                                items={ufs}
+                                defaultValue={selectedUf}
+                                onChangeItem={(item) =>
+                                    setSelectedUf(item.value)
+                                }
+                            />
+                        </DropDownContainer>
+                    )}
                 </View>
                 {selectedUf === "df"
                     ? searchOptionsDf.map((option) => {
