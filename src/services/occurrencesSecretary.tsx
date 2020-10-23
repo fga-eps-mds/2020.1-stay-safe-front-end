@@ -9,7 +9,7 @@ export const getOccurrencesByCrimeNature = async (
 ) => {
     const response = await fetch(
         secretaryApi +
-            `?secretary=${uf}&initial_month=${initialMonth}&final_month=${finalMonth}&crime=${crime}`,
+            `/crimes?secretary=${uf}&initial_month=${initialMonth}&final_month=${finalMonth}&nature=${crime}`,
         {
             method: "GET",
             headers: {
@@ -30,7 +30,7 @@ export const getAllOccurrencesOfCity = async (
 ) => {
     const response = await fetch(
         secretaryApi +
-            `?secretary=${uf}&city=${city}&initial_month=${initialMonth}&final_month=${finalMonth}`,
+            `/crimes?secretary=${uf}&city=${city}&initial_month=${initialMonth}&final_month=${finalMonth}`,
         {
             method: "GET",
             headers: {
@@ -50,7 +50,7 @@ export const getAllOccurrence = async (
 ) => {
     const response = await fetch(
         secretaryApi +
-            `?secretary=${uf}&initial_month=${initialMonth}&final_month=${finalMonth}`,
+            `/crimes?secretary=${uf}&initial_month=${initialMonth}&final_month=${finalMonth}`,
         {
             method: "GET",
             headers: {
