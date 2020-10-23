@@ -24,7 +24,7 @@ import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import { searchOptions, ufs } from "./searchOptions";
+import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
     });
 
     const getPinColor = (occurrence) => {
-        return searchOptions.filter(
+        return searchOptionsDf.filter(
             (op) => op.name === occurrence.occurrence_type
         )[0].color;
     };
@@ -122,7 +122,7 @@ const Home: React.FC = () => {
             for (let i = 0; i < selectedOption.length; i++) {
                 end = i === selectedOption.length - 1 ? "" : ", ";
                 occurrence_type = occurrence_type.concat(
-                    searchOptions[selectedOption[i] - 1].name,
+                    searchOptionsDf[selectedOption[i] - 1].name,
                     end
                 );
             }
@@ -138,7 +138,7 @@ const Home: React.FC = () => {
         setIsLoading(true);
 
         async function loadData() {
-            const option = searchOptions[selectedOption[0] - 1];
+            const option = searchOptionsDf[selectedOption[0] - 1];
 
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
@@ -224,7 +224,10 @@ const Home: React.FC = () => {
             {selectedOption[0] > 0 &&
             !isFilterOpen &&
             selectedFilter === "heat" ? (
-                <HeatMap secretaryOccurrences={secretaryOccurrences} />
+                <HeatMap
+                    secretaryOccurrences={secretaryOccurrences}
+                    city={selectedUf}
+                />
             ) : (
                 <StayNormalMap
                     loadingEnabled
@@ -356,38 +359,73 @@ const Home: React.FC = () => {
                         </Tab>
                     </TabFilter>
                 </View>
-                {searchOptions.map((option) => {
-                    return (
-                        <ButtonOptionContainer key={option.id}>
-                            <Option>
-                                <OptionCircleButton
-                                    onPress={() =>
-                                        handleSelectOption(option.id)
-                                    }
-                                >
-                                    <Feather
-                                        name={
-                                            selectedOption.indexOf(option.id) >=
-                                            0
-                                                ? "check-circle"
-                                                : "circle"
-                                        }
-                                        size={scale(20)}
-                                        color={theme.primaryBlack}
-                                    />
-                                </OptionCircleButton>
+                {selectedUf === "df"
+                    ? searchOptionsDf.map((option) => {
+                          return (
+                              <ButtonOptionContainer key={option.id}>
+                                  <Option>
+                                      <OptionCircleButton
+                                          onPress={() =>
+                                              handleSelectOption(option.id)
+                                          }
+                                      >
+                                          <Feather
+                                              name={
+                                                  selectedOption.indexOf(
+                                                      option.id
+                                                  ) >= 0
+                                                      ? "check-circle"
+                                                      : "circle"
+                                              }
+                                              size={scale(20)}
+                                              color={theme.primaryBlack}
+                                          />
+                                      </OptionCircleButton>
 
-                                <ButtonOptionText>
-                                    {option.name}
-                                </ButtonOptionText>
-                            </Option>
+                                      <ButtonOptionText>
+                                          {option.name}
+                                      </ButtonOptionText>
+                                  </Option>
 
-                            {selectedFilter === "pins" && (
-                                <OptionColor color={option.color} />
-                            )}
-                        </ButtonOptionContainer>
-                    );
-                })}
+                                  {selectedFilter === "pins" && (
+                                      <OptionColor color={option.color} />
+                                  )}
+                              </ButtonOptionContainer>
+                          );
+                      })
+                    : searchOptionsSp.map((option) => {
+                          return (
+                              <ButtonOptionContainer key={option.id}>
+                                  <Option>
+                                      <OptionCircleButton
+                                          onPress={() =>
+                                              handleSelectOption(option.id)
+                                          }
+                                      >
+                                          <Feather
+                                              name={
+                                                  selectedOption.indexOf(
+                                                      option.id
+                                                  ) >= 0
+                                                      ? "check-circle"
+                                                      : "circle"
+                                              }
+                                              size={scale(20)}
+                                              color={theme.primaryBlack}
+                                          />
+                                      </OptionCircleButton>
+
+                                      <ButtonOptionText>
+                                          {option.name}
+                                      </ButtonOptionText>
+                                  </Option>
+
+                                  {selectedFilter === "pins" && (
+                                      <OptionColor color={option.color} />
+                                  )}
+                              </ButtonOptionContainer>
+                          );
+                      })}
                 <View>
                     <Span
                         show={

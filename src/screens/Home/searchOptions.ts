@@ -1,4 +1,4 @@
-export const searchOptions = [
+export const searchOptionsDf = [
     {
         id: 1,
         name: "Latrocínio",
@@ -40,6 +40,45 @@ export const searchOptions = [
         name: "Furto de Veículo",
         label: "Furto de Veículo",
         color: "#FF00B6",
+    },
+];
+
+export const searchOptionsSp = [
+    {
+        id: 1,
+        name: "Latrocínio",
+        label: "Latrocínio",
+        color: "#336EFF",
+    },
+    {
+        id: 2,
+        name: "Roubo de Veículo",
+        label: "Roubo de Veículo",
+        color: "#ffa500",
+    },
+    {
+        id: 3,
+        name: "Estupro",
+        label: "Estupro",
+        color: "#000000",
+    },
+    {
+        id: 4,
+        name: "Furto de Veículo",
+        label: "Furto de Veículo",
+        color: "#FF00B6",
+    },
+    {
+        id: 5,
+        name: "Outros Furtos",
+        label: "Outros Furtos",
+        color: "#00FFDC",
+    },
+    {
+        id: 6,
+        name: "Outros Roubos",
+        label: "Outros Roubos",
+        color: "#FFE000",
     },
 ];
 
