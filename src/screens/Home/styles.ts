@@ -95,7 +95,7 @@ export const OptionColor = styled.View<OptionColorProps>`
 
 export const TabFilter = styled.View`
     flex-direction: row;
-    margin-bottom: ${scale(20)}px;
+    margin-bottom: ${scale(10)}px;
 `;
 
 export const Tab = styled.TouchableOpacity<TabProps>`
@@ -126,12 +126,16 @@ export const DropDownContainer = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: ${scale(5)}px;
 `;
 
 export const DropDownTitle = styled.Text`
     font-size: ${scale(16)}px;
     font-family: "Trueno-Regular";
-    color: ${(props) => props.theme.primarySuperDarkBlue};
+    color: ${(props) =>
+        props.theme.type === "dark"
+            ? props.theme.primarySuperDarkBlue
+            : props.theme.primaryLightBlue};
 `;
 
 export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
