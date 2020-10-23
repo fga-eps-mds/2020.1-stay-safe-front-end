@@ -26,8 +26,7 @@ export const getAllOccurrencesOfCity = async (
     uf: string,
     city: string,
     initialMonth: string,
-    finalMonth: string,
-    perCapita: number
+    finalMonth: string
 ) => {
     const response = await fetch(
         secretaryApi +
@@ -37,7 +36,6 @@ export const getAllOccurrencesOfCity = async (
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
-                per_capita: perCapita,
             },
         }
     );
