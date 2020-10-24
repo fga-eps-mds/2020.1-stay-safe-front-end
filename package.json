@@ -17,6 +17,7 @@
     "@react-navigation/stack": "^5.9.0",
     "expo": "^38.0.10",
     "expo-font": "~8.2.1",
+    "expo-location": "~8.2.1",
     "expo-status-bar": "^1.0.2",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
