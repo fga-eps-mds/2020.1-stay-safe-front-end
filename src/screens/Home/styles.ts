@@ -1,3 +1,4 @@
+import DropDownPicker from "react-native-dropdown-picker";
 import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
 import styled from "styled-components/native";
@@ -20,6 +21,10 @@ interface SpanProps {
     show: boolean;
 }
 
+interface FilterModalProps {
+    ufOptionOpen: boolean;
+}
+
 export const StayNormalMap = styled(MapView)`
     flex: 1;
 `;
@@ -38,15 +43,14 @@ export const FilterButton = styled.TouchableOpacity`
     border-radius: ${scale(50)}px;
 `;
 
-export const FilterModal = styled(Modal)`
+export const FilterModal = styled(Modal)<FilterModalProps>`
     position: absolute;
-    height: ${scale(480)}px;
+    height: ${(props) => (props.ufOptionOpen ? scale(520) : scale(480))}px;
     width: ${scale(300)}px;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;
     background-color: ${(props) => props.theme.primaryWhite};
-    padding-horizontal: ${scale(28)}px;
-    padding-vertical: ${scale(20)}px;
+    padding: ${scale(20)}px ${scale(28)}px;
 `;
 
 export const Span = styled.Text<SpanProps>`
@@ -92,6 +96,7 @@ export const OptionColor = styled.View<OptionColorProps>`
 
 export const TabFilter = styled.View`
     flex-direction: row;
+    margin-bottom: ${scale(10)}px;
 `;
 
 export const Tab = styled.TouchableOpacity<TabProps>`
@@ -100,11 +105,11 @@ export const Tab = styled.TouchableOpacity<TabProps>`
             ? props.theme.primaryRed
             : props.theme.primaryDarkBlue};
     border-bottom-width: ${scale(2)}px;
-    margin-bottom: ${scale(20)}px;
+
     height: ${scale(50)}px;
     align-items: center;
     justify-content: center;
-    width: 32%;
+    width: 33%;
 `;
 
 export const TabTitle = styled.Text<TabTitleProps>`
@@ -115,4 +120,52 @@ export const TabTitle = styled.Text<TabTitleProps>`
             ? props.theme.primaryRed
             : props.theme.primaryDarkBlue};
     include-font-padding: false;
+`;
+
+export const DropDownContainer = styled.View`
+    width: 95%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: ${scale(5)}px;
+`;
+
+export const DropDownTitle = styled.Text`
+    font-size: ${scale(16)}px;
+    font-family: "Trueno-Regular";
+    color: ${(props) =>
+        props.theme.type === "dark"
+            ? props.theme.primarySuperDarkBlue
+            : props.theme.primaryLightBlue};
+`;
+
+export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
+    placeholder: "Selecionar",
+    containerStyle: {
+        height: scale(42),
+        width: "25%",
+    },
+    dropDownStyle: {
+        backgroundColor: props.theme.primaryWhite,
+        borderTopLeftRadius: scale(15),
+        borderTopRightRadius: scale(15),
+        borderBottomLeftRadius: scale(15),
+        borderBottomRightRadius: scale(15),
+    },
+    labelStyle: {
+        fontFamily: "Trueno-Regular",
+        fontSize: scale(16),
+        textAlign: "center",
+        color: props.theme.primaryDarkBlue,
+    },
+    activeLabelStyle: {
+        color: props.theme.primaryDarkBlue,
+        fontSize: scale(17),
+        fontFamily: "Trueno-SemiBold",
+    },
+    arrowColor: props.theme.primaryRed,
+    arrowSize: 18,
+}))`
+    border: 0;
+    background-color: ${(props) => props.theme.primaryWhite};
 `;
