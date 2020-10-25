@@ -39,6 +39,7 @@ export const FilterButton = styled.TouchableOpacity`
     right: 7%;
     background-color: ${(props) => props.theme.primaryWhite};
     z-index: 6;
+    elevation: 15;
     border-radius: ${scale(50)}px;
 `;
 

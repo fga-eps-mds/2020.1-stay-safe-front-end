@@ -6,7 +6,8 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useCallback, useState } from "react";
+import * as Location from 'expo-location';
+import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -49,6 +50,13 @@ type ParamList = {
     };
 };
 
+const initialLocation = {
+    latitude: -15.780311,
+    longitude: -47.768043,
+    latitudeDelta: 0.2,
+    longitudeDelta: 0.2,
+};
+
 interface Occurrence {
     id_occurrence: number;
     location: [number, number];
@@ -70,6 +78,7 @@ const Home: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
+    const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -101,6 +110,29 @@ const Home: React.FC = () => {
             setIsModalOpen(route.params.showReportModal);
         }
     });
+
+    useEffect(() => {
+        getCurrentLocation();
+    }, []);
+
+    const getCurrentLocation = async () => {
+        const { status } = await Location.requestPermissionsAsync();
+
+        if (status !== 'granted') {
+            console.warn('Permission to access location was denied');
+        }
+
+        const position = await Location.getCurrentPositionAsync({});
+
+        const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.02
+        }
+
+        setLocation(location);
+    };
 
     const getPinColor = (occurrence) => {
         return searchOptionsDf.filter(
@@ -205,12 +237,7 @@ const Home: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {!isFilterOpen && (
-                <FilterButton
-                    style={{
-                        elevation: 20,
-                    }}
-                    onPress={() => setIsFilterOpen(true)}
-                >
+                <FilterButton onPress={() => setIsFilterOpen(true)}>
                     <Feather
                         name="filter"
                         size={scale(30)}
@@ -230,14 +257,10 @@ const Home: React.FC = () => {
                 />
             ) : (
                 <StayNormalMap
-                    loadingEnabled
-                    initialRegion={{
-                        latitude: -15.780311,
-                        longitude: -47.768043,
-                        latitudeDelta: 1,
-                        longitudeDelta: 1,
-                    }}
+                    region={location}
                     onPress={(e) => handleReportingCoordinatesOnMap(e)}
+                    showsUserLocation
+                    loadingEnabled
                     customMapStyle={
                         theme.type === "dark" ? staySafeDarkMapStyle : []
                     }
