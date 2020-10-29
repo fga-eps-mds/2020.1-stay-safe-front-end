@@ -10,6 +10,8 @@ import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
 import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
+import Review from "./screens/Review";
+import NeighborhoodReview from "./screens/NeighborhoodReview";
 
 const AppStack = createStackNavigator();
 
@@ -30,6 +32,8 @@ const Routes: React.FC = () => {
             <AppStack.Screen name="Cadastro" component={Cadastro} />
             <AppStack.Screen name="Occurrence" component={Occurrence} />
             <AppStack.Screen name="Occurrences" component={Occurrences} />
+            <AppStack.Screen name="Review" component={Review} />
+            <AppStack.Screen name="NeighborhoodReview" component={NeighborhoodReview} />
             <AppStack.Screen
                 name="OccurrenceDetails"
                 component={OccurrenceDetails}
