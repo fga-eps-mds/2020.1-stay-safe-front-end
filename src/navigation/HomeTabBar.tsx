@@ -56,7 +56,7 @@ const HomeTabBar: React.FC = () => {
                         borderTopLeftRadius: scale(18),
                         borderTopRightRadius: scale(18),
                         borderTopWidth: 0,
-                        marginTop: -scale(18),
+                        //marginTop: -scale(18),
                     },
                 }}
             >
