@@ -1,5 +1,5 @@
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -55,12 +55,13 @@ interface Crimes {
 
 const CityStatistics: React.FC = () => {
     const theme = useTheme();
+    const navigation = useNavigation();
 
     const [selectedYear, setSelectedYear] = useState("2020");
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const cityName = route.params.city;
-    const uf = route.params.uf;
+    const uf =  route.params.uf;
 
     const [data, setData] = useState<Data>([]);
 
@@ -172,13 +173,13 @@ const CityStatistics: React.FC = () => {
                             )}
                         </CrimeStatistics>
                     </StatisticsCard>
-                    <SortButton>
+                    <SortButton onPress={() => navigation.navigate("Review", {cityName, uf})} >
                         <MaterialCommunityIcons
                             name="sort-variant"
                             size={scale(25)}
                             color={theme.primaryWhite}
                         />
-                        <SortButtontText>Ordenar Cidades</SortButtontText>
+                        <SortButtontText>Visualizar Bairros</SortButtontText>
                     </SortButton>
                 </KeyboardScrollView>
             </Container>
