@@ -4,17 +4,18 @@ import { Container } from "../../components/CircularLoader/styles";
 import { KeyboardScrollView } from "../../components/NormalForms";
 import HeaderTitle from "../../components/HeaderTitle";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "styled-components";
 import { scale } from "../../utils/scalling";
 import { NeighborhoodContainer,
             StarContainer,
             StatisticsNeighborhoodCard, 
             NeighborhoodTitle, 
-            StatisticsNeighborhood,
             NeighborhoodText,
             ColorsContainer, 
-            ColorsContainerChild} from "./styles";
+            ColorsContainerChild, 
+            EvaluateButton,
+            EvaluateButtontText } from "./styles";
 
 type ParamList = {
     params: {
@@ -78,35 +79,38 @@ const NeighborhoodReview: React.FC = () => {
                                 </StarContainer>
                             </NeighborhoodContainer>
                                 <ColorsContainer>
-                                    <Feather 
-                                        name="users"
-                                        size={scale(40)}
+                                    <MaterialCommunityIcons
+                                        name="account-multiple"
+                                        size={scale(60)}
                                         color={ratingColor(neighborhood.movement)}
                                     />
                                     <NeighborhoodTitle> Movimento: {ratingColorString(neighborhood.movement)}</NeighborhoodTitle>
                                     </ColorsContainer>
                                     <ColorsContainerChild>
-                                        <Feather 
-                                            name="sun"
-                                            size={scale(40)}
+                                        <MaterialCommunityIcons 
+                                            name="weather-sunny"
+                                            size={scale(60)}
                                             color={ratingColor(neighborhood.lighting)}
                                         />
                                         <NeighborhoodTitle> Iluminação: {ratingColorString(neighborhood.lighting)}</NeighborhoodTitle>
                                     </ColorsContainerChild>
                                     <ColorsContainerChild>
-                                        <Feather 
-                                            name="shield"
-                                            size={scale(40)}
+                                        <MaterialCommunityIcons 
+                                            name="shield-check"
+                                            size={scale(60)}
                                             color={ratingColor(neighborhood.police)}
                                         />
                                         <NeighborhoodTitle> Rondas Policiais: {ratingColorString(neighborhood.police)}</NeighborhoodTitle>
                                     </ColorsContainerChild>
-                                    
-                                   
-                                
-                            <StatisticsNeighborhood>
-                            </StatisticsNeighborhood>
                         </StatisticsNeighborhoodCard>
+                        <EvaluateButton>
+                            <MaterialCommunityIcons
+                                    name="pencil"
+                                    size={scale(20)}
+                                    color={theme.primaryWhite}
+                            />
+                            <EvaluateButtontText> Avaliar Bairro </EvaluateButtontText>
+                        </EvaluateButton>
                     </KeyboardScrollView>
             </Container>
                 
