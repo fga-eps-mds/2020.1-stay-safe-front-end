@@ -59,13 +59,26 @@ export const StatisticsNeighborhoodCard = styled.View`
     background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(20)}px;
     align-items: center;
+    padding-left: ${scale(60)}px;
+    padding-right: ${scale(60)}px;
+    padding-top: ${scale(10)}px;
 `;
 
-export const StatisticsNeighborhood = styled.View`
-    width: 90%;
-    height: ${scale(50)}px;
+
+export const EvaluateButton = styled.TouchableOpacity`
+    width: 70%;
+    height: ${scale(40)}px;
     margin-top: ${scale(15)}px;
-    padding-left: ${scale(300)}px;
-    padding-right: ${scale(20)}px;
-    flex-direction: column;
+    background-color: ${(props) => props.theme.primaryRed};
+    border-radius: ${scale(25)}px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const EvaluateButtontText = styled.Text`
+    font-family: "Trueno-SemiBold";
+    font-size: ${scale(15)}px;
+    color: ${(props) => props.theme.primaryWhite};
+    margin-left: ${scale(5)}px;
 `;
