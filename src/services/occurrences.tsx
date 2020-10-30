@@ -102,5 +102,5 @@ let occurrenceToJSON = (data: OccurrenceProps): string => {
         physical_aggression: data.physical_aggression,
         police_report: data.police_report,
         victim: data.victim,
-    })
+    });
 };

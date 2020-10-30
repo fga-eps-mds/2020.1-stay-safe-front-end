@@ -1,14 +1,14 @@
 export const tabs = [
     {
         name: "heat",
-        text: "Cidade"
+        text: "Cidade",
     },
     {
         name: "neighborhood",
-        text:"Bairro"
+        text: "Bairro",
     },
     {
         name: "pins",
-        text: "Local"
-    }
+        text: "Local",
+    },
 ];

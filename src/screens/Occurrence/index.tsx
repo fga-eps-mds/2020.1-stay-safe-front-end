@@ -16,6 +16,7 @@ import {
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { ParamOccurrence } from "../../interfaces/occurrence";
 import { updateOccurrence, createOccurrence } from "../../services/occurrences";
 import {
     formatDate,
@@ -42,7 +43,6 @@ import {
     DatePicker,
     TimePicker,
 } from "./styles";
-import { ParamOccurrence } from "../../interfaces/occurrence";
 
 type ParamList = {
     params: {

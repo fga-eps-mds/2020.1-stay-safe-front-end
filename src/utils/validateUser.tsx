@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 import {
     validateRequiredField,
     validateFieldLength,
-    validateRegexField
+    validateRegexField,
 } from "./validateField";
 
 interface UserProps {

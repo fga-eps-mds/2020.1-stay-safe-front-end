@@ -9,6 +9,7 @@ import {
     KeyboardScrollView,
     NormalLabel,
 } from "../../components/NormalForms";
+import { ParamOccurrence } from "../../interfaces/occurrence";
 import { getFormattedDate, getformattedTime } from "../../utils/dates";
 import {
     occurrenceTypeItems,
@@ -18,7 +19,6 @@ import {
     victimItems,
 } from "../Occurrence/dropdownConstants";
 import { InputContainer, Field, InputWrapper, FieldContainer } from "./styles";
-import { ParamOccurrence } from "../../interfaces/occurrence";
 
 const OccurrenceDetails: React.FC = () => {
     const route = useRoute<RouteProp<ParamOccurrence, "params">>();

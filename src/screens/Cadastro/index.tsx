@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
     KeyboardScrollView,
@@ -18,7 +19,6 @@ import {
 import { useUser } from "../../hooks/user";
 import { createUser, authUser } from "../../services/users";
 import { validateUser } from "../../utils/validateUser";
-import LogoContainer from "../../components/LogoContainer";
 
 const Cadastro: React.FC = () => {
     const navigation = useNavigation();
@@ -87,7 +87,7 @@ const Cadastro: React.FC = () => {
                 <HeaderTitle text="" goBack />
 
                 <KeyboardScrollView>
-                    <LogoContainer/>
+                    <LogoContainer />
 
                     <Title>Cadastro</Title>
 

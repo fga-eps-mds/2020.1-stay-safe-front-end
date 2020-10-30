@@ -1,8 +1,9 @@
 import React from "react";
-import { LogoWrapper } from "./NormalForms";
+import { useTheme } from "styled-components";
+
 import Logo from "../img/logo.svg";
 import { scale } from "../utils/scalling";
-import { useTheme } from "styled-components";
+import { LogoWrapper } from "./NormalForms";
 
 const LogoContainer = (props) => {
     const theme = useTheme();
@@ -15,7 +16,7 @@ const LogoContainer = (props) => {
                 fill={theme.primaryRed}
             />
         </LogoWrapper>
-    )
+    );
 };
 
 export default LogoContainer;

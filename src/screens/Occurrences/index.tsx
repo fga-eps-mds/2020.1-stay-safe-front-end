@@ -8,6 +8,7 @@ import { useTheme } from "styled-components";
 import HeaderTitle from "../../components/HeaderTitle";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { Occurrence } from "../../interfaces/occurrence";
 import {
     getUserOccurrences,
     deleteOccurrence,
@@ -22,7 +23,6 @@ import {
     Date,
     CardActions,
 } from "./styles";
-import { Occurrence } from "../../interfaces/occurrence";
 
 const Occurrences: React.FC = () => {
     const navigation = useNavigation();

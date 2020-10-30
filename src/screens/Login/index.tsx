@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import CircularLoader from "../../components/CircularLoader";
+import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
     KeyboardScrollView,
@@ -14,7 +15,6 @@ import {
     NormalCreate,
     SendLabel,
 } from "../../components/NormalForms";
-import LogoContainer from "../../components/LogoContainer";
 import { useUser } from "../../hooks/user";
 
 const Login: React.FC = () => {
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <KeyboardScrollView>
-                    <LogoContainer/>
+                    <LogoContainer />
 
                     <Title>Entrar</Title>
 

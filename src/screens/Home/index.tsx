@@ -6,7 +6,7 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
@@ -21,11 +21,11 @@ import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
+import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import { tabs } from "./tabs";
 import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterButton,
@@ -44,29 +44,13 @@ import {
     DropDownContainer,
     DropDownTitle,
 } from "./styles";
-import { Occurrence } from "../../interfaces/occurrence";
+import { tabs } from "./tabs";
 
 type ParamList = {
     params: {
         showReportModal: boolean;
     };
 };
-
-interface SecretaryOccurrence {
-    capture_data: string;
-    cities: Array<CityCrimes>;
-    period: string;
-}
-
-interface CityCrimes {
-    name: string;
-    crimes: Array<Crimes>;
-}
-
-interface Crimes {
-    nature: string;
-    quantity: number;
-}
 
 const initialLocation = {
     latitude: -15.780311,
@@ -124,8 +108,8 @@ const Home: React.FC = () => {
     const getCurrentLocation = async () => {
         const { status } = await Location.requestPermissionsAsync();
 
-        if (status !== 'granted') {
-            console.warn('Permission to access location was denied');
+        if (status !== "granted") {
+            console.warn("Permission to access location was denied");
         }
 
         const position = await Location.getCurrentPositionAsync({});
@@ -134,8 +118,8 @@ const Home: React.FC = () => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: 0.02,
-            longitudeDelta: 0.02
-        }
+            longitudeDelta: 0.02,
+        };
 
         setLocation(location);
     };
@@ -347,20 +331,20 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        {
-                            tabs.map((item) => {
-                                return (
-                                    <Tab
-                                        onPress={() => setSelectedFilter(item.name)}
+                        {tabs.map((item) => {
+                            return (
+                                <Tab
+                                    onPress={() => setSelectedFilter(item.name)}
+                                    focus={selectedFilter === item.name}
+                                >
+                                    <TabTitle
                                         focus={selectedFilter === item.name}
                                     >
-                                        <TabTitle focus={selectedFilter === item.name}>
-                                            {item.text}
-                                        </TabTitle>
-                                    </Tab>
-                                )
-                            })
-                        }
+                                        {item.text}
+                                    </TabTitle>
+                                </Tab>
+                            );
+                        })}
                     </TabFilter>
                     {selectedFilter === "heat" && (
                         <DropDownContainer>

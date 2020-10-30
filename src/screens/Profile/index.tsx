@@ -12,6 +12,7 @@ import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import LoggedInModal from "../../components/LoggedInModal";
+import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
     KeyboardScrollView,
@@ -29,7 +30,6 @@ import {
     ButtonLabel,
     ButtonsContainer,
 } from "./styles";
-import LogoContainer from "../../components/LogoContainer";
 
 const Profile: React.FC = () => {
     const theme = useTheme();
@@ -139,7 +139,7 @@ const Profile: React.FC = () => {
                 />
 
                 <KeyboardScrollView>
-                    <LogoContainer/>
+                    <LogoContainer />
 
                     <NormalLabel>Username</NormalLabel>
                     <InputViewing
