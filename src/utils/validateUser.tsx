@@ -1,5 +1,11 @@
 import { Alert } from "react-native";
 
+import {
+    validateRequiredField,
+    validateFieldLength,
+    validateRegexField
+} from "./validateField";
+
 interface UserProps {
     username?: string;
     fullName: string;
@@ -36,11 +42,11 @@ export const validateUser = (data: UserProps) => {
 
 const usernameInvalid = (username) => {
     let error = "";
-    if (username === null || username === "") {
+    if (validateRequiredField(username)) {
         error = "Username não pode ficar em branco";
-    } else if (username.length < 3) {
+    } else if (validateFieldLength(username, 3)) {
         error = "Username precisa de mínimo de 3 (três) caracteres";
-    } else if (!/^[a-zA-Z0-9]+$/.test(username)) {
+    } else if (validateRegexField(username, /^[a-zA-Z0-9]+$/)) {
         error = "Username não pode ter espaços e caracteres especiais.";
     }
     return error;
@@ -48,7 +54,7 @@ const usernameInvalid = (username) => {
 
 const nameInvalid = (name: string) => {
     let error = "";
-    if (name === null || name === "") {
+    if (validateRequiredField(name)) {
         error = "Nome Completo não pode ficar em branco";
     }
     return error;
@@ -56,11 +62,11 @@ const nameInvalid = (name: string) => {
 
 const emailInvalid = (email: string) => {
     let error = "";
-    if (email === null || email === "") {
+    if (validateRequiredField(email)) {
         error = "Email não pode ficar em branco";
-    } else if (email.length < 6) {
+    } else if (validateFieldLength(email, 6)) {
         error = "Email precisa de mínimo de 6 (seis) caracteres";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (validateRegexField(email, /\S+@\S+\.\S+/)) {
         error = "Email inválido";
     }
     return error;
@@ -68,11 +74,11 @@ const emailInvalid = (email: string) => {
 
 const passwordInvalid = (password: string, confirmPassword: string) => {
     let error = "";
-    if (password === null || password === "") {
+    if (validateRequiredField(password)) {
         error = "Senha não pode ficar em branco";
-    } else if (password && password.length < 6) {
+    } else if (validateFieldLength(password, 6)) {
         error = "Senha precisa de mínimo de 6 (seis) caracteres";
-    } else if (!/.*[0-9].*/.test(password)) {
+    } else if (validateRegexField(password, /.*[0-9].*/)) {
         error = "Senha precisa conter no mínimo 1(um) número";
     } else if (password !== confirmPassword) {
         error = "As senhas precisam ser iguais";
