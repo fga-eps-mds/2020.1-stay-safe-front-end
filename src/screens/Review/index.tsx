@@ -1,6 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react"
-import { Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
@@ -17,6 +16,7 @@ interface Neighborhood {
     neighborhood: string;
     police: number;
 }
+
 type ParamList = {
     params: {
         cityName: string;
@@ -56,13 +56,15 @@ const Review: React.FC = () => {
                     {neighborhoods.map((neighborhood) => {
                         return(
                             <NeighborhoodCard style={{ elevation: 5 }} 
-                                onPress={() => navigation.navigate("NeighborhoodReview", {neighborhood})} key={neighborhood.neighborhood}>
+                                onPress={() => navigation.navigate("NeighborhoodReview", { neighborhood })} 
+                                key={neighborhood.neighborhood}
+                            >
                                 <NeighborhoodTitle>
                                     {neighborhood.neighborhood}
                                 </NeighborhoodTitle>
                             </NeighborhoodCard>
                         )
-                    })} 
+                    })}
                     
                 </KeyboardScrollView>
            </Container>
