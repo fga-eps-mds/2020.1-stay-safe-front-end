@@ -8,7 +8,7 @@ import { useTheme } from "styled-components";
 import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
-import { getAllOccurrences } from "../../services/occurrencesSecretary";
+import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
 import {
     StatisticsCard,
@@ -29,6 +29,7 @@ import { years } from "./yearsConstants";
 type ParamList = {
     params: {
         city: string;
+        uf: string;
     };
 };
 
@@ -55,6 +56,7 @@ const CityStatistics: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const cityName = route.params.city;
+    const uf = route.params.uf;
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -83,40 +85,27 @@ const CityStatistics: React.FC = () => {
     };
 
     const getOccurrences = async () => {
-        const response = await getAllOccurrences("df");
+        const response = await getAllOccurrencesOfCity(
+            uf,
+            cityName,
+            "1/" + selectedYear,
+            "12/" + selectedYear
+        );
 
         if (response.status === 200) {
-            response.body.map((year: SecretaryOccurrence) => {
-                if (year.period === "1/" + selectedYear) {
-                    year.cities.map((city) => {
-                        if (city.name === cityName) {
-                            setCityStatistics(
-                                city.crimes.sort(function (
-                                    a: Crimes,
-                                    b: Crimes
-                                ) {
-                                    return b.quantity - a.quantity;
-                                })
-                            );
-                            let higher = -1;
-                            let higherName = "";
-                            city.crimes.map((crime: Crimes) => {
-                                if (higher < crime.quantity) {
-                                    higher = crime.quantity;
-                                    higherName = crime.nature;
-                                }
-                            });
-                            setHigherStatistic(
-                                city.crimes.filter(
-                                    (city: Crimes) => city.nature === higherName
-                                )[0].quantity
-                            );
-                        }
-                    });
-                }
+            setData(response.body);
+
+            response.body[0].cities.map((city: CityCrimes) => {
+                setCityStatistics(city.crimes.sort(sortCities));
+
+                setHigherStatistic(city.crimes.sort(sortCities)[0].quantity);
             });
         }
         return response.status;
+    };
+
+    const sortCities = (a: Crimes, b: Crimes) => {
+        return b.quantity - a.quantity;
     };
 
     return (
@@ -152,32 +141,27 @@ const CityStatistics: React.FC = () => {
                                             higherStatistic) *
                                         100.0;
 
-                                    if (
-                                        cityStatistic.nature !==
-                                        "Trafico de Entorpecentes"
-                                    ) {
-                                        return (
-                                            <CrimeContainer
-                                                key={cityStatistic.nature}
+                                    return (
+                                        <CrimeContainer
+                                            key={cityStatistic.nature}
+                                        >
+                                            <CrimeText>
+                                                {cityStatistic.nature}
+                                            </CrimeText>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                }}
                                             >
-                                                <CrimeText>
-                                                    {cityStatistic.nature}
-                                                </CrimeText>
-                                                <View
-                                                    style={{
-                                                        flexDirection: "row",
-                                                    }}
-                                                >
-                                                    <CrimeBar
-                                                        percentage={percentage}
-                                                    />
-                                                    <CrimeBarNumber>
-                                                        {cityStatistic.quantity}
-                                                    </CrimeBarNumber>
-                                                </View>
-                                            </CrimeContainer>
-                                        );
-                                    }
+                                                <CrimeBar
+                                                    percentage={percentage}
+                                                />
+                                                <CrimeBarNumber>
+                                                    {cityStatistic.quantity}
+                                                </CrimeBarNumber>
+                                            </View>
+                                        </CrimeContainer>
+                                    );
                                 })
                             )}
                         </CrimeStatistics>

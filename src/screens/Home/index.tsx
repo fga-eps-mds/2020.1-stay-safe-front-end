@@ -6,24 +6,27 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useCallback, useState } from "react";
+import * as Location from 'expo-location';
+import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import CircularLoader from "../../components/CircularLoader";
+import HeatMap from "../../components/HeatMap";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
+import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import HeatMap from "../HeatMap";
-import { searchOptions } from "./searchOptions";
 import { tabs } from "./tabs";
+import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
@@ -37,6 +40,9 @@ import {
     Tab,
     TabTitle,
     Span,
+    UfDropDown,
+    DropDownContainer,
+    DropDownTitle,
 } from "./styles";
 import { Occurrence } from "../../interfaces/occurrence";
 
@@ -62,6 +68,13 @@ interface Crimes {
     quantity: number;
 }
 
+const initialLocation = {
+    latitude: -15.780311,
+    longitude: -47.768043,
+    latitudeDelta: 0.2,
+    longitudeDelta: 0.2,
+};
+
 const Home: React.FC = () => {
     const theme = useTheme();
     const { data } = useUser();
@@ -71,6 +84,7 @@ const Home: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
+    const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -81,6 +95,8 @@ const Home: React.FC = () => {
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
     const [selectedFilter, setSelectedFilter] = useState("heat");
+
+    const [selectedUf, setSelectedUf] = useState("df");
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -101,8 +117,31 @@ const Home: React.FC = () => {
         }
     });
 
+    useEffect(() => {
+        getCurrentLocation();
+    }, []);
+
+    const getCurrentLocation = async () => {
+        const { status } = await Location.requestPermissionsAsync();
+
+        if (status !== 'granted') {
+            console.warn('Permission to access location was denied');
+        }
+
+        const position = await Location.getCurrentPositionAsync({});
+
+        const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.02
+        }
+
+        setLocation(location);
+    };
+
     const getPinColor = (occurrence) => {
-        return searchOptions.filter(
+        return searchOptionsDf.filter(
             (op) => op.name === occurrence.occurrence_type
         )[0].color;
     };
@@ -121,7 +160,7 @@ const Home: React.FC = () => {
             for (let i = 0; i < selectedOption.length; i++) {
                 end = i === selectedOption.length - 1 ? "" : ", ";
                 occurrence_type = occurrence_type.concat(
-                    searchOptions[selectedOption[i] - 1].name,
+                    searchOptionsDf[selectedOption[i] - 1].name,
                     end
                 );
             }
@@ -137,19 +176,20 @@ const Home: React.FC = () => {
         setIsLoading(true);
 
         async function loadData() {
-            const option = searchOptions[selectedOption[0] - 1];
+            const option = searchOptionsDf[selectedOption[0] - 1];
 
             const response = await getOccurrencesByCrimeNature(
-                "df",
-                option.label
+                selectedUf,
+                option.label,
+                "1/2020",
+                "12/2020",
+                1
             );
 
             if (response.status === 200) {
-                const responseOfYear2019 = response.body.filter(
-                    (year: SecretaryOccurrence) => year.period === "1/2019"
-                )[0].cities;
+                const responseOfCurrentYear = response.body[0].cities;
 
-                setSecretaryOccurrences(responseOfYear2019);
+                setSecretaryOccurrences(responseOfCurrentYear);
                 return "Stay Safe";
             }
         }
@@ -203,12 +243,7 @@ const Home: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {!isFilterOpen && (
-                <FilterButton
-                    style={{
-                        elevation: 20,
-                    }}
-                    onPress={() => setIsFilterOpen(true)}
-                >
+                <FilterButton onPress={() => setIsFilterOpen(true)}>
                     <Feather
                         name="filter"
                         size={scale(30)}
@@ -222,17 +257,19 @@ const Home: React.FC = () => {
             {selectedOption[0] > 0 &&
             !isFilterOpen &&
             selectedFilter === "heat" ? (
-                <HeatMap secretaryOccurrences={secretaryOccurrences} />
+                <HeatMap
+                    secretaryOccurrences={secretaryOccurrences}
+                    city={selectedUf}
+                />
             ) : (
                 <StayNormalMap
-                    loadingEnabled
-                    initialRegion={{
-                        latitude: -15.780311,
-                        longitude: -47.768043,
-                        latitudeDelta: 1,
-                        longitudeDelta: 1,
-                    }}
+                    region={location}
                     onPress={(e) => handleReportingCoordinatesOnMap(e)}
+                    showsUserLocation
+                    loadingEnabled
+                    customMapStyle={
+                        theme.type === "dark" ? staySafeDarkMapStyle : []
+                    }
                 >
                     {occurrences !== undefined &&
                         occurrences?.map((occurrence: Occurrence) => {
@@ -253,11 +290,19 @@ const Home: React.FC = () => {
                                     }
                                     tracksViewChanges={false}
                                 >
-                                    <Logo
-                                        width={scale(38)}
-                                        height={scale(38)}
-                                        fill={getPinColor(occurrence)}
-                                    />
+                                    {theme.type === "dark" ? (
+                                        <DarkLogo
+                                            width={scale(38)}
+                                            height={scale(38)}
+                                            fill={getPinColor(occurrence)}
+                                        />
+                                    ) : (
+                                        <Logo
+                                            width={scale(38)}
+                                            height={scale(38)}
+                                            fill={getPinColor(occurrence)}
+                                        />
+                                    )}
                                 </Marker>
                             );
                         })}
@@ -294,6 +339,7 @@ const Home: React.FC = () => {
                 position="top"
                 backdropOpacity={0}
                 backButtonClose
+                ufOptionOpen={selectedFilter === "heat"}
             >
                 <View
                     style={{
@@ -316,39 +362,89 @@ const Home: React.FC = () => {
                             })
                         }
                     </TabFilter>
+                    {selectedFilter === "heat" && (
+                        <DropDownContainer>
+                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
+                            <UfDropDown
+                                style={{
+                                    backgroundColor: theme.primaryLightGray,
+                                }}
+                                items={ufs}
+                                defaultValue={selectedUf}
+                                onChangeItem={(item) =>
+                                    setSelectedUf(item.value)
+                                }
+                            />
+                        </DropDownContainer>
+                    )}
                 </View>
-                {searchOptions.map((option) => {
-                    return (
-                        <ButtonOptionContainer key={option.id}>
-                            <Option>
-                                <OptionCircleButton
-                                    onPress={() =>
-                                        handleSelectOption(option.id)
-                                    }
-                                >
-                                    <Feather
-                                        name={
-                                            selectedOption.indexOf(option.id) >=
-                                            0
-                                                ? "check-circle"
-                                                : "circle"
-                                        }
-                                        size={scale(20)}
-                                        color={theme.primaryBlack}
-                                    />
-                                </OptionCircleButton>
+                {selectedUf === "df"
+                    ? searchOptionsDf.map((option) => {
+                          return (
+                              <ButtonOptionContainer key={option.id}>
+                                  <Option>
+                                      <OptionCircleButton
+                                          onPress={() =>
+                                              handleSelectOption(option.id)
+                                          }
+                                      >
+                                          <Feather
+                                              name={
+                                                  selectedOption.indexOf(
+                                                      option.id
+                                                  ) >= 0
+                                                      ? "check-circle"
+                                                      : "circle"
+                                              }
+                                              size={scale(20)}
+                                              color={theme.primaryBlack}
+                                          />
+                                      </OptionCircleButton>
 
-                                <ButtonOptionText>
-                                    {option.name}
-                                </ButtonOptionText>
-                            </Option>
+                                      <ButtonOptionText>
+                                          {option.name}
+                                      </ButtonOptionText>
+                                  </Option>
 
-                            {selectedFilter === "pins" && (
-                                <OptionColor color={option.color} />
-                            )}
-                        </ButtonOptionContainer>
-                    );
-                })}
+                                  {selectedFilter === "pins" && (
+                                      <OptionColor color={option.color} />
+                                  )}
+                              </ButtonOptionContainer>
+                          );
+                      })
+                    : searchOptionsSp.map((option) => {
+                          return (
+                              <ButtonOptionContainer key={option.id}>
+                                  <Option>
+                                      <OptionCircleButton
+                                          onPress={() =>
+                                              handleSelectOption(option.id)
+                                          }
+                                      >
+                                          <Feather
+                                              name={
+                                                  selectedOption.indexOf(
+                                                      option.id
+                                                  ) >= 0
+                                                      ? "check-circle"
+                                                      : "circle"
+                                              }
+                                              size={scale(20)}
+                                              color={theme.primaryBlack}
+                                          />
+                                      </OptionCircleButton>
+
+                                      <ButtonOptionText>
+                                          {option.name}
+                                      </ButtonOptionText>
+                                  </Option>
+
+                                  {selectedFilter === "pins" && (
+                                      <OptionColor color={option.color} />
+                                  )}
+                              </ButtonOptionContainer>
+                          );
+                      })}
                 <View>
                     <Span
                         show={
