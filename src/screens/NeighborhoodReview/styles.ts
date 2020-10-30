@@ -55,9 +55,9 @@ export const ColorsContainerChild = styled.View`
 `;
 
 export const StatisticsNeighborhoodCard = styled.View`
-    width: 120%;
+    width: 100%;
     background-color: ${(props) => props.theme.primaryWhite};
-    border-radius: ${scale(70)}px;
+    border-radius: ${scale(20)}px;
     align-items: center;
 `;
 
@@ -65,5 +65,7 @@ export const StatisticsNeighborhood = styled.View`
     width: 90%;
     height: ${scale(50)}px;
     margin-top: ${scale(15)}px;
+    padding-left: ${scale(300)}px;
+    padding-right: ${scale(20)}px;
     flex-direction: column;
 `;
