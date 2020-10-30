@@ -10,6 +10,7 @@ import Login from "./screens/Login";
 import Occurrence from "./screens/Occurrence";
 import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
+import UserRatings from "./screens/UserRatings";
 
 const AppStack = createStackNavigator();
 
@@ -34,6 +35,7 @@ const Routes: React.FC = () => {
                 name="OccurrenceDetails"
                 component={OccurrenceDetails}
             />
+            <AppStack.Screen name="UserRatings" component={UserRatings} />
             <AppStack.Screen name="CityStatistics" component={CityStatistics} />
         </AppStack.Navigator>
     );

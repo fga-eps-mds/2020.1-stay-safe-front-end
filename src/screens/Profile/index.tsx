@@ -234,7 +234,7 @@ const Profile: React.FC = () => {
                                 <ButtonLabel>Minhas Ocorrências</ButtonLabel>
                             </ProfileButton>
 
-                            <ProfileButton onPress={() => {}}>
+                            <ProfileButton onPress={() => navigation.navigate("UserRatings")}>
                                 <Feather
                                     name="star"
                                     size={scale(18)}
