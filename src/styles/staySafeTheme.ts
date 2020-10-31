@@ -9,7 +9,11 @@ export default {
     primaryLightGray: "#E0E0E0",
     primaryBackground: "#F0F0F5",
     primaryBlack: "#000000",
-    primaryStrongYellow: "#FFFF00",
+    primaryStrongYellow: "#ffdb58",
+
+    primaryImpressionRed: "#EF2500",
+    primaryImpressionOrange: "#E19A00",
+    primaryImpressionGreen: "#65EF00",
 
     heatMapGreen1: "rgba(101, 239, 0, 0.6)",
     heatMapYellow2: "rgba(190, 197, 0, 0.6)",
