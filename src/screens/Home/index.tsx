@@ -331,9 +331,10 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        {tabs.map((item) => {
+                        {tabs.map((item, index) => {
                             return (
                                 <Tab
+                                    key={`tab-${index}`}
                                     onPress={() => setSelectedFilter(item.name)}
                                     focus={selectedFilter === item.name}
                                 >

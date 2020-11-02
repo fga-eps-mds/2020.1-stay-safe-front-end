@@ -17,12 +17,13 @@ interface UserProps {
 export const validateUser = (data: UserProps) => {
     const error = ["Campo Inválido", ""];
     let usernameError = "";
+    let passwordError = "";
     if (data.hasOwnProperty("username")) {
         usernameError = usernameInvalid(data.username);
+        passwordError = passwordInvalid(data.password, data.confirmPassword);
     }
     const nameError = nameInvalid(data.fullName);
     const emailError = emailInvalid(data.email);
-    const passwordError = passwordInvalid(data.password, data.confirmPassword);
 
     if (usernameError) {
         error[1] = usernameError;
