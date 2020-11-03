@@ -33,3 +33,25 @@ export const deleteRating = async (id: number, token: string) => {
 
     return { status: response.status };
 };
+
+export const updateRating = async (
+    id: number,
+    token: string,
+    data: Rating
+) => {
+    const response = await fetch(userApi + `/rating/${id}`, {
+        method: "PATCH",
+        headers: {
+            Accept: "application/json",
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            details: data.details,
+            id_neighborhood: data.id_neighborhood,
+            rating_neighborhood: data.rating_neighborhood,
+        }),
+    });
+
+    return { status: response.status, body: {} };
+};
