@@ -50,7 +50,12 @@ interface CoordinateResponse {
 
 interface CityCoordinate {
     name: string;
-    coordinates: Array<Array<number>>;
+    coordinates: Array<Array<number | LatLng>>;
+}
+
+interface LatLng {
+    latitude: number;
+    longitude: number;
 }
 
 const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
@@ -131,150 +136,144 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
 
     return (
         <>
-            {isLoading ? (
-                <CircularLoader size={40} />
-            ) : (
-                <StayNormalMap
-                    loadingEnabled
-                    initialRegion={{
-                        latitude: city === "df" ? -15.780311 : -23.6821604,
-                        longitude: city === "df" ? -47.768043 : -46.8754825,
-                        latitudeDelta: 3,
-                        longitudeDelta: 3,
-                    }}
-                    customMapStyle={
-                        theme.type === "dark" ? staySafeDarkMapStyle : []
-                    }
-                >
-                    {city === "df"
-                        ? coordinates.map((coordinate: CoordinateCitiesDF) => {
-                              const cityColor = citiesCrimes.filter(
-                                  (cityCrimes) =>
-                                      cityCrimes.name === coordinate.name
-                              );
+            <StayNormalMap
+                loadingEnabled
+                initialRegion={{
+                    latitude: city === "df" ? -15.780311 : -23.6821604,
+                    longitude: city === "df" ? -47.768043 : -46.8754825,
+                    latitudeDelta: 3,
+                    longitudeDelta: 3,
+                }}
+                customMapStyle={
+                    theme.type === "dark" ? staySafeDarkMapStyle : []
+                }
+            >
+                {city === "df"
+                    ? coordinates.map((coordinate: CoordinateCitiesDF) => {
+                          const cityColor = citiesCrimes.filter(
+                              (cityCrimes) =>
+                                  cityCrimes.name === coordinate.name
+                          );
 
-                              let color = theme.heatMapOrange3;
+                          let color = theme.heatMapOrange3;
 
-                              if (cityColor.length === 0) {
-                                  color = coordinate.color;
-                              } else {
-                                  if (cityColor[0].color)
-                                      color = cityColor[0].color;
-                              }
+                          if (cityColor.length === 0) {
+                              color = coordinate.color;
+                          } else {
+                              if (cityColor[0].color)
+                                  color = cityColor[0].color;
+                          }
 
-                              if (
-                                  isSelected &&
-                                  coordinate.name === selectedRegion
-                              ) {
-                                  const lastProp = color.split(", ");
-                                  color = "";
+                          if (
+                              isSelected &&
+                              coordinate.name === selectedRegion
+                          ) {
+                              const lastProp = color.split(", ");
+                              color = "";
 
-                                  lastProp.pop();
+                              lastProp.pop();
 
-                                  color += lastProp[0];
-                                  color += ", ";
-                                  color += lastProp[1];
-                                  color += ", ";
-                                  color += lastProp[2];
-                                  color += ", ";
-                                  color += "0.2)";
-                              }
+                              color += lastProp[0];
+                              color += ", ";
+                              color += lastProp[1];
+                              color += ", ";
+                              color += lastProp[2];
+                              color += ", ";
+                              color += "0.2)";
+                          }
 
-                              return (
-                                  <Polygon
-                                      key={coordinate.name}
-                                      coordinates={coordinate.coordinates.map(
-                                          (coordinate) => coordinate
-                                      )}
-                                      strokeColor={theme.primaryBlack}
-                                      fillColor={color}
-                                      tappable
-                                      onPress={() => {
-                                          setIsSelected(true);
-                                          setSelectedRegion(coordinate.name);
-                                          setTimeout(() => {
-                                              setIsSelected(false);
-                                              navigation.navigate(
-                                                  "CityStatistics",
-                                                  {
-                                                      city: coordinate.name,
-                                                      uf: "df",
-                                                  }
-                                              );
-                                          }, 1000);
-                                      }}
-                                  />
-                              );
-                          })
-                        : coordinatesSp.map((coordinate: CityCoordinate) => {
-                              const cityColor = citiesCrimes.filter(
-                                  (cityCrimes) =>
-                                      cityCrimes.name === coordinate.name
-                              );
-
-                              let color;
-
-                              if (cityColor.length === 0) {
-                                  color = theme.heatMapOrange3;
-                              } else {
-                                  if (cityColor[0].color)
-                                      color = cityColor[0].color;
-                              }
-
-                              if (
-                                  isSelected &&
-                                  coordinate.name === selectedRegion
-                              ) {
-                                  const lastProp = color.split(", ");
-                                  color = "";
-
-                                  lastProp.pop();
-
-                                  color += lastProp[0];
-                                  color += ", ";
-                                  color += lastProp[1];
-                                  color += ", ";
-                                  color += lastProp[2];
-                                  color += ", ";
-                                  color += "0.2)";
-                              }
-                              if (coordinate.name !== "Cândido Mota")
-                                  if (
-                                      coordinate.coordinates[0].latitude &&
-                                      coordinate.coordinates[0].longitude
-                                  ) {
-                                      return (
-                                          <Polygon
-                                              key={coordinate.name}
-                                              coordinates={
-                                                  coordinate.coordinates
+                          return (
+                              <Polygon
+                                  key={coordinate.name}
+                                  coordinates={coordinate.coordinates.map(
+                                      (coordinate) => coordinate
+                                  )}
+                                  strokeColor={theme.primaryBlack}
+                                  fillColor={color}
+                                  tappable
+                                  onPress={() => {
+                                      setIsSelected(true);
+                                      setSelectedRegion(coordinate.name);
+                                      setTimeout(() => {
+                                          setIsSelected(false);
+                                          navigation.navigate(
+                                              "CityStatistics",
+                                              {
+                                                  city: coordinate.name,
+                                                  uf: "df",
                                               }
-                                              strokeColor={theme.primaryBlack}
-                                              fillColor={color}
-                                              tappable
-                                              onPress={() => {
-                                                  setIsSelected(true);
-                                                  setSelectedRegion(
-                                                      coordinate.name
+                                          );
+                                      }, 1000);
+                                  }}
+                              />
+                          );
+                      })
+                    : coordinatesSp.map((coordinate: CityCoordinate) => {
+                          const cityColor = citiesCrimes.filter(
+                              (cityCrimes) =>
+                                  cityCrimes.name === coordinate.name
+                          );
+
+                          let color;
+
+                          if (cityColor.length === 0) {
+                              color = theme.heatMapOrange3;
+                          } else {
+                              if (cityColor[0].color)
+                                  color = cityColor[0].color;
+                          }
+
+                          if (
+                              isSelected &&
+                              coordinate.name === selectedRegion
+                          ) {
+                              const lastProp = color.split(", ");
+                              color = "";
+
+                              lastProp.pop();
+
+                              color += lastProp[0];
+                              color += ", ";
+                              color += lastProp[1];
+                              color += ", ";
+                              color += lastProp[2];
+                              color += ", ";
+                              color += "0.2)";
+                          }
+                          if (coordinate.name !== "Cândido Mota")
+                              if (
+                                  coordinate.coordinates[0].latitude &&
+                                  coordinate.coordinates[0].longitude
+                              ) {
+                                  return (
+                                      <Polygon
+                                          key={coordinate.name}
+                                          coordinates={coordinate.coordinates}
+                                          strokeColor={theme.primaryBlack}
+                                          fillColor={color}
+                                          tappable
+                                          onPress={() => {
+                                              setIsSelected(true);
+                                              setSelectedRegion(
+                                                  coordinate.name
+                                              );
+                                              setTimeout(() => {
+                                                  setIsSelected(false);
+                                                  navigation.navigate(
+                                                      "CityStatistics",
+                                                      {
+                                                          city: coordinate.name,
+                                                          uf: "sp",
+                                                      }
                                                   );
-                                                  setTimeout(() => {
-                                                      setIsSelected(false);
-                                                      navigation.navigate(
-                                                          "CityStatistics",
-                                                          {
-                                                              city:
-                                                                  coordinate.name,
-                                                              uf: "sp",
-                                                          }
-                                                      );
-                                                  }, 1000);
-                                              }}
-                                          />
-                                      );
-                                  }
-                          })}
-                </StayNormalMap>
-            )}
+                                              }, 1000);
+                                          }}
+                                      />
+                                  );
+                              }
+                      })}
+            </StayNormalMap>
+            {isLoading && <CircularLoader size={50} />}
         </>
     );
 };

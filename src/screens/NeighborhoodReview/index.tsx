@@ -26,14 +26,19 @@ type ParamList = {
         neighborhood: Neighborhood;
     };
 };
+
 interface Neighborhood {
     city: string;
     state: string;
+    neighborhood: string;
+    statistics: Statistics;
+}
+
+interface Statistics {
     average: number;
     lighting: number;
-    movement: number;
-    neighborhood: string;
-    police: number;
+    movement_of_people: number;
+    police_rounds: number;
 }
 
 const NeighborhoodReview: React.FC = () => {
@@ -77,7 +82,7 @@ const NeighborhoodReview: React.FC = () => {
                             color={theme.primaryStrongYellow}
                         />
                         <NeighborhoodAverage>
-                            {neighborhood.average}
+                            {neighborhood.statistics.average}
                         </NeighborhoodAverage>
                     </StarContainer>
                     <ImpressionText>Impressões</ImpressionText>
@@ -86,32 +91,45 @@ const NeighborhoodReview: React.FC = () => {
                             <MaterialCommunityIcons
                                 name="account-multiple"
                                 size={scale(30)}
-                                color={ratingColor(neighborhood.movement)}
+                                color={ratingColor(
+                                    neighborhood.statistics.movement_of_people
+                                )}
                             />
                             <NeighborhoodTitle>
                                 Movimento:{" "}
-                                {ratingColorString(neighborhood.movement)}
+                                {ratingColorString(
+                                    neighborhood.statistics.movement_of_people
+                                )}
                             </NeighborhoodTitle>
                         </PointContainer>
                         <PointContainer>
                             <MaterialCommunityIcons
                                 name="weather-sunny"
                                 size={scale(30)}
-                                color={ratingColor(neighborhood.lighting)}
+                                color={ratingColor(
+                                    neighborhood.statistics.lighting
+                                )}
                             />
                             <NeighborhoodTitle>
                                 Iluminação:{" "}
-                                {ratingColorString(neighborhood.lighting)}
+                                {ratingColorString(
+                                    neighborhood.statistics.lighting
+                                )}
                             </NeighborhoodTitle>
                         </PointContainer>
                         <PointContainer>
                             <MaterialCommunityIcons
                                 name="car"
                                 size={scale(30)}
-                                color={ratingColor(neighborhood.police)}
+                                color={ratingColor(
+                                    neighborhood.statistics.police_rounds
+                                )}
                             />
                             <NeighborhoodTitle>
-                                Rondas: {ratingColorString(neighborhood.police)}
+                                Rondas:{" "}
+                                {ratingColorString(
+                                    neighborhood.statistics.police_rounds
+                                )}
                             </NeighborhoodTitle>
                         </PointContainer>
                     </ImpressionsContainer>
@@ -122,7 +140,7 @@ const NeighborhoodReview: React.FC = () => {
                         size={scale(20)}
                         color={theme.primaryWhite}
                     />
-                    <EvaluateButtontText> Avaliar Bairro </EvaluateButtontText>
+                    <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
                 </EvaluateButton>
             </KeyboardScrollView>
         </SafeAreaView>
