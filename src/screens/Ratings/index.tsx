@@ -14,10 +14,10 @@ import {
     Card,
     CardData,
     Title,
-    Neighborhood,
+    NeighText,
     Date,
     CardActions
-} from './styles';
+} from '../../components/Cards';
 import { getUserRatings, deleteRating } from "../../services/ratings";
 import { scale } from "../../utils/scalling";
 
@@ -120,9 +120,9 @@ const UserRatings: React.FC = () => {
                                         <Title>
                                             {getNeighborhood(rating.id_neighborhood)}
                                         </Title>
-                                        <Neighborhood>
+                                        <NeighText>
                                             {getCity(rating.id_neighborhood)}
-                                        </Neighborhood>
+                                        </NeighText>
                                         <Date>
                                             03-2020
                                         </Date>

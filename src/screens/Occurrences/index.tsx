@@ -21,7 +21,7 @@ import {
     Title,
     Date,
     CardActions,
-} from "./styles";
+} from "../../components/Cards";
 
 interface Occurrence {
     id_occurrence: number;
