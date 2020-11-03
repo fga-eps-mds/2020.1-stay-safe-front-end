@@ -21,15 +21,7 @@ export const createOccurrence = async (
             "Content-Type": "application/json",
             Authorization: `${token}`,
         },
-        body: JSON.stringify({
-            gun: data.gun,
-            location: data.location,
-            occurrence_date_time: data.occurrence_date_time,
-            occurrence_type: data.occurrence_type,
-            physical_aggression: data.physical_aggression,
-            police_report: data.police_report,
-            victim: data.victim,
-        }),
+        body: occurrenceToJSON(data),
     });
 
     return { status: response.status, body: await response.json() };
@@ -95,16 +87,20 @@ export const updateOccurrence = async (
             Authorization: `${token}`,
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            gun: data.gun,
-            location: data.location,
-            occurrence_date_time: data.occurrence_date_time,
-            occurrence_type: data.occurrence_type,
-            physical_aggression: data.physical_aggression,
-            police_report: data.police_report,
-            victim: data.victim,
-        }),
+        body: occurrenceToJSON(data),
     });
 
     return { status: response.status, body: {} };
+};
+
+let occurrenceToJSON = (data: OccurrenceProps): string => {
+    return JSON.stringify({
+        gun: data.gun,
+        location: data.location,
+        occurrence_date_time: data.occurrence_date_time,
+        occurrence_type: data.occurrence_type,
+        physical_aggression: data.physical_aggression,
+        police_report: data.police_report,
+        victim: data.victim,
+    });
 };

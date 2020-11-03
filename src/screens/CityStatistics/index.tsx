@@ -33,16 +33,6 @@ type ParamList = {
     };
 };
 
-interface Data {
-    [index: number]: SecretaryOccurrence;
-}
-
-interface SecretaryOccurrence {
-    capture_data: string;
-    cities: Array<CityCrimes>;
-    period: string;
-}
-
 interface CityCrimes {
     name: string;
     crimes: Array<Crimes>;
@@ -62,8 +52,6 @@ const CityStatistics: React.FC = () => {
 
     const cityName = route.params.city;
     const uf =  route.params.uf;
-
-    const [data, setData] = useState<Data>([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -100,7 +88,7 @@ const CityStatistics: React.FC = () => {
         );
 
         if (response.status === 200) {
-            setData(response.body);
+            // setData(response.body);
 
             response.body[0].cities.map((city: CityCrimes) => {
                 setCityStatistics(city.crimes.sort(sortCities));

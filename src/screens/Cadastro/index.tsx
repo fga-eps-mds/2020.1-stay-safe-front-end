@@ -3,14 +3,13 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "styled-components";
 
 import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
     KeyboardScrollView,
-    LogoWrapper,
     Title,
     NormalLabel,
     NormalInput,
@@ -18,14 +17,11 @@ import {
     SendLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
-import Logo from "../../img/logo.svg";
 import { createUser, authUser } from "../../services/users";
-import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
     const navigation = useNavigation();
-    const theme = useTheme();
     const { signIn } = useUser();
 
     const [username, setUsername] = useState("");
@@ -91,13 +87,7 @@ const Cadastro: React.FC = () => {
                 <HeaderTitle text="" goBack />
 
                 <KeyboardScrollView>
-                    <LogoWrapper>
-                        <Logo
-                            width={scale(75)}
-                            height={scale(75)}
-                            fill={theme.primaryRed}
-                        />
-                    </LogoWrapper>
+                    <LogoContainer />
 
                     <Title>Cadastro</Title>
 

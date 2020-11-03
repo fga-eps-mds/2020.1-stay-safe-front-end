@@ -44,10 +44,6 @@ interface CitiesCrimes {
     color?: string;
 }
 
-interface CoordinateResponse {
-    cities: Array<CityCoordinate>;
-}
-
 interface CityCoordinate {
     name: string;
     coordinates: Array<Array<number>>;

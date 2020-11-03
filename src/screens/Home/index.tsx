@@ -6,7 +6,7 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
@@ -21,6 +21,7 @@ import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
+import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
@@ -43,6 +44,7 @@ import {
     DropDownContainer,
     DropDownTitle,
 } from "./styles";
+import { tabs } from "./tabs";
 
 type ParamList = {
     params: {
@@ -56,18 +58,6 @@ const initialLocation = {
     latitudeDelta: 0.2,
     longitudeDelta: 0.2,
 };
-
-interface Occurrence {
-    id_occurrence: number;
-    location: [number, number];
-    gun: string;
-    occurrence_date_time: string;
-    register_date_time: string;
-    occurrence_type: string;
-    physical_aggression: boolean;
-    police_report: boolean;
-    victim: boolean;
-}
 
 const Home: React.FC = () => {
     const theme = useTheme();
@@ -118,8 +108,8 @@ const Home: React.FC = () => {
     const getCurrentLocation = async () => {
         const { status } = await Location.requestPermissionsAsync();
 
-        if (status !== 'granted') {
-            console.warn('Permission to access location was denied');
+        if (status !== "granted") {
+            console.warn("Permission to access location was denied");
         }
 
         const position = await Location.getCurrentPositionAsync({});
@@ -128,8 +118,8 @@ const Home: React.FC = () => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: 0.02,
-            longitudeDelta: 0.02
-        }
+            longitudeDelta: 0.02,
+        };
 
         setLocation(location);
     };
@@ -341,30 +331,21 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        <Tab
-                            onPress={() => setSelectedFilter("heat")}
-                            focus={selectedFilter === "heat"}
-                        >
-                            <TabTitle focus={selectedFilter === "heat"}>
-                                Cidade
-                            </TabTitle>
-                        </Tab>
-                        <Tab
-                            onPress={() => setSelectedFilter("neighborhood")}
-                            focus={selectedFilter === "neighborhood"}
-                        >
-                            <TabTitle focus={selectedFilter === "neighborhood"}>
-                                Bairro
-                            </TabTitle>
-                        </Tab>
-                        <Tab
-                            onPress={() => setSelectedFilter("pins")}
-                            focus={selectedFilter === "pins"}
-                        >
-                            <TabTitle focus={selectedFilter === "pins"}>
-                                Local
-                            </TabTitle>
-                        </Tab>
+                        {tabs.map((item, index) => {
+                            return (
+                                <Tab
+                                    key={`tab-${index}`}
+                                    onPress={() => setSelectedFilter(item.name)}
+                                    focus={selectedFilter === item.name}
+                                >
+                                    <TabTitle
+                                        focus={selectedFilter === item.name}
+                                    >
+                                        {item.text}
+                                    </TabTitle>
+                                </Tab>
+                            );
+                        })}
                     </TabFilter>
                     {selectedFilter === "heat" && (
                         <DropDownContainer>

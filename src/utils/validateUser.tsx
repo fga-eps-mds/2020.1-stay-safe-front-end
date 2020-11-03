@@ -1,8 +1,14 @@
 import { Alert } from "react-native";
 
+import {
+    validateRequiredField,
+    validateFieldLength,
+    validateRegexField,
+} from "./validateField";
+
 interface UserProps {
+    username?: string;
     fullName: string;
-    username: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -10,31 +16,73 @@ interface UserProps {
 
 export const validateUser = (data: UserProps) => {
     const error = ["Campo Inválido", ""];
-    if (data.username === null || data.username === "") {
-        error[1] = "Username não pode ficar em branco";
-    } else if (data.username.length < 3) {
-        error[1] = "Username precisa de mínimo de 3 (três) caracteres";
-    } else if (!/^[a-zA-Z0-9]+$/.test(data.username)) {
-        error[1] = "Username não pode ter espaços e caracteres especiais.";
-    } else if (data.fullName === null || data.fullName === "") {
-        error[1] = "Nome Completo não pode ficar em branco";
-    } else if (data.email === null || data.email === "") {
-        error[1] = "Email não pode ficar em branco";
-    } else if (data.email.length < 6) {
-        error[1] = "Email precisa de mínimo de 6 (seis) caracteres";
-    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-        error[1] = "Email inválido";
-    } else if (data.password === null || data.password === "") {
-        error[1] = "Senha não pode ficar em branco";
-    } else if (data.password && data.password.length < 6) {
-        error[1] = "Senha precisa de mínimo de 6 (seis) caracteres";
-    } else if (!/.*[0-9].*/.test(data.password)) {
-        error[1] = "Senha precisa conter no mínimo 1(um) número";
-    } else if (data.password !== data.confirmPassword) {
-        error[1] = "As senhas precisam ser iguais";
+    let usernameError = "";
+    let passwordError = "";
+    if (data.hasOwnProperty("username")) {
+        usernameError = usernameInvalid(data.username);
+        passwordError = passwordInvalid(data.password, data.confirmPassword);
     }
+    const nameError = nameInvalid(data.fullName);
+    const emailError = emailInvalid(data.email);
+
+    if (usernameError) {
+        error[1] = usernameError;
+    } else if (nameError) {
+        error[1] = nameError;
+    } else if (emailError) {
+        error[1] = emailError;
+    } else if (passwordError) {
+        error[1] = passwordError;
+    }
+
     if (error[1] !== "") {
         Alert.alert(error[0], error[1]);
     }
     return error[1] === "";
+};
+
+const usernameInvalid = (username) => {
+    let error = "";
+    if (validateRequiredField(username)) {
+        error = "Username não pode ficar em branco";
+    } else if (validateFieldLength(username, 3)) {
+        error = "Username precisa de mínimo de 3 (três) caracteres";
+    } else if (validateRegexField(username, /^[a-zA-Z0-9]+$/)) {
+        error = "Username não pode ter espaços e caracteres especiais.";
+    }
+    return error;
+};
+
+const nameInvalid = (name: string) => {
+    let error = "";
+    if (validateRequiredField(name)) {
+        error = "Nome Completo não pode ficar em branco";
+    }
+    return error;
+};
+
+const emailInvalid = (email: string) => {
+    let error = "";
+    if (validateRequiredField(email)) {
+        error = "Email não pode ficar em branco";
+    } else if (validateFieldLength(email, 6)) {
+        error = "Email precisa de mínimo de 6 (seis) caracteres";
+    } else if (validateRegexField(email, /\S+@\S+\.\S+/)) {
+        error = "Email inválido";
+    }
+    return error;
+};
+
+const passwordInvalid = (password: string, confirmPassword: string) => {
+    let error = "";
+    if (validateRequiredField(password)) {
+        error = "Senha não pode ficar em branco";
+    } else if (validateFieldLength(password, 6)) {
+        error = "Senha precisa de mínimo de 6 (seis) caracteres";
+    } else if (validateRegexField(password, /.*[0-9].*/)) {
+        error = "Senha precisa conter no mínimo 1(um) número";
+    } else if (password !== confirmPassword) {
+        error = "As senhas precisam ser iguais";
+    }
+    return error;
 };
