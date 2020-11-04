@@ -9,7 +9,7 @@ import React, {
 import { Alert } from "react-native";
 import { ThemeProvider } from "styled-components";
 
-import { authUser } from "../services/users";
+import { authUser, deleteUser } from "../services/users";
 import staySafeDarkTheme from "../styles/staySafeDarkTheme";
 import staySafeTheme from "../styles/staySafeTheme";
 
@@ -25,6 +25,7 @@ interface UserContextData {
     isLoading: boolean;
     signIn(credentials: SignInCredentials): Promise<void>;
     signOut(): void;
+    deleteAccount(): void;
 }
 
 interface AppTheme {
@@ -37,9 +38,19 @@ interface AppTheme {
     primaryGray: string;
     primaryBackground: string;
     primaryBlack: string;
-    heatMapGreen: string;
-    heatMapOrange: string;
-    heatMapRed: string;
+
+    primaryStrongYellow: string;
+
+    primaryImpressionRed: string;
+    primaryImpressionOrange: string;
+    primaryImpressionGreen: string;
+
+    heatMapGreen1: string;
+    heatMapYellow2: string;
+    heatMapOrange3: string;
+    heatMapOrange4: string;
+    heatMapOrange5: string;
+    heatMapRed6: string;
 }
 
 interface UserState {
@@ -109,6 +120,17 @@ export const UserProvider: React.FC = ({ children }) => {
         setData({ token: "", username: "" });
     }, []);
 
+    const deleteAccount = useCallback(async () => {
+        await deleteUser(data.token);
+
+        await AsyncStorage.multiRemove([
+            "@StaySafe:token",
+            "@StaySafe:username",
+        ]);
+
+        setData({ token: "", username: "" });
+    }, []);
+
     const switchTheme = useCallback(async () => {
         await AsyncStorage.setItem(
             "@StaySafe:theme",
@@ -119,7 +141,15 @@ export const UserProvider: React.FC = ({ children }) => {
 
     return (
         <UserContext.Provider
-            value={{ data, switchTheme, theme, isLoading, signIn, signOut }}
+            value={{
+                data,
+                switchTheme,
+                theme,
+                isLoading,
+                signIn,
+                signOut,
+                deleteAccount,
+            }}
         >
             <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </UserContext.Provider>
