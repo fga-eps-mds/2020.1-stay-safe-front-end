@@ -7,7 +7,8 @@ import { StayNormalMap } from "../../screens/Home/styles";
 import { getCoordinates } from "../../services/coordinateSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import CircularLoader from "../CircularLoader";
-import { coordinates } from "./coordinates";
+import { coordinatesDF } from "./coordinates/coordinatesDF";
+import coordinatesSP from "./coordinates/coordinatesSP.json";
 
 interface CoordinateCitiesDF {
     name: string;
@@ -58,7 +59,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
     const [isSelected, setIsSelected] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState("");
 
-    const [coordinatesSp, setCoordinatesSp] = useState([]);
+    const [coordinates, setCoordinates] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -66,6 +67,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
         setIsLoading(true);
         if (city === "df") {
             setCrimes();
+            setCoordinates(coordinatesDF);
             setIsLoading(false);
         } else {
             setCrimes();
@@ -74,25 +76,27 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
     }, []);
 
     const getSpCoordinates = async () => {
-        const response = await getCoordinates(city);
-
-        setCoordinatesSp(
-            response.body[0].cities.map((cityCoord: CityCoordinate) => {
-                if (cityCoord.name !== "Cândido Mota")
-                    cityCoord.coordinates = cityCoord.coordinates.map(
-                        (coordinateCity) => {
-                            return {
-                                longitude: Number(coordinateCity[0]),
-                                latitude: Number(coordinateCity[1]),
-                            };
-                        }
-                    );
-                return {
-                    name: cityCoord.name,
-                    coordinates: cityCoord.coordinates,
-                };
-            })
-        );
+        if (isNaN(coordinatesSP[0].cities[0].coordinates[0].latitude)) {
+            setCoordinates(
+                coordinatesSP[0].cities.map((cityCoord: CityCoordinate) => {
+                    if (cityCoord.name !== "Cândido Mota")
+                        cityCoord.coordinates = cityCoord.coordinates.map(
+                            (coordinateCity) => {
+                                return {
+                                    longitude: Number(coordinateCity[0]),
+                                    latitude: Number(coordinateCity[1]),
+                                };
+                            }
+                        );
+                    return {
+                        name: cityCoord.name,
+                        coordinates: cityCoord.coordinates,
+                    };
+                })
+            );
+        } else {
+            setCoordinates(coordinatesSP[0].cities);
+        }
     };
 
     const setCrimes = () => {
@@ -202,7 +206,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
                                   />
                               );
                           })
-                        : coordinatesSp.map((coordinate: CityCoordinate) => {
+                        : coordinates.map((coordinate: CityCoordinate) => {
                               const cityColor = citiesCrimes.filter(
                                   (cityCrimes) =>
                                       cityCrimes.name === coordinate.name
