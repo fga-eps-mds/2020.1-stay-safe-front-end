@@ -7,6 +7,7 @@ import { useTheme } from "styled-components";
 import HeaderTitle from "../../components/HeaderTitle";
 import { KeyboardScrollView } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
+import { impressions } from "./impressions";
 import {
     StarContainer,
     StatisticsNeighborhoodCard,
@@ -87,51 +88,29 @@ const NeighborhoodReview: React.FC = () => {
                     </StarContainer>
                     <ImpressionText>Impressões</ImpressionText>
                     <ImpressionsContainer>
-                        <PointContainer>
-                            <MaterialCommunityIcons
-                                name="account-multiple"
-                                size={scale(30)}
-                                color={ratingColor(
-                                    neighborhood.statistics.movement_of_people
-                                )}
-                            />
-                            <NeighborhoodTitle>
-                                Movimento:{" "}
-                                {ratingColorString(
-                                    neighborhood.statistics.movement_of_people
-                                )}
-                            </NeighborhoodTitle>
-                        </PointContainer>
-                        <PointContainer>
-                            <MaterialCommunityIcons
-                                name="weather-sunny"
-                                size={scale(30)}
-                                color={ratingColor(
-                                    neighborhood.statistics.lighting
-                                )}
-                            />
-                            <NeighborhoodTitle>
-                                Iluminação:{" "}
-                                {ratingColorString(
-                                    neighborhood.statistics.lighting
-                                )}
-                            </NeighborhoodTitle>
-                        </PointContainer>
-                        <PointContainer>
-                            <MaterialCommunityIcons
-                                name="car"
-                                size={scale(30)}
-                                color={ratingColor(
-                                    neighborhood.statistics.police_rounds
-                                )}
-                            />
-                            <NeighborhoodTitle>
-                                Rondas:{" "}
-                                {ratingColorString(
-                                    neighborhood.statistics.police_rounds
-                                )}
-                            </NeighborhoodTitle>
-                        </PointContainer>
+                        {impressions.map((impression) => {
+                            return (
+                                <PointContainer key={impression.name}>
+                                    <MaterialCommunityIcons
+                                        name={impression.icon}
+                                        size={scale(30)}
+                                        color={ratingColor(
+                                            neighborhood.statistics[
+                                                impression.name
+                                            ]
+                                        )}
+                                    />
+                                    <NeighborhoodTitle>
+                                        Movimento:{" "}
+                                        {ratingColorString(
+                                            neighborhood.statistics[
+                                                impression.name
+                                            ]
+                                        )}
+                                    </NeighborhoodTitle>
+                                </PointContainer>
+                            );
+                        })}
                     </ImpressionsContainer>
                 </StatisticsNeighborhoodCard>
                 <EvaluateButton>
