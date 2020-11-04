@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
@@ -15,7 +14,6 @@ import {
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
-import { deleteUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
 import {
