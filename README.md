@@ -1,3 +1,4 @@
+<a href="https://codeclimate.com/github/fga-eps-mds/2020.1-stay-safe-front-end/maintainability"><img src="https://api.codeclimate.com/v1/badges/c5428703a3271e848d6e/maintainability" /></a>
 # 2020.1-stay-safe-front-end
 
 ## Installation

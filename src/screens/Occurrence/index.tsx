@@ -16,6 +16,7 @@ import {
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { ParamOccurrence } from "../../interfaces/occurrence";
 import { updateOccurrence, createOccurrence } from "../../services/occurrences";
 import {
     formatDate,
@@ -47,22 +48,6 @@ type ParamList = {
     params: {
         latitude: number;
         longitude: number;
-    };
-};
-
-type ParamOccurrence = {
-    params: {
-        occurrence: {
-            id_occurrence: number;
-            location: [number, number];
-            gun: string;
-            occurrence_date_time: string;
-            register_date_time: string;
-            occurrence_type: string;
-            physical_aggression: boolean;
-            police_report: boolean;
-            victim: boolean;
-        };
     };
 };
 

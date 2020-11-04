@@ -9,6 +9,7 @@ import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { Occurrence } from "../../interfaces/occurrence";
 import {
     getUserOccurrences,
     deleteOccurrence,
@@ -23,18 +24,6 @@ import {
     Date,
     CardActions,
 } from "./styles";
-
-interface Occurrence {
-    id_occurrence: number;
-    location: [number, number];
-    gun: string;
-    occurrence_date_time: string;
-    register_date_time: string;
-    occurrence_type: string;
-    physical_aggression: boolean;
-    police_report: boolean;
-    victim: boolean;
-}
 
 const Occurrences: React.FC = () => {
     const navigation = useNavigation();

@@ -2,13 +2,12 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "styled-components";
 
 import Loader from "../../components/Loader";
+import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
     KeyboardScrollView,
-    LogoWrapper,
     Title,
     NormalLabel,
     NormalInput,
@@ -17,12 +16,9 @@ import {
     SendLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
-import Logo from "../../img/logo.svg";
-import { scale } from "../../utils/scalling";
 
 const Login: React.FC = () => {
     const navigation = useNavigation();
-    const theme = useTheme();
     const { signIn } = useUser();
 
     const [username, setUsername] = useState("");
@@ -52,13 +48,7 @@ const Login: React.FC = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <KeyboardScrollView>
-                    <LogoWrapper>
-                        <Logo
-                            width={scale(75)}
-                            height={scale(75)}
-                            fill={theme.primaryRed}
-                        />
-                    </LogoWrapper>
+                    <LogoContainer />
 
                     <Title>Entrar</Title>
 
