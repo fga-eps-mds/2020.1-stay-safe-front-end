@@ -1,34 +1,32 @@
 import React from "react";
-import { ActivityIndicator, Modal } from "react-native";
-import { LineDotsLoader } from "react-native-indicator";
+import { Modal } from "react-native";
+import { DotsLoader } from "react-native-indicator";
 import { useTheme } from "styled-components";
 
+import { scale } from "../../utils/scalling";
 import { LoaderWrapper, ModalBack } from "./styles";
 
-interface CircularLoaderProps {
+interface LoaderProps {
     size?: number;
     color?: string;
 }
 
-const CircularLoader: React.FC<CircularLoaderProps> = ({
-    size = 36,
-    color = "",
-}) => {
+const Loader: React.FC<LoaderProps> = ({ size = 25, color = "" }) => {
     const theme = useTheme();
 
     return (
         <Modal transparent animationType="fade">
             <ModalBack>
                 <LoaderWrapper>
-                    {/* <ActivityIndicator
+                    <DotsLoader
                         size={size}
                         color={color === "" ? theme.primaryLightBlue : color}
-                    /> */}
-                    <LineDotsLoader size={20} />
+                        betweenSpace={scale(7)}
+                    />
                 </LoaderWrapper>
             </ModalBack>
         </Modal>
     );
 };
 
-export default CircularLoader;
+export default Loader;
