@@ -274,6 +274,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
                       })}
             </StayNormalMap>
             {isLoading && <Loader />}
+            {isSelected && <Loader />}
         </>
     );
 };
