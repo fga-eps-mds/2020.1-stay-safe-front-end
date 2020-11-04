@@ -5,8 +5,8 @@ import { View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
@@ -61,7 +61,7 @@ const CityStatistics: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const cityName = route.params.city;
-    const uf =  route.params.uf;
+    const uf = route.params.uf;
 
     const [data, setData] = useState<Data>([]);
 
@@ -87,6 +87,7 @@ const CityStatistics: React.FC = () => {
                 }
             });
         } catch (error) {
+            setIsLoading(false);
             Alert.alert("Erro ao conectar com o servidor.");
         }
     };
@@ -140,7 +141,7 @@ const CityStatistics: React.FC = () => {
                         </YearContainer>
                         <CrimeStatistics loading={isLoading}>
                             {isLoading ? (
-                                <CircularLoader size={40} />
+                                <Loader />
                             ) : (
                                 cityStatistics.map((cityStatistic) => {
                                     const percentage =
@@ -173,7 +174,11 @@ const CityStatistics: React.FC = () => {
                             )}
                         </CrimeStatistics>
                     </StatisticsCard>
-                    <SortButton onPress={() => navigation.navigate("Review", {cityName, uf})} >
+                    <SortButton
+                        onPress={() =>
+                            navigation.navigate("Review", { cityName, uf })
+                        }
+                    >
                         <MaterialCommunityIcons
                             name="sort-variant"
                             size={scale(25)}

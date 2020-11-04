@@ -6,15 +6,15 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeatMap from "../../components/HeatMap";
+import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -118,8 +118,8 @@ const Home: React.FC = () => {
     const getCurrentLocation = async () => {
         const { status } = await Location.requestPermissionsAsync();
 
-        if (status !== 'granted') {
-            console.warn('Permission to access location was denied');
+        if (status !== "granted") {
+            console.warn("Permission to access location was denied");
         }
 
         const position = await Location.getCurrentPositionAsync({});
@@ -128,8 +128,8 @@ const Home: React.FC = () => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: 0.02,
-            longitudeDelta: 0.02
-        }
+            longitudeDelta: 0.02,
+        };
 
         setLocation(location);
     };
@@ -461,23 +461,17 @@ const Home: React.FC = () => {
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
-                        style={[
-                            { width: "50%" },
-                            isLoading && { padding: scale(9) },
-                        ]}
+                        style={{ width: "50%" }}
                         onPress={() => handleSubmitFilter()}
                     >
-                        {isLoading ? (
-                            <CircularLoader size={28} />
-                        ) : (
-                            <SendLabel>Filtrar</SendLabel>
-                        )}
+                        <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
                     <Span show style={{ marginTop: scale(5) }}>
                         ou clique no mapa para voltar
                     </Span>
                 </View>
             </FilterModal>
+            {isLoading && <Loader />}
         </SafeAreaView>
     );
 };

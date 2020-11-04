@@ -5,8 +5,8 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import {
     Container,
     KeyboardScrollView,
@@ -396,15 +396,11 @@ const Occurrence: React.FC = () => {
                         ]}
                         onPress={handleSubmit}
                     >
-                        {isLoading ? (
-                            <CircularLoader size={28} />
-                        ) : (
-                            <SendLabel>
-                                {isEditing
-                                    ? "Editar Ocorrência"
-                                    : "Registrar Ocorrência"}
-                            </SendLabel>
-                        )}
+                        <SendLabel>
+                            {isEditing
+                                ? "Editar Ocorrência"
+                                : "Registrar Ocorrência"}
+                        </SendLabel>
                     </NormalSend>
 
                     <StayAlert
@@ -424,6 +420,7 @@ const Occurrence: React.FC = () => {
                         onConfirmPressed={() => handleClosedModal()}
                         onDismiss={() => handleClosedModal()}
                     />
+                    {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

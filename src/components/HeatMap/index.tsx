@@ -6,7 +6,7 @@ import { useTheme } from "styled-components";
 import { StayNormalMap } from "../../screens/Home/styles";
 import { getCoordinates } from "../../services/coordinateSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
-import CircularLoader from "../CircularLoader";
+import Loader from "../Loader";
 import { coordinates } from "./coordinates";
 
 interface CoordinateCitiesDF {
@@ -273,7 +273,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
                               }
                       })}
             </StayNormalMap>
-            {isLoading && <CircularLoader size={50} />}
+            {isLoading && <Loader />}
         </>
     );
 };
