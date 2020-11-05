@@ -1,4 +1,5 @@
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
@@ -11,7 +12,7 @@ import {
     getFavoritePlaces,
     deleteFavoritePlace,
 } from "../../services/favoritePlaces";
-import { PlaceCard, PlaceTitle, DeletePlace } from "./styles";
+import { PlaceCard, PlaceTitle, DeletePlace, AddPlace } from "./styles";
 
 interface FavoritePlace {
     id_place: number;
@@ -21,6 +22,7 @@ interface FavoritePlace {
 }
 
 const FavoritePlaces: React.FC = () => {
+    const navigation = useNavigation();
     const theme = useTheme();
     const { data } = useUser();
 
@@ -86,6 +88,14 @@ const FavoritePlaces: React.FC = () => {
                             </PlaceCard>
                         );
                     })}
+                    <AddPlace
+                        icon="plus"
+                        onPress={() => {
+                            navigation.navigate("Home", {
+                                showFavoritePlaceModal: true,
+                            });
+                        }}
+                    />
                     <StayAlert
                         show={showDeleteModal}
                         title="Apagar Local Favorito"
