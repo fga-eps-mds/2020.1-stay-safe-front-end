@@ -1,3 +1,4 @@
+import { FAB } from "react-native-paper";
 import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
@@ -24,4 +25,12 @@ export const PlaceCard = styled.View`
 export const DeletePlace = styled.TouchableOpacity`
     right: 5%;
     position: absolute;
+`;
+
+export const AddPlace = styled(FAB)`
+    background-color: ${(props) => props.theme.primaryRed};
+    position: absolute;
+    margin: ${scale(16)}px;
+    right: 0;
+    bottom: 0;
 `;
