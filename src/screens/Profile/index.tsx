@@ -235,6 +235,19 @@ const Profile: React.FC = () => {
                                 />
                                 <ButtonLabel>Minhas Avaliações</ButtonLabel>
                             </ProfileButton>
+
+                            <ProfileButton 
+                                onPress={() => 
+                                    navigation.navigate("FavoritePlaces")
+                                }
+                            >
+                                <Feather
+                                    name="map-pin"
+                                    size={scale(18)}
+                                    color={theme.primaryWhite}
+                                />
+                                <ButtonLabel>Meus Locais</ButtonLabel>
+                            </ProfileButton>
                         </ButtonsContainer>
                     )}
 
