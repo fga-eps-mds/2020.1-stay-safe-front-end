@@ -52,6 +52,8 @@ const FavoritePlaces: React.FC = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [favoritePlaceName, setFavoritePlaceName] = useState("");
 
+    const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
+
     const [showDeleteModal, setDeleteModal] = useState(false);
     const [idPlace, setIdPlace] = useState(0);
 
@@ -112,7 +114,9 @@ const FavoritePlaces: React.FC = () => {
                 data.token
             );
 
-            if (response.status !== 201) {
+            if (response.status === 201) {
+                setShowSuccessfullyModal(true);
+            } else {
                 Alert.alert(
                     "Erro ao cadastrar local favorito",
                     response.body.error
@@ -126,29 +130,37 @@ const FavoritePlaces: React.FC = () => {
             <Container>
                 <HeaderTitle text="Locais Favoritos" goBack />
                 <KeyboardScrollView>
-                    {favoritePlaces.map((place: FavoritePlace) => {
-                        return (
-                            <PlaceCard
-                                style={{ elevation: 5 }}
-                                key={place.id_place}
-                            >
-                                <PlaceTitle>{place.name}</PlaceTitle>
-
-                                <DeletePlace
-                                    onPress={() => {
-                                        setDeleteModal(true);
-                                        setIdPlace(place.id_place);
-                                    }}
+                    {favoritePlaces.length === 0 ? (
+                        <PlaceCard style={{ elevation: 5 }}>
+                            <PlaceTitle>
+                                Você não possui locais cadastrados.
+                            </PlaceTitle>
+                        </PlaceCard>
+                    ) : (
+                        favoritePlaces.map((place: FavoritePlace) => {
+                            return (
+                                <PlaceCard
+                                    style={{ elevation: 5 }}
+                                    key={place.id_place}
                                 >
-                                    <Feather
-                                        name="trash-2"
-                                        size={22}
-                                        color={theme.primarySuperDarkBlue}
-                                    />
-                                </DeletePlace>
-                            </PlaceCard>
-                        );
-                    })}
+                                    <PlaceTitle>{place.name}</PlaceTitle>
+
+                                    <DeletePlace
+                                        onPress={() => {
+                                            setDeleteModal(true);
+                                            setIdPlace(place.id_place);
+                                        }}
+                                    >
+                                        <Feather
+                                            name="trash-2"
+                                            size={22}
+                                            color={theme.primarySuperDarkBlue}
+                                        />
+                                    </DeletePlace>
+                                </PlaceCard>
+                            );
+                        })
+                    )}
                     <AddPlace
                         icon="plus"
                         onPress={() => {
@@ -200,6 +212,15 @@ const FavoritePlaces: React.FC = () => {
                         cancelText="Cancelar"
                         onCancelPressed={() => setDeleteModal(false)}
                         onDismiss={() => setDeleteModal(false)}
+                    />
+                    <StayAlert
+                        show={showSuccessfullyModal}
+                        title="Local Favorito"
+                        message={`${favoritePlaceName} cadastrado com sucesso.`}
+                        showConfirmButton
+                        confirmText="Entendido"
+                        onConfirmPressed={() => setShowSuccessfullyModal(false)}
+                        onDismiss={() => setShowSuccessfullyModal(false)}
                     />
                 </KeyboardScrollView>
             </Container>
