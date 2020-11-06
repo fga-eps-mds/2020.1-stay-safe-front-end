@@ -1,5 +1,32 @@
 import { userApi } from "./api";
 
+interface FavoritePlace {
+    name: string;
+    latitude: number;
+    longitude: number;
+}
+
+export const createFavoritePlace = async (
+    data: FavoritePlace,
+    token: string
+) => {
+    const response = await fetch(userApi + "/places/", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+        },
+        body: JSON.stringify({
+            name: data.name,
+            latitude: data.latitude,
+            longitude: data.longitude,
+        }),
+    });
+
+    return { status: response.status, body: await response.json() };
+};
+
 export const getFavoritePlaces = async (token: string) => {
     const response = await fetch(userApi + `/places/`, {
         method: "GET",
