@@ -5,7 +5,6 @@ import { TouchableOpacity } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 import { useUser } from "../../hooks/user";
-import { getAllNeighborhoods } from "../../services/neighborhood";
 import HeaderTitle from "../../components/HeaderTitle";
 import StayAlert from "../../components/StayAlert";
 import {
@@ -23,26 +22,28 @@ import { scale } from "../../utils/scalling";
 
 interface Rating {
     id_rating: number,
-    id_neighborhood: number,
     rating_neighborhood: number,
-    lighting: boolean,
-    movement_of_people: boolean,
-    police_rounds: boolean,
-    details: string
-}
+    neighborhood: Neighborhood,
+    details: {
+        lighting: boolean,
+        movement_of_people: boolean,
+        police_rounds: boolean,
+    },
+    user: string,
+};
 
 interface Neighborhood {
     city: string,
     id_neighborhood: number,
     neighborhood: string,
     state: string
-}
+};
 
-const UserRatings: React.FC = () => {
+const Ratings: React.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
     const { data } = useUser();
-    const [neighborhoods, setNeighborhood] = useState<Neighborhood[]>([]);
+
     const [ratings, setRatings] = useState<Rating[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
     const [idRating, setIdRating] = useState(0);
@@ -61,27 +62,6 @@ const UserRatings: React.FC = () => {
             if (!response.body.errors && response.status === 200)
                 setRatings(response.body);
             else console.warn("Falha ao carregar as avaliações do usuário.");
-        }
-
-        const response = await getAllNeighborhoods();
-        if (!response.body.errors && response.status === 200)
-            setNeighborhood(response.body)
-        else console.warn("Falha ao carregar os bairros.");
-    }
-
-    const getCity = (id: number) => {
-        const neighborhood = neighborhoods.filter(neigh => neigh.id_neighborhood === id)[0]
-
-        if (neighborhood) {
-            return `${neighborhood.city} - ${neighborhood.state}`
-        }
-    }
-
-    const getNeighborhood = (id: number) => {
-        const neighborhood = neighborhoods.filter(neigh => neigh.id_neighborhood === id)[0]
-
-        if (neighborhood && neighborhood.neighborhood) {
-            return `${neighborhood.neighborhood}`
         }
     }
 
@@ -118,10 +98,10 @@ const UserRatings: React.FC = () => {
                                 <Card key={rating.id_rating}>
                                     <CardData>
                                         <Title>
-                                            {getNeighborhood(rating.id_neighborhood)}
+                                            {rating.neighborhood.neighborhood}
                                         </Title>
                                         <NeighText>
-                                            {getCity(rating.id_neighborhood)}
+                                            {rating.neighborhood.city} - {rating.neighborhood.state}
                                         </NeighText>
                                         <Date>
                                             03-2020
@@ -130,7 +110,14 @@ const UserRatings: React.FC = () => {
 
                                     <CardActions>
                                         <TouchableOpacity
-                                            onPress={() => {}}
+                                            onPress={() => {
+                                                navigation.navigate(
+                                                    "Rating",
+                                                    {
+                                                        rating,
+                                                    }
+                                                );
+                                            }}
                                         >
                                             <Feather
                                                 name="edit-3"
@@ -179,4 +166,4 @@ const UserRatings: React.FC = () => {
     )
 }
 
-export default UserRatings;
+export default Ratings;
