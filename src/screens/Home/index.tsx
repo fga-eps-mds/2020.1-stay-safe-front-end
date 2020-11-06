@@ -306,26 +306,19 @@ const Home: React.FC = () => {
                 </StayNormalMap>
             )}
             <StayAlert
-                show={isModalOpen && data.token !== ""}
-                title="Reportar Ocorrência"
+                show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
+                title={
+                    isPlaceModalOpen
+                        ? "Selecionar Local Favorito"
+                        : "Reportar Ocorrência"
+                }
                 message="Toque para selecionar o local no mapa com o marcador"
                 showConfirmButton
                 confirmText="Entendido"
                 onConfirmPressed={() => {
                     handleClosedModal();
-                    setIsReporting(true);
-                }}
-                onDismiss={() => handleClosedModal()}
-            />
-            <StayAlert
-                show={isPlaceModalOpen && data.token !== ""}
-                title="Selecionar Local Favorito"
-                message="Toque para selecionar o local no mapa com o marcador"
-                showConfirmButton
-                confirmText="Entendido"
-                onConfirmPressed={() => {
-                    handleClosedModal();
-                    setIsSelectingPlace(true);
+                    if (isPlaceModalOpen) setIsSelectingPlace(true);
+                    else setIsReporting(true);
                 }}
                 onDismiss={() => handleClosedModal()}
             />
