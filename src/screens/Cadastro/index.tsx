@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
@@ -138,12 +138,9 @@ const Cadastro: React.FC = () => {
                     />
 
                     <NormalSend onPress={() => handleRegister()}>
-                        {isLoading ? (
-                            <CircularLoader size={20} />
-                        ) : (
-                            <SendLabel>Criar Conta</SendLabel>
-                        )}
+                        <SendLabel>Criar Conta</SendLabel>
                     </NormalSend>
+                    {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

@@ -1,18 +1,18 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 
-import CircularLoader from "./components/CircularLoader";
+import Loader from "./components/Loader";
 import { useUser } from "./hooks/user";
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
 import CityStatistics from "./screens/CityStatistics";
+import FavoritePlaces from "./screens/FavoritePlaces";
 import Login from "./screens/Login";
+import NeighborhoodReview from "./screens/NeighborhoodReview";
 import Occurrence from "./screens/Occurrence";
 import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
 import Review from "./screens/Review";
-import NeighborhoodReview from "./screens/NeighborhoodReview";
-import FavoritePlaces from "./screens/FavoritePlaces";
 
 const AppStack = createStackNavigator();
 
@@ -20,7 +20,7 @@ const Routes: React.FC = () => {
     const { isLoading } = useUser();
 
     if (isLoading) {
-        return <CircularLoader size={50} />;
+        return <Loader />;
     }
 
     return (
@@ -34,7 +34,10 @@ const Routes: React.FC = () => {
             <AppStack.Screen name="Occurrence" component={Occurrence} />
             <AppStack.Screen name="Occurrences" component={Occurrences} />
             <AppStack.Screen name="Review" component={Review} />
-            <AppStack.Screen name="NeighborhoodReview" component={NeighborhoodReview} />
+            <AppStack.Screen
+                name="NeighborhoodReview"
+                component={NeighborhoodReview}
+            />
             <AppStack.Screen
                 name="OccurrenceDetails"
                 component={OccurrenceDetails}

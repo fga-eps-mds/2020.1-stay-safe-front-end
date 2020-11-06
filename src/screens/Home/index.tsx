@@ -13,8 +13,8 @@ import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeatMap from "../../components/HeatMap";
+import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -467,23 +467,17 @@ const Home: React.FC = () => {
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
-                        style={[
-                            { width: "50%" },
-                            isLoading && { padding: scale(9) },
-                        ]}
+                        style={{ width: "50%" }}
                         onPress={() => handleSubmitFilter()}
                     >
-                        {isLoading ? (
-                            <CircularLoader size={28} />
-                        ) : (
-                            <SendLabel>Filtrar</SendLabel>
-                        )}
+                        <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
                     <Span show style={{ marginTop: scale(5) }}>
                         ou clique no mapa para voltar
                     </Span>
                 </View>
             </FilterModal>
+            {isLoading && <Loader />}
         </SafeAreaView>
     );
 };

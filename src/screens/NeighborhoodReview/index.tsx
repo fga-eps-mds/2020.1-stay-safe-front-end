@@ -7,6 +7,7 @@ import { useTheme } from "styled-components";
 import HeaderTitle from "../../components/HeaderTitle";
 import { KeyboardScrollView } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
+import { impressions } from "./impressions";
 import {
     StarContainer,
     StatisticsNeighborhoodCard,
@@ -26,14 +27,19 @@ type ParamList = {
         neighborhood: Neighborhood;
     };
 };
+
 interface Neighborhood {
     city: string;
     state: string;
+    neighborhood: string;
+    statistics: Statistics;
+}
+
+interface Statistics {
     average: number;
     lighting: number;
-    movement: number;
-    neighborhood: string;
-    police: number;
+    movement_of_people: number;
+    police_rounds: number;
 }
 
 const NeighborhoodReview: React.FC = () => {
@@ -77,43 +83,34 @@ const NeighborhoodReview: React.FC = () => {
                             color={theme.primaryStrongYellow}
                         />
                         <NeighborhoodAverage>
-                            {neighborhood.average}
+                            {neighborhood.statistics.average}
                         </NeighborhoodAverage>
                     </StarContainer>
                     <ImpressionText>Impressões</ImpressionText>
                     <ImpressionsContainer>
-                        <PointContainer>
-                            <MaterialCommunityIcons
-                                name="account-multiple"
-                                size={scale(30)}
-                                color={ratingColor(neighborhood.movement)}
-                            />
-                            <NeighborhoodTitle>
-                                Movimento:{" "}
-                                {ratingColorString(neighborhood.movement)}
-                            </NeighborhoodTitle>
-                        </PointContainer>
-                        <PointContainer>
-                            <MaterialCommunityIcons
-                                name="weather-sunny"
-                                size={scale(30)}
-                                color={ratingColor(neighborhood.lighting)}
-                            />
-                            <NeighborhoodTitle>
-                                Iluminação:{" "}
-                                {ratingColorString(neighborhood.lighting)}
-                            </NeighborhoodTitle>
-                        </PointContainer>
-                        <PointContainer>
-                            <MaterialCommunityIcons
-                                name="car"
-                                size={scale(30)}
-                                color={ratingColor(neighborhood.police)}
-                            />
-                            <NeighborhoodTitle>
-                                Rondas: {ratingColorString(neighborhood.police)}
-                            </NeighborhoodTitle>
-                        </PointContainer>
+                        {impressions.map((impression) => {
+                            return (
+                                <PointContainer key={impression.name}>
+                                    <MaterialCommunityIcons
+                                        name={impression.icon}
+                                        size={scale(30)}
+                                        color={ratingColor(
+                                            neighborhood.statistics[
+                                                impression.name
+                                            ]
+                                        )}
+                                    />
+                                    <NeighborhoodTitle>
+                                        Movimento:{" "}
+                                        {ratingColorString(
+                                            neighborhood.statistics[
+                                                impression.name
+                                            ]
+                                        )}
+                                    </NeighborhoodTitle>
+                                </PointContainer>
+                            );
+                        })}
                     </ImpressionsContainer>
                 </StatisticsNeighborhoodCard>
                 <EvaluateButton>
@@ -122,7 +119,7 @@ const NeighborhoodReview: React.FC = () => {
                         size={scale(20)}
                         color={theme.primaryWhite}
                     />
-                    <EvaluateButtontText> Avaliar Bairro </EvaluateButtontText>
+                    <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
                 </EvaluateButton>
             </KeyboardScrollView>
         </SafeAreaView>
