@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { Occurrence } from "../../interfaces/occurrence";
@@ -33,9 +34,12 @@ const Occurrences: React.FC = () => {
     const [showConfirmModal, setConfirmModal] = useState(false);
     const [idOccurrence, setIdOccurrence] = useState(0);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
+        setIsLoading(true);
         const unsubscribe = navigation.addListener("focus", () => {
-            fetchData();
+            fetchData().then((res) => setIsLoading(false));
         });
 
         return unsubscribe;
@@ -70,7 +74,7 @@ const Occurrences: React.FC = () => {
             <ScrollViewStyled>
                 <CardContainer>
                     {occurrences.length === 0 ? (
-                        <Card>
+                        <Card style={isLoading && { justifyContent: "center" }}>
                             <CardData>
                                 <Title
                                     style={{
@@ -148,6 +152,7 @@ const Occurrences: React.FC = () => {
                     onCancelPressed={() => setConfirmModal(false)}
                     onDismiss={() => setConfirmModal(false)}
                 />
+                {isLoading && <Loader />}
             </ScrollViewStyled>
         </SafeAreaView>
     );
