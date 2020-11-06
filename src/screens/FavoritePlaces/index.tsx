@@ -1,6 +1,8 @@
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import { Alert } from "react-native";
+import Dialog from "react-native-dialog";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -11,8 +13,19 @@ import { useUser } from "../../hooks/user";
 import {
     getFavoritePlaces,
     deleteFavoritePlace,
+    createFavoritePlace,
 } from "../../services/favoritePlaces";
-import { PlaceCard, PlaceTitle, DeletePlace, AddPlace } from "./styles";
+import {
+    PlaceCard,
+    PlaceTitle,
+    DeletePlace,
+    AddPlace,
+    DialogTitle,
+    DialogDescription,
+    DialogInput,
+    ButtonsContainer,
+    DialogButton,
+} from "./styles";
 
 interface FavoritePlace {
     id_place: number;
@@ -21,19 +34,37 @@ interface FavoritePlace {
     longitude: number;
 }
 
+type ParamPlace = {
+    params: {
+        latitude: number;
+        longitude: number;
+    };
+};
+
 const FavoritePlaces: React.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
     const { data } = useUser();
+    const route = useRoute<RouteProp<ParamPlace, "params">>();
 
     const [favoritePlaces, setFavoritePlaces] = useState<FavoritePlace[]>([]);
+    const [location, setLocation] = useState<[number, number]>([0, 0]);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [favoritePlaceName, setFavoritePlaceName] = useState("");
 
     const [showDeleteModal, setDeleteModal] = useState(false);
     const [idPlace, setIdPlace] = useState(0);
 
     useEffect(() => {
         getPlaces();
-    }, []);
+    }, [route]);
+
+    useEffect(() => {
+        if (route.params) {
+            setLocation([route.params.latitude, route.params.longitude]);
+            setIsDialogOpen(true);
+        }
+    }, [route]);
 
     const getPlaces = async () => {
         if (data.token !== "") {
@@ -56,6 +87,36 @@ const FavoritePlaces: React.FC = () => {
                     )
                 );
                 setDeleteModal(false);
+            }
+        }
+    };
+
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false);
+
+        navigation.setParams({ latitude: null, longitude: null });
+    };
+
+    const handleConfirmFavoritePlace = async () => {
+        handleCloseDialog();
+
+        if (data.token !== "") {
+            const FavoritePlace = {
+                name: favoritePlaceName,
+                latitude: location[0],
+                longitude: location[1],
+            };
+
+            const response = await createFavoritePlace(
+                FavoritePlace,
+                data.token
+            );
+
+            if (response.status !== 201) {
+                Alert.alert(
+                    "Erro ao cadastrar local favorito",
+                    response.body.error
+                );
             }
         }
     };
@@ -96,6 +157,38 @@ const FavoritePlaces: React.FC = () => {
                             });
                         }}
                     />
+                    <Dialog.Container
+                        visible={isDialogOpen}
+                        onBackdropPress={() => handleCloseDialog()}
+                    >
+                        <DialogTitle>Local Favorito</DialogTitle>
+                        <DialogDescription>
+                            Defina o nome do seu local favorito
+                        </DialogDescription>
+                        <DialogInput
+                            onChangeText={(text: string) =>
+                                setFavoritePlaceName(text)
+                            }
+                            placeholder="ex: Minha Casa"
+                        />
+                        <ButtonsContainer>
+                            <DialogButton
+                                color="#ffffff"
+                                label="Cancelar"
+                                onPress={() => handleCloseDialog()}
+                            />
+                            <DialogButton
+                                style={{
+                                    backgroundColor: "#e83338",
+                                    marginRight: 0,
+                                }}
+                                color="#ffffff"
+                                disabled={favoritePlaceName.length === 0}
+                                label="Confirmar"
+                                onPress={() => handleConfirmFavoritePlace()}
+                            />
+                        </ButtonsContainer>
+                    </Dialog.Container>
                     <StayAlert
                         show={showDeleteModal}
                         title="Apagar Local Favorito"
