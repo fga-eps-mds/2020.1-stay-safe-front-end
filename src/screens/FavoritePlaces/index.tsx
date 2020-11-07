@@ -2,7 +2,6 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import Dialog from "react-native-dialog";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -20,6 +19,7 @@ import {
     PlaceTitle,
     DeletePlace,
     AddPlace,
+    DialogContainer,
     DialogTitle,
     DialogDescription,
     DialogInput,
@@ -169,7 +169,7 @@ const FavoritePlaces: React.FC = () => {
                             });
                         }}
                     />
-                    <Dialog.Container
+                    <DialogContainer
                         visible={isDialogOpen}
                         onBackdropPress={() => handleCloseDialog()}
                     >
@@ -191,7 +191,7 @@ const FavoritePlaces: React.FC = () => {
                             />
                             <DialogButton
                                 style={{
-                                    backgroundColor: "#e83338",
+                                    backgroundColor: theme.primaryRed,
                                     marginRight: 0,
                                 }}
                                 color="#ffffff"
@@ -200,7 +200,7 @@ const FavoritePlaces: React.FC = () => {
                                 onPress={() => handleConfirmFavoritePlace()}
                             />
                         </ButtonsContainer>
-                    </Dialog.Container>
+                    </DialogContainer>
                     <StayAlert
                         show={showDeleteModal}
                         title="Apagar Local Favorito"

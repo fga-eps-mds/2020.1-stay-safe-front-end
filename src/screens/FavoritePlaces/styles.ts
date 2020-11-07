@@ -36,10 +36,21 @@ export const AddPlace = styled(FAB)`
     bottom: 0;
 `;
 
+export const DialogContainer = styled(Dialog.Container).attrs((props) => ({
+    contentStyle: {
+        backgroundColor: props.theme.primaryWhite,
+        borderRadius: scale(16),
+        padding: scale(16),
+    },
+    headerStyle: {
+        margin: 0,
+    },
+}))``;
+
 export const DialogTitle = styled(Dialog.Title)`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
-    color: #010a26;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
     padding-bottom: ${scale(8)}px;
     align-self: center;
 `;
@@ -48,14 +59,14 @@ export const DialogDescription = styled(Dialog.Description)`
     width: 80%;
     font-family: Trueno-Regular;
     font-size: ${scale(14)}px;
-    color: #011640;
+    color: ${(props) => props.theme.primaryDarkBlue};
     padding-bottom: ${scale(16)}px;
     align-self: center;
     text-align: center;
 `;
 
 export const DialogInput = styled(Dialog.Input).attrs((props) => ({
-    placeholderTextColor: "#c8c8c8",
+    placeholderTextColor: props.theme.primaryGray,
     autoCapitalize: "none",
     multiline: false,
     maxLength: 30,
@@ -65,9 +76,9 @@ export const DialogInput = styled(Dialog.Input).attrs((props) => ({
     font-size: ${scale(14)}px;
     border-width: ${scale(1)}px;
     border-radius: ${scale(14)}px;
-    border-color: #010a26;
+    border-color: ${(props) => props.theme.primarySuperDarkBlue};
     padding-left: ${scale(12)}px;
-    color: #010a26;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
 export const ButtonsContainer = styled.View`
@@ -77,7 +88,7 @@ export const ButtonsContainer = styled.View`
 
 export const DialogButton = styled(Dialog.Button)`
     width: 100%;
-    background-color: #7dbfe2;
+    background-color: ${(props) => props.theme.primaryLightBlue};
     border-radius: ${scale(10)}px;
     padding: ${scale(8)}px;
     margin-right: ${scale(16)}px;
