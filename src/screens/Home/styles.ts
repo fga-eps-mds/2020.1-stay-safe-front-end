@@ -70,8 +70,8 @@ export const FilterModal = styled(Modal)<FilterModalProps>`
 
 export const CaptionModal = styled(Modal)`
     position: absolute;
-    height: ${scale(400)}px;
-    width: ${scale(300)}px;
+    height: ${scale(430)}px;
+    width: ${scale(200)}px;
     border-radius: ${scale(24)}px;
     background-color: ${(props) => props.theme.primaryWhite};
     elevation: 15;
@@ -84,25 +84,39 @@ export const CaptionTitle = styled.Text`
     color: ${(props) => props.theme.primarySuperDarkBlue};
     margin-bottom: ${scale(28)}px;
 `;
-//background-color: #000000;
-export const Caption = styled.View`
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+
+export const CaptionContainer = styled.View`
+    align-items: flex-start;
+    margin-bottom: ${scale(8)}px;
 `;
 
-export const CaptionColor = styled.View`
+export const Caption = styled.View`
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: ${scale(14)}px;
+`;
+
+export const CaptionColor = styled.View<OptionColorProps>`
     background-color: ${(props) =>
         props.color ? props.color : props.theme.primaryBlack};
     border-radius: ${scale(30)}px;
     height: ${scale(25)}px;
     width: ${scale(25)}px;
+    margin-right: ${scale(14)}px;
 `;
 
 export const CaptionText = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
+`;
+
+export const CaptionSubText = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(14)}px;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
+    margin-bottom: ${scale(8)}px;
 `;
 
 export const Span = styled.Text<SpanProps>`

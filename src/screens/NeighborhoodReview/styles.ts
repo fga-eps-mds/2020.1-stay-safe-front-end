@@ -39,6 +39,14 @@ export const ImpressionsContainer = styled.View`
     align-items: center;
     justify-content: space-around;
     flex-direction: row;
+    margin-bottom: ${scale(20)}px;
+`;
+
+export const ImpressionsCaption = styled.Text`
+    font-family: "Trueno-Regular";
+    font-size: ${scale(11)}px;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
+    text-align: justify;
 `;
 
 export const PointContainer = styled.View`
@@ -52,9 +60,8 @@ export const StatisticsNeighborhoodCard = styled.View`
     width: 85%;
     background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(20)}px;
-    padding-top: ${scale(20)}px;
-    padding-bottom: ${scale(20)}px;
     align-items: center;
+    padding: ${scale(25)}px;
 `;
 
 export const NeighborhoodAverage = styled.Text`

@@ -14,6 +14,7 @@ import {
     NeighborhoodTitle,
     NeighborhoodText,
     ImpressionsContainer,
+    ImpressionsCaption,
     EvaluateButton,
     EvaluateButtontText,
     TitleCity,
@@ -73,7 +74,7 @@ const NeighborhoodReview: React.FC = () => {
             >
                 <StatisticsNeighborhoodCard style={{ elevation: 5 }}>
                     <NeighborhoodText>
-                        Avaliação Geral dos Usuários
+                        Avaliação Geral*
                     </NeighborhoodText>
                     <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
                     <StarContainer>
@@ -112,6 +113,10 @@ const NeighborhoodReview: React.FC = () => {
                             );
                         })}
                     </ImpressionsContainer>
+
+                    <ImpressionsCaption>
+                        * Informações obtidas através dos usuários
+                    </ImpressionsCaption>
                 </StatisticsNeighborhoodCard>
                 <EvaluateButton>
                     <MaterialCommunityIcons

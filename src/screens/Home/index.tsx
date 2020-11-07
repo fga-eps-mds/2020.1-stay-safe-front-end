@@ -33,9 +33,11 @@ import {
     HeatCaption,
     CaptionModal,
     CaptionTitle,
+    CaptionContainer,
     Caption,
     CaptionColor,
     CaptionText,
+    CaptionSubText,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
@@ -80,7 +82,8 @@ const Home: React.FC = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState([0]);
 
-    const [isCaptionOpen, setIsCaptionOpen] = useState(false);
+    const [isCaptionHeatOpen, setIsCaptionHeatOpen] = useState(false);
+    const [isCaptionNeighOpen, setIsCaptionNeighOpen] = useState(false);
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
@@ -243,8 +246,17 @@ const Home: React.FC = () => {
                     />
                 </FilterButton>
             )}
-            {selectedFilter == "heat" && !isCaptionOpen && (
-                <HeatCaption onPress={() => setIsCaptionOpen(true)}>
+            {selectedFilter == "heat" && !isCaptionHeatOpen && (
+                <HeatCaption onPress={() => setIsCaptionHeatOpen(true)}>
+                    <Feather
+                        name="info"
+                        size={scale(30)}
+                        color={theme.primaryGray}
+                    />
+                </HeatCaption>
+            )}
+            {selectedFilter == "neighborhood" && !isCaptionNeighOpen && (
+                <HeatCaption onPress={() => setIsCaptionNeighOpen(true)}>
                     <Feather
                         name="info"
                         size={scale(30)}
@@ -468,25 +480,75 @@ const Home: React.FC = () => {
                     </Span>
                 </View>
             </FilterModal>
+
             <CaptionModal
-                isOpen={isCaptionOpen}
-                onClosed={() => setIsCaptionOpen(false)}
+                isOpen={isCaptionHeatOpen}
+                onClosed={() => setIsCaptionHeatOpen(false)}
                 swipeToClose={false}
                 position="center"
                 backdropOpacity={0}
                 backButtonClose
             >
-                <View style={{alignItems: "center"}}>
+                <View style={{ alignItems: "center" }}>
                     <CaptionTitle>Legenda:</CaptionTitle>
-                    <Caption>
-                        <CaptionColor color="#ef2500"/>
-                        <CaptionText>
-                            Color 1
-                        </CaptionText>
-                    </Caption>
-                    <CaptionText>
-                        Texto 1 aaaaaaaaa a
-                    </CaptionText>
+                    <CaptionContainer>
+                        <Caption>
+                            <CaptionColor color="#ef2500"/>
+                            <CaptionText>{"> 1000"}*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#ee5b00"/>
+                            <CaptionText>800 - 1000*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#ea7b00"/>
+                            <CaptionText>600 - 800*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#e19a00"/>
+                            <CaptionText>400 - 600*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#bec500"/>
+                            <CaptionText>200 - 400*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#65ef00"/>
+                            <CaptionText>{"< 200"}*</CaptionText>
+                        </Caption>
+                    </CaptionContainer>
+                    <CaptionSubText>* Casos por 100.000 habitantes</CaptionSubText>
+                    <CaptionSubText>* Dados adquiridos do Departamento de Segurança</CaptionSubText>
+                </View>
+            </CaptionModal>
+
+            <CaptionModal
+                style={{ height: scale(310) }}
+                isOpen={isCaptionNeighOpen}
+                onClosed={() => setIsCaptionNeighOpen(false)}
+                swipeToClose={false}
+                position="center"
+                backdropOpacity={0}
+                backButtonClose
+            >
+                <View style={{ alignItems: "center" }}>
+                    <CaptionTitle>Legenda:</CaptionTitle>
+                    <CaptionContainer>
+                        <Caption>
+                            <CaptionColor color="#ef2500"/>
+                            <CaptionText>{"< 40%"}*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#ea7b00"/>
+                            <CaptionText>40% - 70%*</CaptionText>
+                        </Caption>
+                        <Caption>
+                            <CaptionColor color="#65ef00"/>
+                            <CaptionText>{"> 70%"}*</CaptionText>
+                        </Caption>
+                    </CaptionContainer>
+                    <CaptionSubText>* Porcentagem de avaliações</CaptionSubText>
+                    <CaptionSubText>* Dados obtidos pelas avaliações dos usuários</CaptionSubText>
                 </View>
             </CaptionModal>
             {isLoading && <Loader />}
