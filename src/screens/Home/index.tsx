@@ -30,6 +30,12 @@ import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
+    HeatCaption,
+    CaptionModal,
+    CaptionTitle,
+    Caption,
+    CaptionColor,
+    CaptionText,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
@@ -73,6 +79,8 @@ const Home: React.FC = () => {
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState([0]);
+
+    const [isCaptionOpen, setIsCaptionOpen] = useState(false);
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
@@ -235,6 +243,15 @@ const Home: React.FC = () => {
                     />
                 </FilterButton>
             )}
+            {selectedFilter == "heat" && !isCaptionOpen && (
+                <HeatCaption onPress={() => setIsCaptionOpen(true)}>
+                    <Feather
+                        name="info"
+                        size={scale(30)}
+                        color={theme.primaryGray}
+                    />
+                </HeatCaption>
+            )}
             {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
@@ -316,7 +333,6 @@ const Home: React.FC = () => {
                 onDismiss={() => setIsWarningOpen(false)}
             />
             <FilterModal
-                style={{ elevation: 20 }}
                 isOpen={isFilterOpen}
                 onClosed={() => setIsFilterOpen(false)}
                 swipeToClose={false}
@@ -452,6 +468,27 @@ const Home: React.FC = () => {
                     </Span>
                 </View>
             </FilterModal>
+            <CaptionModal
+                isOpen={isCaptionOpen}
+                onClosed={() => setIsCaptionOpen(false)}
+                swipeToClose={false}
+                position="center"
+                backdropOpacity={0}
+                backButtonClose
+            >
+                <View style={{alignItems: "center"}}>
+                    <CaptionTitle>Legenda:</CaptionTitle>
+                    <Caption>
+                        <CaptionColor color="#ef2500"/>
+                        <CaptionText>
+                            Color 1
+                        </CaptionText>
+                    </Caption>
+                    <CaptionText>
+                        Texto 1 aaaaaaaaa a
+                    </CaptionText>
+                </View>
+            </CaptionModal>
             {isLoading && <Loader />}
         </SafeAreaView>
     );
