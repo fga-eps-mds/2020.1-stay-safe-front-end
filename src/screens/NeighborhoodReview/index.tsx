@@ -1,6 +1,7 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -13,6 +14,7 @@ import {
     StatisticsNeighborhoodCard,
     NeighborhoodTitle,
     NeighborhoodText,
+    InfoButton,
     ImpressionsContainer,
     ImpressionsCaption,
     EvaluateButton,
@@ -22,6 +24,15 @@ import {
     ImpressionText,
     PointContainer,
 } from "./styles";
+import {
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText
+} from "../Home/styles"
 
 type ParamList = {
     params: {
@@ -49,6 +60,7 @@ const NeighborhoodReview: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const neighborhood = route.params.neighborhood;
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     const ratingColor = (average: number) => {
         if (average < 3) {
@@ -76,6 +88,14 @@ const NeighborhoodReview: React.FC = () => {
                     <NeighborhoodText>
                         Avaliação Geral*
                     </NeighborhoodText>
+                    <InfoButton onPress={() => setIsInfoOpen(true)}>
+                        <Feather
+                            name="info"
+                            size={scale(25)}
+                            color={theme.primaryGray}
+                        />
+                    </InfoButton>
+
                     <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
                     <StarContainer>
                         <MaterialCommunityIcons
@@ -127,6 +147,35 @@ const NeighborhoodReview: React.FC = () => {
                     <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
                 </EvaluateButton>
             </KeyboardScrollView>
+
+            <InfoModal
+                style={{ height: scale(310) }}
+                isOpen={isInfoOpen}
+                onClosed={() => setIsInfoOpen(false)}
+                swipeToClose={false}
+                position="center"
+                backButtonClose
+            >
+                <View style={{ alignItems: "center" }}>
+                    <InfoTitle>Legenda:</InfoTitle>
+                    <InfoContainer>
+                        <Info>
+                            <InfoColor color={ratingColor(2)}/>
+                            <InfoText>{"< 40%"}*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color={ratingColor(3)}/>
+                            <InfoText>40% - 70%*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color={ratingColor(4)}/>
+                            <InfoText>{"> 70%"}*</InfoText>
+                        </Info>
+                    </InfoContainer>
+                    <InfoSubText>* Porcentagem das impressões</InfoSubText>
+                    <InfoSubText>* Dados obtidos apartir da avaliações dos usuários</InfoSubText>
+                </View>
+            </InfoModal>
         </SafeAreaView>
     );
 };

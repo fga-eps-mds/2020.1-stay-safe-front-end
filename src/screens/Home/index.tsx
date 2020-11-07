@@ -30,14 +30,14 @@ import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
-    HeatCaption,
-    CaptionModal,
-    CaptionTitle,
-    CaptionContainer,
-    Caption,
-    CaptionColor,
-    CaptionText,
-    CaptionSubText,
+    HeatInfo,
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
@@ -67,6 +67,19 @@ const initialLocation = {
     longitudeDelta: 0.2,
 };
 
+const neigh = {
+    "city": "Recanto das Emas",
+    "id_neighborhood": 50,
+    "neighborhood": "Recanto das Emas",
+    "state": "DF",
+    "statistics": {
+      "average": 4.5,
+      "lighting": 3,
+      "movement_of_people": 3,
+      "police_rounds": 2
+    }
+}
+
 const Home: React.FC = () => {
     const theme = useTheme();
     const { data } = useUser();
@@ -82,8 +95,7 @@ const Home: React.FC = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState([0]);
 
-    const [isCaptionHeatOpen, setIsCaptionHeatOpen] = useState(false);
-    const [isCaptionNeighOpen, setIsCaptionNeighOpen] = useState(false);
+    const [isInfoHeatOpen, setIsInfoHeatOpen] = useState(false);
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
@@ -246,24 +258,27 @@ const Home: React.FC = () => {
                     />
                 </FilterButton>
             )}
-            {selectedFilter == "heat" && !isCaptionHeatOpen && (
-                <HeatCaption onPress={() => setIsCaptionHeatOpen(true)}>
+            {selectedFilter == "heat" && !isInfoHeatOpen && (
+                <HeatInfo onPress={() => setIsInfoHeatOpen(true)}>
                     <Feather
                         name="info"
                         size={scale(30)}
                         color={theme.primaryGray}
                     />
-                </HeatCaption>
+                </HeatInfo>
             )}
-            {selectedFilter == "neighborhood" && !isCaptionNeighOpen && (
-                <HeatCaption onPress={() => setIsCaptionNeighOpen(true)}>
-                    <Feather
-                        name="info"
-                        size={scale(30)}
-                        color={theme.primaryGray}
-                    />
-                </HeatCaption>
-            )}
+            {<HeatInfo
+                style={{
+                    left: "8%",
+                }}
+                onPress={() => navigation.navigate("NeighborhoodReview", { neighborhood: neigh })}
+            >
+                <Feather
+                    name="info"
+                    size={scale(30)}
+                    color={theme.primaryGray}
+                />
+            </HeatInfo>}
             {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
@@ -481,76 +496,46 @@ const Home: React.FC = () => {
                 </View>
             </FilterModal>
 
-            <CaptionModal
-                isOpen={isCaptionHeatOpen}
-                onClosed={() => setIsCaptionHeatOpen(false)}
+            <InfoModal
+                isOpen={isInfoHeatOpen}
+                onClosed={() => setIsInfoHeatOpen(false)}
                 swipeToClose={false}
                 position="center"
                 backdropOpacity={0}
                 backButtonClose
             >
                 <View style={{ alignItems: "center" }}>
-                    <CaptionTitle>Legenda:</CaptionTitle>
-                    <CaptionContainer>
-                        <Caption>
-                            <CaptionColor color="#ef2500"/>
-                            <CaptionText>{"> 1000"}*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#ee5b00"/>
-                            <CaptionText>800 - 1000*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#ea7b00"/>
-                            <CaptionText>600 - 800*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#e19a00"/>
-                            <CaptionText>400 - 600*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#bec500"/>
-                            <CaptionText>200 - 400*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#65ef00"/>
-                            <CaptionText>{"< 200"}*</CaptionText>
-                        </Caption>
-                    </CaptionContainer>
-                    <CaptionSubText>* Casos por 100.000 habitantes</CaptionSubText>
-                    <CaptionSubText>* Dados adquiridos do Departamento de Segurança</CaptionSubText>
+                    <InfoTitle>Legenda:</InfoTitle>
+                    <InfoContainer>
+                        <Info>
+                            <InfoColor color="#ef2500"/>
+                            <InfoText>{"> 1000"}*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color="#ee5b00"/>
+                            <InfoText>800 - 1000*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color="#ea7b00"/>
+                            <InfoText>600 - 800*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color="#e19a00"/>
+                            <InfoText>400 - 600*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color="#bec500"/>
+                            <InfoText>200 - 400*</InfoText>
+                        </Info>
+                        <Info>
+                            <InfoColor color="#65ef00"/>
+                            <InfoText>{"< 200"}*</InfoText>
+                        </Info>
+                    </InfoContainer>
+                    <InfoSubText>* Casos por 100.000 habitantes</InfoSubText>
+                    <InfoSubText>* Dados adquiridos do Departamento de Segurança</InfoSubText>
                 </View>
-            </CaptionModal>
-
-            <CaptionModal
-                style={{ height: scale(310) }}
-                isOpen={isCaptionNeighOpen}
-                onClosed={() => setIsCaptionNeighOpen(false)}
-                swipeToClose={false}
-                position="center"
-                backdropOpacity={0}
-                backButtonClose
-            >
-                <View style={{ alignItems: "center" }}>
-                    <CaptionTitle>Legenda:</CaptionTitle>
-                    <CaptionContainer>
-                        <Caption>
-                            <CaptionColor color="#ef2500"/>
-                            <CaptionText>{"< 40%"}*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#ea7b00"/>
-                            <CaptionText>40% - 70%*</CaptionText>
-                        </Caption>
-                        <Caption>
-                            <CaptionColor color="#65ef00"/>
-                            <CaptionText>{"> 70%"}*</CaptionText>
-                        </Caption>
-                    </CaptionContainer>
-                    <CaptionSubText>* Porcentagem de avaliações</CaptionSubText>
-                    <CaptionSubText>* Dados obtidos pelas avaliações dos usuários</CaptionSubText>
-                </View>
-            </CaptionModal>
+            </InfoModal>
             {isLoading && <Loader />}
         </SafeAreaView>
     );

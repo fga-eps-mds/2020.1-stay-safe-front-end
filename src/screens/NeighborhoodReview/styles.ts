@@ -16,6 +16,12 @@ export const NeighborhoodText = styled.Text`
     text-align: center;
 `;
 
+export const InfoButton = styled.TouchableOpacity`
+    position: absolute;
+    top: 5%;
+    right: 5%;
+`;
+
 export const StarContainer = styled.View`
     width: 80%;
     align-items: center;
@@ -35,7 +41,7 @@ export const ImpressionText = styled.Text`
 `;
 
 export const ImpressionsContainer = styled.View`
-    width: 95%;
+    width: 100%;
     align-items: center;
     justify-content: space-around;
     flex-direction: row;

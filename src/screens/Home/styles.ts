@@ -43,7 +43,7 @@ export const FilterButton = styled.TouchableOpacity`
     border-radius: ${scale(50)}px;
 `;
 
-export const HeatCaption = styled.TouchableOpacity`
+export const HeatInfo = styled.TouchableOpacity`
     position: absolute;
     width: ${scale(50)}px;
     height: ${scale(50)}px;
@@ -68,7 +68,7 @@ export const FilterModal = styled(Modal)<FilterModalProps>`
     padding: ${scale(20)}px ${scale(28)}px;
 `;
 
-export const CaptionModal = styled(Modal)`
+export const InfoModal = styled(Modal)`
     position: absolute;
     height: ${scale(430)}px;
     width: ${scale(200)}px;
@@ -78,26 +78,26 @@ export const CaptionModal = styled(Modal)`
     padding: ${scale(20)}px ${scale(28)}px;
 `;
 
-export const CaptionTitle = styled.Text`
+export const InfoTitle = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
     margin-bottom: ${scale(28)}px;
 `;
 
-export const CaptionContainer = styled.View`
+export const InfoContainer = styled.View`
     align-items: flex-start;
     margin-bottom: ${scale(8)}px;
 `;
 
-export const Caption = styled.View`
+export const Info = styled.View`
     width: 100%;
     flex-direction: row;
     align-items: center;
     margin-bottom: ${scale(14)}px;
 `;
 
-export const CaptionColor = styled.View<OptionColorProps>`
+export const InfoColor = styled.View<OptionColorProps>`
     background-color: ${(props) =>
         props.color ? props.color : props.theme.primaryBlack};
     border-radius: ${scale(30)}px;
@@ -106,13 +106,13 @@ export const CaptionColor = styled.View<OptionColorProps>`
     margin-right: ${scale(14)}px;
 `;
 
-export const CaptionText = styled.Text`
+export const InfoText = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
-export const CaptionSubText = styled.Text`
+export const InfoSubText = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
