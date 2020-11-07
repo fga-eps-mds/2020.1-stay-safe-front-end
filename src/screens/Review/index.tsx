@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import { getCityNeighborhoods } from "../../services/neighborhood";
 import { NeighborhoodCard, NeighborhoodTitle } from "./styles";
@@ -34,8 +35,11 @@ const Review: React.FC = () => {
 
     const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
-        getNeighborhood();
+        setIsLoading(true);
+        getNeighborhood().then((res) => setIsLoading(false));
     }, []);
 
     const getNeighborhood = async () => {
@@ -51,23 +55,30 @@ const Review: React.FC = () => {
             <Container>
                 <HeaderTitle text={`Bairros - ${city}`} goBack />
                 <KeyboardScrollView>
-                    {neighborhoods.map((neighborhood) => {
-                        return (
-                            <NeighborhoodCard
-                                style={{ elevation: 5 }}
-                                onPress={() =>
-                                    navigation.navigate("NeighborhoodReview", {
-                                        neighborhood,
-                                    })
-                                }
-                                key={neighborhood.neighborhood}
-                            >
-                                <NeighborhoodTitle>
-                                    {neighborhood.neighborhood}
-                                </NeighborhoodTitle>
-                            </NeighborhoodCard>
-                        );
-                    })}
+                    {isLoading ? (
+                        <Loader />
+                    ) : (
+                        neighborhoods.map((neighborhood) => {
+                            return (
+                                <NeighborhoodCard
+                                    style={{ elevation: 5 }}
+                                    onPress={() =>
+                                        navigation.navigate(
+                                            "NeighborhoodReview",
+                                            {
+                                                neighborhood,
+                                            }
+                                        )
+                                    }
+                                    key={neighborhood.neighborhood}
+                                >
+                                    <NeighborhoodTitle>
+                                        {neighborhood.neighborhood}
+                                    </NeighborhoodTitle>
+                                </NeighborhoodCard>
+                            );
+                        })
+                    )}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

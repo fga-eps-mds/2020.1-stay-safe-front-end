@@ -1,13 +1,12 @@
 import { Feather } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import {
     SendLabel,
     Container,
@@ -15,7 +14,6 @@ import {
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
-import { deleteUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
 import {
@@ -35,7 +33,7 @@ interface ButtonObject {
 }
 
 const Settings: React.FC = () => {
-    const { switchTheme, data, signOut } = useUser();
+    const { switchTheme, data, signOut, deleteAccount } = useUser();
     const theme = useTheme();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,12 +56,11 @@ const Settings: React.FC = () => {
     };
 
     const handleDeleteAccount = async () => {
-        const token = await AsyncStorage.getItem("userToken");
-        AsyncStorage.removeItem("userToken");
-        AsyncStorage.removeItem("username");
+        setIsLoading(true);
 
-        if (token !== null) await deleteUser(token);
+        await deleteAccount();
 
+        setIsLoading(false);
         navigation.navigate("Home");
     };
 
@@ -117,18 +114,14 @@ const Settings: React.FC = () => {
                     {data.token !== "" && (
                         <UserButtonsContainer>
                             <LogoutButton onPress={() => handleLogout()}>
-                                {isLoading ? (
-                                    <CircularLoader size={30} />
-                                ) : (
-                                    <>
-                                        <Feather
-                                            name="log-out"
-                                            size={scale(20)}
-                                            color={theme.primaryWhite}
-                                        />
-                                        <SendLabel>Sair</SendLabel>
-                                    </>
-                                )}
+                                <>
+                                    <Feather
+                                        name="log-out"
+                                        size={scale(20)}
+                                        color={theme.primaryWhite}
+                                    />
+                                    <SendLabel>Sair</SendLabel>
+                                </>
                             </LogoutButton>
                             <DeleteButton onPress={() => setIsModalOpen(true)}>
                                 <DeleteText>Excluir conta</DeleteText>
@@ -153,6 +146,7 @@ const Settings: React.FC = () => {
                         }}
                         onDismiss={() => setIsModalOpen(false)}
                     />
+                    {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

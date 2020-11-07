@@ -3,7 +3,7 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import CircularLoader from "../../components/CircularLoader";
+import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
@@ -71,11 +71,7 @@ const Login: React.FC = () => {
                     />
 
                     <NormalSend onPress={() => handleLogin()}>
-                        {isLoading ? (
-                            <CircularLoader size={20} />
-                        ) : (
-                            <SendLabel>Entrar</SendLabel>
-                        )}
+                        <SendLabel>Entrar</SendLabel>
                     </NormalSend>
 
                     <NormalCreate
@@ -83,6 +79,7 @@ const Login: React.FC = () => {
                     >
                         <SendLabel>Criar Conta</SendLabel>
                     </NormalCreate>
+                    {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>
