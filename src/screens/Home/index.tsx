@@ -272,12 +272,15 @@ const Home: React.FC = () => {
     };
 
     const getInfoColor = (index: number) => {
-        if (index === 0) return theme.heatMapGreen1;
-        else if (index === 1) return theme.heatMapYellow2;
-        else if (index === 2) return theme.heatMapOrange3;
-        else if (index === 3) return theme.heatMapOrange4;
-        else if (index === 4) return theme.heatMapOrange5;
-        else if (index === 5) return theme.heatMapRed6;
+        let infoColor = "";
+        if (index === 0) infoColor = theme.heatMapGreen1;
+        if (index === 1) infoColor = theme.heatMapYellow2;
+        if (index === 2) infoColor = theme.heatMapOrange3;
+        if (index === 3) infoColor = theme.heatMapOrange4;
+        if (index === 4) infoColor = theme.heatMapOrange5;
+        if (index === 5) infoColor = theme.heatMapRed6;
+
+        return infoColor;
     };
 
     if (!loaded) return null;
