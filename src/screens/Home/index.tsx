@@ -260,6 +260,26 @@ const Home: React.FC = () => {
         setCrimeOption(searchOptions[aux[0] - 1]);
     };
 
+    const getInfoText = (crimeRange: number[], index: number) => {
+        if (index === 0) {
+            if (crimeRange[0] === 0) return `${crimeRange[index]}*`;
+            else return `< ${crimeRange[index]}*`;
+        } else if (index === 5) {
+            return `> ${crimeRange[index - 1]}*`;
+        } else {
+            return `${crimeRange[index - 1]} - ${crimeRange[index]}*`;
+        }
+    };
+
+    const getInfoColor = (index: number) => {
+        if (index === 0) return theme.heatMapGreen1;
+        else if (index === 1) return theme.heatMapYellow2;
+        else if (index === 2) return theme.heatMapOrange3;
+        else if (index === 3) return theme.heatMapOrange4;
+        else if (index === 4) return theme.heatMapOrange5;
+        else if (index === 5) return theme.heatMapRed6;
+    };
+
     if (!loaded) return null;
 
     return (
@@ -275,6 +295,7 @@ const Home: React.FC = () => {
             )}
             {selectedFilter === "heat" &&
                 !isInfoHeatOpen &&
+                !isFilterOpen &&
                 selectedOption[0] !== 0 && (
                     <HeatInfo onPress={() => setIsInfoHeatOpen(true)}>
                         <Feather
@@ -488,44 +509,23 @@ const Home: React.FC = () => {
                     <View style={{ alignItems: "center" }}>
                         <InfoTitle>Legenda: {crimeOption?.name}</InfoTitle>
                         <InfoContainer>
-                            <Info>
-                                <InfoColor color={theme.heatMapGreen1} />
-                                <InfoText>
-                                    {crimeOption?.range[0] === 0
-                                        ? `${crimeOption.range[0]}*`
-                                        : `< ${crimeOption?.range[0]}*`}
-                                </InfoText>
-                            </Info>
-                            <Info>
-                                <InfoColor color={theme.heatMapYellow2} />
-                                <InfoText>
-                                    {`${crimeOption?.range[0]} - ${crimeOption?.range[1]}*`}
-                                </InfoText>
-                            </Info>
-                            <Info>
-                                <InfoColor color={theme.heatMapOrange3} />
-                                <InfoText>
-                                    {`${crimeOption?.range[1]} - ${crimeOption?.range[2]}*`}
-                                </InfoText>
-                            </Info>
-                            <Info>
-                                <InfoColor color={theme.heatMapOrange4} />
-                                <InfoText>
-                                    {`${crimeOption?.range[2]} - ${crimeOption?.range[3]}*`}
-                                </InfoText>
-                            </Info>
-                            <Info>
-                                <InfoColor color={theme.heatMapOrange5} />
-                                <InfoText>
-                                    {`${crimeOption?.range[3]} - ${crimeOption?.range[4]}*`}
-                                </InfoText>
-                            </Info>
-                            <Info>
-                                <InfoColor color={theme.heatMapRed6} />
-                                <InfoText>
-                                    {`> ${crimeOption?.range[4]}*`}
-                                </InfoText>
-                            </Info>
+                            {[...Array(6)].map((_, index) => {
+                                return (
+                                    <Info key={index}>
+                                        <InfoColor
+                                            color={getInfoColor(index)}
+                                        />
+                                        <InfoText>
+                                            {crimeOption !== undefined
+                                                ? getInfoText(
+                                                      crimeOption.range,
+                                                      index
+                                                  )
+                                                : ""}
+                                        </InfoText>
+                                    </Info>
+                                );
+                            })}
                         </InfoContainer>
                         <InfoSubText style={{ marginBottom: 10 }}>
                             * Casos anuais por 100.000 habitantes

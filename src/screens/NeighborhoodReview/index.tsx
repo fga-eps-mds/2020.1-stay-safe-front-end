@@ -78,6 +78,12 @@ const NeighborhoodReview: React.FC = () => {
         } else return "Bom";
     };
 
+    const getInfoText = (index: number) => {
+        if (index === 0) return "< 40%*";
+        if (index === 1) return "40% - 70%*";
+        else return "> 70%*";
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <HeaderTitle text="Avaliação média" goBack />
@@ -157,18 +163,14 @@ const NeighborhoodReview: React.FC = () => {
                 <View style={{ alignItems: "center" }}>
                     <InfoTitle>Legenda:</InfoTitle>
                     <InfoContainer>
-                        <Info>
-                            <InfoColor color={ratingColor(2)} />
-                            <InfoText>{"< 40%"}*</InfoText>
-                        </Info>
-                        <Info>
-                            <InfoColor color={ratingColor(3)} />
-                            <InfoText>40% - 70%*</InfoText>
-                        </Info>
-                        <Info>
-                            <InfoColor color={ratingColor(4)} />
-                            <InfoText>{"> 70%"}*</InfoText>
-                        </Info>
+                        {[...Array(3)].map((_, index) => {
+                            return (
+                                <Info key={index}>
+                                    <InfoColor color={ratingColor(index + 2)} />
+                                    <InfoText>{getInfoText(index)}</InfoText>
+                                </Info>
+                            );
+                        })}
                     </InfoContainer>
                     <InfoSubText style={{ marginBottom: 10 }}>
                         * Porcentagem das avaliações positivas
