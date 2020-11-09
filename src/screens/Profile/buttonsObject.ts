@@ -5,7 +5,7 @@ export const profileButtons = [
         label: "Minhas Ocorrências",
     },
     {
-        navigation: "",
+        navigation: "Ratings",
         icon: "star",
         label: "Minhas Avaliações",
     },
