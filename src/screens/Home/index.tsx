@@ -14,6 +14,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeatMap from "../../components/HeatMap";
+import {
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText,
+} from "../../components/InfoModal";
 import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
@@ -31,13 +40,6 @@ import {
     FilterButton,
     FilterModal,
     HeatInfo,
-    InfoModal,
-    InfoTitle,
-    InfoContainer,
-    Info,
-    InfoColor,
-    InfoText,
-    InfoSubText,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,

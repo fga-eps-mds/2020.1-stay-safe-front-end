@@ -52,7 +52,7 @@ export const ImpressionsCaption = styled.Text`
     font-family: "Trueno-Regular";
     font-size: ${scale(11)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
-    text-align: justify;
+    text-align: center;
 `;
 
 export const PointContainer = styled.View`

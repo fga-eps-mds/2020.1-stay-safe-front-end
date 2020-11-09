@@ -6,6 +6,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
+import {
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText,
+} from "../../components/InfoModal";
 import { KeyboardScrollView } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 import { impressions } from "./impressions";
@@ -24,15 +33,6 @@ import {
     ImpressionText,
     PointContainer,
 } from "./styles";
-import {
-    InfoModal,
-    InfoTitle,
-    InfoContainer,
-    Info,
-    InfoColor,
-    InfoText,
-    InfoSubText
-} from "../Home/styles"
 
 type ParamList = {
     params: {
@@ -85,9 +85,7 @@ const NeighborhoodReview: React.FC = () => {
                 style={{ backgroundColor: theme.primaryBackground }}
             >
                 <StatisticsNeighborhoodCard style={{ elevation: 5 }}>
-                    <NeighborhoodText>
-                        Avaliação Geral*
-                    </NeighborhoodText>
+                    <NeighborhoodText>Avaliação Geral*</NeighborhoodText>
                     <InfoButton onPress={() => setIsInfoOpen(true)}>
                         <Feather
                             name="info"
@@ -135,7 +133,7 @@ const NeighborhoodReview: React.FC = () => {
                     </ImpressionsContainer>
 
                     <ImpressionsCaption>
-                        * Informações obtidas através dos usuários
+                        * Dados obtidos a partir das avaliações dos usuários
                     </ImpressionsCaption>
                 </StatisticsNeighborhoodCard>
                 <EvaluateButton>
@@ -149,7 +147,7 @@ const NeighborhoodReview: React.FC = () => {
             </KeyboardScrollView>
 
             <InfoModal
-                style={{ height: scale(310) }}
+                style={{ height: scale(240) }}
                 isOpen={isInfoOpen}
                 onClosed={() => setIsInfoOpen(false)}
                 swipeToClose={false}
@@ -160,20 +158,21 @@ const NeighborhoodReview: React.FC = () => {
                     <InfoTitle>Legenda:</InfoTitle>
                     <InfoContainer>
                         <Info>
-                            <InfoColor color={ratingColor(2)}/>
+                            <InfoColor color={ratingColor(2)} />
                             <InfoText>{"< 40%"}*</InfoText>
                         </Info>
                         <Info>
-                            <InfoColor color={ratingColor(3)}/>
+                            <InfoColor color={ratingColor(3)} />
                             <InfoText>40% - 70%*</InfoText>
                         </Info>
                         <Info>
-                            <InfoColor color={ratingColor(4)}/>
+                            <InfoColor color={ratingColor(4)} />
                             <InfoText>{"> 70%"}*</InfoText>
                         </Info>
                     </InfoContainer>
-                    <InfoSubText>* Porcentagem das impressões</InfoSubText>
-                    <InfoSubText>* Dados obtidos apartir da avaliações dos usuários</InfoSubText>
+                    <InfoSubText style={{ marginBottom: 10 }}>
+                        * Porcentagem das avaliações positivas
+                    </InfoSubText>
                 </View>
             </InfoModal>
         </SafeAreaView>
