@@ -5,8 +5,8 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeaderTitle from "../../components/HeaderTitle";
+import Loader from "../../components/Loader";
 import {
     Container,
     KeyboardScrollView,
@@ -16,6 +16,7 @@ import {
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { ParamOccurrence } from "../../interfaces/occurrence";
 import { updateOccurrence, createOccurrence } from "../../services/occurrences";
 import {
     formatDate,
@@ -47,22 +48,6 @@ type ParamList = {
     params: {
         latitude: number;
         longitude: number;
-    };
-};
-
-type ParamOccurrence = {
-    params: {
-        occurrence: {
-            id_occurrence: number;
-            location: [number, number];
-            gun: string;
-            occurrence_date_time: string;
-            register_date_time: string;
-            occurrence_type: string;
-            physical_aggression: boolean;
-            police_report: boolean;
-            victim: boolean;
-        };
     };
 };
 
@@ -396,15 +381,11 @@ const Occurrence: React.FC = () => {
                         ]}
                         onPress={handleSubmit}
                     >
-                        {isLoading ? (
-                            <CircularLoader size={28} />
-                        ) : (
-                            <SendLabel>
-                                {isEditing
-                                    ? "Editar Ocorrência"
-                                    : "Registrar Ocorrência"}
-                            </SendLabel>
-                        )}
+                        <SendLabel>
+                            {isEditing
+                                ? "Editar Ocorrência"
+                                : "Registrar Ocorrência"}
+                        </SendLabel>
                     </NormalSend>
 
                     <StayAlert
@@ -424,6 +405,7 @@ const Occurrence: React.FC = () => {
                         onConfirmPressed={() => handleClosedModal()}
                         onDismiss={() => handleClosedModal()}
                     />
+                    {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

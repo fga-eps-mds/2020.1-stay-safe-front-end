@@ -6,21 +6,22 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import CircularLoader from "../../components/CircularLoader";
 import HeatMap from "../../components/HeatMap";
+import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
+import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
@@ -43,10 +44,12 @@ import {
     DropDownContainer,
     DropDownTitle,
 } from "./styles";
+import { tabs } from "./tabs";
 
 type ParamList = {
     params: {
         showReportModal: boolean;
+        showFavoritePlaceModal: boolean;
     };
 };
 
@@ -57,18 +60,6 @@ const initialLocation = {
     longitudeDelta: 0.2,
 };
 
-interface Occurrence {
-    id_occurrence: number;
-    location: [number, number];
-    gun: string;
-    occurrence_date_time: string;
-    register_date_time: string;
-    occurrence_type: string;
-    physical_aggression: boolean;
-    police_report: boolean;
-    victim: boolean;
-}
-
 const Home: React.FC = () => {
     const theme = useTheme();
     const { data } = useUser();
@@ -78,6 +69,8 @@ const Home: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
+    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+    const [isSelectingPlace, setIsSelectingPlace] = useState(false);
     const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
@@ -102,12 +95,14 @@ const Home: React.FC = () => {
     useFocusEffect(
         useCallback(() => {
             setIsReporting(false);
+            setIsSelectingPlace(false);
         }, [])
     );
 
     useFocusEffect(() => {
         if (route.params) {
             setIsModalOpen(route.params.showReportModal);
+            setIsPlaceModalOpen(route.params.showFavoritePlaceModal);
         }
     });
 
@@ -118,8 +113,8 @@ const Home: React.FC = () => {
     const getCurrentLocation = async () => {
         const { status } = await Location.requestPermissionsAsync();
 
-        if (status !== 'granted') {
-            console.warn('Permission to access location was denied');
+        if (status !== "granted") {
+            console.warn("Permission to access location was denied");
         }
 
         const position = await Location.getCurrentPositionAsync({});
@@ -128,8 +123,8 @@ const Home: React.FC = () => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: 0.02,
-            longitudeDelta: 0.02
-        }
+            longitudeDelta: 0.02,
+        };
 
         setLocation(location);
     };
@@ -209,7 +204,12 @@ const Home: React.FC = () => {
     // Function to use on modal closed.
     const handleClosedModal = () => {
         setIsModalOpen(false);
-        navigation.setParams({ showReportModal: null });
+        setIsPlaceModalOpen(false);
+
+        navigation.setParams({
+            showReportModal: null,
+            showFavoritePlaceModal: null,
+        });
     };
 
     const handleReportingCoordinatesOnMap = (e: MapEvent) => {
@@ -218,6 +218,9 @@ const Home: React.FC = () => {
         if (isReporting) {
             setIsReporting(false);
             navigation.navigate("Occurrence", { latitude, longitude });
+        } else if (isSelectingPlace) {
+            setIsSelectingPlace(false);
+            navigation.navigate("FavoritePlaces", { latitude, longitude });
         }
     };
 
@@ -303,14 +306,19 @@ const Home: React.FC = () => {
                 </StayNormalMap>
             )}
             <StayAlert
-                show={isModalOpen && data.token !== ""}
-                title="Reportar Ocorrência"
+                show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
+                title={
+                    isPlaceModalOpen
+                        ? "Selecionar Local Favorito"
+                        : "Reportar Ocorrência"
+                }
                 message="Toque para selecionar o local no mapa com o marcador"
                 showConfirmButton
                 confirmText="Entendido"
                 onConfirmPressed={() => {
                     handleClosedModal();
-                    setIsReporting(true);
+                    if (isPlaceModalOpen) setIsSelectingPlace(true);
+                    else setIsReporting(true);
                 }}
                 onDismiss={() => handleClosedModal()}
             />
@@ -341,30 +349,21 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        <Tab
-                            onPress={() => setSelectedFilter("heat")}
-                            focus={selectedFilter === "heat"}
-                        >
-                            <TabTitle focus={selectedFilter === "heat"}>
-                                Cidade
-                            </TabTitle>
-                        </Tab>
-                        <Tab
-                            onPress={() => setSelectedFilter("neighborhood")}
-                            focus={selectedFilter === "neighborhood"}
-                        >
-                            <TabTitle focus={selectedFilter === "neighborhood"}>
-                                Bairro
-                            </TabTitle>
-                        </Tab>
-                        <Tab
-                            onPress={() => setSelectedFilter("pins")}
-                            focus={selectedFilter === "pins"}
-                        >
-                            <TabTitle focus={selectedFilter === "pins"}>
-                                Local
-                            </TabTitle>
-                        </Tab>
+                        {tabs.map((item, index) => {
+                            return (
+                                <Tab
+                                    key={`tab-${index}`}
+                                    onPress={() => setSelectedFilter(item.name)}
+                                    focus={selectedFilter === item.name}
+                                >
+                                    <TabTitle
+                                        focus={selectedFilter === item.name}
+                                    >
+                                        {item.text}
+                                    </TabTitle>
+                                </Tab>
+                            );
+                        })}
                     </TabFilter>
                     {selectedFilter === "heat" && (
                         <DropDownContainer>
@@ -461,23 +460,17 @@ const Home: React.FC = () => {
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <NormalSend
-                        style={[
-                            { width: "50%" },
-                            isLoading && { padding: scale(9) },
-                        ]}
+                        style={{ width: "50%" }}
                         onPress={() => handleSubmitFilter()}
                     >
-                        {isLoading ? (
-                            <CircularLoader size={28} />
-                        ) : (
-                            <SendLabel>Filtrar</SendLabel>
-                        )}
+                        <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
                     <Span show style={{ marginTop: scale(5) }}>
                         ou clique no mapa para voltar
                     </Span>
                 </View>
             </FilterModal>
+            {isLoading && <Loader />}
         </SafeAreaView>
     );
 };

@@ -12,18 +12,18 @@ import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import LoggedInModal from "../../components/LoggedInModal";
+import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
     KeyboardScrollView,
-    LogoWrapper,
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
-import Logo from "../../img/logo.svg";
 import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
-import { validateUpdateUser } from "../../utils/validateUpdateUser";
+import { validateUser } from "../../utils/validateUser";
+import { profileButtons } from "./buttonsObject";
 import {
     InputViewing,
     ProfileButton,
@@ -82,7 +82,7 @@ const Profile: React.FC = () => {
 
     const handleUpdateProfile = async () => {
         if (
-            validateUpdateUser({
+            validateUser({
                 fullName: userFullName,
                 email: userEmail,
                 password: userPwd,
@@ -140,13 +140,7 @@ const Profile: React.FC = () => {
                 />
 
                 <KeyboardScrollView>
-                    <LogoWrapper>
-                        <Logo
-                            width={scale(75)}
-                            height={scale(75)}
-                            fill={theme.primaryRed}
-                        />
-                    </LogoWrapper>
+                    <LogoContainer />
 
                     <NormalLabel>Username</NormalLabel>
                     <InputViewing
@@ -221,27 +215,27 @@ const Profile: React.FC = () => {
 
                     {data.token !== "" && !isEditing && (
                         <ButtonsContainer>
-                            <ProfileButton
-                                onPress={() =>
-                                    navigation.navigate("Occurrences")
-                                }
-                            >
-                                <Feather
-                                    name="clipboard"
-                                    size={scale(18)}
-                                    color={theme.primaryWhite}
-                                />
-                                <ButtonLabel>Minhas Ocorrências</ButtonLabel>
-                            </ProfileButton>
-
-                            <ProfileButton onPress={() => navigation.navigate("Ratings")}>
-                                <Feather
-                                    name="star"
-                                    size={scale(18)}
-                                    color={theme.primaryWhite}
-                                />
-                                <ButtonLabel>Minhas Avaliações</ButtonLabel>
-                            </ProfileButton>
+                            {profileButtons.map((button) => {
+                                return (
+                                    <ProfileButton
+                                        key={button.label}
+                                        onPress={() =>
+                                            navigation.navigate(
+                                                button.navigation
+                                            )
+                                        }
+                                    >
+                                        <Feather
+                                            name={button.icon}
+                                            size={scale(18)}
+                                            color={theme.primaryWhite}
+                                        />
+                                        <ButtonLabel>
+                                            {button.label}
+                                        </ButtonLabel>
+                                    </ProfileButton>
+                                );
+                            })}
                         </ButtonsContainer>
                     )}
 
