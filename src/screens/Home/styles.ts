@@ -70,12 +70,12 @@ export const FilterModal = styled(Modal)<FilterModalProps>`
 
 export const InfoModal = styled(Modal)`
     position: absolute;
-    height: ${scale(430)}px;
-    width: ${scale(200)}px;
+    height: ${scale(400)}px;
+    width: 80%;
     border-radius: ${scale(24)}px;
     background-color: ${(props) => props.theme.primaryWhite};
     elevation: 15;
-    padding: ${scale(20)}px ${scale(28)}px;
+    padding: ${scale(20)}px ${scale(10)}px;
 `;
 
 export const InfoTitle = styled.Text`
@@ -83,6 +83,7 @@ export const InfoTitle = styled.Text`
     font-size: ${scale(16)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
     margin-bottom: ${scale(28)}px;
+    text-align: center;
 `;
 
 export const InfoContainer = styled.View`
@@ -114,9 +115,9 @@ export const InfoText = styled.Text`
 
 export const InfoSubText = styled.Text`
     font-family: Trueno-Regular;
-    font-size: ${scale(14)}px;
+    font-size: ${scale(12)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
-    margin-bottom: ${scale(8)}px;
+    text-align: center;
 `;
 
 export const Span = styled.Text<SpanProps>`
