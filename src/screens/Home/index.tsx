@@ -59,6 +59,7 @@ import { tabs } from "./tabs";
 type ParamList = {
     params: {
         showReportModal: boolean;
+        showFavoritePlaceModal: boolean;
     };
 };
 
@@ -86,6 +87,8 @@ const Home: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
+    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
+    const [isSelectingPlace, setIsSelectingPlace] = useState(false);
     const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
@@ -115,12 +118,14 @@ const Home: React.FC = () => {
     useFocusEffect(
         useCallback(() => {
             setIsReporting(false);
+            setIsSelectingPlace(false);
         }, [])
     );
 
     useFocusEffect(() => {
         if (route.params) {
             setIsModalOpen(route.params.showReportModal);
+            setIsPlaceModalOpen(route.params.showFavoritePlaceModal);
         }
     });
 
@@ -222,7 +227,12 @@ const Home: React.FC = () => {
     // Function to use on modal closed.
     const handleClosedModal = () => {
         setIsModalOpen(false);
-        navigation.setParams({ showReportModal: null });
+        setIsPlaceModalOpen(false);
+
+        navigation.setParams({
+            showReportModal: null,
+            showFavoritePlaceModal: null,
+        });
     };
 
     const handleReportingCoordinatesOnMap = (e: MapEvent) => {
@@ -231,6 +241,9 @@ const Home: React.FC = () => {
         if (isReporting) {
             setIsReporting(false);
             navigation.navigate("Occurrence", { latitude, longitude });
+        } else if (isSelectingPlace) {
+            setIsSelectingPlace(false);
+            navigation.navigate("FavoritePlaces", { latitude, longitude });
         }
     };
 
@@ -329,14 +342,19 @@ const Home: React.FC = () => {
                 </StayNormalMap>
             )}
             <StayAlert
-                show={isModalOpen && data.token !== ""}
-                title="Reportar Ocorrência"
+                show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
+                title={
+                    isPlaceModalOpen
+                        ? "Selecionar Local Favorito"
+                        : "Reportar Ocorrência"
+                }
                 message="Toque para selecionar o local no mapa com o marcador"
                 showConfirmButton
                 confirmText="Entendido"
                 onConfirmPressed={() => {
                     handleClosedModal();
-                    setIsReporting(true);
+                    if (isPlaceModalOpen) setIsSelectingPlace(true);
+                    else setIsReporting(true);
                 }}
                 onDismiss={() => handleClosedModal()}
             />

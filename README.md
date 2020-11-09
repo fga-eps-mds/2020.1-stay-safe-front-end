@@ -33,3 +33,10 @@ It should print 'nvm' if the installation was successful
 
 ### Run ESLint
 * <code>npx eslint src/** --fix --no-error-on-unmatched-pattern</code>
+
+### Run Sonarqube
+```bash
+$ docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+$ docker run -ti -v $(pwd):/usr/src --link sonarqube newtmitch/sonar-scanner -Dsonar.projectName="Frontend" -Dsonar.projectKey=frontend
+```
+Link to see the scans projects: http://localhost:9000/projects
