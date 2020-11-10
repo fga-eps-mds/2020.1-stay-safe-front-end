@@ -1,3 +1,4 @@
+import { AntDesign } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
@@ -6,64 +7,67 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
-import {
-    SendLabel,
-    NormalSend
-} from "../../components/NormalForms";
+import { SendLabel, NormalSend } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
+import { createRating, updateRating } from "../../services/ratings";
+import { scale } from "../../utils/scalling";
+import { detailsItems } from "./detailsConstants";
 import {
     Container,
     LocalName,
     StarsRating,
     TellUs,
     Detail,
-    DetailLabel
+    DetailLabel,
+    DetailContainer,
+    ImpressionContainer,
 } from "./styles";
-import { detailsItems } from './detailsConstants';
-import StayAlert from "../../components/StayAlert";
-
-import { useUser } from "../../hooks/user";
-import { createRating, updateRating } from "../../services/ratings";
 
 type ParamRating = {
     params: {
         rating: {
-            id_rating: number,
-            rating_neighborhood: number,
-            neighborhood: Neighborhood,
-            details: Details,
-            user: string,
+            id_rating: number;
+            rating_neighborhood: number;
+            neighborhood: Neighborhood;
+            details: Details;
+            user: string;
         };
     };
 };
 
 interface Neighborhood {
-    city: string,
-    id_neighborhood: number,
-    neighborhood: string,
-    state: string
-};
+    city: string;
+    id_neighborhood: number;
+    neighborhood: string;
+    state: string;
+}
 
 interface Details {
-    lighting: boolean | false,
-    movement_of_people: boolean | false,
-    police_rounds: boolean | false,
-};
+    lighting: boolean;
+    movement_of_people: boolean;
+    police_rounds: boolean;
+}
 
 const Rating: React.FC = () => {
     const navigation = useNavigation();
     const { data } = useUser();
     const theme = useTheme();
 
-    const editRatingRoute = useRoute<
-        RouteProp<ParamRating, "params">
-    >();
+    const editRatingRoute = useRoute<RouteProp<ParamRating, "params">>();
 
     const [isEditing, setIsEditing] = useState(false);
 
     const [idRating, setIdRating] = useState(0);
-    const [name, setName] = useState('');
+    const [name, setName] = useState("");
     const [stars, setStars] = useState(3);
-    const [details, setDetails] = useState<Details>();
+    const [details, setDetails] = useState<Details>({
+        lighting: false,
+        movement_of_people: false,
+        police_rounds: false,
+    });
+
+    const [items, setItems] = useState(detailsItems);
 
     const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
 
@@ -81,12 +85,12 @@ const Rating: React.FC = () => {
     }, [navigation]);
 
     const fetchData = () => {
-        if (!editRatingRoute.params.rating) {
+        if (!editRatingRoute.params) {
             return null;
         }
 
         const rating = editRatingRoute.params.rating;
-        const name = `${rating.neighborhood.neighborhood} - ${rating.neighborhood.state}`
+        const name = `${rating.neighborhood.neighborhood} - ${rating.neighborhood.state}`;
 
         setIsEditing(true);
         setIdRating(rating.id_rating);
@@ -99,50 +103,68 @@ const Rating: React.FC = () => {
         fetchData();
     }, [editRatingRoute]);
 
-    const handleDetail = (option: string) => {
-        if (details) {
-            setDetails({...details, [option]: !details[option]})
-        }
-    }
+    const handleDetail = (value: string, type: string) => {
+        const selectLike = type === "like";
+        setItems(
+            items.map((item) => {
+                if (item.value === value) {
+                    const otherOption = selectLike ? "dislike" : "like";
+                    return {
+                        ...item,
+                        [type]: !item[type],
+                        [otherOption]: false,
+                    };
+                }
+                return item;
+            })
+        );
+    };
 
-    const isDetail = (option: string) => {
-        if (details) {
-            return details[option]
-        }
-    }
+    const getImpression = (option: string) => {
+        const item = items.filter((item) => item.value === option)[0];
+
+        const { like, dislike } = item;
+
+        return like ? like : dislike ? false : null;
+    };
+
+    const createRatingObject = () => {
+        const dataRating = {};
+
+        dataRating.rating_neighborhood = stars;
+        const lighting = getImpression("lighting");
+        const movement_of_people = getImpression("movement_of_people");
+        const police_rounds = getImpression("police_rounds");
+
+        if (movement_of_people !== null)
+            dataRating.movement_of_people = movement_of_people;
+        if (lighting !== null) dataRating.lighting = lighting;
+        if (police_rounds !== null) dataRating.police_rounds = police_rounds;
+
+        return dataRating;
+    };
 
     const handleSubmit = async () => {
-        const dataRating = {
-            rating_neighborhood: stars,
-            lighting: details?.lighting || false,
-            movement_of_people: details?.movement_of_people || false,
-            police_rounds: details?.police_rounds || false,
-        };
-        if (true) {
-            if (data.token !== "") {
-                //setIsLoading(true);
-                const response = isEditing
-                    ? await updateRating(
-                          idRating,
-                          data.token,
-                          dataRating
-                      )
-                    : await createRating(50, data.token, dataRating);
+        const dataRating = createRatingObject();
+        if (data.token !== "") {
+            //setIsLoading(true);
+            const response = isEditing
+                ? await updateRating(idRating, data.token, dataRating)
+                : await createRating(26, data.token, dataRating);
 
-                if (!response.body.error && response.status === 201) {
-                    navigation.setParams({ rating: null });
-                    setShowSuccessfullyModal(true);
-                } else if (!response.body.error && response.status === 200) {
-                    navigation.setParams({ rating: null });
-                    setShowSuccessfullyModal(true);
-                } else {
-                    Alert.alert(
-                        "Erro ao cadastrar ocorrência",
-                        response.body.error
-                    );
-                }
-                //setIsLoading(false);
+            if (!response.body.error && response.status === 201) {
+                navigation.setParams({ rating: null });
+                setShowSuccessfullyModal(true);
+            } else if (!response.body.error && response.status === 200) {
+                navigation.setParams({ rating: null });
+                setShowSuccessfullyModal(true);
+            } else {
+                Alert.alert(
+                    "Erro ao cadastrar ocorrência",
+                    response.body.error
+                );
             }
+            //setIsLoading(false);
         }
     };
 
@@ -162,9 +184,7 @@ const Rating: React.FC = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <HeaderTitle
-                    text={
-                        isEditing ? "Editar Avaliação" : "Avaliar Bairro"
-                    }
+                    text={isEditing ? "Editar Avaliação" : "Avaliar Bairro"}
                     goBack
                 />
 
@@ -177,17 +197,46 @@ const Rating: React.FC = () => {
 
                 <TellUs>Conte-nos o por quê:</TellUs>
 
-                {detailsItems.map((detail, key) => (
-                    <Detail
-                        key={key}
-                        onPress={() => handleDetail(detail.value)}
-                        selected={isDetail(detail.value)}
-                    >
-                        <DetailLabel>
-                            {detail.label}
-                        </DetailLabel>
-                    </Detail>
-                ))}
+                {items.map((detail, key) => {
+                    return (
+                        <DetailContainer key={key}>
+                            <Detail
+                                style={{ elevation: 3 }}
+                                // onPress={() => handleDetail(detail.value)}
+                            >
+                                <DetailLabel>{detail.label}</DetailLabel>
+                            </Detail>
+                            <ImpressionContainer
+                                color={theme.primaryImpressionGreen}
+                                select={detail.like}
+                                style={{ elevation: 3 }}
+                            >
+                                <AntDesign
+                                    name="like2"
+                                    size={scale(25)}
+                                    color={theme.primarySuperDarkBlue}
+                                    onPress={() =>
+                                        handleDetail(detail.value, "like")
+                                    }
+                                />
+                            </ImpressionContainer>
+                            <ImpressionContainer
+                                select={detail.dislike}
+                                color={theme.primaryRed}
+                                style={{ elevation: 3 }}
+                            >
+                                <AntDesign
+                                    name="dislike2"
+                                    size={scale(25)}
+                                    color={theme.primarySuperDarkBlue}
+                                    onPress={() =>
+                                        handleDetail(detail.value, "dislike")
+                                    }
+                                />
+                            </ImpressionContainer>
+                        </DetailContainer>
+                    );
+                })}
 
                 <NormalSend onPress={() => handleSubmit()}>
                     <SendLabel>Salvar</SendLabel>
@@ -195,11 +244,7 @@ const Rating: React.FC = () => {
 
                 <StayAlert
                     show={showSuccessfullyModal}
-                    title={
-                        isEditing
-                            ? "Editar Avaliação"
-                            : "Avaliar Bairro"
-                    }
+                    title={isEditing ? "Editar Avaliação" : "Avaliar Bairro"}
                     message={
                         isEditing
                             ? "Avaliação editada com sucesso!"

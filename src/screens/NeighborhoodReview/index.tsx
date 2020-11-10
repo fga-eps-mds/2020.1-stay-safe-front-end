@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import React from "react";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -43,11 +43,18 @@ interface Statistics {
 }
 
 const NeighborhoodReview: React.FC = () => {
+    const navigation = useNavigation();
     const theme = useTheme();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const neighborhood = route.params.neighborhood;
+
+    const [hasStatistics, setHasStatistics] = useState(false);
+
+    useEffect(() => {
+        if (neighborhood.statistics) setHasStatistics(true);
+    }, []);
 
     const ratingColor = (average: number) => {
         if (average < 3) {
@@ -72,48 +79,56 @@ const NeighborhoodReview: React.FC = () => {
                 style={{ backgroundColor: theme.primaryBackground }}
             >
                 <StatisticsNeighborhoodCard style={{ elevation: 5 }}>
-                    <NeighborhoodText>
-                        Avaliação Geral dos Usuários
-                    </NeighborhoodText>
-                    <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
-                    <StarContainer>
-                        <MaterialCommunityIcons
-                            name="star"
-                            size={scale(50)}
-                            color={theme.primaryStrongYellow}
-                        />
-                        <NeighborhoodAverage>
-                            {neighborhood.statistics.average}
-                        </NeighborhoodAverage>
-                    </StarContainer>
-                    <ImpressionText>Impressões</ImpressionText>
-                    <ImpressionsContainer>
-                        {impressions.map((impression) => {
-                            return (
-                                <PointContainer key={impression.name}>
-                                    <MaterialCommunityIcons
-                                        name={impression.icon}
-                                        size={scale(30)}
-                                        color={ratingColor(
-                                            neighborhood.statistics[
-                                                impression.name
-                                            ]
-                                        )}
-                                    />
-                                    <NeighborhoodTitle>
-                                        Movimento:{" "}
-                                        {ratingColorString(
-                                            neighborhood.statistics[
-                                                impression.name
-                                            ]
-                                        )}
-                                    </NeighborhoodTitle>
-                                </PointContainer>
-                            );
-                        })}
-                    </ImpressionsContainer>
+                    {hasStatistics ? (
+                        <>
+                            <NeighborhoodText>
+                                Avaliação Geral dos Usuários
+                            </NeighborhoodText>
+                            <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
+                            <StarContainer>
+                                <MaterialCommunityIcons
+                                    name="star"
+                                    size={scale(50)}
+                                    color={theme.primaryStrongYellow}
+                                />
+                                <NeighborhoodAverage>
+                                    {neighborhood.statistics.average}
+                                </NeighborhoodAverage>
+                            </StarContainer>
+                            <ImpressionText>Impressões</ImpressionText>
+                            <ImpressionsContainer>
+                                {impressions.map((impression) => {
+                                    return (
+                                        <PointContainer key={impression.name}>
+                                            <MaterialCommunityIcons
+                                                name={impression.icon}
+                                                size={scale(30)}
+                                                color={ratingColor(
+                                                    neighborhood.statistics[
+                                                        impression.name
+                                                    ]
+                                                )}
+                                            />
+                                            <NeighborhoodTitle>
+                                                Movimento:{" "}
+                                                {ratingColorString(
+                                                    neighborhood.statistics[
+                                                        impression.name
+                                                    ]
+                                                )}
+                                            </NeighborhoodTitle>
+                                        </PointContainer>
+                                    );
+                                })}
+                            </ImpressionsContainer>
+                        </>
+                    ) : (
+                        <NeighborhoodText>
+                            Não há estatísticas para esse bairro.
+                        </NeighborhoodText>
+                    )}
                 </StatisticsNeighborhoodCard>
-                <EvaluateButton>
+                <EvaluateButton onPress={() => navigation.navigate("Rating")}>
                     <MaterialCommunityIcons
                         name="pencil"
                         size={scale(20)}
