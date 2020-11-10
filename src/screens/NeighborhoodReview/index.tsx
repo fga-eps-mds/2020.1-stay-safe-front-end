@@ -145,7 +145,13 @@ const NeighborhoodReview: React.FC = () => {
                         </NeighborhoodText>
                     )}
                 </StatisticsNeighborhoodCard>
-                <EvaluateButton onPress={() => navigation.navigate("Rating")}>
+                <EvaluateButton
+                    onPress={() =>
+                        navigation.navigate("Rating", {
+                            rating: { neighborhood },
+                        })
+                    }
+                >
                     <MaterialCommunityIcons
                         name="pencil"
                         size={scale(20)}

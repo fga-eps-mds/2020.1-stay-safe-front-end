@@ -54,12 +54,13 @@ const Rating: React.FC = () => {
     const { data } = useUser();
     const theme = useTheme();
 
-    const editRatingRoute = useRoute<RouteProp<ParamRating, "params">>();
+    const route = useRoute<RouteProp<ParamRating, "params">>();
+
+    const name = `${route.params.rating.neighborhood.neighborhood} - ${route.params.rating.neighborhood.state}`;
 
     const [isEditing, setIsEditing] = useState(false);
 
     const [idRating, setIdRating] = useState(0);
-    const [name, setName] = useState("");
     const [stars, setStars] = useState(3);
     const [details, setDetails] = useState<Details>({
         lighting: false,
@@ -85,23 +86,21 @@ const Rating: React.FC = () => {
     }, [navigation]);
 
     const fetchData = () => {
-        if (!editRatingRoute.params) {
+        if (!route.params.rating.id_rating) {
             return null;
         }
 
-        const rating = editRatingRoute.params.rating;
-        const name = `${rating.neighborhood.neighborhood} - ${rating.neighborhood.state}`;
+        const rating = route.params.rating;
 
         setIsEditing(true);
         setIdRating(rating.id_rating);
-        setName(name);
         setStars(rating.rating_neighborhood);
         setDetails(rating.details);
     };
 
     useEffect(() => {
         fetchData();
-    }, [editRatingRoute]);
+    }, [route]);
 
     const handleDetail = (value: string, type: string) => {
         const selectLike = type === "like";
@@ -147,16 +146,17 @@ const Rating: React.FC = () => {
     const handleSubmit = async () => {
         const dataRating = createRatingObject();
         if (data.token !== "") {
-            //setIsLoading(true);
             const response = isEditing
                 ? await updateRating(idRating, data.token, dataRating)
-                : await createRating(26, data.token, dataRating);
+                : await createRating(
+                      route.params.rating.neighborhood.id_neighborhood,
+                      data.token,
+                      dataRating
+                  );
 
             if (!response.body.error && response.status === 201) {
-                navigation.setParams({ rating: null });
                 setShowSuccessfullyModal(true);
             } else if (!response.body.error && response.status === 200) {
-                navigation.setParams({ rating: null });
                 setShowSuccessfullyModal(true);
             } else {
                 Alert.alert(
@@ -164,7 +164,6 @@ const Rating: React.FC = () => {
                     response.body.error
                 );
             }
-            //setIsLoading(false);
         }
     };
 
@@ -174,7 +173,7 @@ const Rating: React.FC = () => {
         if (isEditing) {
             navigation.navigate("Ratings");
         } else {
-            navigation.goBack();
+            navigation.navigate("CityStatistics");
         }
     };
 

@@ -1,12 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
-import { useUser } from "../../hooks/user";
-import HeaderTitle from "../../components/HeaderTitle";
-import StayAlert from "../../components/StayAlert";
+
 import {
     ScrollViewStyled,
     CardContainer,
@@ -15,29 +13,32 @@ import {
     Title,
     NeighText,
     Date,
-    CardActions
-} from '../../components/Cards';
+    CardActions,
+} from "../../components/Cards";
+import HeaderTitle from "../../components/HeaderTitle";
+import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
 import { getUserRatings, deleteRating } from "../../services/ratings";
 import { scale } from "../../utils/scalling";
 
 interface Rating {
-    id_rating: number,
-    rating_neighborhood: number,
-    neighborhood: Neighborhood,
+    id_rating: number;
+    rating_neighborhood: number;
+    neighborhood: Neighborhood;
     details: {
-        lighting: boolean,
-        movement_of_people: boolean,
-        police_rounds: boolean,
-    },
-    user: string,
-};
+        lighting: boolean;
+        movement_of_people: boolean;
+        police_rounds: boolean;
+    };
+    user: string;
+}
 
 interface Neighborhood {
-    city: string,
-    id_neighborhood: number,
-    neighborhood: string,
-    state: string
-};
+    city: string;
+    id_neighborhood: number;
+    neighborhood: string;
+    state: string;
+}
 
 const Ratings: React.FC = () => {
     const navigation = useNavigation();
@@ -63,17 +64,13 @@ const Ratings: React.FC = () => {
                 setRatings(response.body);
             else console.warn("Falha ao carregar as avaliações do usuário.");
         }
-    }
+    };
 
     const handleDelete = async (id: number) => {
         if (data.token !== "") {
             const response = await deleteRating(id, data.token);
             if (response.status === 204) {
-                setRatings(
-                    ratings.filter(
-                        (rating) => rating.id_rating !== id
-                    )
-                );
+                setRatings(ratings.filter((rating) => rating.id_rating !== id));
             }
         }
         setConfirmModal(false);
@@ -87,9 +84,7 @@ const Ratings: React.FC = () => {
                     {ratings.length === 0 ? (
                         <Card>
                             <CardData>
-                                <Title>
-                                    Nenhuma avaliação :(
-                                </Title>
+                                <Title>Nenhuma avaliação :(</Title>
                             </CardData>
                         </Card>
                     ) : (
@@ -101,22 +96,18 @@ const Ratings: React.FC = () => {
                                             {rating.neighborhood.neighborhood}
                                         </Title>
                                         <NeighText>
-                                            {rating.neighborhood.city} - {rating.neighborhood.state}
+                                            {rating.neighborhood.city} -{" "}
+                                            {rating.neighborhood.state}
                                         </NeighText>
-                                        <Date>
-                                            03-2020
-                                        </Date>
+                                        <Date>03-2020</Date>
                                     </CardData>
 
                                     <CardActions>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                navigation.navigate(
-                                                    "Rating",
-                                                    {
-                                                        rating,
-                                                    }
-                                                );
+                                                navigation.navigate("Rating", {
+                                                    rating,
+                                                });
                                             }}
                                         >
                                             <Feather
@@ -130,9 +121,7 @@ const Ratings: React.FC = () => {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 setConfirmModal(true);
-                                                setIdRating(
-                                                    rating.id_rating
-                                                );
+                                                setIdRating(rating.id_rating);
                                             }}
                                         >
                                             <Feather
@@ -163,7 +152,7 @@ const Ratings: React.FC = () => {
                 />
             </ScrollViewStyled>
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default Ratings;
