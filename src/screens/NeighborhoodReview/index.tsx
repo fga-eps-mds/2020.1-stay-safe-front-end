@@ -1,10 +1,20 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import React from "react";
+import React, { useState } from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
+import {
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText,
+} from "../../components/InfoModal";
 import { KeyboardScrollView } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 import { impressions } from "./impressions";
@@ -13,7 +23,9 @@ import {
     StatisticsNeighborhoodCard,
     NeighborhoodTitle,
     NeighborhoodText,
+    InfoButton,
     ImpressionsContainer,
+    ImpressionsCaption,
     EvaluateButton,
     EvaluateButtontText,
     TitleCity,
@@ -48,6 +60,7 @@ const NeighborhoodReview: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const neighborhood = route.params.neighborhood;
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     const ratingColor = (average: number) => {
         if (average < 3) {
@@ -65,6 +78,12 @@ const NeighborhoodReview: React.FC = () => {
         } else return "Bom";
     };
 
+    const getInfoText = (index: number) => {
+        if (index === 0) return "< 40%*";
+        if (index === 1) return "40% - 70%*";
+        else return "> 70%*";
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <HeaderTitle text="Avaliação média" goBack />
@@ -72,9 +91,15 @@ const NeighborhoodReview: React.FC = () => {
                 style={{ backgroundColor: theme.primaryBackground }}
             >
                 <StatisticsNeighborhoodCard style={{ elevation: 5 }}>
-                    <NeighborhoodText>
-                        Avaliação Geral dos Usuários
-                    </NeighborhoodText>
+                    <NeighborhoodText>Avaliação Geral*</NeighborhoodText>
+                    <InfoButton onPress={() => setIsInfoOpen(true)}>
+                        <Feather
+                            name="info"
+                            size={scale(25)}
+                            color={theme.primaryGray}
+                        />
+                    </InfoButton>
+
                     <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
                     <StarContainer>
                         <MaterialCommunityIcons
@@ -112,6 +137,10 @@ const NeighborhoodReview: React.FC = () => {
                             );
                         })}
                     </ImpressionsContainer>
+
+                    <ImpressionsCaption>
+                        * Dados obtidos a partir das avaliações dos usuários
+                    </ImpressionsCaption>
                 </StatisticsNeighborhoodCard>
                 <EvaluateButton>
                     <MaterialCommunityIcons
@@ -122,6 +151,32 @@ const NeighborhoodReview: React.FC = () => {
                     <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
                 </EvaluateButton>
             </KeyboardScrollView>
+
+            <InfoModal
+                style={{ height: scale(240) }}
+                isOpen={isInfoOpen}
+                onClosed={() => setIsInfoOpen(false)}
+                swipeToClose={false}
+                position="center"
+                backButtonClose
+            >
+                <View style={{ alignItems: "center" }}>
+                    <InfoTitle>Legenda:</InfoTitle>
+                    <InfoContainer>
+                        {[...Array(3)].map((_, index) => {
+                            return (
+                                <Info key={index}>
+                                    <InfoColor color={ratingColor(index + 2)} />
+                                    <InfoText>{getInfoText(index)}</InfoText>
+                                </Info>
+                            );
+                        })}
+                    </InfoContainer>
+                    <InfoSubText style={{ marginBottom: 10 }}>
+                        * Porcentagem das avaliações positivas
+                    </InfoSubText>
+                </View>
+            </InfoModal>
         </SafeAreaView>
     );
 };
