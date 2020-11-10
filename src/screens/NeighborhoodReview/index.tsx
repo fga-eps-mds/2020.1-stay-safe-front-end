@@ -1,10 +1,20 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
+import {
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText,
+} from "../../components/InfoModal";
 import { KeyboardScrollView } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 import { impressions } from "./impressions";
@@ -49,6 +59,7 @@ const NeighborhoodReview: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const neighborhood = route.params.neighborhood;
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
 
     const [hasStatistics, setHasStatistics] = useState(false);
 
@@ -70,6 +81,12 @@ const NeighborhoodReview: React.FC = () => {
         } else if (average === 3) {
             return "Médio";
         } else return "Bom";
+    };
+
+    const getInfoText = (index: number) => {
+        if (index === 0) return "< 40%*";
+        if (index === 1) return "40% - 70%*";
+        else return "> 70%*";
     };
 
     return (
@@ -137,6 +154,32 @@ const NeighborhoodReview: React.FC = () => {
                     <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
                 </EvaluateButton>
             </KeyboardScrollView>
+
+            <InfoModal
+                style={{ height: scale(240) }}
+                isOpen={isInfoOpen}
+                onClosed={() => setIsInfoOpen(false)}
+                swipeToClose={false}
+                position="center"
+                backButtonClose
+            >
+                <View style={{ alignItems: "center" }}>
+                    <InfoTitle>Legenda:</InfoTitle>
+                    <InfoContainer>
+                        {[...Array(3)].map((_, index) => {
+                            return (
+                                <Info key={index}>
+                                    <InfoColor color={ratingColor(index + 2)} />
+                                    <InfoText>{getInfoText(index)}</InfoText>
+                                </Info>
+                            );
+                        })}
+                    </InfoContainer>
+                    <InfoSubText style={{ marginBottom: 10 }}>
+                        * Porcentagem das avaliações positivas
+                    </InfoSubText>
+                </View>
+            </InfoModal>
         </SafeAreaView>
     );
 };

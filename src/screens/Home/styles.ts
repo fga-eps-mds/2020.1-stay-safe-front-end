@@ -36,7 +36,21 @@ export const FilterButton = styled.TouchableOpacity`
     align-items: center;
     justify-content: center;
     top: 8%;
-    right: 7%;
+    right: 6%;
+    background-color: ${(props) => props.theme.primaryWhite};
+    z-index: 6;
+    elevation: 15;
+    border-radius: ${scale(50)}px;
+`;
+
+export const HeatInfo = styled.TouchableOpacity`
+    position: absolute;
+    width: ${scale(50)}px;
+    height: ${scale(50)}px;
+    align-items: center;
+    justify-content: center;
+    bottom: 8%;
+    right: 6%;
     background-color: ${(props) => props.theme.primaryWhite};
     z-index: 6;
     elevation: 15;
@@ -50,6 +64,7 @@ export const FilterModal = styled(Modal)<FilterModalProps>`
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;
     background-color: ${(props) => props.theme.primaryWhite};
+    elevation: 15;
     padding: ${scale(20)}px ${scale(28)}px;
 `;
 

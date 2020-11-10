@@ -14,6 +14,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeatMap from "../../components/HeatMap";
+import {
+    InfoModal,
+    InfoTitle,
+    InfoContainer,
+    Info,
+    InfoColor,
+    InfoText,
+    InfoSubText,
+} from "../../components/InfoModal";
 import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { NormalSend, SendLabel } from "../../components/NormalForms";
@@ -30,6 +39,7 @@ import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
+    HeatInfo,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
@@ -52,6 +62,14 @@ type ParamList = {
         showFavoritePlaceModal: boolean;
     };
 };
+
+interface CrimeOption {
+    id: number;
+    name: string;
+    label: string;
+    color: string;
+    range: number[];
+}
 
 const initialLocation = {
     latitude: -15.780311,
@@ -76,6 +94,11 @@ const Home: React.FC = () => {
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState([0]);
+
+    const [searchOptions, setSearchOptions] = useState(searchOptionsDf);
+    const [crimeOption, setCrimeOption] = useState<CrimeOption>();
+
+    const [isInfoHeatOpen, setIsInfoHeatOpen] = useState(false);
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
@@ -130,7 +153,7 @@ const Home: React.FC = () => {
     };
 
     const getPinColor = (occurrence) => {
-        return searchOptionsDf.filter(
+        return searchOptions.filter(
             (op) => op.name === occurrence.occurrence_type
         )[0].color;
     };
@@ -149,7 +172,7 @@ const Home: React.FC = () => {
             for (let i = 0; i < selectedOption.length; i++) {
                 end = i === selectedOption.length - 1 ? "" : ", ";
                 occurrence_type = occurrence_type.concat(
-                    searchOptionsDf[selectedOption[i] - 1].name,
+                    searchOptions[selectedOption[i] - 1].name,
                     end
                 );
             }
@@ -165,7 +188,7 @@ const Home: React.FC = () => {
         setIsLoading(true);
 
         async function loadData() {
-            const option = searchOptionsDf[selectedOption[0] - 1];
+            const option = searchOptions[selectedOption[0] - 1];
 
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
@@ -229,10 +252,35 @@ const Home: React.FC = () => {
             let aux = selectedOption.filter((i) => i !== id);
             if (aux.length === 0) aux = [0];
             setSelectedOption(aux);
+            setCrimeOption(searchOptions[aux[0] - 1]);
             return null;
         }
         const aux = selectedOption[0] === 0 ? [id] : [...selectedOption, id];
         setSelectedOption(aux);
+        setCrimeOption(searchOptions[aux[0] - 1]);
+    };
+
+    const getInfoText = (crimeRange: number[], index: number) => {
+        if (index === 0) {
+            if (crimeRange[0] === 0) return `${crimeRange[index]}*`;
+            else return `< ${crimeRange[index]}*`;
+        } else if (index === 5) {
+            return `> ${crimeRange[index - 1]}*`;
+        } else {
+            return `${crimeRange[index - 1]} - ${crimeRange[index]}*`;
+        }
+    };
+
+    const getInfoColor = (index: number) => {
+        let infoColor = "";
+        if (index === 0) infoColor = theme.heatMapGreen1;
+        if (index === 1) infoColor = theme.heatMapYellow2;
+        if (index === 2) infoColor = theme.heatMapOrange3;
+        if (index === 3) infoColor = theme.heatMapOrange4;
+        if (index === 4) infoColor = theme.heatMapOrange5;
+        if (index === 5) infoColor = theme.heatMapRed6;
+
+        return infoColor;
     };
 
     if (!loaded) return null;
@@ -248,6 +296,18 @@ const Home: React.FC = () => {
                     />
                 </FilterButton>
             )}
+            {selectedFilter === "heat" &&
+                !isInfoHeatOpen &&
+                !isFilterOpen &&
+                selectedOption[0] !== 0 && (
+                    <HeatInfo onPress={() => setIsInfoHeatOpen(true)}>
+                        <Feather
+                            name="info"
+                            size={scale(30)}
+                            color={theme.primaryGray}
+                        />
+                    </HeatInfo>
+                )}
             {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
             )}
@@ -334,7 +394,6 @@ const Home: React.FC = () => {
                 onDismiss={() => setIsWarningOpen(false)}
             />
             <FilterModal
-                style={{ elevation: 20 }}
                 isOpen={isFilterOpen}
                 onClosed={() => setIsFilterOpen(false)}
                 swipeToClose={false}
@@ -374,80 +433,50 @@ const Home: React.FC = () => {
                                 }}
                                 items={ufs}
                                 defaultValue={selectedUf}
-                                onChangeItem={(item) =>
-                                    setSelectedUf(item.value)
-                                }
+                                onChangeItem={(item) => {
+                                    setSelectedUf(item.value);
+                                    if (item.value === "df") {
+                                        setSearchOptions(searchOptionsDf);
+                                    } else {
+                                        setSearchOptions(searchOptionsSp);
+                                    }
+                                }}
                             />
                         </DropDownContainer>
                     )}
                 </View>
-                {selectedUf === "df"
-                    ? searchOptionsDf.map((option) => {
-                          return (
-                              <ButtonOptionContainer key={option.id}>
-                                  <Option>
-                                      <OptionCircleButton
-                                          onPress={() =>
-                                              handleSelectOption(option.id)
-                                          }
-                                      >
-                                          <Feather
-                                              name={
-                                                  selectedOption.indexOf(
-                                                      option.id
-                                                  ) >= 0
-                                                      ? "check-circle"
-                                                      : "circle"
-                                              }
-                                              size={scale(20)}
-                                              color={theme.primaryBlack}
-                                          />
-                                      </OptionCircleButton>
+                {searchOptions.map((option) => {
+                    return (
+                        <ButtonOptionContainer key={option.id}>
+                            <Option>
+                                <OptionCircleButton
+                                    onPress={() =>
+                                        handleSelectOption(option.id)
+                                    }
+                                >
+                                    <Feather
+                                        name={
+                                            selectedOption.indexOf(option.id) >=
+                                            0
+                                                ? "check-circle"
+                                                : "circle"
+                                        }
+                                        size={scale(20)}
+                                        color={theme.primaryBlack}
+                                    />
+                                </OptionCircleButton>
 
-                                      <ButtonOptionText>
-                                          {option.name}
-                                      </ButtonOptionText>
-                                  </Option>
+                                <ButtonOptionText>
+                                    {option.name}
+                                </ButtonOptionText>
+                            </Option>
 
-                                  {selectedFilter === "pins" && (
-                                      <OptionColor color={option.color} />
-                                  )}
-                              </ButtonOptionContainer>
-                          );
-                      })
-                    : searchOptionsSp.map((option) => {
-                          return (
-                              <ButtonOptionContainer key={option.id}>
-                                  <Option>
-                                      <OptionCircleButton
-                                          onPress={() =>
-                                              handleSelectOption(option.id)
-                                          }
-                                      >
-                                          <Feather
-                                              name={
-                                                  selectedOption.indexOf(
-                                                      option.id
-                                                  ) >= 0
-                                                      ? "check-circle"
-                                                      : "circle"
-                                              }
-                                              size={scale(20)}
-                                              color={theme.primaryBlack}
-                                          />
-                                      </OptionCircleButton>
-
-                                      <ButtonOptionText>
-                                          {option.name}
-                                      </ButtonOptionText>
-                                  </Option>
-
-                                  {selectedFilter === "pins" && (
-                                      <OptionColor color={option.color} />
-                                  )}
-                              </ButtonOptionContainer>
-                          );
-                      })}
+                            {selectedFilter === "pins" && (
+                                <OptionColor color={option.color} />
+                            )}
+                        </ButtonOptionContainer>
+                    );
+                })}
                 <View>
                     <Span
                         show={
@@ -470,6 +499,46 @@ const Home: React.FC = () => {
                     </Span>
                 </View>
             </FilterModal>
+
+            {selectedOption[0] !== 0 && (
+                <InfoModal
+                    isOpen={isInfoHeatOpen}
+                    onClosed={() => setIsInfoHeatOpen(false)}
+                    swipeToClose={false}
+                    position="center"
+                    backdropOpacity={0}
+                    backButtonClose
+                >
+                    <View style={{ alignItems: "center" }}>
+                        <InfoTitle>Legenda: {crimeOption?.name}</InfoTitle>
+                        <InfoContainer>
+                            {[...Array(6)].map((_, index) => {
+                                return (
+                                    <Info key={index}>
+                                        <InfoColor
+                                            color={getInfoColor(index)}
+                                        />
+                                        <InfoText>
+                                            {crimeOption !== undefined
+                                                ? getInfoText(
+                                                      crimeOption.range,
+                                                      index
+                                                  )
+                                                : ""}
+                                        </InfoText>
+                                    </Info>
+                                );
+                            })}
+                        </InfoContainer>
+                        <InfoSubText style={{ marginBottom: 10 }}>
+                            * Casos anuais por 100.000 habitantes
+                        </InfoSubText>
+                        <InfoSubText>
+                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
+                        </InfoSubText>
+                    </View>
+                </InfoModal>
+            )}
             {isLoading && <Loader />}
         </SafeAreaView>
     );

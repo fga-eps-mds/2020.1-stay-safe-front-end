@@ -133,7 +133,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
 
         let color = theme.heatMapOrange3;
 
-        if (cityColor[0].color) color = cityColor[0].color;
+        if (cityColor[0]?.color) color = cityColor[0].color;
 
         if (isSelected && coordinate.name === selectedRegion) {
             const lastProp = color.split(", ");
