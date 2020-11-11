@@ -12,12 +12,7 @@ import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { createRating, updateRating } from "../../services/ratings";
 import { scale } from "../../utils/scalling";
-import {
-    detailsItems,
-    lightingObject,
-    movementObject,
-    policeObject,
-} from "./detailsConstants";
+import { detailsItems } from "./detailsConstants";
 import {
     Container,
     LocalName,
@@ -67,16 +62,8 @@ const Rating: React.FC = () => {
 
     const [idRating, setIdRating] = useState(0);
     const [stars, setStars] = useState(3);
-    const [editingDetails, setEditingDetails] = useState<Details>({
-        lighting: false,
-        movement_of_people: false,
-        police_rounds: false,
-    });
 
     const [items, setItems] = useState(detailsItems);
-    // const [lighting, setLighting] = useState(lightingObject);
-    // const [movementOfPeople, setMovementOfPeople] = useState(movementObject);
-    // const [policeRounds, setPoliceRounds] = useState(policeObject);
 
     const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
 
@@ -103,10 +90,6 @@ const Rating: React.FC = () => {
         setIsEditing(true);
         setIdRating(rating.id_rating);
         setStars(rating.rating_neighborhood);
-        // setEditingDetails(rating.details);
-
-        const newItems = [];
-        let intermediate;
 
         setItems(
             items.map((item) => {
@@ -158,58 +141,6 @@ const Rating: React.FC = () => {
                 return item;
             })
         );
-
-        // ["lighting", "movement_of_people", "police_rounds"].map(
-        //     (impression) => {
-        //         if (rating.details[impression])
-        //             setItems(
-        //                 items.map((item) => {
-        //                     if (item.value === impression) {
-        //                         const likeOrDislike = route.params.rating
-        //                             .details[impression]
-        //                             ? "like"
-        //                             : "dislike";
-        //                         console.log({
-        //                             ...item,
-        //                             [likeOrDislike]:
-        //                                 route.params.rating.details[impression],
-        //                         });
-        //                         return {
-        //                             ...item,
-        //                             [likeOrDislike]:
-        //                                 route.params.rating.details[impression],
-        //                         };
-        //                     }
-        //                     return item;
-        //                 })
-        //             );
-        //     }
-        // );
-
-        console.log("\n\n--------------------\n\n");
-        // setItems(newItems);
-        // console.log(newItems);
-        // setTimeout(() => {
-        // console.log(items);
-        // }, 20000);
-    };
-
-    const getEditingImpression = (impression: string) => {
-        const newItems = items.map((item) => {
-            if (item.value === impression) {
-                const likeOrDislike = route.params.rating.details[impression]
-                    ? "like"
-                    : "dislike";
-                return {
-                    ...item,
-                    [likeOrDislike]: route.params.rating.details[impression],
-                };
-            }
-        });
-
-        const usedItems = newItems.filter((item) => item !== undefined);
-
-        return usedItems[0];
     };
 
     useEffect(() => {
@@ -315,10 +246,7 @@ const Rating: React.FC = () => {
                 {items.map((detail, key) => {
                     return (
                         <DetailContainer key={key}>
-                            <Detail
-                                style={{ elevation: 3 }}
-                                // onPress={() => handleDetail(detail.value)}
-                            >
+                            <Detail style={{ elevation: 3 }}>
                                 <DetailLabel>{detail.label}</DetailLabel>
                             </Detail>
                             <ImpressionContainer
