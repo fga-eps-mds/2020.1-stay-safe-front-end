@@ -491,7 +491,12 @@ const Home: React.FC = () => {
                     <NormalSend
                         style={{ width: "50%" }}
                         onPress={() => handleSubmitFilter()}
+                        disabled={
+                            selectedOption[0] === 0 ||
+                            selectedOption.length !== 1
+                        }
                     >
+                        {console.log(selectedOption)}
                         <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
                     <Span show style={{ marginTop: scale(5) }}>
