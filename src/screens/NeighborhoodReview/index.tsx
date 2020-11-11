@@ -1,6 +1,6 @@
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { RouteProp, useRoute } from "@react-navigation/native";
-import React, { useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
@@ -23,9 +23,7 @@ import {
     StatisticsNeighborhoodCard,
     NeighborhoodTitle,
     NeighborhoodText,
-    InfoButton,
     ImpressionsContainer,
-    ImpressionsCaption,
     EvaluateButton,
     EvaluateButtontText,
     TitleCity,
@@ -55,12 +53,19 @@ interface Statistics {
 }
 
 const NeighborhoodReview: React.FC = () => {
+    const navigation = useNavigation();
     const theme = useTheme();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
 
     const neighborhood = route.params.neighborhood;
     const [isInfoOpen, setIsInfoOpen] = useState(false);
+
+    const [hasStatistics, setHasStatistics] = useState(false);
+
+    useEffect(() => {
+        if (neighborhood.statistics) setHasStatistics(true);
+    }, []);
 
     const ratingColor = (average: number) => {
         if (average < 3) {
@@ -91,58 +96,62 @@ const NeighborhoodReview: React.FC = () => {
                 style={{ backgroundColor: theme.primaryBackground }}
             >
                 <StatisticsNeighborhoodCard style={{ elevation: 5 }}>
-                    <NeighborhoodText>Avaliação Geral*</NeighborhoodText>
-                    <InfoButton onPress={() => setIsInfoOpen(true)}>
-                        <Feather
-                            name="info"
-                            size={scale(25)}
-                            color={theme.primaryGray}
-                        />
-                    </InfoButton>
-
-                    <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
-                    <StarContainer>
-                        <MaterialCommunityIcons
-                            name="star"
-                            size={scale(50)}
-                            color={theme.primaryStrongYellow}
-                        />
-                        <NeighborhoodAverage>
-                            {neighborhood.statistics.average}
-                        </NeighborhoodAverage>
-                    </StarContainer>
-                    <ImpressionText>Impressões</ImpressionText>
-                    <ImpressionsContainer>
-                        {impressions.map((impression) => {
-                            return (
-                                <PointContainer key={impression.name}>
-                                    <MaterialCommunityIcons
-                                        name={impression.icon}
-                                        size={scale(30)}
-                                        color={ratingColor(
-                                            neighborhood.statistics[
-                                                impression.name
-                                            ]
-                                        )}
-                                    />
-                                    <NeighborhoodTitle>
-                                        Movimento:{" "}
-                                        {ratingColorString(
-                                            neighborhood.statistics[
-                                                impression.name
-                                            ]
-                                        )}
-                                    </NeighborhoodTitle>
-                                </PointContainer>
-                            );
-                        })}
-                    </ImpressionsContainer>
-
-                    <ImpressionsCaption>
-                        * Dados obtidos a partir das avaliações dos usuários
-                    </ImpressionsCaption>
+                    {hasStatistics ? (
+                        <>
+                            <NeighborhoodText>
+                                Avaliação Geral dos Usuários
+                            </NeighborhoodText>
+                            <TitleCity>{`${neighborhood.neighborhood} - ${neighborhood.city}`}</TitleCity>
+                            <StarContainer>
+                                <MaterialCommunityIcons
+                                    name="star"
+                                    size={scale(50)}
+                                    color={theme.primaryStrongYellow}
+                                />
+                                <NeighborhoodAverage>
+                                    {neighborhood.statistics.average}
+                                </NeighborhoodAverage>
+                            </StarContainer>
+                            <ImpressionText>Impressões</ImpressionText>
+                            <ImpressionsContainer>
+                                {impressions.map((impression) => {
+                                    return (
+                                        <PointContainer key={impression.name}>
+                                            <MaterialCommunityIcons
+                                                name={impression.icon}
+                                                size={scale(30)}
+                                                color={ratingColor(
+                                                    neighborhood.statistics[
+                                                        impression.name
+                                                    ]
+                                                )}
+                                            />
+                                            <NeighborhoodTitle>
+                                                Movimento:{" "}
+                                                {ratingColorString(
+                                                    neighborhood.statistics[
+                                                        impression.name
+                                                    ]
+                                                )}
+                                            </NeighborhoodTitle>
+                                        </PointContainer>
+                                    );
+                                })}
+                            </ImpressionsContainer>
+                        </>
+                    ) : (
+                        <NeighborhoodText>
+                            Não há estatísticas para esse bairro.
+                        </NeighborhoodText>
+                    )}
                 </StatisticsNeighborhoodCard>
-                <EvaluateButton>
+                <EvaluateButton
+                    onPress={() =>
+                        navigation.navigate("Rating", {
+                            rating: { neighborhood },
+                        })
+                    }
+                >
                     <MaterialCommunityIcons
                         name="pencil"
                         size={scale(20)}

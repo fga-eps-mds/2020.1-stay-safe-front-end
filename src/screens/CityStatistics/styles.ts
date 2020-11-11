@@ -1,3 +1,4 @@
+import { Animated } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import styled, { css } from "styled-components/native";
 
@@ -110,7 +111,7 @@ export const CrimeText = styled.Text`
     margin-bottom: ${scale(5)}px;
 `;
 
-export const CrimeBar = styled.View<CrimeBarProps>`
+export const CrimeBar = styled(Animated.View)<CrimeBarProps>`
     width: ${(props) => props.percentage * 0.87}%;
     height: ${scale(21)}px;
     background-color: ${(props) => props.theme.primaryLightBlue};

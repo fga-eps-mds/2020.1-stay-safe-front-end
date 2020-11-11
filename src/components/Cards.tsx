@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-import { scale } from "../../utils/scalling";
+import { scale } from "../utils/scalling";
 
 export const ScrollViewStyled = styled.ScrollView`
     flex: 1;
@@ -32,6 +32,14 @@ export const Title = styled.Text`
     font-size: ${scale(16)}px;
     color: ${(props) => props.theme.primaryDarkBlue};
     margin-bottom: ${scale(18)}px;
+    text-align: left;
+`;
+
+export const NeighText = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(16)}px;
+    color: ${(props) => props.theme.primaryDarkBlue};
+    margin-bottom: ${scale(10)}px;
     text-align: left;
 `;
 

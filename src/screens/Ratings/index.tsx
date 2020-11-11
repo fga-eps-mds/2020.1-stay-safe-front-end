@@ -5,41 +5,53 @@ import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import HeaderTitle from "../../components/HeaderTitle";
-import Loader from "../../components/Loader";
-import StayAlert from "../../components/StayAlert";
-import { useUser } from "../../hooks/user";
-import { Occurrence } from "../../interfaces/occurrence";
-import {
-    getUserOccurrences,
-    deleteOccurrence,
-} from "../../services/occurrences";
-import { scale } from "../../utils/scalling";
 import {
     ScrollViewStyled,
     CardContainer,
     Card,
     CardData,
     Title,
+    NeighText,
     Date,
     CardActions,
 } from "../../components/Cards";
+import HeaderTitle from "../../components/HeaderTitle";
+import StayAlert from "../../components/StayAlert";
+import { useUser } from "../../hooks/user";
+import { getUserRatings, deleteRating } from "../../services/ratings";
+import { scale } from "../../utils/scalling";
 
-const Occurrences: React.FC = () => {
+interface Rating {
+    id_rating: number;
+    rating_neighborhood: number;
+    neighborhood: Neighborhood;
+    details: {
+        lighting: boolean;
+        movement_of_people: boolean;
+        police_rounds: boolean;
+    };
+    user: string;
+}
+
+interface Neighborhood {
+    city: string;
+    id_neighborhood: number;
+    neighborhood: string;
+    state: string;
+}
+
+const Ratings: React.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
     const { data } = useUser();
 
-    const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
+    const [ratings, setRatings] = useState<Rating[]>([]);
     const [showConfirmModal, setConfirmModal] = useState(false);
-    const [idOccurrence, setIdOccurrence] = useState(0);
-
-    const [isLoading, setIsLoading] = useState(false);
+    const [idRating, setIdRating] = useState(0);
 
     useEffect(() => {
-        setIsLoading(true);
         const unsubscribe = navigation.addListener("focus", () => {
-            fetchData().then((res) => setIsLoading(false));
+            fetchData();
         });
 
         return unsubscribe;
@@ -47,22 +59,18 @@ const Occurrences: React.FC = () => {
 
     const fetchData = async () => {
         if (data.username !== "") {
-            const response = await getUserOccurrences(data.username);
+            const response = await getUserRatings(data.username);
             if (!response.body.errors && response.status === 200)
-                setOccurrences(response.body);
-            else console.warn("Falha ao carregar as ocorrências do usuário.");
+                setRatings(response.body);
+            else console.warn("Falha ao carregar as avaliações do usuário.");
         }
     };
 
     const handleDelete = async (id: number) => {
         if (data.token !== "") {
-            const response = await deleteOccurrence(id, data.token);
+            const response = await deleteRating(id, data.token);
             if (response.status === 204) {
-                setOccurrences(
-                    occurrences.filter(
-                        (occurrence) => occurrence.id_occurrence !== id
-                    )
-                );
+                setRatings(ratings.filter((rating) => rating.id_rating !== id));
             }
         }
         setConfirmModal(false);
@@ -70,44 +78,36 @@ const Occurrences: React.FC = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <HeaderTitle text="Minhas Ocorrências" goBack />
+            <HeaderTitle text="Minhas Avaliações" goBack />
             <ScrollViewStyled>
                 <CardContainer>
-                    {occurrences.length === 0 ? (
-                        <Card style={isLoading && { justifyContent: "center" }}>
+                    {ratings.length === 0 ? (
+                        <Card>
                             <CardData>
-                                <Title
-                                    style={{
-                                        textAlign: "center",
-                                        marginBottom: 0,
-                                    }}
-                                >
-                                    Usuário não possui ocorrências
-                                </Title>
+                                <Title>Nenhuma avaliação :(</Title>
                             </CardData>
                         </Card>
                     ) : (
-                        occurrences.map((occurrence) => {
+                        ratings.map((rating) => {
                             return (
-                                <Card key={occurrence.id_occurrence}>
+                                <Card key={rating.id_rating}>
                                     <CardData>
                                         <Title>
-                                            {occurrence.occurrence_type}
+                                            {rating.neighborhood.neighborhood}
                                         </Title>
-                                        <Date>
-                                            {occurrence.occurrence_date_time}
-                                        </Date>
+                                        <NeighText>
+                                            {rating.neighborhood.city} -{" "}
+                                            {rating.neighborhood.state}
+                                        </NeighText>
+                                        <Date>03-2020</Date>
                                     </CardData>
 
                                     <CardActions>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                navigation.navigate(
-                                                    "Occurrence",
-                                                    {
-                                                        occurrence,
-                                                    }
-                                                );
+                                                navigation.navigate("Rating", {
+                                                    rating,
+                                                });
                                             }}
                                         >
                                             <Feather
@@ -121,9 +121,7 @@ const Occurrences: React.FC = () => {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 setConfirmModal(true);
-                                                setIdOccurrence(
-                                                    occurrence.id_occurrence
-                                                );
+                                                setIdRating(rating.id_rating);
                                             }}
                                         >
                                             <Feather
@@ -142,20 +140,19 @@ const Occurrences: React.FC = () => {
                 </CardContainer>
                 <StayAlert
                     show={showConfirmModal}
-                    title="Apagar Ocorrência"
-                    message="Tem certeza que deseja apagar essa ocorrência? A ação não pode ser desfeita."
+                    title="Apagar Avaliação"
+                    message="Tem certeza que deseja apagar essa avaliação? A ação não pode ser desfeita."
                     showConfirmButton
                     confirmText="Apagar"
-                    onConfirmPressed={() => handleDelete(idOccurrence)}
+                    onConfirmPressed={() => handleDelete(idRating)}
                     showCancelButton
                     cancelText="Cancelar"
                     onCancelPressed={() => setConfirmModal(false)}
                     onDismiss={() => setConfirmModal(false)}
                 />
-                {isLoading && <Loader />}
             </ScrollViewStyled>
         </SafeAreaView>
     );
 };
 
-export default Occurrences;
+export default Ratings;
