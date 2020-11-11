@@ -233,16 +233,12 @@ const Rating: React.FC = () => {
                     text={isEditing ? "Editar Avaliação" : "Avaliar Bairro"}
                     goBack
                 />
-
                 <LocalName>{name}</LocalName>
-
                 <StarsRating
                     defaultRating={stars}
                     onFinishRating={(rate: number) => setStars(rate)}
                 />
-
                 <TellUs>Conte-nos o por quê:</TellUs>
-
                 {items.map((detail, key) => {
                     return (
                         <DetailContainer key={key}>
@@ -280,11 +276,9 @@ const Rating: React.FC = () => {
                         </DetailContainer>
                     );
                 })}
-
                 <NormalSend onPress={() => handleSubmit()}>
                     <SendLabel>Salvar</SendLabel>
                 </NormalSend>
-
                 <StayAlert
                     show={showSuccessfullyModal}
                     title={isEditing ? "Editar Avaliação" : "Avaliar Bairro"}
