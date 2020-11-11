@@ -9,11 +9,11 @@ export const NeighborhoodTitle = styled.Text`
     text-align: center;
 `;
 
-export const NeighborhoodCard = styled.TouchableOpacity`
+export const NeighborhoodCard = styled.View`
     background-color: ${(props) => props.theme.primaryWhite};
-    width: 85%;
+    width: 80%;
     padding: ${scale(14)}px;
     margin-bottom: ${scale(20)}px;
     border-radius: ${scale(20)}px;
-    align-items: center;
+    align-self: center;
 `;

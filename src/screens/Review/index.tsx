@@ -1,5 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import Accordion from "react-native-collapsible/Accordion";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import HeaderTitle from "../../components/HeaderTitle";
@@ -11,11 +13,15 @@ import { NeighborhoodCard, NeighborhoodTitle } from "./styles";
 interface Neighborhood {
     city: string;
     state: string;
+    neighborhood: string;
+    statistics: Statistics;
+}
+
+interface Statistics {
     average: number;
     lighting: number;
-    movement: number;
-    neighborhood: string;
-    police: number;
+    movement_of_people: number;
+    police_rounds: number;
 }
 
 type ParamList = {
@@ -34,6 +40,7 @@ const Review: React.FC = () => {
     const uf = route.params.uf.toUpperCase();
 
     const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
+    const [activeNeighborhoods, setActiveNeighborhoods] = useState([]);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -50,6 +57,12 @@ const Review: React.FC = () => {
         }
     };
 
+    const updateSections = (activeSections) => {
+        setActiveNeighborhoods(
+            activeSections.includes(undefined) ? [] : activeSections
+        );
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
@@ -58,26 +71,26 @@ const Review: React.FC = () => {
                     {isLoading ? (
                         <Loader />
                     ) : (
-                        neighborhoods.map((neighborhood) => {
-                            return (
-                                <NeighborhoodCard
-                                    style={{ elevation: 5 }}
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "NeighborhoodReview",
-                                            {
-                                                neighborhood,
-                                            }
-                                        )
-                                    }
-                                    key={neighborhood.neighborhood}
-                                >
-                                    <NeighborhoodTitle>
-                                        {neighborhood.neighborhood}
-                                    </NeighborhoodTitle>
-                                </NeighborhoodCard>
-                            );
-                        })
+                        <Accordion
+                            containerStyle={{ width: "100%" }}
+                            sections={neighborhoods}
+                            activeSections={activeNeighborhoods}
+                            touchableComponent={TouchableOpacity}
+                            renderHeader={(neighborhood) => {
+                                return (
+                                    <NeighborhoodCard
+                                        style={{ elevation: 5 }}
+                                        key={neighborhood.neighborhood}
+                                    >
+                                        <NeighborhoodTitle>
+                                            {neighborhood.neighborhood}
+                                        </NeighborhoodTitle>
+                                    </NeighborhoodCard>
+                                );
+                            }}
+                            renderContent={(_) => <></>}
+                            onChange={updateSections}
+                        />
                     )}
                 </KeyboardScrollView>
             </Container>
