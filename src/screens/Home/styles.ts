@@ -1,4 +1,5 @@
 import DropDownPicker from "react-native-dropdown-picker";
+import { RectButton } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
 import styled from "styled-components/native";
@@ -29,7 +30,10 @@ export const StayNormalMap = styled(MapView)`
     flex: 1;
 `;
 
-export const FilterButton = styled.TouchableOpacity`
+export const FilterButton = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     position: absolute;
     width: ${scale(50)}px;
     height: ${scale(50)}px;
@@ -43,7 +47,10 @@ export const FilterButton = styled.TouchableOpacity`
     border-radius: ${scale(50)}px;
 `;
 
-export const HeatInfo = styled.TouchableOpacity`
+export const HeatInfo = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     position: absolute;
     width: ${scale(50)}px;
     height: ${scale(50)}px;
@@ -88,7 +95,10 @@ export const Option = styled.View`
     align-items: center;
 `;
 
-export const OptionCircleButton = styled.TouchableOpacity`
+export const OptionCircleButton = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     justify-content: center;
     align-items: center;
     margin-right: ${scale(10)}px;

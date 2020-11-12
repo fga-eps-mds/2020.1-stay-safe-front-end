@@ -1,3 +1,4 @@
+import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import { NormalSend, SendLabel } from "../../components/NormalForms";
@@ -7,7 +8,10 @@ export const ButtonsContainer = styled.View`
     width: 80%;
 `;
 
-export const Button = styled.TouchableOpacity`
+export const Button = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     padding: ${scale(15)}px;
     background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(12)}px;
@@ -35,7 +39,7 @@ export const LogoutButton = styled(NormalSend)`
     align-items: center;
 `;
 
-export const DeleteButton = styled.TouchableOpacity`
+export const DeleteButton = styled(RectButton)`
     margin-top: ${scale(28)}px;
 `;
 

@@ -1,3 +1,4 @@
+import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
@@ -76,7 +77,10 @@ export const NeighborhoodAverage = styled.Text`
     color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
-export const EvaluateButton = styled.TouchableOpacity`
+export const EvaluateButton = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     width: 60%;
     height: ${scale(40)}px;
     margin-top: ${scale(30)}px;

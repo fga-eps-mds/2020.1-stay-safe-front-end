@@ -1,3 +1,4 @@
+import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
@@ -9,7 +10,10 @@ export const NeighborhoodTitle = styled.Text`
     text-align: center;
 `;
 
-export const NeighborhoodCard = styled.TouchableOpacity`
+export const NeighborhoodCard = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     background-color: ${(props) => props.theme.primaryWhite};
     width: 85%;
     padding: ${scale(14)}px;

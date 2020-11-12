@@ -1,5 +1,6 @@
 import { Animated } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { RectButton } from "react-native-gesture-handler";
 import styled, { css } from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
@@ -126,7 +127,10 @@ export const CrimeBarNumber = styled.Text`
     margin-left: ${scale(2)}px;
 `;
 
-export const SortButton = styled.TouchableOpacity`
+export const SortButton = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     width: 60%;
     height: ${scale(41)}px;
     margin-top: ${scale(27)}px;

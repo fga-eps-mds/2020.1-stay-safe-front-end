@@ -36,6 +36,8 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         setIsLoading(true);
 
+        setTimeout(() => setIsLoading(false), 5000);
+
         await signIn({ username, password: userPwd });
 
         setIsLoading(false);
