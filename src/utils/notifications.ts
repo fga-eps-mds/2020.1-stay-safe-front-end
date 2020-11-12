@@ -17,13 +17,15 @@ export const registerForPushNotificationsAsync = async () => {
             finalStatus = status;
         }
         if (finalStatus !== "granted") {
-            alert("Failed to get push token for push notification!");
+            alert("Não foi possível pegar o token para notificações por push.");
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
         console.log(token);
     } else {
-        alert("Must use physical device for Push Notifications");
+        alert(
+            "É necessário ter um aparelho móvel para receber notificações por push."
+        );
     }
 
     if (Platform.OS === "android") {
