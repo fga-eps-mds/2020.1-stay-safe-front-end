@@ -12,7 +12,6 @@ export const NeighborhoodTitle = styled.Text`
 `;
 
 export const NeighborhoodCard = styled(Card)`
-    elevation: 5;
     align-items: center;
     align-self: center;
     margin-bottom: 0;
