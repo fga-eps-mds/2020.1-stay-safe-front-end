@@ -17,19 +17,23 @@ const NeighborhoodImpressions: React.FC<ImpressionsProps> = ({
     const theme = useTheme();
 
     const ratingColor = (average: number) => {
-        if (average < 3) {
-            return theme.primaryImpressionRed;
-        } else if (average === 3) {
-            return theme.primaryImpressionOrange;
-        } else return theme.primaryImpressionGreen;
+        let color = theme.primaryGray;
+
+        if (average < 2) color = theme.primaryImpressionRed;
+        else if (average === 2) color = theme.primaryImpressionOrange;
+        else if (average === 3) color = theme.primaryImpressionGreen;
+
+        return color;
     };
 
-    const ratingColorString = (average: number) => {
-        if (average < 3) {
-            return "Fraco";
-        } else if (average === 3) {
-            return "Médio";
-        } else return "Bom";
+    const ratingText = (average: number) => {
+        let text = "Sem dados";
+
+        if (average < 2) text = "Fraco";
+        else if (average === 2) text = "Médio";
+        else if (average === 3) text = "Bom";
+
+        return text;
     };
 
     return (
@@ -45,7 +49,7 @@ const NeighborhoodImpressions: React.FC<ImpressionsProps> = ({
                             )}
                         />
                         <ImpressionText>
-                            {`${impression.label}: ${ratingColorString(
+                            {`${impression.label}: ${ratingText(
                                 neighborhood.statistics[impression.name]
                             )}`}
                         </ImpressionText>
