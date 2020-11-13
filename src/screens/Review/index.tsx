@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import Accordion from "react-native-collapsible/Accordion";
@@ -7,8 +7,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
+import { InfoButton } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
 import NeighborhoodImpressions from "../../components/NeighborhoodImpressions";
+import NeighborhoodInfo from "../../components/NeighborhoodInfo";
 import {
     Container,
     KeyboardScrollView,
@@ -46,6 +48,7 @@ const Review: React.FC = () => {
     const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
     const [activeNeighborhoods, setActiveNeighborhoods] = useState([]);
 
+    const [isInfoOpen, setIsInfoOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -69,8 +72,8 @@ const Review: React.FC = () => {
         return (
             <NeighborhoodCard
                 style={{
-                    borderBottomLeftRadius: isActive ? 0 : scale(20),
-                    borderBottomRightRadius: isActive ? 0 : scale(20),
+                    borderBottomLeftRadius: isActive ? 0 : scale(16),
+                    borderBottomRightRadius: isActive ? 0 : scale(16),
                     borderBottomColor: isActive
                         ? theme.primaryGray
                         : theme.primaryBackground,
@@ -108,8 +111,8 @@ const Review: React.FC = () => {
         return (
             <NeighborhoodCard
                 style={{
-                    borderTopLeftRadius: isActive ? 0 : scale(20),
-                    borderTopRightRadius: isActive ? 0 : scale(20),
+                    borderTopLeftRadius: isActive ? 0 : scale(16),
+                    borderTopRightRadius: isActive ? 0 : scale(16),
                     flexDirection: "column",
                 }}
             >
@@ -159,6 +162,16 @@ const Review: React.FC = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <HeaderTitle text={`Bairros - ${city}`} goBack />
+                <InfoButton
+                    style={{ position: "absolute", top: scale(18) }}
+                    onPress={() => setIsInfoOpen(true)}
+                >
+                    <Feather
+                        name="info"
+                        size={scale(24)}
+                        color={theme.primaryGray}
+                    />
+                </InfoButton>
                 <KeyboardScrollView>
                     {isLoading ? (
                         <Loader />
@@ -172,9 +185,14 @@ const Review: React.FC = () => {
                             renderHeader={_renderHeader}
                             renderContent={_renderContent}
                             onChange={updateSections}
+                            expandMultiple
                         />
                     )}
                 </KeyboardScrollView>
+                <NeighborhoodInfo
+                    isOpen={isInfoOpen}
+                    onClosed={() => setIsInfoOpen(false)}
+                />
             </Container>
         </SafeAreaView>
     );
