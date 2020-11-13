@@ -36,7 +36,7 @@ type ParamList = {
     };
 };
 
-const Review: React.FC = () => {
+const Neighborhoods: React.FC = () => {
     const navigation = useNavigation();
     const theme = useTheme();
 
@@ -198,4 +198,4 @@ const Review: React.FC = () => {
     );
 };
 
-export default Review;
+export default Neighborhoods;
