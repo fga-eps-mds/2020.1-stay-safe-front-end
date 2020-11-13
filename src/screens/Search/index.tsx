@@ -2,12 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderTitle from "../../components/HeaderTitle";
-import { Searchbar } from 'react-native-paper';
 import { scale } from "../../utils/scalling";
-import { SearchTabContainer } from "./styles"
 import { KeyboardScrollView } from "../../components/NormalForms";
 import { UfDropDown, DropDownsContainer, CityDropDown } from "./styles";
-
 import { ufs } from './searchConstants';
 import { useTheme } from "styled-components";
 

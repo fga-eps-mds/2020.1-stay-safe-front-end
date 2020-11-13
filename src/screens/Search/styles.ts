@@ -1,7 +1,5 @@
 import { scale } from "../../utils/scalling";
-
 import styled from "styled-components/native";
-import { Searchbar } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 
 export const SearchTabContainer = styled.View`
