@@ -3,7 +3,9 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from 'styled-components';
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
@@ -21,6 +23,7 @@ import { createUser, authUser } from "../../services/users";
 import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
+    const theme = useTheme();
     const navigation = useNavigation();
     const { signIn } = useUser();
 
@@ -139,9 +142,13 @@ const Cadastro: React.FC = () => {
                         onSubmitEditing={() => handleRegister()}
                     />
 
-                    <NormalSend onPress={() => handleRegister()}>
+                    <Button 
+                        onPress={() => handleRegister()}
+                        width="80%"
+                        color={theme.primaryRed}
+                    >
                         <SendLabel>Criar Conta</SendLabel>
-                    </NormalSend>
+                    </Button>
                     {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>

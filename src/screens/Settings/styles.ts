@@ -8,18 +8,6 @@ export const ButtonsContainer = styled.View`
     width: 80%;
 `;
 
-export const Button = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
-    padding: ${scale(15)}px;
-    background-color: ${(props) => props.theme.primaryWhite};
-    border-radius: ${scale(12)}px;
-    flex-direction: row;
-    margin-bottom: ${scale(17)}px;
-    align-items: center;
-`;
-
 export const ButtonText = styled.Text`
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primaryDarkBlue};
@@ -28,7 +16,7 @@ export const ButtonText = styled.Text`
 `;
 
 export const UserButtonsContainer = styled.View`
-    padding: ${scale(30)}px ${scale(110)}px;
+    padding: ${scale(30)}px ${scale(120)}px;
     justify-content: center;
     align-items: center;
 `;

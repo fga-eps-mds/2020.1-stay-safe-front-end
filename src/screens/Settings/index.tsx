@@ -16,9 +16,9 @@ import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
+import Button from "../../components/Button";
 import {
     ButtonsContainer,
-    Button,
     ButtonText,
     LogoutButton,
     UserButtonsContainer,
@@ -77,7 +77,12 @@ const Settings: React.FC = () => {
                         {buttonsObject.map((button: ButtonObject) => {
                             return button.userLogged ? (
                                 data.token !== "" && (
-                                    <Button key={button.title}>
+                                    <Button 
+                                        key={button.title}
+                                        width="100%"
+                                        color={theme.primaryWhite}
+                                        settings
+                                    >
                                         <Feather
                                             name={button.icon}
                                             size={scale(20)}
@@ -87,7 +92,12 @@ const Settings: React.FC = () => {
                                     </Button>
                                 )
                             ) : (
-                                <Button key={button.title}>
+                                <Button 
+                                    key={button.title}
+                                    width="100%"
+                                    color={theme.primaryWhite}
+                                    settings
+                                >
                                     <Feather
                                         name={button.icon}
                                         size={scale(20)}
@@ -97,7 +107,12 @@ const Settings: React.FC = () => {
                                 </Button>
                             );
                         })}
-                        <Button onPress={switchTheme}>
+                        <Button 
+                            onPress={switchTheme}
+                            width="100%"
+                            color={theme.primaryWhite}
+                            settings
+                        >
                             <Feather
                                 name={theme.type === "dark" ? "sun" : "moon"}
                                 size={scale(20)}
@@ -113,7 +128,12 @@ const Settings: React.FC = () => {
 
                     {data.token !== "" && (
                         <UserButtonsContainer>
-                            <LogoutButton onPress={() => handleLogout()}>
+                            <Button
+                                onPress={() => handleLogout()}
+                                width="100%"
+                                color={theme.primaryRed}
+                                style={{ justifyContent: 'space-evenly' }}
+                            >
                                 <>
                                     <Feather
                                         name="log-out"
@@ -122,7 +142,7 @@ const Settings: React.FC = () => {
                                     />
                                     <SendLabel>Sair</SendLabel>
                                 </>
-                            </LogoutButton>
+                            </Button>
                             <DeleteButton onPress={() => setIsModalOpen(true)}>
                                 <DeleteText>Excluir conta</DeleteText>
                             </DeleteButton>

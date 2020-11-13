@@ -156,7 +156,7 @@ export const DropDownContainer = styled.View`
 `;
 
 export const DropDownTitle = styled.Text`
-    font-size: ${scale(16)}px;
+    font-size: ${scale(15)}px;
     font-family: "Trueno-Regular";
     color: ${(props) =>
         props.theme.type === "dark"
@@ -168,7 +168,7 @@ export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
     placeholder: "Selecionar",
     containerStyle: {
         height: scale(42),
-        width: "25%",
+        width: "30%",
     },
     dropDownStyle: {
         backgroundColor: props.theme.primaryWhite,

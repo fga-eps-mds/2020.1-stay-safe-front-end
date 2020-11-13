@@ -2,7 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from 'styled-components';
 
+import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
 import {
@@ -18,6 +20,7 @@ import {
 import { useUser } from "../../hooks/user";
 
 const Login: React.FC = () => {
+    const theme = useTheme();
     const navigation = useNavigation();
     const { signIn } = useUser();
 
@@ -72,15 +75,21 @@ const Login: React.FC = () => {
                         onSubmitEditing={() => handleLogin()}
                     />
 
-                    <NormalSend onPress={() => handleLogin()}>
+                    <Button 
+                        onPress={() => handleLogin()}
+                        width="80%"
+                        color={theme.primaryRed}
+                    >
                         <SendLabel>Entrar</SendLabel>
-                    </NormalSend>
+                    </Button>
 
-                    <NormalCreate
+                    <Button
+                        width="80%"
+                        color={theme.primaryLightBlue}
                         onPress={() => navigation.navigate("Cadastro")}
                     >
                         <SendLabel>Criar Conta</SendLabel>
-                    </NormalCreate>
+                    </Button>
                     {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>
