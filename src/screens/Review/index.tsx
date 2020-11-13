@@ -1,28 +1,31 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import Accordion from "react-native-collapsible/Accordion";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
-import { Container, KeyboardScrollView } from "../../components/NormalForms";
+import NeighborhoodImpressions from "../../components/NeighborhoodImpressions";
+import {
+    Container,
+    KeyboardScrollView,
+    NormalSend,
+    SendLabel,
+} from "../../components/NormalForms";
+import { Neighborhood } from "../../interfaces/neighborhood";
 import { getCityNeighborhoods } from "../../services/neighborhood";
-import { NeighborhoodCard, NeighborhoodTitle } from "./styles";
-
-interface Neighborhood {
-    city: string;
-    state: string;
-    neighborhood: string;
-    statistics: Statistics;
-}
-
-interface Statistics {
-    average: number;
-    lighting: number;
-    movement_of_people: number;
-    police_rounds: number;
-}
+import { scale } from "../../utils/scalling";
+import {
+    AverageContainer,
+    NeighborhoodCard,
+    NeighborhoodTitle,
+    AverageNumber,
+    NoStatisticsText,
+    ButtonsContainer,
+} from "./styles";
 
 type ParamList = {
     params: {
@@ -33,6 +36,7 @@ type ParamList = {
 
 const Review: React.FC = () => {
     const navigation = useNavigation();
+    const theme = useTheme();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
 
@@ -57,6 +61,94 @@ const Review: React.FC = () => {
         }
     };
 
+    const _renderHeader = (
+        neighborhood: Neighborhood,
+        index: number,
+        isActive: boolean
+    ) => {
+        return (
+            <NeighborhoodCard
+                style={{
+                    borderBottomLeftRadius: isActive ? 0 : scale(20),
+                    borderBottomRightRadius: isActive ? 0 : scale(20),
+                    borderBottomColor: isActive
+                        ? theme.primaryGray
+                        : theme.primaryBackground,
+                    borderBottomWidth: isActive ? 1 : 0,
+                }}
+            >
+                <>
+                    <NeighborhoodTitle>
+                        {neighborhood.neighborhood}
+                    </NeighborhoodTitle>
+                    {neighborhood.statistics ? (
+                        <AverageContainer>
+                            <MaterialCommunityIcons
+                                name="star"
+                                size={scale(25)}
+                                color={theme.primaryStrongYellow}
+                            />
+                            <AverageNumber>
+                                {neighborhood.statistics.average}
+                            </AverageNumber>
+                        </AverageContainer>
+                    ) : (
+                        <></>
+                    )}
+                </>
+            </NeighborhoodCard>
+        );
+    };
+
+    const _renderContent = (
+        neighborhood: Neighborhood,
+        index: number,
+        isActive: boolean
+    ) => {
+        return (
+            <NeighborhoodCard
+                style={{
+                    borderTopLeftRadius: isActive ? 0 : scale(20),
+                    borderTopRightRadius: isActive ? 0 : scale(20),
+                    flexDirection: "column",
+                }}
+            >
+                {neighborhood.statistics ? (
+                    <NeighborhoodImpressions neighborhood={neighborhood} />
+                ) : (
+                    <NoStatisticsText>
+                        Não há estatísticas para esse bairro.
+                    </NoStatisticsText>
+                )}
+                <ButtonsContainer>
+                    <NormalSend
+                        style={{
+                            width: "45%",
+                            backgroundColor: theme.primaryLightBlue,
+                        }}
+                        onPress={() =>
+                            navigation.navigate("NeighborhoodReview", {
+                                neighborhood,
+                            })
+                        }
+                    >
+                        <SendLabel>Ver Bairro</SendLabel>
+                    </NormalSend>
+                    <NormalSend
+                        style={{ width: "45%", marginLeft: "5%" }}
+                        onPress={() =>
+                            navigation.navigate("Rating", {
+                                rating: { neighborhood },
+                            })
+                        }
+                    >
+                        <SendLabel>Avaliar</SendLabel>
+                    </NormalSend>
+                </ButtonsContainer>
+            </NeighborhoodCard>
+        );
+    };
+
     const updateSections = (activeSections) => {
         setActiveNeighborhoods(
             activeSections.includes(undefined) ? [] : activeSections
@@ -73,22 +165,12 @@ const Review: React.FC = () => {
                     ) : (
                         <Accordion
                             containerStyle={{ width: "100%" }}
+                            sectionContainerStyle={{ marginBottom: scale(20) }}
                             sections={neighborhoods}
                             activeSections={activeNeighborhoods}
                             touchableComponent={TouchableOpacity}
-                            renderHeader={(neighborhood) => {
-                                return (
-                                    <NeighborhoodCard
-                                        style={{ elevation: 5 }}
-                                        key={neighborhood.neighborhood}
-                                    >
-                                        <NeighborhoodTitle>
-                                            {neighborhood.neighborhood}
-                                        </NeighborhoodTitle>
-                                    </NeighborhoodCard>
-                                );
-                            }}
-                            renderContent={(_) => <></>}
+                            renderHeader={_renderHeader}
+                            renderContent={_renderContent}
                             onChange={updateSections}
                         />
                     )}
