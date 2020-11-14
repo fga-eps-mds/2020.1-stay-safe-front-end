@@ -35,7 +35,12 @@ import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
+import {
+    crimesColors,
+    searchOptionsDf,
+    searchOptionsSp,
+    ufs,
+} from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
@@ -153,7 +158,7 @@ const Home: React.FC = () => {
     };
 
     const getPinColor = (occurrence) => {
-        return searchOptions.filter(
+        return crimesColors.filter(
             (op) => op.name === occurrence.occurrence_type
         )[0].color;
     };
@@ -412,7 +417,10 @@ const Home: React.FC = () => {
                             return (
                                 <Tab
                                     key={`tab-${index}`}
-                                    onPress={() => setSelectedFilter(item.name)}
+                                    onPress={() => {
+                                        setSelectedFilter(item.name);
+                                        setSelectedOption([0]);
+                                    }}
                                     focus={selectedFilter === item.name}
                                 >
                                     <TabTitle
@@ -435,6 +443,8 @@ const Home: React.FC = () => {
                                 defaultValue={selectedUf}
                                 onChangeItem={(item) => {
                                     setSelectedUf(item.value);
+                                    setSelectedOption([0]);
+
                                     if (item.value === "df") {
                                         setSearchOptions(searchOptionsDf);
                                     } else {
@@ -492,11 +502,11 @@ const Home: React.FC = () => {
                         style={{ width: "50%" }}
                         onPress={() => handleSubmitFilter()}
                         disabled={
-                            selectedOption[0] === 0 ||
-                            selectedOption.length !== 1
+                            selectedFilter === "heat" &&
+                            (selectedOption[0] === 0 ||
+                                selectedOption.length !== 1)
                         }
                     >
-                        {console.log(selectedOption)}
                         <SendLabel>Filtrar</SendLabel>
                     </NormalSend>
                     <Span show style={{ marginTop: scale(5) }}>
