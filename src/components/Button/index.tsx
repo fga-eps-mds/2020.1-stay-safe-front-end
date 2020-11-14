@@ -1,35 +1,44 @@
 import React from "react";
-import { RectButtonProperties } from 'react-native-gesture-handler';
+import { RectButtonProperties } from "react-native-gesture-handler";
 
 import { NormalButton } from "./styles";
 
 interface ButtonProps {
     width: string;
-    color?: string;
+    color: string;
     enabled?: boolean;
     isEditing?: boolean;
     settings?: boolean;
-    onPress?: () => void; 
+    borderRadius?: number;
+    neighs?: boolean;
+    review?: boolean;
+    onPress?: () => void;
 }
 
 const Button: React.FC<ButtonProps & RectButtonProperties> = ({
-    width = '80%',
+    width = "80%",
     children,
-    color = null,
+    color,
     enabled = true,
     isEditing = false,
     settings = false,
+    review = false,
     onPress,
+    neighs = false,
+    borderRadius = 28,
     ...props
 }) => {
     return (
-        <NormalButton 
-            color={color} 
-            width={width} 
+        <NormalButton
+            color={color}
+            width={width}
             onPress={onPress}
             enabled={enabled}
             settings={settings}
             isEditing={isEditing}
+            borderRadius={borderRadius}
+            neighs={neighs}
+            review={review}
             {...props}
         >
             {children}

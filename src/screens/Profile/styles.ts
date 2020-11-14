@@ -1,9 +1,6 @@
 import styled from "styled-components/native";
 
-import {
-    SendLabel,
-    NormalInput
-} from "../../components/NormalForms";
+import { SendLabel, NormalInput } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 
 interface InputViewingProps {

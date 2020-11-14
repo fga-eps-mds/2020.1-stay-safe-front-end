@@ -3,7 +3,7 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from 'styled-components';
+import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -15,7 +15,6 @@ import {
     Title,
     NormalLabel,
     NormalInput,
-    NormalSend,
     SendLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
@@ -142,7 +141,7 @@ const Cadastro: React.FC = () => {
                         onSubmitEditing={() => handleRegister()}
                     />
 
-                    <Button 
+                    <Button
                         onPress={() => handleRegister()}
                         width="80%"
                         color={theme.primaryRed}

@@ -25,11 +25,7 @@ import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 import { profileButtons } from "./buttonsObject";
-import {
-    InputViewing,
-    ButtonLabel,
-    ButtonsContainer,
-} from "./styles";
+import { InputViewing, ButtonLabel, ButtonsContainer } from "./styles";
 
 const Profile: React.FC = () => {
     const theme = useTheme();

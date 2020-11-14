@@ -1,6 +1,5 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
-import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
@@ -44,18 +43,6 @@ export const InputContainer = styled.View`
     margin-top: ${scale(30)}px;
     flex-direction: column;
     justify-content: space-between;
-`;
-
-export const TouchablePicker = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
-    height: ${scale(42)}px;
-    width: 100%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryWhite};
-    border-radius: ${scale(15)}px;
-    padding: ${scale(12)}px;
 `;
 
 export const PlaceholderPicker = styled.Text`

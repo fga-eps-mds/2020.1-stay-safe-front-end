@@ -1,4 +1,3 @@
-import { RectButton } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
@@ -75,20 +74,6 @@ export const NeighborhoodAverage = styled.Text`
     font-family: "Trueno-Regular";
     font-size: ${scale(30)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
-`;
-
-export const EvaluateButton = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
-    width: 60%;
-    height: ${scale(40)}px;
-    margin-top: ${scale(30)}px;
-    background-color: ${(props) => props.theme.primaryRed};
-    border-radius: ${scale(25)}px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 `;
 
 export const EvaluateButtontText = styled.Text`

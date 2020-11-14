@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from 'styled-components';
+import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
 import Loader from "../../components/Loader";
@@ -13,8 +13,6 @@ import {
     Title,
     NormalLabel,
     NormalInput,
-    NormalSend,
-    NormalCreate,
     SendLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
@@ -75,7 +73,7 @@ const Login: React.FC = () => {
                         onSubmitEditing={() => handleLogin()}
                     />
 
-                    <Button 
+                    <Button
                         onPress={() => handleLogin()}
                         width="80%"
                         color={theme.primaryRed}

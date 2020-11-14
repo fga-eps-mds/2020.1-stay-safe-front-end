@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
@@ -16,11 +17,9 @@ import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
-import Button from "../../components/Button";
 import {
     ButtonsContainer,
     ButtonText,
-    LogoutButton,
     UserButtonsContainer,
     DeleteButton,
     DeleteText,
@@ -77,7 +76,7 @@ const Settings: React.FC = () => {
                         {buttonsObject.map((button: ButtonObject) => {
                             return button.userLogged ? (
                                 data.token !== "" && (
-                                    <Button 
+                                    <Button
                                         key={button.title}
                                         width="100%"
                                         color={theme.primaryWhite}
@@ -92,7 +91,7 @@ const Settings: React.FC = () => {
                                     </Button>
                                 )
                             ) : (
-                                <Button 
+                                <Button
                                     key={button.title}
                                     width="100%"
                                     color={theme.primaryWhite}
@@ -107,7 +106,7 @@ const Settings: React.FC = () => {
                                 </Button>
                             );
                         })}
-                        <Button 
+                        <Button
                             onPress={switchTheme}
                             width="100%"
                             color={theme.primaryWhite}
@@ -132,7 +131,7 @@ const Settings: React.FC = () => {
                                 onPress={() => handleLogout()}
                                 width="100%"
                                 color={theme.primaryRed}
-                                style={{ justifyContent: 'space-evenly' }}
+                                style={{ justifyContent: "space-evenly" }}
                             >
                                 <>
                                     <Feather

@@ -6,8 +6,9 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
-import { SendLabel, NormalSend } from "../../components/NormalForms";
+import { SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { createRating, updateRating } from "../../services/ratings";
@@ -276,9 +277,13 @@ const Rating: React.FC = () => {
                         </DetailContainer>
                     );
                 })}
-                <NormalSend onPress={() => handleSubmit()}>
+                <Button
+                    width="80%"
+                    color={theme.primaryRed}
+                    onPress={() => handleSubmit()}
+                >
                     <SendLabel>Salvar</SendLabel>
-                </NormalSend>
+                </Button>
                 <StayAlert
                     show={showSuccessfullyModal}
                     title={isEditing ? "Editar Avaliação" : "Avaliar Bairro"}

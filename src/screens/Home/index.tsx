@@ -13,8 +13,8 @@ import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeatMap from "../../components/HeatMap";
-import Button from '../../components/Button';
 import {
     InfoModal,
     InfoTitle,
@@ -494,8 +494,10 @@ const Home: React.FC = () => {
                         onPress={() => handleSubmitFilter()}
                         color={theme.primaryRed}
                         enabled={
-                            !(selectedOption[0] === 0 ||
-                            selectedOption.length !== 1)
+                            !(
+                                selectedOption[0] === 0 ||
+                                selectedOption.length !== 1
+                            )
                         }
                     >
                         <SendLabel>Filtrar</SendLabel>

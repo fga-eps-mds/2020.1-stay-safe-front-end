@@ -1,4 +1,3 @@
-import { RectButton } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import styled from "styled-components/native";
 
@@ -56,27 +55,6 @@ export const NormalInput = styled.TextInput.attrs((props) => ({
     color: ${(props) => props.theme.primarySuperDarkBlue};
     margin-bottom: ${scale(20)}px;
     padding-horizontal: ${scale(14)}px;
-`;
-
-export const NormalSend = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
-    width: 80%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryRed};
-    border-radius: ${scale(28)}px;
-    margin-top: ${scale(18)}px;
-    padding: ${scale(12)}px;
-`;
-
-export const NormalCreate = styled(RectButton)`
-    width: 80%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryLightBlue};
-    border-radius: ${scale(28)}px;
-    margin-top: ${scale(18)}px;
-    padding: ${scale(12)}px;
 `;
 
 export const SendLabel = styled.Text`

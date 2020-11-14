@@ -1,12 +1,14 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import { getCityNeighborhoods } from "../../services/neighborhood";
-import { NeighborhoodCard, NeighborhoodTitle } from "./styles";
+import { NeighborhoodTitle } from "./styles";
 
 interface Neighborhood {
     city: string;
@@ -26,6 +28,7 @@ type ParamList = {
 };
 
 const Review: React.FC = () => {
+    const theme = useTheme();
     const navigation = useNavigation();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
@@ -60,7 +63,11 @@ const Review: React.FC = () => {
                     ) : (
                         neighborhoods.map((neighborhood) => {
                             return (
-                                <NeighborhoodCard
+                                <Button
+                                    width="85%"
+                                    neighs
+                                    borderRadius={20}
+                                    color={theme.primaryWhite}
                                     style={{ elevation: 5 }}
                                     onPress={() =>
                                         navigation.navigate(
@@ -75,7 +82,7 @@ const Review: React.FC = () => {
                                     <NeighborhoodTitle>
                                         {neighborhood.neighborhood}
                                     </NeighborhoodTitle>
-                                </NeighborhoodCard>
+                                </Button>
                             );
                         })
                     )}
