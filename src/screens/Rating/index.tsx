@@ -50,6 +50,13 @@ interface Details {
     police_rounds: boolean;
 }
 
+interface OneDetail {
+    label: string;
+    value: string;
+    like: boolean;
+    dislike: boolean;
+}
+
 const Rating: React.FC = () => {
     const navigation = useNavigation();
     const { data } = useUser();
@@ -92,52 +99,31 @@ const Rating: React.FC = () => {
         setIdRating(rating.id_rating);
         setStars(rating.rating_neighborhood);
 
+        const catchTheNewItem = (item: OneDetail, type: string) => {
+            const likeOrDislike = rating.details[type] ? "like" : "dislike";
+
+            return {
+                ...item,
+                [likeOrDislike]:
+                    likeOrDislike === "dislike" ? true : rating.details[type],
+            };
+        };
+
         setItems(
             items.map((item) => {
                 if (
                     item.value === "lighting" &&
                     rating.details.lighting !== undefined
                 ) {
-                    const likeOrDislike = rating.details.lighting
-                        ? "like"
-                        : "dislike";
-
-                    return {
-                        ...item,
-                        [likeOrDislike]:
-                            likeOrDislike === "dislike"
-                                ? true
-                                : rating.details.lighting,
-                    };
+                    return catchTheNewItem(item, "lighting");
                 } else if (
                     item.value === "movement_of_people" &&
                     rating.details.movement_of_people !== undefined
                 ) {
-                    const likeOrDislike = rating.details.movement_of_people
-                        ? "like"
-                        : "dislike";
-
-                    return {
-                        ...item,
-                        [likeOrDislike]:
-                            likeOrDislike === "dislike"
-                                ? true
-                                : rating.details.movement_of_people,
-                    };
+                    return catchTheNewItem(item, "movement_of_people");
                 } else if (rating.details.police_rounds !== undefined) {
-                    const likeOrDislike = rating.details.police_rounds
-                        ? "like"
-                        : "dislike";
-
-                    return {
-                        ...item,
-                        [likeOrDislike]:
-                            likeOrDislike === "dislike"
-                                ? true
-                                : rating.details.police_rounds,
-                    };
+                    return catchTheNewItem(item, "police_rounds");
                 }
-                console.log(item);
 
                 return item;
             })

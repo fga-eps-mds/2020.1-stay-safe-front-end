@@ -166,7 +166,10 @@ const CityStatistics: React.FC = () => {
                         width="60%"
                         color={theme.primaryRed}
                         onPress={() =>
-                            navigation.navigate("Review", { cityName, uf })
+                            navigation.navigate("Neighborhoods", {
+                                cityName,
+                                uf,
+                            })
                         }
                     >
                         <MaterialCommunityIcons

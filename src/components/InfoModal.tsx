@@ -17,6 +17,12 @@ export const InfoModal = styled(Modal)`
     padding: ${scale(20)}px ${scale(10)}px;
 `;
 
+export const InfoButton = styled.TouchableOpacity`
+    position: absolute;
+    top: 5%;
+    right: 5%;
+`;
+
 export const InfoTitle = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;

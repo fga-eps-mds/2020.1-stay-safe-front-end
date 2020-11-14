@@ -16,12 +16,6 @@ export const NeighborhoodText = styled.Text`
     text-align: center;
 `;
 
-export const InfoButton = styled.TouchableOpacity`
-    position: absolute;
-    top: 5%;
-    right: 5%;
-`;
-
 export const StarContainer = styled.View`
     width: 80%;
     align-items: center;
@@ -40,26 +34,11 @@ export const ImpressionText = styled.Text`
     text-align: center;
 `;
 
-export const ImpressionsContainer = styled.View`
-    width: 100%;
-    align-items: center;
-    justify-content: space-around;
-    flex-direction: row;
-    margin-bottom: ${scale(20)}px;
-`;
-
 export const ImpressionsCaption = styled.Text`
     font-family: "Trueno-Regular";
     font-size: ${scale(11)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
     text-align: center;
-`;
-
-export const PointContainer = styled.View`
-    width: 30%;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 `;
 
 export const StatisticsNeighborhoodCard = styled.View`
