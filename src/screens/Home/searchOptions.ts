@@ -1,3 +1,41 @@
+export const crimesColors = [
+    {
+        name: "Latrocínio",
+        color: "#336EFF",
+        range: [0, 1, 3, 6, 10],
+    },
+    {
+        name: "Roubo a Transeunte",
+        color: "#FFE000",
+        range: [200, 400, 600, 1000, 1500],
+    },
+    {
+        name: "Roubo de Veículo",
+        color: "#ffa500",
+        range: [0, 10, 20, 50, 100],
+    },
+    {
+        name: "Roubo de Residência",
+        color: "#00FFDC",
+        range: [0, 5, 10, 20, 50],
+    },
+    {
+        name: "Estupro",
+        color: "#000000",
+        range: [20, 30, 40, 50, 70],
+    },
+    {
+        name: "Furto a Transeunte",
+        color: "#4D00FF",
+        range: [20, 50, 70, 90, 100],
+    },
+    {
+        name: "Furto de Veículo",
+        color: "#FF00B6",
+        range: [50, 100, 200, 500, 700],
+    },
+];
+
 export const searchOptionsDf = [
     {
         id: 1,
