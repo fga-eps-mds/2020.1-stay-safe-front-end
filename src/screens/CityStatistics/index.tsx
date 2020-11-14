@@ -164,7 +164,10 @@ const CityStatistics: React.FC = () => {
                     </StatisticsCard>
                     <SortButton
                         onPress={() =>
-                            navigation.navigate("Review", { cityName, uf })
+                            navigation.navigate("Neighborhoods", {
+                                cityName,
+                                uf,
+                            })
                         }
                     >
                         <MaterialCommunityIcons
