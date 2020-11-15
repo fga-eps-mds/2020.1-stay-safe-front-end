@@ -10,6 +10,7 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import LoggedInModal from "../../components/LoggedInModal";
 import LogoContainer from "../../components/LogoContainer";
@@ -24,13 +25,7 @@ import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 import { profileButtons } from "./buttonsObject";
-import {
-    InputViewing,
-    ProfileButton,
-    EditButton,
-    ButtonLabel,
-    ButtonsContainer,
-} from "./styles";
+import { InputViewing, ButtonLabel, ButtonsContainer } from "./styles";
 
 const Profile: React.FC = () => {
     const theme = useTheme();
@@ -194,8 +189,10 @@ const Profile: React.FC = () => {
                     )}
 
                     {data.token !== "" && (
-                        <EditButton
+                        <Button
                             isEditing={isEditing}
+                            color={theme.primaryRed}
+                            width="45%"
                             onPress={
                                 isEditing
                                     ? () => handleUpdateProfile()
@@ -210,15 +207,17 @@ const Profile: React.FC = () => {
                             <ButtonLabel>
                                 {isEditing ? "Salvar" : "Editar Perfil"}
                             </ButtonLabel>
-                        </EditButton>
+                        </Button>
                     )}
 
                     {data.token !== "" && !isEditing && (
                         <ButtonsContainer>
                             {profileButtons.map((button) => {
                                 return (
-                                    <ProfileButton
+                                    <Button
                                         key={button.label}
+                                        width="70%"
+                                        color={theme.primaryDarkBlue}
                                         onPress={() =>
                                             navigation.navigate(
                                                 button.navigation
@@ -233,7 +232,7 @@ const Profile: React.FC = () => {
                                         <ButtonLabel>
                                             {button.label}
                                         </ButtonLabel>
-                                    </ProfileButton>
+                                    </Button>
                                 );
                             })}
                         </ButtonsContainer>

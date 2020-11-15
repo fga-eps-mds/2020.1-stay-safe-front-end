@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import { InfoButton } from "../../components/InfoModal";
 import NeighborhoodImpressions from "../../components/NeighborhoodImpressions";
@@ -15,7 +16,6 @@ import {
     StarContainer,
     StatisticsNeighborhoodCard,
     NeighborhoodText,
-    EvaluateButton,
     EvaluateButtontText,
     TitleCity,
     NeighborhoodAverage,
@@ -84,7 +84,10 @@ const NeighborhoodReview: React.FC = () => {
                         </NeighborhoodText>
                     )}
                 </StatisticsNeighborhoodCard>
-                <EvaluateButton
+                <Button
+                    width="60%"
+                    color={theme.primaryRed}
+                    review
                     onPress={() =>
                         navigation.navigate("Rating", {
                             rating: { neighborhood },
@@ -97,7 +100,7 @@ const NeighborhoodReview: React.FC = () => {
                         color={theme.primaryWhite}
                     />
                     <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
-                </EvaluateButton>
+                </Button>
             </KeyboardScrollView>
             <NeighborhoodInfo
                 isOpen={isInfoOpen}

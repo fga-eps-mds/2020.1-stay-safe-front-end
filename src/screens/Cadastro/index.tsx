@@ -3,7 +3,9 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
@@ -13,7 +15,6 @@ import {
     Title,
     NormalLabel,
     NormalInput,
-    NormalSend,
     SendLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
@@ -21,6 +22,7 @@ import { createUser, authUser } from "../../services/users";
 import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
+    const theme = useTheme();
     const navigation = useNavigation();
     const { signIn } = useUser();
 
@@ -65,6 +67,8 @@ const Cadastro: React.FC = () => {
                 });
                 if (!response.body.error && response.status === 200) {
                     setIsLoading(true);
+
+                    setTimeout(() => setIsLoading(false), 5000);
 
                     await signIn({ username, password: userPwd });
 
@@ -137,9 +141,13 @@ const Cadastro: React.FC = () => {
                         onSubmitEditing={() => handleRegister()}
                     />
 
-                    <NormalSend onPress={() => handleRegister()}>
+                    <Button
+                        onPress={() => handleRegister()}
+                        width="80%"
+                        color={theme.primaryRed}
+                    >
                         <SendLabel>Criar Conta</SendLabel>
-                    </NormalSend>
+                    </Button>
                     {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>

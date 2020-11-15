@@ -1,11 +1,7 @@
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import styled, { css } from "styled-components/native";
+import styled from "styled-components/native";
 
 import { scale } from "../utils/scalling";
-
-interface NormalSendProps {
-    isDisabled?: boolean;
-}
 
 export const Container = styled.View`
     flex: 1;
@@ -59,34 +55,6 @@ export const NormalInput = styled.TextInput.attrs((props) => ({
     color: ${(props) => props.theme.primarySuperDarkBlue};
     margin-bottom: ${scale(20)}px;
     padding-horizontal: ${scale(14)}px;
-`;
-
-export const NormalSend = styled.TouchableOpacity.attrs({
-    activeOpacity: 0.5,
-})<NormalSendProps>`
-    width: 80%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryRed};
-    border-radius: ${scale(28)}px;
-    margin-top: ${scale(18)}px;
-    padding: ${scale(12)}px;
-
-    ${(props) =>
-        props.disabled &&
-        css`
-            background-color: ${(props) => props.theme.primaryGray};
-        `}
-`;
-
-export const NormalCreate = styled.TouchableOpacity.attrs({
-    activeOpacity: 0.5,
-})`
-    width: 80%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryLightBlue};
-    border-radius: ${scale(28)}px;
-    margin-top: ${scale(18)}px;
-    padding: ${scale(12)}px;
 `;
 
 export const SendLabel = styled.Text`

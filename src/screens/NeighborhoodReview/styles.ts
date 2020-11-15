@@ -55,17 +55,6 @@ export const NeighborhoodAverage = styled.Text`
     color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
-export const EvaluateButton = styled.TouchableOpacity`
-    width: 60%;
-    height: ${scale(40)}px;
-    margin-top: ${scale(30)}px;
-    background-color: ${(props) => props.theme.primaryRed};
-    border-radius: ${scale(25)}px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`;
-
 export const EvaluateButtontText = styled.Text`
     font-family: "Trueno-SemiBold";
     font-size: ${scale(15)}px;

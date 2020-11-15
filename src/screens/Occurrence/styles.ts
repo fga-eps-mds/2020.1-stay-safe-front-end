@@ -45,17 +45,6 @@ export const InputContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const TouchablePicker = styled.TouchableOpacity.attrs({
-    activeOpacity: 0.5,
-})`
-    height: ${scale(42)}px;
-    width: 100%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryWhite};
-    border-radius: ${scale(15)}px;
-    padding: ${scale(12)}px;
-`;
-
 export const PlaceholderPicker = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(14)}px;
