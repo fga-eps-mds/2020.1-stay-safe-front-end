@@ -1,6 +1,7 @@
-import { scale } from "../../utils/scalling";
 import styled from "styled-components/native";
-import DropDownPicker from "react-native-dropdown-picker";
+
+import { DropDown } from "../../components/Dropdown";
+import { scale } from "../../utils/scalling";
 
 export const SearchTabContainer = styled.View`
     align-items: center;
@@ -15,19 +16,11 @@ export const DropDownsContainer = styled.View`
     width: 85%;
 `;
 
-export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
+export const UfDropDown = styled(DropDown).attrs((props) => ({
     placeholder: "UF",
     containerStyle: {
         height: scale(42),
-        width: '30%',
-    },
-    dropDownStyle: {
-        backgroundColor: props.theme.primaryWhite,
-        borderTopLeftRadius: scale(15),
-        borderTopRightRadius: scale(15),
-        borderBottomLeftRadius: scale(15),
-        borderBottomRightRadius: scale(15),
-        height: scale(80)
+        width: "25%",
     },
     labelStyle: {
         fontFamily: "Trueno-Regular",
@@ -35,82 +28,20 @@ export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
         textAlign: "center",
         color: props.theme.primaryDarkBlue,
     },
-    activeLabelStyle: {
-        color: props.theme.primaryDarkBlue,
-        fontSize: scale(17),
-        fontFamily: "Trueno-SemiBold",
-    },
-    arrowColor: props.theme.primaryRed,
-    arrowSize: 18,
-}))`
-    border: 0;
-    margin-right: ${scale(5)}px;
-    background-color: ${(props) => props.theme.primaryWhite};
-`;
+}))``;
 
-export const CityDropDown = styled(DropDownPicker).attrs((props) => ({
+export const CityDropDown = styled(UfDropDown).attrs((props) => ({
     placeholder: "Cidade",
     containerStyle: {
         height: scale(42),
-        width: '70%',
+        width: "70%",
     },
-    dropDownStyle: {
-        backgroundColor: props.theme.primaryWhite,
-        borderTopLeftRadius: scale(15),
-        borderTopRightRadius: scale(15),
-        borderBottomLeftRadius: scale(15),
-        borderBottomRightRadius: scale(15),
-        height: scale(200)
-    },
-    labelStyle: {
-        fontFamily: "Trueno-Regular",
-        fontSize: scale(16),
-        textAlign: "center",
-        color: props.theme.primaryDarkBlue,
-    },
-    activeLabelStyle: {
-        color: props.theme.primaryDarkBlue,
-        fontSize: scale(17),
-        fontFamily: "Trueno-SemiBold",
-    },
-    arrowColor: props.theme.primaryRed,
-    arrowSize: 18,
-}))`
-    border: 0;
-    background-color: ${(props) => props.theme.primaryWhite};
-`;
+}))``;
 
-export const NeighborhoodDropDown = styled(DropDownPicker).attrs((props) => ({
+export const NeighborhoodDropDown = styled(UfDropDown).attrs((props) => ({
     placeholder: "Bairro",
     containerStyle: {
         height: scale(42),
-        width: '100%',
+        width: "80%",
     },
-    dropDownStyle: {
-        backgroundColor: props.theme.primaryWhite,
-        borderTopLeftRadius: scale(15),
-        borderTopRightRadius: scale(15),
-        borderBottomLeftRadius: scale(15),
-        borderBottomRightRadius: scale(15),
-        height: scale(200)
-    },
-    labelStyle: {
-        fontFamily: "Trueno-Regular",
-        fontSize: scale(16),
-        textAlign: "center",
-        color: props.theme.primaryDarkBlue,
-    },
-    activeLabelStyle: {
-        color: props.theme.primaryDarkBlue,
-        fontSize: scale(17),
-        fontFamily: "Trueno-SemiBold",
-    },
-    arrowColor: props.theme.primaryRed,
-    arrowSize: 18,
-}))`
-    border: 0;
-    margin-top: ${scale(5)}px;
-    background-color: ${(props) => props.theme.primaryWhite};
-`;
-
-
+}))``;

@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import { DropDown, dropdownStyle } from "../../components/Dropdown";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
@@ -31,10 +32,8 @@ import {
     physicalAggressionItems,
     policeReportItems,
     victimItems,
-    dropdownStyle,
 } from "./dropdownConstants";
 import {
-    DropDown,
     InputContainer,
     InputWrapper,
     PlaceholderPicker,
