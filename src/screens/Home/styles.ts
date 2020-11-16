@@ -1,4 +1,5 @@
 import DropDownPicker from "react-native-dropdown-picker";
+import { RectButton } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
 import styled from "styled-components/native";
@@ -29,7 +30,10 @@ export const StayNormalMap = styled(MapView)`
     flex: 1;
 `;
 
-export const FilterButton = styled.TouchableOpacity`
+export const FilterButton = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     position: absolute;
     width: ${scale(50)}px;
     height: ${scale(50)}px;
@@ -43,7 +47,10 @@ export const FilterButton = styled.TouchableOpacity`
     border-radius: ${scale(50)}px;
 `;
 
-export const HeatInfo = styled.TouchableOpacity`
+export const HeatInfo = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     position: absolute;
     width: ${scale(50)}px;
     height: ${scale(50)}px;
@@ -88,7 +95,10 @@ export const Option = styled.View`
     align-items: center;
 `;
 
-export const OptionCircleButton = styled.TouchableOpacity`
+export const OptionCircleButton = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     justify-content: center;
     align-items: center;
     margin-right: ${scale(10)}px;
@@ -146,7 +156,7 @@ export const DropDownContainer = styled.View`
 `;
 
 export const DropDownTitle = styled.Text`
-    font-size: ${scale(16)}px;
+    font-size: ${scale(15)}px;
     font-family: "Trueno-Regular";
     color: ${(props) =>
         props.theme.type === "dark"
@@ -158,7 +168,7 @@ export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
     placeholder: "Selecionar",
     containerStyle: {
         height: scale(42),
-        width: "25%",
+        width: "30%",
     },
     dropDownStyle: {
         backgroundColor: props.theme.primaryWhite,

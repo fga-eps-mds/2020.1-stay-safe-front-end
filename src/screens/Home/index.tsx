@@ -13,6 +13,7 @@ import { Marker, MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -25,7 +26,7 @@ import {
 } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
-import { NormalSend, SendLabel } from "../../components/NormalForms";
+import { SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import DarkLogo from "../../img/logo-thief-dark.svg";
@@ -35,7 +36,12 @@ import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
+import {
+    crimesColors,
+    searchOptionsDf,
+    searchOptionsSp,
+    ufs,
+} from "./searchOptions";
 import {
     FilterButton,
     FilterModal,
@@ -153,7 +159,7 @@ const Home: React.FC = () => {
     };
 
     const getPinColor = (occurrence) => {
-        return searchOptions.filter(
+        return crimesColors.filter(
             (op) => op.name === occurrence.occurrence_type
         )[0].color;
     };
@@ -412,7 +418,10 @@ const Home: React.FC = () => {
                             return (
                                 <Tab
                                     key={`tab-${index}`}
-                                    onPress={() => setSelectedFilter(item.name)}
+                                    onPress={() => {
+                                        setSelectedFilter(item.name);
+                                        setSelectedOption([0]);
+                                    }}
                                     focus={selectedFilter === item.name}
                                 >
                                     <TabTitle
@@ -435,6 +444,8 @@ const Home: React.FC = () => {
                                 defaultValue={selectedUf}
                                 onChangeItem={(item) => {
                                     setSelectedUf(item.value);
+                                    setSelectedOption([0]);
+
                                     if (item.value === "df") {
                                         setSearchOptions(searchOptionsDf);
                                     } else {
@@ -488,12 +499,20 @@ const Home: React.FC = () => {
                     </Span>
                 </View>
                 <View style={{ alignItems: "center" }}>
-                    <NormalSend
-                        style={{ width: "50%" }}
+                    <Button
+                        width="50%"
                         onPress={() => handleSubmitFilter()}
+                        color={theme.primaryRed}
+                        enabled={
+                            !(
+                                selectedFilter === "heat" &&
+                                (selectedOption[0] === 0 ||
+                                    selectedOption.length !== 1)
+                            )
+                        }
                     >
                         <SendLabel>Filtrar</SendLabel>
-                    </NormalSend>
+                    </Button>
                     <Span show style={{ marginTop: scale(5) }}>
                         ou clique no mapa para voltar
                     </Span>

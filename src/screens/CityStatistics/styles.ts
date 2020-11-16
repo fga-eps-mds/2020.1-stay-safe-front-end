@@ -126,17 +126,6 @@ export const CrimeBarNumber = styled.Text`
     margin-left: ${scale(2)}px;
 `;
 
-export const SortButton = styled.TouchableOpacity`
-    width: 60%;
-    height: ${scale(41)}px;
-    margin-top: ${scale(27)}px;
-    background-color: ${(props) => props.theme.primaryRed};
-    border-radius: ${scale(25)}px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`;
-
 export const SortButtontText = styled.Text`
     font-family: "Trueno-SemiBold";
     font-size: ${scale(15)}px;

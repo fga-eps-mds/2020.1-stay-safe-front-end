@@ -1,3 +1,4 @@
+import { RectButton } from "react-native-gesture-handler";
 import { AirbnbRating } from "react-native-ratings";
 import styled, { css } from "styled-components/native";
 
@@ -62,7 +63,10 @@ export const DetailLabel = styled.Text`
     text-align: center;
 `;
 
-export const ImpressionContainer = styled.TouchableOpacity<ImpressionProps>`
+export const ImpressionContainer = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))<ImpressionProps>`
     background-color: ${(props) =>
         props.select ? props.color : props.theme.primaryWhite};
     padding: ${scale(8)}px;

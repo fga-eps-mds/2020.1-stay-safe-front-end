@@ -5,12 +5,12 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
     Container,
     KeyboardScrollView,
-    NormalSend,
     SendLabel,
     NormalLabel,
 } from "../../components/NormalForms";
@@ -24,7 +24,6 @@ import {
     formatDateTime,
     getOcurrenceDateTime,
 } from "../../utils/dates";
-import { scale } from "../../utils/scalling";
 import { validateOccurrence } from "../../utils/validateOccurrence";
 import {
     occurrenceTypeItems,
@@ -38,7 +37,6 @@ import {
     DropDown,
     InputContainer,
     InputWrapper,
-    TouchablePicker,
     PlaceholderPicker,
     DatePicker,
     TimePicker,
@@ -333,13 +331,16 @@ const Occurrence: React.FC = () => {
                     <InputWrapper>
                         <InputContainer>
                             <NormalLabel>Data da Ocorrência</NormalLabel>
-                            <TouchablePicker
+                            <Button
+                                width="100%"
+                                color={theme.primaryWhite}
+                                borderRadius={15}
                                 onPress={() => setShowDatePicker(true)}
                             >
                                 <PlaceholderPicker>
                                     {formatDate(datetime)}
                                 </PlaceholderPicker>
-                            </TouchablePicker>
+                            </Button>
                             {showDatePicker && (
                                 <DatePicker
                                     value={datetime}
@@ -358,13 +359,16 @@ const Occurrence: React.FC = () => {
 
                         <InputContainer>
                             <NormalLabel>Hora da Ocorrência</NormalLabel>
-                            <TouchablePicker
+                            <Button
+                                width="100%"
+                                color={theme.primaryWhite}
+                                borderRadius={15}
                                 onPress={() => setShowTimePicker(true)}
                             >
                                 <PlaceholderPicker>
                                     {formatTime(datetime)}
                                 </PlaceholderPicker>
-                            </TouchablePicker>
+                            </Button>
                             {showTimePicker && (
                                 <TimePicker
                                     value={datetime}
@@ -374,11 +378,10 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
                     </InputWrapper>
 
-                    <NormalSend
-                        style={[
-                            { marginTop: 45 },
-                            isLoading && { padding: scale(9) },
-                        ]}
+                    <Button
+                        style={{ marginTop: 45 }}
+                        width="80%"
+                        color={theme.primaryRed}
                         onPress={handleSubmit}
                     >
                         <SendLabel>
@@ -386,7 +389,7 @@ const Occurrence: React.FC = () => {
                                 ? "Editar Ocorrência"
                                 : "Registrar Ocorrência"}
                         </SendLabel>
-                    </NormalSend>
+                    </Button>
 
                     <StayAlert
                         show={showSuccessfullyModal}

@@ -1,19 +1,10 @@
 import styled from "styled-components/native";
 
-import { NormalSend, SendLabel } from "../../components/NormalForms";
+import { SendLabel } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 
 export const ButtonsContainer = styled.View`
     width: 80%;
-`;
-
-export const Button = styled.TouchableOpacity`
-    padding: ${scale(15)}px;
-    background-color: ${(props) => props.theme.primaryWhite};
-    border-radius: ${scale(12)}px;
-    flex-direction: row;
-    margin-bottom: ${scale(17)}px;
-    align-items: center;
 `;
 
 export const ButtonText = styled.Text`
@@ -24,14 +15,8 @@ export const ButtonText = styled.Text`
 `;
 
 export const UserButtonsContainer = styled.View`
-    padding: ${scale(30)}px ${scale(110)}px;
+    padding: ${scale(30)}px ${scale(120)}px;
     justify-content: center;
-    align-items: center;
-`;
-
-export const LogoutButton = styled(NormalSend)`
-    flex-direction: row;
-    justify-content: space-evenly;
     align-items: center;
 `;
 

@@ -57,28 +57,6 @@ export const NormalInput = styled.TextInput.attrs((props) => ({
     padding-horizontal: ${scale(14)}px;
 `;
 
-export const NormalSend = styled.TouchableOpacity.attrs({
-    activeOpacity: 0.5,
-})`
-    width: 80%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryRed};
-    border-radius: ${scale(28)}px;
-    margin-top: ${scale(18)}px;
-    padding: ${scale(12)}px;
-`;
-
-export const NormalCreate = styled.TouchableOpacity.attrs({
-    activeOpacity: 0.5,
-})`
-    width: 80%;
-    align-items: center;
-    background-color: ${(props) => props.theme.primaryLightBlue};
-    border-radius: ${scale(28)}px;
-    margin-top: ${scale(18)}px;
-    padding: ${scale(12)}px;
-`;
-
 export const SendLabel = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(14)}px;

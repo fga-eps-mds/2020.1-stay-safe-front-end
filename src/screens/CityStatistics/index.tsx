@@ -5,6 +5,7 @@ import { View, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
@@ -17,7 +18,6 @@ import {
     YearTitle,
     YearTitleContainer,
     CrimeStatistics,
-    SortButton,
     SortButtontText,
     CrimeContainer,
     CrimeText,
@@ -162,9 +162,14 @@ const CityStatistics: React.FC = () => {
                             )}
                         </CrimeStatistics>
                     </StatisticsCard>
-                    <SortButton
+                    <Button
+                        width="60%"
+                        color={theme.primaryRed}
                         onPress={() =>
-                            navigation.navigate("Review", { cityName, uf })
+                            navigation.navigate("Neighborhoods", {
+                                cityName,
+                                uf,
+                            })
                         }
                     >
                         <MaterialCommunityIcons
@@ -173,7 +178,7 @@ const CityStatistics: React.FC = () => {
                             color={theme.primaryWhite}
                         />
                         <SortButtontText>Visualizar Bairros</SortButtontText>
-                    </SortButton>
+                    </Button>
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

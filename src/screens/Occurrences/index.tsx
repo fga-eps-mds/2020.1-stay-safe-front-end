@@ -5,6 +5,15 @@ import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import {
+    ScrollViewStyled,
+    CardContainer,
+    Card,
+    CardData,
+    Title,
+    Date,
+    CardActions,
+} from "../../components/Cards";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import StayAlert from "../../components/StayAlert";
@@ -15,15 +24,6 @@ import {
     deleteOccurrence,
 } from "../../services/occurrences";
 import { scale } from "../../utils/scalling";
-import {
-    ScrollViewStyled,
-    CardContainer,
-    Card,
-    CardData,
-    Title,
-    Date,
-    CardActions,
-} from "../../components/Cards";
 
 const Occurrences: React.FC = () => {
     const navigation = useNavigation();

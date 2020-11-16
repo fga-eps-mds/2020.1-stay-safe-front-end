@@ -1,17 +1,20 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import * as Notifications from "expo-notifications";
 import React, {
     createContext,
     useCallback,
     useState,
     useEffect,
     useContext,
+    useRef,
 } from "react";
 import { Alert } from "react-native";
 import { ThemeProvider } from "styled-components";
 
-import { authUser, deleteUser } from "../services/users";
+import { authUser, deleteUser, updateUser } from "../services/users";
 import staySafeDarkTheme from "../styles/staySafeDarkTheme";
 import staySafeTheme from "../styles/staySafeTheme";
+import { registerForPushNotificationsAsync } from "../utils/notifications";
 
 interface SignInCredentials {
     username: string;
@@ -19,13 +22,15 @@ interface SignInCredentials {
 }
 
 interface UserContextData {
-    switchTheme: () => void;
     theme: AppTheme;
     data: UserState;
     isLoading: boolean;
+    showNotifications: boolean;
+    switchTheme: () => void;
     signIn(credentials: SignInCredentials): Promise<void>;
     signOut(): void;
     deleteAccount(): void;
+    switchShowNotifications(): void;
 }
 
 interface AppTheme {
@@ -58,6 +63,14 @@ interface UserState {
     token: string;
 }
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+
 const UserContext = createContext<UserContextData | null>(null);
 
 export const UserProvider: React.FC = ({ children }) => {
@@ -65,14 +78,28 @@ export const UserProvider: React.FC = ({ children }) => {
 
     const [data, setData] = useState<UserState>({ token: "", username: "" });
 
+    const [expoPushToken, setExpoPushToken] = useState("");
+    const [notification, setNotification] = useState(false);
+
+    const [showNotifications, setShowNotifications] = useState(true);
+
+    const notificationListener = useRef();
+    const responseListener = useRef();
+
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function loadStorageData(): Promise<void> {
-            const [token, username, themeType] = await AsyncStorage.multiGet([
+            const [
+                token,
+                username,
+                themeType,
+                notifications,
+            ] = await AsyncStorage.multiGet([
                 "@StaySafe:token",
                 "@StaySafe:username",
                 "@StaySafe:theme",
+                "@StaySafe:notifications",
             ]);
 
             if (token[1] && username[1]) {
@@ -83,6 +110,8 @@ export const UserProvider: React.FC = ({ children }) => {
                 themeType[1] === "default" ? staySafeTheme : staySafeDarkTheme
             );
 
+            setShowNotifications(notifications[1] === "true");
+
             setIsLoading(false);
         }
 
@@ -90,6 +119,31 @@ export const UserProvider: React.FC = ({ children }) => {
             loadStorageData();
         }, 1000);
     }, []);
+
+    const registerDeviceForPushNotifications = async () => {
+        const tokenNotification = await registerForPushNotificationsAsync();
+
+        setExpoPushToken(tokenNotification);
+
+        // This listener is fired whenever a notification is received while the app is foregrounded
+        notificationListener.current = Notifications.addNotificationReceivedListener(
+            (notification) => {
+                setNotification(notification);
+            }
+        );
+
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        responseListener.current = Notifications.addNotificationResponseReceivedListener(
+            (response) => {
+                console.log(response);
+            }
+        );
+
+        Notifications.removeNotificationSubscription(notificationListener);
+        Notifications.removeNotificationSubscription(responseListener);
+
+        return tokenNotification;
+    };
 
     const signIn = useCallback(async ({ username, password }) => {
         const response = await authUser({
@@ -100,9 +154,22 @@ export const UserProvider: React.FC = ({ children }) => {
         if (!response.body.error && response.status === 200) {
             const { token } = response.body;
 
+            registerDeviceForPushNotifications().then(async (deviceToken) => {
+                setTimeout(async () => {
+                    await updateUser(
+                        {
+                            show_notifications: true,
+                            device_token: String(deviceToken),
+                        },
+                        token
+                    );
+                }, 10000);
+            });
+
             await AsyncStorage.multiSet([
                 ["@StaySafe:token", token],
                 ["@StaySafe:username", username],
+                ["@StaySafe:notifications", String(showNotifications)],
             ]);
 
             setData({ username, token });
@@ -139,6 +206,14 @@ export const UserProvider: React.FC = ({ children }) => {
         setTheme(theme === staySafeTheme ? staySafeDarkTheme : staySafeTheme);
     }, [theme]);
 
+    const switchShowNotifications = useCallback(async () => {
+        await AsyncStorage.setItem(
+            "@StaySafe:notifications",
+            String(showNotifications !== true)
+        );
+        setShowNotifications(showNotifications !== true);
+    }, [theme]);
+
     return (
         <UserContext.Provider
             value={{
@@ -146,6 +221,8 @@ export const UserProvider: React.FC = ({ children }) => {
                 switchTheme,
                 theme,
                 isLoading,
+                switchShowNotifications,
+                showNotifications,
                 signIn,
                 signOut,
                 deleteAccount,

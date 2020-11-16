@@ -3,10 +3,12 @@ import base64 from "react-native-base64";
 import { userApi } from "./api";
 
 interface UserProps {
-    full_name: string;
-    username: string;
-    email: string;
-    password: string;
+    full_name?: string;
+    username?: string;
+    email?: string;
+    password?: string;
+    show_notifications?: boolean;
+    device_token?: string;
 }
 
 interface authUserProps {

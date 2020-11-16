@@ -6,8 +6,9 @@ import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
-import { SendLabel, NormalSend } from "../../components/NormalForms";
+import { SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { createRating, updateRating } from "../../services/ratings";
@@ -47,6 +48,13 @@ interface Details {
     lighting: boolean;
     movement_of_people: boolean;
     police_rounds: boolean;
+}
+
+interface OneDetail {
+    label: string;
+    value: string;
+    like: boolean;
+    dislike: boolean;
 }
 
 const Rating: React.FC = () => {
@@ -91,52 +99,31 @@ const Rating: React.FC = () => {
         setIdRating(rating.id_rating);
         setStars(rating.rating_neighborhood);
 
+        const catchTheNewItem = (item: OneDetail, type: string) => {
+            const likeOrDislike = rating.details[type] ? "like" : "dislike";
+
+            return {
+                ...item,
+                [likeOrDislike]:
+                    likeOrDislike === "dislike" ? true : rating.details[type],
+            };
+        };
+
         setItems(
             items.map((item) => {
                 if (
                     item.value === "lighting" &&
                     rating.details.lighting !== undefined
                 ) {
-                    const likeOrDislike = rating.details.lighting
-                        ? "like"
-                        : "dislike";
-
-                    return {
-                        ...item,
-                        [likeOrDislike]:
-                            likeOrDislike === "dislike"
-                                ? true
-                                : rating.details.lighting,
-                    };
+                    return catchTheNewItem(item, "lighting");
                 } else if (
                     item.value === "movement_of_people" &&
                     rating.details.movement_of_people !== undefined
                 ) {
-                    const likeOrDislike = rating.details.movement_of_people
-                        ? "like"
-                        : "dislike";
-
-                    return {
-                        ...item,
-                        [likeOrDislike]:
-                            likeOrDislike === "dislike"
-                                ? true
-                                : rating.details.movement_of_people,
-                    };
+                    return catchTheNewItem(item, "movement_of_people");
                 } else if (rating.details.police_rounds !== undefined) {
-                    const likeOrDislike = rating.details.police_rounds
-                        ? "like"
-                        : "dislike";
-
-                    return {
-                        ...item,
-                        [likeOrDislike]:
-                            likeOrDislike === "dislike"
-                                ? true
-                                : rating.details.police_rounds,
-                    };
+                    return catchTheNewItem(item, "police_rounds");
                 }
-                console.log(item);
 
                 return item;
             })
@@ -276,9 +263,13 @@ const Rating: React.FC = () => {
                         </DetailContainer>
                     );
                 })}
-                <NormalSend onPress={() => handleSubmit()}>
+                <Button
+                    width="80%"
+                    color={theme.primaryRed}
+                    onPress={() => handleSubmit()}
+                >
                     <SendLabel>Salvar</SendLabel>
-                </NormalSend>
+                </Button>
                 <StayAlert
                     show={showSuccessfullyModal}
                     title={isEditing ? "Editar Avaliação" : "Avaliar Bairro"}
