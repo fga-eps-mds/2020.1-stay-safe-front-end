@@ -1,4 +1,5 @@
 export interface Neighborhood {
+    id_neighborhood: number;
     city: string;
     state: string;
     neighborhood: string;
