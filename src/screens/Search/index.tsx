@@ -4,9 +4,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderTitle from "../../components/HeaderTitle";
 import { scale } from "../../utils/scalling";
 import { KeyboardScrollView } from "../../components/NormalForms";
-import { UfDropDown, DropDownsContainer, CityDropDown } from "./styles";
-import { ufs } from './searchConstants';
+import { UfDropDown, DropDownsContainer, CityDropDown, NeighborhoodDropDown } from "./styles";
+import { getCityNeighborhoods } from "../../services/neighborhood";
+import { ufs, brasilia } from './searchConstants';
 import { useTheme } from "styled-components";
+import { NeighborhoodCard } from "../Review/styles";
+import { NeighborhoodTitle } from "../NeighborhoodReview/styles";
 
 interface IBGEUFResponse {
     sigla: string;
@@ -23,17 +26,37 @@ interface DropDownItem {
     value: string;
 }
 
+interface Neighborhood {
+    neighborhood: string;
+}
+
 const Search: React.FC = () => {
     const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
 
-    const onChangeSearch = query => console.log(query);
-
     const [SpCities, setSpCities] = useState<DropDownItem[]>([]);
     const [Dfcities, DfsetCities] = useState<DropDownItem[]>([]);
+    const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
 
     const [selectedUf, setSelectedUf] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
+
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        getNeighborhood().then((res) => setIsLoading(false));
+    }, [selectedCity]);
+
+    const getNeighborhood = async () => {
+        const response = await getCityNeighborhoods(selectedCity, selectedUf);
+
+        if (response.status === 200) {
+            setNeighborhoods(response.body);
+            console.log(response.body);
+        }
+    };
 
     useEffect(() => {
         fetch(
@@ -76,10 +99,10 @@ const Search: React.FC = () => {
                     {/* </View> */}
                     {/* <View style={{ width: '70%', justifyContent: 'center', alignItems: 'center' }} > */}
                         <CityDropDown
-                            items={SpCities}
-                            onChangeItem={(item: DropDownItem) =>
+                            items={brasilia}
+                            onChangeItem={(item: DropDownItem) =>{
                                 setSelectedCity(item.label)
-                            }
+                            }}
                             style={{ width: '100%' }}
                             disabled={selectedUf === ''}
                             searchable={true}
@@ -90,6 +113,29 @@ const Search: React.FC = () => {
                         />
                     {/* </View> */}
                 </DropDownsContainer>
+                <View style={{marginTop: scale(15)}}>
+                    {neighborhoods.map((neighborhood) => {
+                                return (
+                                    <NeighborhoodCard
+                                        style={{ elevation: 5 }}
+                                        key={neighborhood.neighborhood}
+                                    >
+                                        <NeighborhoodTitle>
+                                            {neighborhood.neighborhood}
+                                        </NeighborhoodTitle>
+                                    </NeighborhoodCard>
+                                );
+                                })}
+                </View>
+               {/*  <DropDownsContainer>
+                    <NeighborhoodDropDown
+                         items={}
+                         onChangeItem={(item: Neighborhood) => {
+                             setNeighborhoods(item.neighborhood);
+                         }}
+                         dropdownStyle={{ height: scale(200) }}
+                    />
+                </DropDownsContainer> */}
             </KeyboardScrollView>
         </SafeAreaView>
     );

@@ -80,4 +80,37 @@ export const CityDropDown = styled(DropDownPicker).attrs((props) => ({
     background-color: ${(props) => props.theme.primaryWhite};
 `;
 
+export const NeighborhoodDropDown = styled(DropDownPicker).attrs((props) => ({
+    placeholder: "Bairro",
+    containerStyle: {
+        height: scale(42),
+        width: '100%',
+    },
+    dropDownStyle: {
+        backgroundColor: props.theme.primaryWhite,
+        borderTopLeftRadius: scale(15),
+        borderTopRightRadius: scale(15),
+        borderBottomLeftRadius: scale(15),
+        borderBottomRightRadius: scale(15),
+        height: scale(200)
+    },
+    labelStyle: {
+        fontFamily: "Trueno-Regular",
+        fontSize: scale(16),
+        textAlign: "center",
+        color: props.theme.primaryDarkBlue,
+    },
+    activeLabelStyle: {
+        color: props.theme.primaryDarkBlue,
+        fontSize: scale(17),
+        fontFamily: "Trueno-SemiBold",
+    },
+    arrowColor: props.theme.primaryRed,
+    arrowSize: 18,
+}))`
+    border: 0;
+    margin-top: ${scale(5)}px;
+    background-color: ${(props) => props.theme.primaryWhite};
+`;
+
 
