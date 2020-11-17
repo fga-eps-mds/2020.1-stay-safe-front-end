@@ -1,6 +1,7 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -22,6 +23,7 @@ import {
     DropDownsContainer,
     CityDropDown,
     NeighborhoodDropDown,
+    NotFoundText,
 } from "./styles";
 
 interface DropDownItem {
@@ -116,10 +118,10 @@ const Search: React.FC = () => {
                             onChangeItem={(item: DropDownItem) => {
                                 setSelectedUf(item.value);
                             }}
-                            dropdownStyle={{ height: scale(200) }}
                         />
                         <CityDropDown
                             items={dropdownCities}
+                            dropDownMaxHeight={scale(300)}
                             onChangeItem={(item: DropDownItem) => {
                                 setSelectedCity(item.value);
                             }}
@@ -130,30 +132,59 @@ const Search: React.FC = () => {
                             disabled={selectedUf === ""}
                             searchable
                             searchablePlaceholder="Digite uma cidade..."
-                            searchablePlaceholderTextColor="gray"
-                            searchableError={() => <Text>Não encontrado</Text>}
+                            searchablePlaceholderTextColor={
+                                theme.primaryDarkBlue
+                            }
+                            searchableStyle={{ textAlign: "center" }}
+                            searchableError={() => (
+                                <NotFoundText>Não encontrado</NotFoundText>
+                            )}
                         />
                     </DropDownsContainer>
-                    <NeighborhoodDropDown
-                        items={dropdownNeighborhoods}
-                        style={[
-                            dropdownStyle,
-                            { backgroundColor: theme.primaryWhite },
-                        ]}
-                        onChangeItem={(item: DropDownItem) => {
-                            setSelectedNeighborhood(item.value);
-                        }}
-                        disabled={selectedCity === ""}
-                        searchable
-                        searchablePlaceholder="Digite um bairro..."
-                        searchablePlaceholderTextColor="gray"
-                        searchableError={() => <Text>Não encontrado</Text>}
-                    />
 
-                    <View style={{ flexDirection: "row" }}>
+                    <View
+                        style={{
+                            marginTop: scale(15),
+                            width: "100%",
+                            alignItems: "center",
+                        }}
+                    >
+                        <NeighborhoodDropDown
+                            items={dropdownNeighborhoods}
+                            dropDownMaxHeight={scale(300)}
+                            style={[
+                                dropdownStyle,
+                                { backgroundColor: theme.primaryWhite },
+                            ]}
+                            onChangeItem={(item: DropDownItem) => {
+                                setSelectedNeighborhood(item.value);
+                            }}
+                            disabled={selectedCity === ""}
+                            searchable
+                            searchablePlaceholder="Digite um bairro..."
+                            searchablePlaceholderTextColor={
+                                theme.primaryDarkBlue
+                            }
+                            searchableStyle={{ textAlign: "center" }}
+                            searchableError={() => (
+                                <NotFoundText>Não encontrado</NotFoundText>
+                            )}
+                        />
+                    </View>
+
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            width: "80%",
+                            justifyContent:
+                                selectedNeighborhood !== ""
+                                    ? "space-between"
+                                    : "center",
+                        }}
+                    >
                         {selectedCity !== "" && (
                             <Button
-                                width="38%"
+                                width="48%"
                                 color={theme.primaryRed}
                                 onPress={() =>
                                     navigation.navigate("CityStatistics", {
@@ -162,16 +193,30 @@ const Search: React.FC = () => {
                                     })
                                 }
                             >
-                                <SendLabel>Ver cidade</SendLabel>
+                                <MaterialCommunityIcons
+                                    name="city"
+                                    size={scale(20)}
+                                    color={theme.primaryWhite}
+                                />
+                                <SendLabel style={{ marginLeft: scale(5) }}>
+                                    Ver cidade
+                                </SendLabel>
                             </Button>
                         )}
                         {selectedNeighborhood !== "" && (
                             <Button
-                                width="38%"
-                                color={theme.primaryRed}
+                                width="48%"
+                                color={theme.primaryDarkBlue}
                                 onPress={handle_neighborhood_view}
                             >
-                                <SendLabel>Ver bairro</SendLabel>
+                                <MaterialCommunityIcons
+                                    name="home-city"
+                                    size={scale(20)}
+                                    color={theme.primaryWhite}
+                                />
+                                <SendLabel style={{ marginLeft: scale(5) }}>
+                                    Ver bairro
+                                </SendLabel>
                             </Button>
                         )}
                     </View>

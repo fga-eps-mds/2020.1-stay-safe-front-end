@@ -3,17 +3,11 @@ import styled from "styled-components/native";
 import { DropDown } from "../../components/Dropdown";
 import { scale } from "../../utils/scalling";
 
-export const SearchTabContainer = styled.View`
-    align-items: center;
-    justify-content: center;
-    width: 85%;
-`;
-
 export const DropDownsContainer = styled.View`
     align-items: center;
     flex-direction: row;
-    justify-content: center;
-    width: 85%;
+    justify-content: space-between;
+    width: 80%;
 `;
 
 export const UfDropDown = styled(DropDown).attrs((props) => ({
@@ -45,3 +39,10 @@ export const NeighborhoodDropDown = styled(UfDropDown).attrs((props) => ({
         width: "80%",
     },
 }))``;
+
+export const NotFoundText = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(16)}px;
+    text-align: center;
+    color: ${(props) => props.theme.primaryDarkBlue};
+`;
