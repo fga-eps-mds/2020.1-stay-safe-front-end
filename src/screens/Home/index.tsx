@@ -59,9 +59,8 @@ import {
     DropDownTitle,
     MapButtonsContainer,
     MapButton,
-    MapText
+    MapText,
 } from "./styles";
-import { tabs } from "./tabs";
 
 type ParamList = {
     params: {

@@ -31,7 +31,7 @@ export const FloatingButtonStyled = styled(RectButton).attrs((props) => ({
     ${(props) =>
         props.position === "right-bottom" &&
         css`
-            bottom: 8%;
+            top: 17%;
             right: 6%;
         `}
 `;
