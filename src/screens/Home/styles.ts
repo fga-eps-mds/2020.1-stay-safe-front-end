@@ -30,40 +30,6 @@ export const StayNormalMap = styled(MapView)`
     flex: 1;
 `;
 
-export const FilterButton = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
-    position: absolute;
-    width: ${scale(50)}px;
-    height: ${scale(50)}px;
-    align-items: center;
-    justify-content: center;
-    top: 8%;
-    right: 6%;
-    background-color: ${(props) => props.theme.primaryWhite};
-    z-index: 6;
-    elevation: 15;
-    border-radius: ${scale(50)}px;
-`;
-
-export const HeatInfo = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
-    position: absolute;
-    width: ${scale(50)}px;
-    height: ${scale(50)}px;
-    align-items: center;
-    justify-content: center;
-    bottom: 8%;
-    right: 6%;
-    background-color: ${(props) => props.theme.primaryWhite};
-    z-index: 6;
-    elevation: 15;
-    border-radius: ${scale(50)}px;
-`;
-
 export const FilterModal = styled(Modal)<FilterModalProps>`
     position: absolute;
     height: ${(props) => (props.ufOptionOpen ? scale(520) : scale(480))}px;

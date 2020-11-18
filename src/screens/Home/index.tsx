@@ -14,6 +14,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import FloatingButton from "../../components/FloatingButton";
+import { FloatingButtonStyled } from "../../components/FloatingButton/styles";
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -43,9 +45,7 @@ import {
     ufs,
 } from "./searchOptions";
 import {
-    FilterButton,
     FilterModal,
-    HeatInfo,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
@@ -294,25 +294,31 @@ const Home: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {!isFilterOpen && (
-                <FilterButton onPress={() => setIsFilterOpen(true)}>
+                <FloatingButton
+                    onPress={() => setIsFilterOpen(true)}
+                    position="right-top"
+                >
                     <Feather
                         name="filter"
                         size={scale(30)}
                         color={theme.primaryGray}
                     />
-                </FilterButton>
+                </FloatingButton>
             )}
             {selectedFilter === "heat" &&
                 !isInfoHeatOpen &&
                 !isFilterOpen &&
                 selectedOption[0] !== 0 && (
-                    <HeatInfo onPress={() => setIsInfoHeatOpen(true)}>
+                    <FloatingButtonStyled
+                        onPress={() => setIsInfoHeatOpen(true)}
+                        position="right-bottom"
+                    >
                         <Feather
                             name="info"
                             size={scale(30)}
                             color={theme.primaryGray}
                         />
-                    </HeatInfo>
+                    </FloatingButtonStyled>
                 )}
             {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
