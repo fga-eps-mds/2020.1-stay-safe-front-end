@@ -38,7 +38,7 @@ export const FilterModal = styled(Modal)<FilterModalProps>`
     border-radius: ${scale(24)}px;
     background-color: ${(props) => props.theme.primaryWhite};
     elevation: 15;
-    padding: ${scale(20)}px ${scale(28)}px;
+    padding: ${scale(10)}px ${scale(28)}px;
 `;
 
 export const Span = styled.Text<SpanProps>`
@@ -90,26 +90,19 @@ export const TabFilter = styled.View`
     margin-bottom: ${scale(10)}px;
 `;
 
-export const Tab = styled.TouchableOpacity<TabProps>`
-    border-bottom-color: ${(props) =>
-        props.focus === true
-            ? props.theme.primaryRed
-            : props.theme.primaryDarkBlue};
-    border-bottom-width: ${scale(2)}px;
-
+export const Tab = styled.View`
     height: ${scale(50)}px;
+    border-bottom-color: ${(props) => props.theme.primaryRed};
+    border-bottom-width: ${scale(2)}px;
     align-items: center;
     justify-content: center;
-    width: 33%;
+    margin-bottom: ${scale(10)}px; 
 `;
 
 export const TabTitle = styled.Text<TabTitleProps>`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
-    color: ${(props) =>
-        props.focus === true
-            ? props.theme.primaryRed
-            : props.theme.primaryDarkBlue};
+    color: ${(props) => props.theme.primaryRed};
     include-font-padding: false;
 `;
 
@@ -159,4 +152,33 @@ export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
 }))`
     border: 0;
     background-color: ${(props) => props.theme.primaryWhite};
+`;
+
+export const MapButtonsContainer = styled.View`
+    flex:0;
+    height: ${scale(50)}px;
+    width: ${scale(220)}px;
+    position: absolute;
+    bottom: 8%;
+    align-self: center;
+    flex-direction: row;
+    border-radius: ${scale(20)}px;
+    overflow: hidden;
+    justify-content: space-between;
+`;
+
+export const MapButton = styled.TouchableOpacity.attrs({
+    activeOpacity: 0.6,
+})`
+    width: 49.5%;
+    background-color: ${(props) => props.theme.type === "dark" ? props.theme.primaryLightBlue : props.theme.primaryRed};
+    justify-content: center;
+    align-items: center;
+`;
+
+export const MapText = styled.Text`
+    font-size: ${scale(14)}px;
+    font-family: Trueno-Regular;
+    color: ${(props) => props.theme.primaryWhite};
+    text-align: center;
 `;

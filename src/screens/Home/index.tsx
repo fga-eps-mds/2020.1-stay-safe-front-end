@@ -9,7 +9,7 @@ import * as Font from "expo-font";
 import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import { Marker, MapEvent } from "react-native-maps";
+import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -32,15 +32,12 @@ import { SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
 import { useUser } from "../../hooks/user";
-import DarkLogo from "../../img/logo-thief-dark.svg";
-import Logo from "../../img/logo-thief.svg";
 import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
 import {
-    crimesColors,
     searchOptionsDf,
     searchOptionsSp,
     ufs,
@@ -60,6 +57,9 @@ import {
     UfDropDown,
     DropDownContainer,
     DropDownTitle,
+    MapButtonsContainer,
+    MapButton,
+    MapText
 } from "./styles";
 import { tabs } from "./tabs";
 
@@ -319,7 +319,7 @@ const Home: React.FC = () => {
                 <LoggedInModal navObject={navigation} />
             )}
             {selectedOption[0] > 0 &&
-            !isFilterOpen &&
+            //!isFilterOpen &&
             selectedFilter === "heat" ? (
                 <HeatMap
                     secretaryOccurrences={secretaryOccurrences}
@@ -346,6 +346,19 @@ const Home: React.FC = () => {
                         })}
                 </StayNormalMap>
             )}
+            {!isFilterOpen &&
+                <MapButtonsContainer>
+                    <MapButton onPress={() => setSelectedFilter("pins")}>
+                        <MapText>Ocorrências</MapText>
+                    </MapButton>
+                    <MapButton onPress={() => {
+                        setIsFilterOpen(true);
+                        setSelectedFilter("heat");
+                    }}>
+                        <MapText>Calor</MapText>
+                    </MapButton>
+                </ MapButtonsContainer>
+            }
             <StayAlert
                 show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
                 title={
@@ -389,28 +402,17 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        {tabs.map((item, index) => {
-                            return (
-                                <Tab
-                                    key={`tab-${index}`}
-                                    onPress={() => {
-                                        setSelectedFilter(item.name);
-                                        setSelectedOption([0]);
-                                    }}
-                                    focus={selectedFilter === item.name}
-                                >
-                                    <TabTitle
-                                        focus={selectedFilter === item.name}
-                                    >
-                                        {item.text}
-                                    </TabTitle>
-                                </Tab>
-                            );
-                        })}
+                        <Tab
+                            onPress={() => setSelectedOption([0])}
+                        >
+                            <TabTitle>
+                                {selectedFilter === "heat" ? "Calor" : "Ocorrências"}
+                            </TabTitle>
+                        </Tab>
                     </TabFilter>
                     {selectedFilter === "heat" && (
                         <DropDownContainer>
-                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
+                            <DropDownTitle>Selecione uma UF:</DropDownTitle>
                             <UfDropDown
                                 style={{
                                     backgroundColor: theme.primaryLightGray,
