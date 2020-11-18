@@ -30,6 +30,7 @@ import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { SendLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import StayMarker from "../../components/StayMarker";
 import { useUser } from "../../hooks/user";
 import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
@@ -144,24 +145,18 @@ const Home: React.FC = () => {
 
         if (status !== "granted") {
             console.warn("Permission to access location was denied");
+        } else {
+            const position = await Location.getCurrentPositionAsync({});
+
+            const location = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+            };
+
+            setLocation(location);
         }
-
-        const position = await Location.getCurrentPositionAsync({});
-
-        const location = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
-        };
-
-        setLocation(location);
-    };
-
-    const getPinColor = (occurrence) => {
-        return crimesColors.filter(
-            (op) => op.name === occurrence.occurrence_type
-        )[0].color;
     };
 
     const handleSubmitFilter = () => {
@@ -343,36 +338,10 @@ const Home: React.FC = () => {
                     {occurrences !== undefined &&
                         occurrences?.map((occurrence: Occurrence) => {
                             return (
-                                <Marker
+                                <StayMarker
                                     key={occurrence.id_occurrence}
-                                    coordinate={{
-                                        latitude: occurrence.location[0],
-                                        longitude: occurrence.location[1],
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "OccurrenceDetails",
-                                            {
-                                                occurrence,
-                                            }
-                                        )
-                                    }
-                                    tracksViewChanges={false}
-                                >
-                                    {theme.type === "dark" ? (
-                                        <DarkLogo
-                                            width={scale(38)}
-                                            height={scale(38)}
-                                            fill={getPinColor(occurrence)}
-                                        />
-                                    ) : (
-                                        <Logo
-                                            width={scale(38)}
-                                            height={scale(38)}
-                                            fill={getPinColor(occurrence)}
-                                        />
-                                    )}
-                                </Marker>
+                                    occurrence={occurrence}
+                                />
                             );
                         })}
                 </StayNormalMap>
