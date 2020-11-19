@@ -9,11 +9,6 @@ import Loader from "../Loader";
 import { coordinatesDF } from "./coordinates/coordinatesDF";
 import coordinatesSP from "./coordinates/coordinatesSP.json";
 
-interface Coordinate {
-    longitude: number;
-    latitude: number;
-}
-
 interface HeatMapProps {
     secretaryOccurrences: Array<CityCrimes>;
     city: string;

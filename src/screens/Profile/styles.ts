@@ -7,10 +7,6 @@ interface InputViewingProps {
     isEditing?: boolean;
 }
 
-interface ButtonProps {
-    isEditing?: boolean;
-}
-
 export const InputViewing = styled(NormalInput)<InputViewingProps>`
     width: 80%;
     background-color: ${(props) =>
