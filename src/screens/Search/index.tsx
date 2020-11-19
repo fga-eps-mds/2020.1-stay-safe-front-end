@@ -74,6 +74,11 @@ const Search: React.FC = () => {
     };
 
     useEffect(() => {
+        coordinatesDF.sort((a, b) =>
+            ("" + a.name.normalize("NFD")).localeCompare(
+                b.name.normalize("NFD")
+            )
+        );
         const dropdownDFCities = coordinatesDF.map((city) => {
             return { label: city.name, value: city.name };
         });
@@ -117,13 +122,19 @@ const Search: React.FC = () => {
                             ]}
                             onChangeItem={(item: DropDownItem) => {
                                 setSelectedUf(item.value);
+                                setSelectedCity("");
+                                setSelectedNeighborhood("");
                             }}
                         />
                         <CityDropDown
                             items={dropdownCities}
+                            defaultValue={
+                                selectedCity === "" ? null : selectedCity
+                            }
                             dropDownMaxHeight={scale(300)}
                             onChangeItem={(item: DropDownItem) => {
                                 setSelectedCity(item.value);
+                                setSelectedNeighborhood("");
                             }}
                             style={[
                                 dropdownStyle,
@@ -152,6 +163,11 @@ const Search: React.FC = () => {
                         <NeighborhoodDropDown
                             items={dropdownNeighborhoods}
                             dropDownMaxHeight={scale(300)}
+                            defaultValue={
+                                selectedNeighborhood === ""
+                                    ? null
+                                    : selectedNeighborhood
+                            }
                             style={[
                                 dropdownStyle,
                                 { backgroundColor: theme.primaryWhite },
