@@ -18,6 +18,7 @@ import {
     Container,
     KeyboardScrollView,
     NormalLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
@@ -25,7 +26,7 @@ import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 import { profileButtons } from "./buttonsObject";
-import { InputViewing, ButtonLabel, ButtonsContainer } from "./styles";
+import { InputViewing, ButtonsContainer } from "./styles";
 
 const Profile: React.FC = () => {
     const theme = useTheme();
@@ -204,9 +205,9 @@ const Profile: React.FC = () => {
                                 size={scale(18)}
                                 color={theme.primaryWhite}
                             />
-                            <ButtonLabel>
+                            <ButtonWithIconLabel>
                                 {isEditing ? "Salvar" : "Editar Perfil"}
-                            </ButtonLabel>
+                            </ButtonWithIconLabel>
                         </Button>
                     )}
 
@@ -229,9 +230,9 @@ const Profile: React.FC = () => {
                                             size={scale(18)}
                                             color={theme.primaryWhite}
                                         />
-                                        <ButtonLabel>
+                                        <ButtonWithIconLabel>
                                             {button.label}
-                                        </ButtonLabel>
+                                        </ButtonWithIconLabel>
                                     </Button>
                                 );
                             })}

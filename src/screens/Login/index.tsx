@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
@@ -13,9 +14,10 @@ import {
     Title,
     NormalLabel,
     NormalInput,
-    SendLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
+import { scale } from "../../utils/scalling";
 
 const Login: React.FC = () => {
     const theme = useTheme();
@@ -74,19 +76,27 @@ const Login: React.FC = () => {
                     />
 
                     <Button
-                        onPress={() => handleLogin()}
-                        width="80%"
                         color={theme.primaryRed}
+                        onPress={() => handleLogin()}
                     >
-                        <SendLabel>Entrar</SendLabel>
+                        <Feather
+                            name="log-in"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Entrar</ButtonWithIconLabel>
                     </Button>
 
                     <Button
-                        width="80%"
                         color={theme.primaryLightBlue}
                         onPress={() => navigation.navigate("Cadastro")}
                     >
-                        <SendLabel>Criar Conta</SendLabel>
+                        <Feather
+                            name="user-plus"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Criar Conta</ButtonWithIconLabel>
                     </Button>
                     {isLoading && <Loader />}
                 </KeyboardScrollView>

@@ -1,4 +1,4 @@
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View, Alert } from "react-native";
@@ -8,7 +8,11 @@ import { useTheme } from "styled-components";
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
-import { Container, KeyboardScrollView } from "../../components/NormalForms";
+import {
+    Container,
+    KeyboardScrollView,
+    ButtonWithIconLabel,
+} from "../../components/NormalForms";
 import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
 import {
@@ -18,7 +22,6 @@ import {
     YearTitle,
     YearTitleContainer,
     CrimeStatistics,
-    SortButtontText,
     CrimeContainer,
     CrimeText,
     CrimeBar,
@@ -163,7 +166,7 @@ const CityStatistics: React.FC = () => {
                         </CrimeStatistics>
                     </StatisticsCard>
                     <Button
-                        width="60%"
+                        width="70%"
                         color={theme.primaryRed}
                         onPress={() =>
                             navigation.navigate("Neighborhoods", {
@@ -172,12 +175,14 @@ const CityStatistics: React.FC = () => {
                             })
                         }
                     >
-                        <MaterialCommunityIcons
-                            name="sort-variant"
-                            size={scale(25)}
+                        <Feather
+                            name="list"
+                            size={scale(18)}
                             color={theme.primaryWhite}
                         />
-                        <SortButtontText>Visualizar Bairros</SortButtontText>
+                        <ButtonWithIconLabel>
+                            Visualizar Bairros
+                        </ButtonWithIconLabel>
                     </Button>
                 </KeyboardScrollView>
             </Container>

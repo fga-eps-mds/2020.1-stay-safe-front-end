@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
@@ -11,7 +12,7 @@ import Loader from "../../components/Loader";
 import {
     Container,
     KeyboardScrollView,
-    SendLabel,
+    ButtonWithIconLabel,
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -24,6 +25,7 @@ import {
     formatDateTime,
     getOcurrenceDateTime,
 } from "../../utils/dates";
+import { scale } from "../../utils/scalling";
 import { validateOccurrence } from "../../utils/validateOccurrence";
 import {
     occurrenceTypeItems,
@@ -333,6 +335,7 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Data da Ocorrência</NormalLabel>
                             <Button
                                 width="100%"
+                                style={{ marginTop: 0 }}
                                 color={theme.primaryWhite}
                                 borderRadius={15}
                                 onPress={() => setShowDatePicker(true)}
@@ -361,6 +364,7 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Hora da Ocorrência</NormalLabel>
                             <Button
                                 width="100%"
+                                style={{ marginTop: 0 }}
                                 color={theme.primaryWhite}
                                 borderRadius={15}
                                 onPress={() => setShowTimePicker(true)}
@@ -379,16 +383,20 @@ const Occurrence: React.FC = () => {
                     </InputWrapper>
 
                     <Button
-                        style={{ marginTop: 45 }}
-                        width="80%"
                         color={theme.primaryRed}
+                        style={{ marginTop: 45 }}
                         onPress={handleSubmit}
                     >
-                        <SendLabel>
+                        <MaterialCommunityIcons
+                            name="map-marker-check"
+                            size={scale(20)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>
                             {isEditing
                                 ? "Editar Ocorrência"
                                 : "Registrar Ocorrência"}
-                        </SendLabel>
+                        </ButtonWithIconLabel>
                     </Button>
 
                     <StayAlert

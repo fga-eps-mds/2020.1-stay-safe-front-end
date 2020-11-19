@@ -1,4 +1,4 @@
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
@@ -8,7 +8,7 @@ import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
-import { SendLabel } from "../../components/NormalForms";
+import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { createRating, updateRating } from "../../services/ratings";
@@ -263,12 +263,13 @@ const Rating: React.FC = () => {
                         </DetailContainer>
                     );
                 })}
-                <Button
-                    width="80%"
-                    color={theme.primaryRed}
-                    onPress={() => handleSubmit()}
-                >
-                    <SendLabel>Salvar</SendLabel>
+                <Button color={theme.primaryRed} onPress={() => handleSubmit()}>
+                    <MaterialCommunityIcons
+                        name="star"
+                        size={scale(20)}
+                        color={theme.primaryWhite}
+                    />
+                    <ButtonWithIconLabel>Avaliar</ButtonWithIconLabel>
                 </Button>
                 <StayAlert
                     show={showSuccessfullyModal}

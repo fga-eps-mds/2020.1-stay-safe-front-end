@@ -26,7 +26,7 @@ import {
 } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
-import { SendLabel } from "../../components/NormalForms";
+import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import DarkLogo from "../../img/logo-thief-dark.svg";
@@ -500,7 +500,6 @@ const Home: React.FC = () => {
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <Button
-                        width="50%"
                         onPress={() => handleSubmitFilter()}
                         color={theme.primaryRed}
                         enabled={
@@ -511,7 +510,12 @@ const Home: React.FC = () => {
                             )
                         }
                     >
-                        <SendLabel>Filtrar</SendLabel>
+                        <Feather
+                            name="filter"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Filtrar</ButtonWithIconLabel>
                     </Button>
                     <Span show style={{ marginTop: scale(5) }}>
                         ou clique no mapa para voltar

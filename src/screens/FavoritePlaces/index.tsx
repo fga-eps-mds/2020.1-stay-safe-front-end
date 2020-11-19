@@ -190,10 +190,7 @@ const FavoritePlaces: React.FC = () => {
                                 onPress={() => handleCloseDialog()}
                             />
                             <DialogButton
-                                style={{
-                                    backgroundColor: theme.primaryRed,
-                                    marginRight: 0,
-                                }}
+                                style={{ backgroundColor: theme.primaryRed }}
                                 color="#ffffff"
                                 disabled={favoritePlaceName.length === 0}
                                 label="Confirmar"

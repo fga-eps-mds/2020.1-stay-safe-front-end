@@ -1,3 +1,4 @@
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
@@ -15,10 +16,11 @@ import {
     Title,
     NormalLabel,
     NormalInput,
-    SendLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
 import { useUser } from "../../hooks/user";
 import { createUser, authUser } from "../../services/users";
+import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
@@ -143,10 +145,14 @@ const Cadastro: React.FC = () => {
 
                     <Button
                         onPress={() => handleRegister()}
-                        width="80%"
                         color={theme.primaryRed}
                     >
-                        <SendLabel>Criar Conta</SendLabel>
+                        <Feather
+                            name="user-plus"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Criar Conta</ButtonWithIconLabel>
                     </Button>
                     {isLoading && <Loader />}
                 </KeyboardScrollView>

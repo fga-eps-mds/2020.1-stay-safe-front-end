@@ -55,12 +55,6 @@ export const NeighborhoodAverage = styled.Text`
     color: ${(props) => props.theme.primarySuperDarkBlue};
 `;
 
-export const EvaluateButtontText = styled.Text`
-    font-family: "Trueno-SemiBold";
-    font-size: ${scale(15)}px;
-    color: ${(props) => props.theme.primaryWhite};
-    margin-left: ${scale(5)}px;
-`;
 export const TitleCity = styled.Text`
     margin-top: ${scale(24)}px;
     margin-bottom: ${scale(10)}px;
