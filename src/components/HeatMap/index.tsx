@@ -71,7 +71,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
             setCrimes();
             getSpCoordinates().then((res) => setIsLoading(false));
         }
-    }, []);
+    }, [secretaryOccurrences]);
 
     const getSpCoordinates = async () => {
         if (isNaN(coordinatesSP[0].cities[0].coordinates[0].latitude)) {

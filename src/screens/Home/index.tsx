@@ -37,11 +37,7 @@ import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
-import {
-    searchOptionsDf,
-    searchOptionsSp,
-    ufs,
-} from "./searchOptions";
+import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterModal,
     StayNormalMap,
@@ -110,7 +106,7 @@ const Home: React.FC = () => {
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
-    const [selectedFilter, setSelectedFilter] = useState("heat");
+    const [selectedFilter, setSelectedFilter] = useState("pins");
 
     const [selectedUf, setSelectedUf] = useState("df");
 
@@ -345,19 +341,30 @@ const Home: React.FC = () => {
                         })}
                 </StayNormalMap>
             )}
-            {!isFilterOpen &&
+            {!isFilterOpen && (
                 <MapButtonsContainer>
-                    <MapButton onPress={() => setSelectedFilter("pins")}>
-                        <MapText>Ocorrências</MapText>
+                    <MapButton
+                        onPress={() => {
+                            setSelectedFilter("pins");
+                            setSelectedOption([0]);
+                        }}
+                        disabled={selectedFilter === "pins"}
+                    >
+                        <MapText>Usuários</MapText>
                     </MapButton>
-                    <MapButton onPress={() => {
-                        setIsFilterOpen(true);
-                        setSelectedFilter("heat");
-                    }}>
-                        <MapText>Calor</MapText>
+                    <MapButton
+                        onPress={() => {
+                            setSelectedUf("df");
+                            setIsFilterOpen(true);
+                            setSelectedFilter("heat");
+                            setSelectedOption([0]);
+                        }}
+                        disabled={selectedFilter === "heat"}
+                    >
+                        <MapText>Secretarias</MapText>
                     </MapButton>
-                </ MapButtonsContainer>
-            }
+                </MapButtonsContainer>
+            )}
             <StayAlert
                 show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
                 title={
@@ -401,11 +408,11 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        <Tab
-                            onPress={() => setSelectedOption([0])}
-                        >
+                        <Tab>
                             <TabTitle>
-                                {selectedFilter === "heat" ? "Calor" : "Ocorrências"}
+                                {selectedFilter === "heat"
+                                    ? "Calor"
+                                    : "Ocorrências"}
                             </TabTitle>
                         </Tab>
                     </TabFilter>
@@ -434,13 +441,12 @@ const Home: React.FC = () => {
                 </View>
                 {searchOptions.map((option) => {
                     return (
-                        <ButtonOptionContainer key={option.id}>
+                        <ButtonOptionContainer
+                            key={option.id}
+                            onPress={() => handleSelectOption(option.id)}
+                        >
                             <Option>
-                                <OptionCircleButton
-                                    onPress={() =>
-                                        handleSelectOption(option.id)
-                                    }
-                                >
+                                <OptionCircleButton>
                                     <Feather
                                         name={
                                             selectedOption.indexOf(option.id) >=
