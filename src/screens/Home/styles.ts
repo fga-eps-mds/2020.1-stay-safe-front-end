@@ -2,17 +2,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { RectButton } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
 import { scale } from "../../utils/scalling";
-
-interface TabProps {
-    focus: boolean;
-}
-
-interface TabTitleProps {
-    focus: boolean;
-}
 
 interface OptionColorProps {
     color: string;
@@ -48,7 +40,10 @@ export const Span = styled.Text<SpanProps>`
     opacity: ${(props) => (props.show ? 1 : 0)};
 `;
 
-export const ButtonOptionContainer = styled.View`
+export const ButtonOptionContainer = styled(RectButton).attrs((props) => ({
+    activeOpacity: 0.6,
+    rippleColor: props.theme.primaryGray,
+}))`
     height: ${scale(24)}px;
     margin-bottom: ${scale(16)}px;
     flex-direction: row;
@@ -61,10 +56,7 @@ export const Option = styled.View`
     align-items: center;
 `;
 
-export const OptionCircleButton = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
+export const OptionCircleButton = styled.View`
     justify-content: center;
     align-items: center;
     margin-right: ${scale(10)}px;
@@ -96,10 +88,10 @@ export const Tab = styled.View`
     border-bottom-width: ${scale(2)}px;
     align-items: center;
     justify-content: center;
-    margin-bottom: ${scale(10)}px; 
+    margin-bottom: ${scale(10)}px;
 `;
 
-export const TabTitle = styled.Text<TabTitleProps>`
+export const TabTitle = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(16)}px;
     color: ${(props) => props.theme.primaryRed};
@@ -155,11 +147,11 @@ export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
 `;
 
 export const MapButtonsContainer = styled.View`
-    flex:0;
-    height: ${scale(50)}px;
-    width: ${scale(220)}px;
+    flex: 0;
+    height: ${scale(40)}px;
+    width: ${scale(200)}px;
     position: absolute;
-    bottom: 8%;
+    bottom: 6%;
     align-self: center;
     flex-direction: row;
     border-radius: ${scale(20)}px;
@@ -171,14 +163,26 @@ export const MapButton = styled.TouchableOpacity.attrs({
     activeOpacity: 0.6,
 })`
     width: 49.5%;
-    background-color: ${(props) => props.theme.type === "dark" ? props.theme.primaryLightBlue : props.theme.primaryRed};
+    background-color: ${(props) =>
+        props.theme.type === "dark"
+            ? props.theme.primaryLightBlue
+            : props.theme.primaryRed};
     justify-content: center;
     align-items: center;
+
+    ${(props) =>
+        props.disabled &&
+        css`
+            opacity: 0.6;
+        `}
 `;
 
 export const MapText = styled.Text`
     font-size: ${scale(14)}px;
     font-family: Trueno-Regular;
-    color: ${(props) => props.theme.primaryWhite};
+    color: ${(props) =>
+        props.theme.type === "dark"
+            ? props.theme.primaryGray
+            : props.theme.primaryWhite};
     text-align: center;
 `;
