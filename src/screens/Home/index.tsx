@@ -80,8 +80,8 @@ interface CrimeOption {
 const initialLocation = {
     latitude: -15.780311,
     longitude: -47.768043,
-    latitudeDelta: 0.2,
-    longitudeDelta: 0.2,
+    latitudeDelta: 0.05,
+    longitudeDelta: 0.05,
 };
 
 const Home: React.FC = () => {
@@ -105,6 +105,9 @@ const Home: React.FC = () => {
     const [crimeOption, setCrimeOption] = useState<CrimeOption>();
 
     const [isInfoHeatOpen, setIsInfoHeatOpen] = useState(false);
+
+    const initialDate = "1/2020";
+    const finalDate = "12/2020";
 
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
@@ -199,8 +202,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                "1/2020",
-                "12/2020",
+                initialDate,
+                finalDate,
                 1
             );
 
@@ -553,7 +556,7 @@ const Home: React.FC = () => {
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
                         <InfoSubText>
-                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
+                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()} - ${initialDate}-${finalDate} `}
                         </InfoSubText>
                     </View>
                 </InfoModal>

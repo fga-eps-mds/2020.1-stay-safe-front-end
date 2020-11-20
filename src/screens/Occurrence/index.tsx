@@ -246,7 +246,7 @@ const Occurrence: React.FC = () => {
                 />
                 <KeyboardScrollView>
                     <InputContainer style={{ width: "80%", marginTop: 0 }}>
-                        <NormalLabel>Tipo de Ocorrência</NormalLabel>
+                        <NormalLabel style={{textAlign: 'center', width: "90%"}}>Tipo de Ocorrência</NormalLabel>
                         <DropDown
                             items={occurrenceTypeItems}
                             style={[
@@ -266,7 +266,7 @@ const Occurrence: React.FC = () => {
 
                     <InputWrapper>
                         <InputContainer>
-                            <NormalLabel>Tipo de Arma</NormalLabel>
+                            <NormalLabel style={{textAlign: 'center'}}>Tipo de Arma</NormalLabel>
                             <DropDown
                                 items={gunItems}
                                 style={[
@@ -281,7 +281,7 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
 
                         <InputContainer>
-                            <NormalLabel>Vítima</NormalLabel>
+                            <NormalLabel style={{textAlign: 'center'}}>Você foi a vítima?</NormalLabel>
                             <DropDown
                                 items={availableVictimOptions}
                                 style={[
@@ -295,10 +295,10 @@ const Occurrence: React.FC = () => {
                             />
                         </InputContainer>
                     </InputWrapper>
-
+                    
                     <InputWrapper>
                         <InputContainer>
-                            <NormalLabel>Agressão Física</NormalLabel>
+                            <NormalLabel style={{textAlign: 'center'}}>Agressão física</NormalLabel>
                             <DropDown
                                 items={availablePhysicalAgressionOptions}
                                 style={[
@@ -313,7 +313,7 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
 
                         <InputContainer>
-                            <NormalLabel>Boletim de Ocorrência</NormalLabel>
+                            <NormalLabel style={{textAlign: 'center'}}>Foi registrado boletim?</NormalLabel>
                             <DropDown
                                 items={availablePoliceReportOptions}
                                 style={[
@@ -330,7 +330,7 @@ const Occurrence: React.FC = () => {
 
                     <InputWrapper>
                         <InputContainer>
-                            <NormalLabel>Data da Ocorrência</NormalLabel>
+                            <NormalLabel style={{textAlign: 'center'}}>Data da Ocorrência</NormalLabel>
                             <Button
                                 width="100%"
                                 color={theme.primaryWhite}
@@ -358,7 +358,7 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
 
                         <InputContainer>
-                            <NormalLabel>Hora da Ocorrência</NormalLabel>
+                            <NormalLabel style={{textAlign: 'center'}}>Hora da Ocorrência</NormalLabel>
                             <Button
                                 width="100%"
                                 color={theme.primaryWhite}
