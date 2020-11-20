@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View, Alert } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -13,6 +13,7 @@ import {
     KeyboardScrollView,
     ButtonWithIconLabel,
 } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
 import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
 import {
@@ -61,6 +62,12 @@ const CityStatistics: React.FC = () => {
     const [cityStatistics, setCityStatistics] = useState<Crimes[]>([]);
     const [higherStatistic, setHigherStatistic] = useState(0);
 
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
+
     useEffect(() => {
         loadData();
     }, []);
@@ -79,7 +86,8 @@ const CityStatistics: React.FC = () => {
             });
         } catch (error) {
             setIsLoading(false);
-            Alert.alert("Erro ao conectar com o servidor.");
+            setHasError(true);
+            setErrorMessage(["Erro ao conectar com o servidor.", ""]);
         }
     };
 
@@ -184,6 +192,15 @@ const CityStatistics: React.FC = () => {
                             Visualizar Bairros
                         </ButtonWithIconLabel>
                     </Button>
+                    <StayAlert
+                        show={hasError}
+                        title={errorMessage[0]}
+                        message={errorMessage[1]}
+                        showConfirmButton
+                        confirmText="Confirmar"
+                        onConfirmPressed={() => setHasError(false)}
+                        onDismiss={() => setHasError(false)}
+                    />
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

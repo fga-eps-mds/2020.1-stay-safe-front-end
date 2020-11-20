@@ -2,7 +2,6 @@ import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -74,6 +73,12 @@ const Rating: React.FC = () => {
     const [items, setItems] = useState(detailsItems);
 
     const [showSuccessfullyModal, setShowSuccessfullyModal] = useState(false);
+
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -193,10 +198,11 @@ const Rating: React.FC = () => {
             } else if (!response.body.error && response.status === 200) {
                 setShowSuccessfullyModal(true);
             } else {
-                Alert.alert(
-                    "Erro ao cadastrar ocorrência",
-                    response.body.error
-                );
+                setHasError(true);
+                setErrorMessage([
+                    "Erro ao avaliar bairro",
+                    response.body.error,
+                ]);
             }
         }
     };
@@ -283,6 +289,15 @@ const Rating: React.FC = () => {
                     confirmText="Entendido"
                     onConfirmPressed={() => handleClosedModal()}
                     onDismiss={() => handleClosedModal()}
+                />
+                <StayAlert
+                    show={hasError}
+                    title={errorMessage[0]}
+                    message={errorMessage[1]}
+                    showConfirmButton
+                    confirmText="Confirmar"
+                    onConfirmPressed={() => setHasError(false)}
+                    onDismiss={() => setHasError(false)}
                 />
             </Container>
         </SafeAreaView>

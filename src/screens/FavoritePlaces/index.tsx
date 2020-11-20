@@ -1,7 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -56,6 +55,12 @@ const FavoritePlaces: React.FC = () => {
 
     const [showDeleteModal, setDeleteModal] = useState(false);
     const [idPlace, setIdPlace] = useState(0);
+
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
 
     useEffect(() => {
         getPlaces();
@@ -117,10 +122,11 @@ const FavoritePlaces: React.FC = () => {
             if (response.status === 201) {
                 setShowSuccessfullyModal(true);
             } else {
-                Alert.alert(
+                setHasError(true);
+                setErrorMessage([
                     "Erro ao cadastrar local favorito",
-                    response.body.error
-                );
+                    response.body.error,
+                ]);
             }
         }
     };
@@ -218,6 +224,15 @@ const FavoritePlaces: React.FC = () => {
                         confirmText="Entendido"
                         onConfirmPressed={() => setShowSuccessfullyModal(false)}
                         onDismiss={() => setShowSuccessfullyModal(false)}
+                    />
+                    <StayAlert
+                        show={hasError}
+                        title={errorMessage[0]}
+                        message={errorMessage[1]}
+                        showConfirmButton
+                        confirmText="Confirmar"
+                        onConfirmPressed={() => setHasError(false)}
+                        onDismiss={() => setHasError(false)}
                     />
                 </KeyboardScrollView>
             </Container>
