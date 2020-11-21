@@ -24,8 +24,8 @@ export const StayNormalMap = styled(MapView)`
 
 export const FilterModal = styled(Modal)<FilterModalProps>`
     position: absolute;
-    height: ${(props) => (props.ufOptionOpen ? scale(520) : scale(480))}px;
-    width: ${scale(300)}px;
+    height: ${(props) => (props.ufOptionOpen ? scale(480) : scale(450))}px;
+    width: 85.5%;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;
     background-color: ${(props) => props.theme.primaryWhite};
