@@ -13,7 +13,7 @@ import coordinatesSP from "../../components/HeatMap/coordinates/coordinatesSP.js
 import {
     KeyboardScrollView,
     Container,
-    SendLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
 import { Neighborhood } from "../../interfaces/neighborhood";
 import { getCityNeighborhoods } from "../../services/neighborhood";
@@ -214,9 +214,9 @@ const Search: React.FC = () => {
                                     size={scale(20)}
                                     color={theme.primaryWhite}
                                 />
-                                <SendLabel style={{ marginLeft: scale(5) }}>
+                                <ButtonWithIconLabel>
                                     Ver cidade
-                                </SendLabel>
+                                </ButtonWithIconLabel>
                             </Button>
                         )}
                         {selectedNeighborhood !== "" && (
@@ -230,9 +230,9 @@ const Search: React.FC = () => {
                                     size={scale(20)}
                                     color={theme.primaryWhite}
                                 />
-                                <SendLabel style={{ marginLeft: scale(5) }}>
+                                <ButtonWithIconLabel>
                                     Ver bairro
-                                </SendLabel>
+                                </ButtonWithIconLabel>
                             </Button>
                         )}
                     </View>
