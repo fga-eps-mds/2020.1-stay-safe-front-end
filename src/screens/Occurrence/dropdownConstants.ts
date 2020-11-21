@@ -6,8 +6,8 @@ export const occurrenceTypeItems = [
         value: "Latrocínio",
     },
     {
-        label: "Roubo a Transeunte",
-        value: "Roubo a Transeunte",
+        label: "Roubo a Pedestre",
+        value: "Roubo a Pedestre",
     },
     {
         label: "Roubo de Veículo",
@@ -22,8 +22,8 @@ export const occurrenceTypeItems = [
         value: "Estupro",
     },
     {
-        label: "Furto a Transeunte",
-        value: "Furto a Transeunte",
+        label: "Furto a Pedestre",
+        value: "Furto a Pedestre",
     },
     {
         label: "Furto de Veículo",
