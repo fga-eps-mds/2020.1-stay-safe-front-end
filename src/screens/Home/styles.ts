@@ -171,7 +171,7 @@ export const MapButton = styled.TouchableOpacity.attrs({
     align-items: center;
 
     ${(props) =>
-        props.disabled &&
+        !props.disabled &&
         css`
             opacity: 0.6;
         `}
