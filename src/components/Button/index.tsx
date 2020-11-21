@@ -4,14 +4,12 @@ import { RectButtonProperties } from "react-native-gesture-handler";
 import { NormalButton } from "./styles";
 
 interface ButtonProps {
-    width: string;
+    width?: string;
     color: string;
     enabled?: boolean;
     isEditing?: boolean;
     settings?: boolean;
     borderRadius?: number;
-    neighs?: boolean;
-    review?: boolean;
     onPress?: () => void;
 }
 
@@ -22,9 +20,7 @@ const Button: React.FC<ButtonProps & RectButtonProperties> = ({
     enabled = true,
     isEditing = false,
     settings = false,
-    review = false,
     onPress,
-    neighs = false,
     borderRadius = 28,
     ...props
 }) => {
@@ -37,8 +33,6 @@ const Button: React.FC<ButtonProps & RectButtonProperties> = ({
             settings={settings}
             isEditing={isEditing}
             borderRadius={borderRadius}
-            neighs={neighs}
-            review={review}
             {...props}
         >
             {children}

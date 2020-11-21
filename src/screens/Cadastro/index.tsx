@@ -1,7 +1,7 @@
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -15,10 +15,12 @@ import {
     Title,
     NormalLabel,
     NormalInput,
-    SendLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
+import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { createUser, authUser } from "../../services/users";
+import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 
 const Cadastro: React.FC = () => {
@@ -37,6 +39,12 @@ const Cadastro: React.FC = () => {
     const [pwdInput, setPwdInput] = useState(NormalInput);
     const [confirmPwdInput, setConfirmPwdInput] = useState(NormalInput);
 
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [loaded] = Font.useFonts({
@@ -45,15 +53,15 @@ const Cadastro: React.FC = () => {
     });
 
     const handleRegister = async () => {
-        if (
-            validateUser({
-                fullName: userFullName,
-                username,
-                email: userEmail,
-                password: userPwd,
-                confirmPassword: userConfirmPwd,
-            })
-        ) {
+        const error = validateUser({
+            fullName: userFullName,
+            username,
+            email: userEmail,
+            password: userPwd,
+            confirmPassword: userConfirmPwd,
+        });
+
+        if (error === "") {
             const response = await createUser({
                 full_name: userFullName,
                 username,
@@ -75,11 +83,22 @@ const Cadastro: React.FC = () => {
                     setIsLoading(false);
                     navigation.navigate("HomeTabBar");
                 } else {
-                    Alert.alert("Erro ao logar usuário", response.body.error);
+                    setHasError(true);
+                    setErrorMessage([
+                        "Erro ao logar usuário",
+                        response.body.error,
+                    ]);
                 }
             } else {
-                Alert.alert("Erro ao cadastrar usuário", response.body.error);
+                setHasError(true);
+                setErrorMessage([
+                    "Erro ao cadastrar usuário",
+                    response.body.error,
+                ]);
             }
+        } else {
+            setHasError(true);
+            setErrorMessage(["Campo Inválido", error]);
         }
     };
 
@@ -143,11 +162,24 @@ const Cadastro: React.FC = () => {
 
                     <Button
                         onPress={() => handleRegister()}
-                        width="80%"
                         color={theme.primaryRed}
                     >
-                        <SendLabel>Criar Conta</SendLabel>
+                        <Feather
+                            name="user-plus"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Criar Conta</ButtonWithIconLabel>
                     </Button>
+                    <StayAlert
+                        show={hasError}
+                        title={errorMessage[0]}
+                        message={errorMessage[1]}
+                        showConfirmButton
+                        confirmText="Confirmar"
+                        onConfirmPressed={() => setHasError(false)}
+                        onDismiss={() => setHasError(false)}
+                    />
                     {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>

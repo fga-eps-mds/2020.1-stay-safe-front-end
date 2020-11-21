@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-import { SendLabel } from "../../components/NormalForms";
+import { ButtonLabel } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 
 export const ButtonsContainer = styled.View`
@@ -14,17 +14,11 @@ export const ButtonText = styled.Text`
     margin-left: ${scale(10)}px;
 `;
 
-export const UserButtonsContainer = styled.View`
-    padding: ${scale(30)}px ${scale(120)}px;
-    justify-content: center;
-    align-items: center;
-`;
-
 export const DeleteButton = styled.TouchableOpacity`
     margin-top: ${scale(28)}px;
 `;
 
-export const DeleteText = styled(SendLabel)`
+export const DeleteText = styled(ButtonLabel)`
     color: ${(props) => props.theme.primaryBlack};
     opacity: 0.3;
 `;

@@ -9,7 +9,7 @@ import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
-    SendLabel,
+    ButtonWithIconLabel,
     Container,
     KeyboardScrollView,
 } from "../../components/NormalForms";
@@ -20,7 +20,6 @@ import { buttonsObject } from "./buttonsObject";
 import {
     ButtonsContainer,
     ButtonText,
-    UserButtonsContainer,
     DeleteButton,
     DeleteText,
 } from "./styles";
@@ -84,7 +83,7 @@ const Settings: React.FC = () => {
                                     >
                                         <Feather
                                             name={button.icon}
-                                            size={scale(20)}
+                                            size={scale(18)}
                                             color={theme.primarySuperDarkBlue}
                                         />
                                         <ButtonText>{button.title}</ButtonText>
@@ -99,7 +98,7 @@ const Settings: React.FC = () => {
                                 >
                                     <Feather
                                         name={button.icon}
-                                        size={scale(20)}
+                                        size={scale(18)}
                                         color={theme.primarySuperDarkBlue}
                                     />
                                     <ButtonText>{button.title}</ButtonText>
@@ -114,7 +113,7 @@ const Settings: React.FC = () => {
                         >
                             <Feather
                                 name={theme.type === "dark" ? "sun" : "moon"}
-                                size={scale(20)}
+                                size={scale(18)}
                                 color={theme.primarySuperDarkBlue}
                             />
                             <ButtonText>
@@ -126,26 +125,23 @@ const Settings: React.FC = () => {
                     </ButtonsContainer>
 
                     {data.token !== "" && (
-                        <UserButtonsContainer>
+                        <>
                             <Button
                                 onPress={() => handleLogout()}
-                                width="100%"
+                                width="30%"
                                 color={theme.primaryRed}
-                                style={{ justifyContent: "space-evenly" }}
                             >
-                                <>
-                                    <Feather
-                                        name="log-out"
-                                        size={scale(20)}
-                                        color={theme.primaryWhite}
-                                    />
-                                    <SendLabel>Sair</SendLabel>
-                                </>
+                                <Feather
+                                    name="log-out"
+                                    size={scale(18)}
+                                    color={theme.primaryWhite}
+                                />
+                                <ButtonWithIconLabel>Sair</ButtonWithIconLabel>
                             </Button>
                             <DeleteButton onPress={() => setIsModalOpen(true)}>
                                 <DeleteText>Excluir conta</DeleteText>
                             </DeleteButton>
-                        </UserButtonsContainer>
+                        </>
                     )}
 
                     <StayAlert

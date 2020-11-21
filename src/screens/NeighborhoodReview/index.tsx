@@ -9,14 +9,16 @@ import HeaderTitle from "../../components/HeaderTitle";
 import { InfoButton } from "../../components/InfoModal";
 import NeighborhoodImpressions from "../../components/NeighborhoodImpressions";
 import NeighborhoodInfo from "../../components/NeighborhoodInfo";
-import { KeyboardScrollView } from "../../components/NormalForms";
+import {
+    KeyboardScrollView,
+    ButtonWithIconLabel,
+} from "../../components/NormalForms";
 import { Neighborhood } from "../../interfaces/neighborhood";
 import { scale } from "../../utils/scalling";
 import {
     StarContainer,
     StatisticsNeighborhoodCard,
     NeighborhoodText,
-    EvaluateButtontText,
     TitleCity,
     NeighborhoodAverage,
     ImpressionText,
@@ -85,9 +87,9 @@ const NeighborhoodReview: React.FC = () => {
                     )}
                 </StatisticsNeighborhoodCard>
                 <Button
-                    width="60%"
+                    width="70%"
                     color={theme.primaryRed}
-                    review
+                    style={{ marginTop: 30 }}
                     onPress={() =>
                         navigation.navigate("Rating", {
                             rating: { neighborhood },
@@ -96,10 +98,10 @@ const NeighborhoodReview: React.FC = () => {
                 >
                     <MaterialCommunityIcons
                         name="pencil"
-                        size={scale(20)}
+                        size={scale(18)}
                         color={theme.primaryWhite}
                     />
-                    <EvaluateButtontText>Avaliar Bairro</EvaluateButtontText>
+                    <ButtonWithIconLabel>Avaliar Bairro</ButtonWithIconLabel>
                 </Button>
             </KeyboardScrollView>
             <NeighborhoodInfo

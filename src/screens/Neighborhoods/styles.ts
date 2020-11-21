@@ -34,9 +34,11 @@ export const NoStatisticsText = styled.Text`
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primaryDarkBlue};
     text-align: center;
-    margin-vertical: ${scale(5)}px;
+    margin: ${scale(5)}px 0;
 `;
 
 export const ButtonsContainer = styled.View`
+    width: 100%;
     flex-direction: row;
+    justify-content: space-between;
 `;

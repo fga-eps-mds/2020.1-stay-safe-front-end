@@ -134,7 +134,7 @@ export const Tab = styled.TouchableOpacity<TabProps>`
     height: ${scale(50)}px;
     align-items: center;
     justify-content: center;
-    width: 33%;
+    width: 50%;
 `;
 
 export const TabTitle = styled.Text<TabTitleProps>`
