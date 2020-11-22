@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-import { SendLabel, NormalInput } from "../../components/NormalForms";
+import { NormalInput } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
 
 interface InputViewingProps {
@@ -16,7 +16,7 @@ export const InputViewing = styled(NormalInput)<InputViewingProps>`
                 : props.theme.primaryWhite
             : props.theme.type === "dark"
             ? props.theme.primaryWhite
-            : props.theme.primaryBackground};
+            : props.theme.primaryLightGray};
     height: ${scale(40)}px;
 `;
 
@@ -25,8 +25,4 @@ export const ButtonsContainer = styled.View`
     width: 100%;
     align-items: center;
     margin-bottom: 30px;
-`;
-
-export const ButtonLabel = styled(SendLabel)`
-    margin-left: ${scale(10)}px;
 `;

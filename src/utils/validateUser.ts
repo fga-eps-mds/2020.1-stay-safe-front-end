@@ -1,5 +1,3 @@
-import { Alert } from "react-native";
-
 import {
     validateRequiredField,
     validateFieldLength,
@@ -15,7 +13,7 @@ interface UserProps {
 }
 
 export const validateUser = (data: UserProps) => {
-    const error = ["Campo Inválido", ""];
+    let error = "";
     let usernameError = "";
     let passwordError = "";
     if (data.hasOwnProperty("username")) {
@@ -26,19 +24,16 @@ export const validateUser = (data: UserProps) => {
     const emailError = emailInvalid(data.email);
 
     if (usernameError) {
-        error[1] = usernameError;
+        error = usernameError;
     } else if (nameError) {
-        error[1] = nameError;
+        error = nameError;
     } else if (emailError) {
-        error[1] = emailError;
+        error = emailError;
     } else if (passwordError) {
-        error[1] = passwordError;
+        error = passwordError;
     }
 
-    if (error[1] !== "") {
-        Alert.alert(error[0], error[1]);
-    }
-    return error[1] === "";
+    return error;
 };
 
 const usernameInvalid = (username) => {

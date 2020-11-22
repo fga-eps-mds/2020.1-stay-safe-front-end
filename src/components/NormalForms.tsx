@@ -54,11 +54,15 @@ export const NormalInput = styled.TextInput.attrs((props) => ({
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primarySuperDarkBlue};
     margin-bottom: ${scale(20)}px;
-    padding-horizontal: ${scale(14)}px;
+    padding: 0 ${scale(14)}px;
 `;
 
-export const SendLabel = styled.Text`
+export const ButtonLabel = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(14)}px;
     color: ${(props) => props.theme.primaryWhite};
+`;
+
+export const ButtonWithIconLabel = styled(ButtonLabel)`
+    margin-left: ${scale(10)}px;
 `;

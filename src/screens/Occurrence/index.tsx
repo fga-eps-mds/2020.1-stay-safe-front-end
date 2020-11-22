@@ -1,17 +1,18 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import { DropDown, dropdownStyle } from "../../components/Dropdown";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
     Container,
     KeyboardScrollView,
-    SendLabel,
+    ButtonWithIconLabel,
     NormalLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -24,6 +25,7 @@ import {
     formatDateTime,
     getOcurrenceDateTime,
 } from "../../utils/dates";
+import { scale } from "../../utils/scalling";
 import { validateOccurrence } from "../../utils/validateOccurrence";
 import {
     occurrenceTypeItems,
@@ -31,10 +33,8 @@ import {
     physicalAggressionItems,
     policeReportItems,
     victimItems,
-    dropdownStyle,
 } from "./dropdownConstants";
 import {
-    DropDown,
     InputContainer,
     InputWrapper,
     PlaceholderPicker,
@@ -70,8 +70,13 @@ const Occurrence: React.FC = () => {
         setSelectedPhysicalAggression,
     ] = useState<boolean>();
     const [selectedPoliceReport, setSelectedPoliceReport] = useState<boolean>();
-
     const [location, setLocation] = useState<[number, number]>([0, 0]);
+
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
 
     const [datetime, setDatetime] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
@@ -195,15 +200,16 @@ const Occurrence: React.FC = () => {
             occurrence_date_time: formatDateTime(datetime),
             location,
         };
-        if (validateOccurrence(dataOccurrence)) {
+        const error = validateOccurrence(dataOccurrence);
+        if (error === "") {
             if (data.token !== "") {
                 setIsLoading(true);
                 const response = isEditing
                     ? await updateOccurrence(
-                          idOccurrence,
-                          data.token,
-                          dataOccurrence
-                      )
+                        idOccurrence,
+                        data.token,
+                        dataOccurrence
+                    )
                     : await createOccurrence(dataOccurrence, data.token);
 
                 if (!response.body.error && response.status === 201) {
@@ -213,13 +219,17 @@ const Occurrence: React.FC = () => {
                     navigation.setParams({ occurrence: null });
                     setShowSuccessfullyModal(true);
                 } else {
-                    Alert.alert(
+                    setIsLoading(false);
+                    setHasError(true);
+                    setErrorMessage([
                         "Erro ao cadastrar ocorrência",
-                        response.body.error
-                    );
+                        response.body.error,
+                    ]);
                 }
-                setIsLoading(false);
             }
+        } else {
+            setHasError(true);
+            setErrorMessage(["Campo Inválido", error]);
         }
     };
 
@@ -333,6 +343,7 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Data da Ocorrência</NormalLabel>
                             <Button
                                 width="100%"
+                                style={{ marginTop: 0 }}
                                 color={theme.primaryWhite}
                                 borderRadius={15}
                                 onPress={() => setShowDatePicker(true)}
@@ -361,6 +372,7 @@ const Occurrence: React.FC = () => {
                             <NormalLabel>Hora da Ocorrência</NormalLabel>
                             <Button
                                 width="100%"
+                                style={{ marginTop: 0 }}
                                 color={theme.primaryWhite}
                                 borderRadius={15}
                                 onPress={() => setShowTimePicker(true)}
@@ -379,16 +391,20 @@ const Occurrence: React.FC = () => {
                     </InputWrapper>
 
                     <Button
-                        style={{ marginTop: 45 }}
-                        width="80%"
                         color={theme.primaryRed}
+                        style={{ marginTop: 45 }}
                         onPress={handleSubmit}
                     >
-                        <SendLabel>
+                        <MaterialCommunityIcons
+                            name="map-marker-check"
+                            size={scale(20)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>
                             {isEditing
                                 ? "Editar Ocorrência"
                                 : "Registrar Ocorrência"}
-                        </SendLabel>
+                        </ButtonWithIconLabel>
                     </Button>
 
                     <StayAlert
@@ -407,6 +423,15 @@ const Occurrence: React.FC = () => {
                         confirmText="Entendido"
                         onConfirmPressed={() => handleClosedModal()}
                         onDismiss={() => handleClosedModal()}
+                    />
+                    <StayAlert
+                        show={hasError}
+                        title={errorMessage[0]}
+                        message={errorMessage[1]}
+                        showConfirmButton
+                        confirmText="Confirmar"
+                        onConfirmPressed={() => setHasError(false)}
+                        onDismiss={() => setHasError(false)}
                     />
                     {isLoading && <Loader />}
                 </KeyboardScrollView>

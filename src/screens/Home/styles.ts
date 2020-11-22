@@ -1,9 +1,9 @@
-import DropDownPicker from "react-native-dropdown-picker";
 import { RectButton } from "react-native-gesture-handler";
 import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
 import styled, { css } from "styled-components/native";
 
+import { DropDown } from "../../components/Dropdown";
 import { scale } from "../../utils/scalling";
 
 interface OptionColorProps {
@@ -89,6 +89,7 @@ export const Tab = styled.View`
     align-items: center;
     justify-content: center;
     margin-bottom: ${scale(10)}px;
+    width: 50%;
 `;
 
 export const TabTitle = styled.Text`
@@ -115,34 +116,12 @@ export const DropDownTitle = styled.Text`
             : props.theme.primaryLightBlue};
 `;
 
-export const UfDropDown = styled(DropDownPicker).attrs((props) => ({
-    placeholder: "Selecionar",
+export const UfDropDown = styled(DropDown).attrs((props) => ({
     containerStyle: {
         height: scale(42),
         width: "30%",
     },
-    dropDownStyle: {
-        backgroundColor: props.theme.primaryWhite,
-        borderTopLeftRadius: scale(15),
-        borderTopRightRadius: scale(15),
-        borderBottomLeftRadius: scale(15),
-        borderBottomRightRadius: scale(15),
-    },
-    labelStyle: {
-        fontFamily: "Trueno-Regular",
-        fontSize: scale(16),
-        textAlign: "center",
-        color: props.theme.primaryDarkBlue,
-    },
-    activeLabelStyle: {
-        color: props.theme.primaryDarkBlue,
-        fontSize: scale(17),
-        fontFamily: "Trueno-SemiBold",
-    },
-    arrowColor: props.theme.primaryRed,
-    arrowSize: 18,
 }))`
-    border: 0;
     background-color: ${(props) => props.theme.primaryWhite};
 `;
 

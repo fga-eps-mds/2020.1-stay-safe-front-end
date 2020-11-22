@@ -6,7 +6,6 @@ import {
 } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useCallback, useState } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -18,6 +17,7 @@ import {
     Container,
     KeyboardScrollView,
     NormalLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
@@ -25,7 +25,7 @@ import { getUser, updateUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { validateUser } from "../../utils/validateUser";
 import { profileButtons } from "./buttonsObject";
-import { InputViewing, ButtonLabel, ButtonsContainer } from "./styles";
+import { InputViewing, ButtonsContainer } from "./styles";
 
 const Profile: React.FC = () => {
     const theme = useTheme();
@@ -43,6 +43,12 @@ const Profile: React.FC = () => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [isUserEdited, setIsUserEdited] = useState(false);
+
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -76,14 +82,14 @@ const Profile: React.FC = () => {
     );
 
     const handleUpdateProfile = async () => {
-        if (
-            validateUser({
-                fullName: userFullName,
-                email: userEmail,
-                password: userPwd,
-                confirmPassword: userConfirmPwd,
-            })
-        ) {
+        const error = validateUser({
+            fullName: userFullName,
+            email: userEmail,
+            password: userPwd,
+            confirmPassword: userConfirmPwd,
+        });
+
+        if (error === "") {
             let editedUser;
             if (userPwd === null || userPwd === "") {
                 editedUser = {
@@ -104,12 +110,16 @@ const Profile: React.FC = () => {
                 if (!response.body.error && response.status === 200) {
                     setIsUserEdited(true);
                 } else {
-                    Alert.alert(
+                    setHasError(true);
+                    setErrorMessage([
                         "Erro ao atualizar usuário",
-                        response.body.error
-                    );
+                        response.body.error,
+                    ]);
                 }
             }
+        } else {
+            setHasError(true);
+            setErrorMessage(["Campo Inválido", error]);
         }
     };
 
@@ -204,9 +214,9 @@ const Profile: React.FC = () => {
                                 size={scale(18)}
                                 color={theme.primaryWhite}
                             />
-                            <ButtonLabel>
+                            <ButtonWithIconLabel>
                                 {isEditing ? "Salvar" : "Editar Perfil"}
-                            </ButtonLabel>
+                            </ButtonWithIconLabel>
                         </Button>
                     )}
 
@@ -229,9 +239,9 @@ const Profile: React.FC = () => {
                                             size={scale(18)}
                                             color={theme.primaryWhite}
                                         />
-                                        <ButtonLabel>
+                                        <ButtonWithIconLabel>
                                             {button.label}
-                                        </ButtonLabel>
+                                        </ButtonWithIconLabel>
                                     </Button>
                                 );
                             })}
@@ -246,6 +256,15 @@ const Profile: React.FC = () => {
                         confirmText="Entendido"
                         onConfirmPressed={() => handleClosedModal()}
                         onDismiss={() => handleClosedModal()}
+                    />
+                    <StayAlert
+                        show={hasError}
+                        title={errorMessage[0]}
+                        message={errorMessage[1]}
+                        showConfirmButton
+                        confirmText="Confirmar"
+                        onConfirmPressed={() => setHasError(false)}
+                        onDismiss={() => setHasError(false)}
                     />
                 </KeyboardScrollView>
             </Container>
