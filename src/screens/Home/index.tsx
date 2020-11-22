@@ -314,7 +314,7 @@ const Home: React.FC = () => {
                 <LoggedInModal navObject={navigation} />
             )}
             {selectedOption[0] > 0 &&
-            //!isFilterOpen &&
+            !isFilterOpen &&
             selectedFilter === "heat" ? (
                 <HeatMap
                     secretaryOccurrences={secretaryOccurrences}
