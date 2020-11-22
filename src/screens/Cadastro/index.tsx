@@ -76,8 +76,6 @@ const Cadastro: React.FC = () => {
                 if (!response.body.error && response.status === 200) {
                     setIsLoading(true);
 
-                    setTimeout(() => setIsLoading(false), 5000);
-
                     await signIn({ username, password: userPwd });
 
                     setIsLoading(false);

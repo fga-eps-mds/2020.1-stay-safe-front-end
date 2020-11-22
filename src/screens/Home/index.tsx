@@ -9,11 +9,13 @@ import * as Font from "expo-font";
 import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import { Marker, MapEvent } from "react-native-maps";
+import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import FloatingButton from "../../components/FloatingButton";
+import { FloatingButtonStyled } from "../../components/FloatingButton/styles";
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -28,24 +30,16 @@ import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import StayMarker from "../../components/StayMarker";
 import { useUser } from "../../hooks/user";
-import DarkLogo from "../../img/logo-thief-dark.svg";
-import Logo from "../../img/logo-thief.svg";
 import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
+import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
-    crimesColors,
-    searchOptionsDf,
-    searchOptionsSp,
-    ufs,
-} from "./searchOptions";
-import {
-    FilterButton,
     FilterModal,
-    HeatInfo,
     StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
@@ -59,8 +53,10 @@ import {
     UfDropDown,
     DropDownContainer,
     DropDownTitle,
+    MapButtonsContainer,
+    MapButton,
+    MapText,
 } from "./styles";
-import { tabs } from "./tabs";
 
 type ParamList = {
     params: {
@@ -110,7 +106,7 @@ const Home: React.FC = () => {
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
-    const [selectedFilter, setSelectedFilter] = useState("heat");
+    const [selectedFilter, setSelectedFilter] = useState("pins");
 
     const [selectedUf, setSelectedUf] = useState("df");
 
@@ -144,24 +140,18 @@ const Home: React.FC = () => {
 
         if (status !== "granted") {
             console.warn("Permission to access location was denied");
+        } else {
+            const position = await Location.getCurrentPositionAsync({});
+
+            const location = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+            };
+
+            setLocation(location);
         }
-
-        const position = await Location.getCurrentPositionAsync({});
-
-        const location = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
-        };
-
-        setLocation(location);
-    };
-
-    const getPinColor = (occurrence) => {
-        return crimesColors.filter(
-            (op) => op.name === occurrence.occurrence_type
-        )[0].color;
     };
 
     const handleSubmitFilter = () => {
@@ -294,25 +284,31 @@ const Home: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {!isFilterOpen && (
-                <FilterButton onPress={() => setIsFilterOpen(true)}>
+                <FloatingButton
+                    onPress={() => setIsFilterOpen(true)}
+                    position="right-top"
+                >
                     <Feather
                         name="filter"
                         size={scale(30)}
                         color={theme.primaryGray}
                     />
-                </FilterButton>
+                </FloatingButton>
             )}
             {selectedFilter === "heat" &&
                 !isInfoHeatOpen &&
                 !isFilterOpen &&
                 selectedOption[0] !== 0 && (
-                    <HeatInfo onPress={() => setIsInfoHeatOpen(true)}>
+                    <FloatingButtonStyled
+                        onPress={() => setIsInfoHeatOpen(true)}
+                        position="right-bottom"
+                    >
                         <Feather
                             name="info"
                             size={scale(30)}
                             color={theme.primaryGray}
                         />
-                    </HeatInfo>
+                    </FloatingButtonStyled>
                 )}
             {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
@@ -337,39 +333,37 @@ const Home: React.FC = () => {
                     {occurrences !== undefined &&
                         occurrences?.map((occurrence: Occurrence) => {
                             return (
-                                <Marker
+                                <StayMarker
                                     key={occurrence.id_occurrence}
-                                    coordinate={{
-                                        latitude: occurrence.location[0],
-                                        longitude: occurrence.location[1],
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "OccurrenceDetails",
-                                            {
-                                                occurrence,
-                                            }
-                                        )
-                                    }
-                                    tracksViewChanges={false}
-                                >
-                                    {theme.type === "dark" ? (
-                                        <DarkLogo
-                                            width={scale(38)}
-                                            height={scale(38)}
-                                            fill={getPinColor(occurrence)}
-                                        />
-                                    ) : (
-                                        <Logo
-                                            width={scale(38)}
-                                            height={scale(38)}
-                                            fill={getPinColor(occurrence)}
-                                        />
-                                    )}
-                                </Marker>
+                                    occurrence={occurrence}
+                                />
                             );
                         })}
                 </StayNormalMap>
+            )}
+            {!isFilterOpen && (
+                <MapButtonsContainer>
+                    <MapButton
+                        onPress={() => {
+                            setSelectedFilter("pins");
+                            setSelectedOption([0]);
+                        }}
+                        disabled={selectedFilter === "pins"}
+                    >
+                        <MapText>Usuários</MapText>
+                    </MapButton>
+                    <MapButton
+                        onPress={() => {
+                            setSelectedUf("df");
+                            setIsFilterOpen(true);
+                            setSelectedFilter("heat");
+                            setSelectedOption([0]);
+                        }}
+                        disabled={selectedFilter === "heat"}
+                    >
+                        <MapText>Secretarias</MapText>
+                    </MapButton>
+                </MapButtonsContainer>
             )}
             <StayAlert
                 show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
@@ -414,28 +408,17 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        {tabs.map((item, index) => {
-                            return (
-                                <Tab
-                                    key={`tab-${index}`}
-                                    onPress={() => {
-                                        setSelectedFilter(item.name);
-                                        setSelectedOption([0]);
-                                    }}
-                                    focus={selectedFilter === item.name}
-                                >
-                                    <TabTitle
-                                        focus={selectedFilter === item.name}
-                                    >
-                                        {item.text}
-                                    </TabTitle>
-                                </Tab>
-                            );
-                        })}
+                        <Tab>
+                            <TabTitle>
+                                {selectedFilter === "heat"
+                                    ? "Calor"
+                                    : "Ocorrências"}
+                            </TabTitle>
+                        </Tab>
                     </TabFilter>
                     {selectedFilter === "heat" && (
                         <DropDownContainer>
-                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
+                            <DropDownTitle>Selecione uma UF:</DropDownTitle>
                             <UfDropDown
                                 style={{
                                     backgroundColor: theme.primaryLightGray,
@@ -458,13 +441,12 @@ const Home: React.FC = () => {
                 </View>
                 {searchOptions.map((option) => {
                     return (
-                        <ButtonOptionContainer key={option.id}>
+                        <ButtonOptionContainer
+                            key={option.id}
+                            onPress={() => handleSelectOption(option.id)}
+                        >
                             <Option>
-                                <OptionCircleButton
-                                    onPress={() =>
-                                        handleSelectOption(option.id)
-                                    }
-                                >
+                                <OptionCircleButton>
                                     <Feather
                                         name={
                                             selectedOption.indexOf(option.id) >=

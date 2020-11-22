@@ -9,11 +9,6 @@ import Loader from "../Loader";
 import { coordinatesDF } from "./coordinates/coordinatesDF";
 import coordinatesSP from "./coordinates/coordinatesSP.json";
 
-interface Coordinate {
-    longitude: number;
-    latitude: number;
-}
-
 interface HeatMapProps {
     secretaryOccurrences: Array<CityCrimes>;
     city: string;
@@ -71,7 +66,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
             setCrimes();
             getSpCoordinates().then((res) => setIsLoading(false));
         }
-    }, []);
+    }, [secretaryOccurrences]);
 
     const getSpCoordinates = async () => {
         if (isNaN(coordinatesSP[0].cities[0].coordinates[0].latitude)) {
