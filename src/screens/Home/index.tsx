@@ -12,6 +12,7 @@ import { View } from "react-native";
 import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
+import { FloatingAction } from "react-native-floating-action";
 
 import Button from "../../components/Button";
 import FloatingButton from "../../components/FloatingButton";
@@ -111,6 +112,20 @@ const Home: React.FC = () => {
     const [selectedUf, setSelectedUf] = useState("df");
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const actions = [
+        {
+          text: "Accessibility",
+          icon: <Feather
+                    name={"filter"}
+                
+                    size={scale(20)}
+                    color={theme.primaryBlack}
+                />,
+          name: "bt_accessibility",
+          position: 1
+        },
+      ];
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -283,7 +298,7 @@ const Home: React.FC = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {!isFilterOpen && (
+            {/* {!isFilterOpen && (
                 <FloatingButton
                     onPress={() => setIsFilterOpen(true)}
                     position="right-top"
@@ -294,7 +309,17 @@ const Home: React.FC = () => {
                         color={theme.primaryGray}
                     />
                 </FloatingButton>
-            )}
+            )} */}
+            <FloatingButton
+                onPress={() => {}}
+                position="right-top">
+                <FloatingAction
+                    actions={actions}
+                    onPressItem={name => {
+                    console.log(`selected button: ${name}`);
+                    }}
+                />
+            </FloatingButton>
             {selectedFilter === "heat" &&
                 !isInfoHeatOpen &&
                 !isFilterOpen &&
