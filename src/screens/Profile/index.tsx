@@ -1,9 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import {
-    useFocusEffect,
-    useNavigation,
-    useIsFocused,
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,7 +7,6 @@ import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
-import LoggedInModal from "../../components/LoggedInModal";
 import LogoContainer from "../../components/LogoContainer";
 import {
     Container,
@@ -36,8 +31,6 @@ const Profile: React.FC = () => {
     const [userEmail, setUserEmail] = useState("");
     const [userPwd, setUserPwd] = useState("");
     const [userConfirmPwd, setUserConfirmPwd] = useState("");
-
-    const isFocused = useIsFocused();
 
     const navigation = useNavigation();
 
@@ -134,9 +127,6 @@ const Profile: React.FC = () => {
         <SafeAreaView
             style={{ flex: 1, backgroundColor: theme.primaryBackground }}
         >
-            {isFocused && data.token === "" && (
-                <LoggedInModal navObject={navigation} />
-            )}
             <Container>
                 <HeaderTitle
                     text="Perfil"
