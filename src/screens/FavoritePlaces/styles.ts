@@ -92,3 +92,36 @@ export const DialogButton = styled(Dialog.Button)`
     border-radius: ${scale(28)}px;
     padding: ${scale(12)}px;
 `;
+
+export const ModalBack = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    background-color: ${(props) => props.theme.primaryBlack + "90"};
+`;
+
+export const ModalWrapper = styled.View`
+    width: 100%;
+    background-color: ${(props) => props.theme.primaryWhite};
+    padding: ${scale(18)}px;
+    border-top-right-radius: ${scale(22)}px;
+    border-top-left-radius: ${scale(22)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const ModalText = styled.Text`
+    font-size: ${scale(16)}px;
+    font-family: "Trueno-SemiBold";
+    color: ${(props) => props.theme.primarySuperDarkBlue};
+    text-align: left;
+    margin-bottom: ${scale(18)}px;
+`;
+
+export const MapContainer = styled.View`
+    height: ${scale(200)}px;
+    width: 100%;
+    border-radius: ${scale(16)}px;
+    overflow: hidden;
+`;

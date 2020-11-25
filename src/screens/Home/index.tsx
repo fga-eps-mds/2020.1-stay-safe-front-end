@@ -16,6 +16,7 @@ import { useTheme } from "styled-components";
 import Button from "../../components/Button";
 import FloatingButton from "../../components/FloatingButton";
 import { FloatingButtonStyled } from "../../components/FloatingButton/styles";
+import StayNormalMap from "../../components/StayNormalMap"
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -40,7 +41,6 @@ import { scale } from "../../utils/scalling";
 import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterModal,
-    StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
     Option,

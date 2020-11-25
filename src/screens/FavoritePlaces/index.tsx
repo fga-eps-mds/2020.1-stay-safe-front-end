@@ -4,9 +4,11 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import { Modal } from 'react-native';
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import {
     getFavoritePlaces,
@@ -24,7 +26,13 @@ import {
     DialogInput,
     ButtonsContainer,
     DialogButton,
+    ModalBack,
+    ModalWrapper,
+    ModalText,
+    MapContainer
 } from "./styles";
+import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
+import { scale } from "../../utils/scalling";
 
 interface FavoritePlace {
     id_place: number;
@@ -41,10 +49,11 @@ type ParamPlace = {
 };
 
 const FavoritePlaces: React.FC = () => {
-    const navigation = useNavigation();
     const theme = useTheme();
     const { data } = useUser();
+
     const route = useRoute<RouteProp<ParamPlace, "params">>();
+    const navigation = useNavigation();
 
     const [favoritePlaces, setFavoritePlaces] = useState<FavoritePlace[]>([]);
     const [location, setLocation] = useState<[number, number]>([0, 0]);
@@ -170,9 +179,9 @@ const FavoritePlaces: React.FC = () => {
                     <AddPlace
                         icon="plus"
                         onPress={() => {
-                            navigation.navigate("Home", {
-                                showFavoritePlaceModal: true,
-                            });
+                            // navigation.navigate("Home", {
+                            //     showFavoritePlaceModal: true,
+                            // });
                         }}
                     />
                     <DialogContainer
@@ -234,6 +243,23 @@ const FavoritePlaces: React.FC = () => {
                         onConfirmPressed={() => setHasError(false)}
                         onDismiss={() => setHasError(false)}
                     />
+                    <Modal transparent animationType="slide" >
+                        <ModalBack>
+                            <ModalWrapper>
+                                <ModalText>
+                                    Selecione o local favorito no mapa
+                                </ModalText>
+
+                                <MapContainer>
+                                    <StayNormalMap
+                                        customMapStyle={
+                                            theme.type === "dark" ? staySafeDarkMapStyle : []
+                                        }
+                                    />
+                                </MapContainer>
+                            </ModalWrapper>
+                        </ModalBack>
+                    </Modal>
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>
