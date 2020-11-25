@@ -87,6 +87,9 @@ const Home: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
 
+    const [initialMonth, setInitialMonth] = useState("");
+    const [finalMonth, setFinalMonth] = useState("");
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
@@ -133,7 +136,18 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         getCurrentLocation();
+        getInitialAndFinalMonth();
     }, []);
+
+    const getInitialAndFinalMonth = () => {
+        const date = new Date();
+
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+
+        setFinalMonth(month + "/" + year);
+        setInitialMonth(month + "/" + (year - 1));
+    };
 
     const getCurrentLocation = async () => {
         const { status } = await Location.requestPermissionsAsync();
@@ -189,8 +203,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                "1/2020",
-                "12/2020",
+                initialMonth,
+                finalMonth,
                 1
             );
 
