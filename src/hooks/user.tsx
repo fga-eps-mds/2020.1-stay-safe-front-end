@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
 import React, {
     createContext,
@@ -24,6 +25,7 @@ interface SignInCredentials {
 interface UserContextData {
     theme: AppTheme;
     data: UserState;
+    location: UserLocation;
     isLoading: boolean;
     showNotifications: boolean;
     switchTheme: () => void;
@@ -63,6 +65,20 @@ interface UserState {
     token: string;
 }
 
+interface UserLocation {
+    latitude: number;
+    longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+}
+
+const initialLocation = {
+    latitude: -15.780311,
+    longitude: -47.768043,
+    latitudeDelta: 0.2,
+    longitudeDelta: 0.2,
+};
+
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
         shouldShowAlert: true,
@@ -77,6 +93,8 @@ export const UserProvider: React.FC = ({ children }) => {
     const [theme, setTheme] = useState(staySafeTheme);
 
     const [data, setData] = useState<UserState>({ token: "", username: "" });
+
+    const [location, setLocation] = useState<UserLocation>(initialLocation);
 
     const [expoPushToken, setExpoPushToken] = useState("");
     const [notification, setNotification] = useState(false);
@@ -118,6 +136,8 @@ export const UserProvider: React.FC = ({ children }) => {
         setTimeout(() => {
             loadStorageData();
         }, 1000);
+
+        getCurrentLocation();
     }, []);
 
     const registerDeviceForPushNotifications = async () => {
@@ -198,6 +218,25 @@ export const UserProvider: React.FC = ({ children }) => {
         setData({ token: "", username: "" });
     }, []);
 
+    const getCurrentLocation = async () => {
+        const { status } = await Location.requestPermissionsAsync();
+
+        if (status !== "granted") {
+            console.warn("Permission to access location was denied");
+        } else {
+            const position = await Location.getCurrentPositionAsync({});
+
+            const location = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                latitudeDelta: 0.02,
+                longitudeDelta: 0.02,
+            };
+
+            setLocation(location);
+        }
+    };
+
     const switchTheme = useCallback(async () => {
         await AsyncStorage.setItem(
             "@StaySafe:theme",
@@ -218,6 +257,7 @@ export const UserProvider: React.FC = ({ children }) => {
         <UserContext.Provider
             value={{
                 data,
+                location,
                 switchTheme,
                 theme,
                 isLoading,

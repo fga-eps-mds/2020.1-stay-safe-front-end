@@ -6,8 +6,7 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from "expo-location";
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 import { View } from "react-native";
 import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -73,16 +72,9 @@ interface CrimeOption {
     range: number[];
 }
 
-const initialLocation = {
-    latitude: -15.780311,
-    longitude: -47.768043,
-    latitudeDelta: 0.2,
-    longitudeDelta: 0.2,
-};
-
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data } = useUser();
+    const { data, location } = useUser();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
@@ -91,7 +83,6 @@ const Home: React.FC = () => {
     const [isReporting, setIsReporting] = useState(false);
     const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
     const [isSelectingPlace, setIsSelectingPlace] = useState(false);
-    const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -130,29 +121,6 @@ const Home: React.FC = () => {
             setIsPlaceModalOpen(route.params.showFavoritePlaceModal);
         }
     });
-
-    useEffect(() => {
-        getCurrentLocation();
-    }, []);
-
-    const getCurrentLocation = async () => {
-        const { status } = await Location.requestPermissionsAsync();
-
-        if (status !== "granted") {
-            console.warn("Permission to access location was denied");
-        } else {
-            const position = await Location.getCurrentPositionAsync({});
-
-            const location = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
-            };
-
-            setLocation(location);
-        }
-    };
 
     const handleSubmitFilter = () => {
         if (selectedFilter === "heat") {

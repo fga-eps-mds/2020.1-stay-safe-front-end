@@ -32,7 +32,6 @@ import {
     MapContainer
 } from "./styles";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
-import { scale } from "../../utils/scalling";
 
 interface FavoritePlace {
     id_place: number;
@@ -50,13 +49,13 @@ type ParamPlace = {
 
 const FavoritePlaces: React.FC = () => {
     const theme = useTheme();
-    const { data } = useUser();
+    const { data, location } = useUser();
 
     const route = useRoute<RouteProp<ParamPlace, "params">>();
     const navigation = useNavigation();
 
     const [favoritePlaces, setFavoritePlaces] = useState<FavoritePlace[]>([]);
-    const [location, setLocation] = useState<[number, number]>([0, 0]);
+    const [position, setPosition] = useState<[number, number]>([0, 0]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [favoritePlaceName, setFavoritePlaceName] = useState("");
 
@@ -77,7 +76,7 @@ const FavoritePlaces: React.FC = () => {
 
     useEffect(() => {
         if (route.params) {
-            setLocation([route.params.latitude, route.params.longitude]);
+            setPosition([route.params.latitude, route.params.longitude]);
             setIsDialogOpen(true);
         }
     }, [route]);
@@ -119,8 +118,8 @@ const FavoritePlaces: React.FC = () => {
         if (data.token !== "") {
             const FavoritePlace = {
                 name: favoritePlaceName,
-                latitude: location[0],
-                longitude: location[1],
+                latitude: position[0],
+                longitude: position[1],
             };
 
             const response = await createFavoritePlace(
@@ -252,6 +251,9 @@ const FavoritePlaces: React.FC = () => {
 
                                 <MapContainer>
                                     <StayNormalMap
+                                        region={location}
+                                        showsUserLocation
+                                        loadingEnabled
                                         customMapStyle={
                                             theme.type === "dark" ? staySafeDarkMapStyle : []
                                         }
