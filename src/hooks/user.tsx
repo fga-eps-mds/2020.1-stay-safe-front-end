@@ -225,14 +225,14 @@ export const UserProvider: React.FC = ({ children }) => {
         } else {
             const position = await Location.getCurrentPositionAsync({});
 
-            const location = {
+            const someLocation = {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
                 latitudeDelta: 0.02,
                 longitudeDelta: 0.02,
             };
 
-            setLocation(location);
+            setLocation(someLocation);
         }
     };
 
