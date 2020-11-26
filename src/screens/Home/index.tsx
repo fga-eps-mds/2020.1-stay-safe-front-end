@@ -15,7 +15,6 @@ import { useTheme } from "styled-components";
 import Button from "../../components/Button";
 import FloatingButton from "../../components/FloatingButton";
 import { FloatingButtonStyled } from "../../components/FloatingButton/styles";
-import StayNormalMap from "../../components/StayNormalMap"
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -31,6 +30,7 @@ import LoggedInModal from "../../components/LoggedInModal";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
+import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
@@ -299,7 +299,8 @@ const Home: React.FC = () => {
                     }
                 >
                     {occurrences !== undefined &&
-                        occurrences?.map((occurrence: Occurrence) => {
+                        !isReporting &&
+                        occurrences.map((occurrence: Occurrence) => {
                             return (
                                 <StayMarker
                                     key={occurrence.id_occurrence}
