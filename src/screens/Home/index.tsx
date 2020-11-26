@@ -12,6 +12,7 @@ import { View } from "react-native";
 import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
+import { FAB, Portal, Provider } from 'react-native-paper';
 
 import Button from "../../components/Button";
 import FloatingButton from "../../components/FloatingButton";
@@ -57,6 +58,7 @@ import {
     MapButton,
     MapText,
 } from "./styles";
+import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 
 type ParamList = {
     params: {
@@ -111,6 +113,8 @@ const Home: React.FC = () => {
     const [selectedUf, setSelectedUf] = useState("df");
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [showIcons, setShowIcons] = useState(false)
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -283,7 +287,7 @@ const Home: React.FC = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {!isFilterOpen && (
+            {/* {!isFilterOpen && (
                 <FloatingButton
                     onPress={() => setIsFilterOpen(true)}
                     position="right-top"
@@ -294,7 +298,43 @@ const Home: React.FC = () => {
                         color={theme.primaryGray}
                     />
                 </FloatingButton>
-            )}
+            )} */}
+                {!isFilterOpen && (
+                <TouchableHighlight>
+                    <FAB.Group
+                        open={showIcons}
+                        icon={showIcons ? 'calendar-today' : 'plus'}
+                        actions={[
+                            {
+                                icon: 'plus',
+                                onPress: () => console.log('Pressed add')
+                            },
+                            {
+                                icon: 'star',
+                                label: 'Star',
+                                onPress: () => console.log('Pressed star'),
+                            },
+                            {
+                                icon: 'email',
+                                label: 'Email',
+                                onPress: () => console.log('Pressed email'),
+                            },
+                            {
+                                icon: 'bell',
+                                label: 'Remind',
+                                onPress: () => console.log('Pressed notifications'),
+                            },
+                        ]}
+                        onStateChange={() => setShowIcons(!showIcons)}
+                        visible={true}
+                        onPress={() => {
+                            if (showIcons) {
+                            // do something if the speed dial is open
+                            }
+                        }}
+                    />
+                </TouchableHighlight>
+                )}
             {selectedFilter === "heat" &&
                 !isInfoHeatOpen &&
                 !isFilterOpen &&
