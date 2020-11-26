@@ -9,10 +9,14 @@ import * as Font from "expo-font";
 import * as Location from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
+import {
+    TouchableHighlight,
+    TouchableOpacity,
+} from "react-native-gesture-handler";
 import { MapEvent } from "react-native-maps";
+import { FAB, Portal, Provider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
-import { FAB, Portal, Provider } from 'react-native-paper';
 
 import Button from "../../components/Button";
 import FloatingButton from "../../components/FloatingButton";
@@ -58,7 +62,6 @@ import {
     MapButton,
     MapText,
 } from "./styles";
-import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 
 type ParamList = {
     params: {
@@ -114,7 +117,7 @@ const Home: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [showIcons, setShowIcons] = useState(false)
+    const [showIcons, setShowIcons] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -286,306 +289,347 @@ const Home: React.FC = () => {
     if (!loaded) return null;
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-            {/* {!isFilterOpen && (
-                <FloatingButton
-                    onPress={() => setIsFilterOpen(true)}
-                    position="right-top"
-                >
-                    <Feather
-                        name="filter"
-                        size={scale(30)}
-                        color={theme.primaryGray}
-                    />
-                </FloatingButton>
-            )} */}
-                {!isFilterOpen && (
-                <TouchableHighlight>
-                    <FAB.Group
-                        open={showIcons}
-                        icon={showIcons ? 'calendar-today' : 'plus'}
-                        actions={[
-                            {
-                                icon: 'plus',
-                                onPress: () => console.log('Pressed add')
-                            },
-                            {
-                                icon: 'star',
-                                label: 'Star',
-                                onPress: () => console.log('Pressed star'),
-                            },
-                            {
-                                icon: 'email',
-                                label: 'Email',
-                                onPress: () => console.log('Pressed email'),
-                            },
-                            {
-                                icon: 'bell',
-                                label: 'Remind',
-                                onPress: () => console.log('Pressed notifications'),
-                            },
-                        ]}
-                        onStateChange={() => setShowIcons(!showIcons)}
-                        visible={true}
-                        onPress={() => {
-                            if (showIcons) {
-                            // do something if the speed dial is open
-                            }
-                        }}
-                    />
-                </TouchableHighlight>
-                )}
-            {selectedFilter === "heat" &&
-                !isInfoHeatOpen &&
-                !isFilterOpen &&
-                selectedOption[0] !== 0 && (
-                    <FloatingButtonStyled
-                        onPress={() => setIsInfoHeatOpen(true)}
-                        position="right-bottom"
-                    >
-                        <Feather
-                            name="info"
-                            size={scale(30)}
-                            color={theme.primaryGray}
+        <Provider>
+            <Portal>
+                <SafeAreaView style={{ flex: 1 }}>
+                    {!isFilterOpen && (
+                        <FloatingButton
+                            onPress={() => setIsFilterOpen(true)}
+                            position="right-top"
+                        >
+                            <Feather
+                                name="filter"
+                                size={scale(30)}
+                                color={theme.primaryGray}
+                            />
+                        </FloatingButton>
+                    )}
+                    {!isFilterOpen && (
+                        // <TouchableHighlight>
+                        <FAB.Group
+                            style={{
+                                zIndex: 1000,
+                            }}
+                            theme={{
+                                colors: {
+                                    surface: theme.primarySuperDarkBlue,
+                                    text: theme.primarySuperDarkBlue,
+                                },
+                            }}
+                            open={showIcons}
+                            fabStyle={{
+                                backgroundColor: theme.primaryWhite,
+                                borderColor: theme.primaryLightBlue,
+                                borderWidth: scale(1),
+                            }}
+                            color={theme.primaryRed}
+                            icon={showIcons ? "calendar-today" : "plus"}
+                            actions={[
+                                {
+                                    icon: "plus",
+                                    onPress: () => console.log("Pressed add"),
+                                },
+                                {
+                                    icon: "star",
+                                    label: "Star",
+                                    onPress: () => console.log("Pressed star"),
+                                },
+                                {
+                                    icon: "email",
+                                    label: "Email",
+                                    onPress: () => console.log("Pressed email"),
+                                },
+                                {
+                                    icon: "bell",
+                                    label: "Remind",
+                                    onPress: () =>
+                                        console.log("Pressed notifications"),
+                                },
+                            ]}
+                            onStateChange={() => setShowIcons(!showIcons)}
+                            visible
+                            onPress={() => {
+                                if (showIcons) {
+                                    // do something if the speed dial is open
+                                }
+                            }}
                         />
-                    </FloatingButtonStyled>
-                )}
-            {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
-                <LoggedInModal navObject={navigation} />
-            )}
-            {selectedOption[0] > 0 &&
-            !isFilterOpen &&
-            selectedFilter === "heat" ? (
-                <HeatMap
-                    secretaryOccurrences={secretaryOccurrences}
-                    city={selectedUf}
-                />
-            ) : (
-                <StayNormalMap
-                    region={location}
-                    onPress={(e) => handleReportingCoordinatesOnMap(e)}
-                    showsUserLocation
-                    loadingEnabled
-                    customMapStyle={
-                        theme.type === "dark" ? staySafeDarkMapStyle : []
-                    }
-                >
-                    {occurrences !== undefined &&
-                        occurrences?.map((occurrence: Occurrence) => {
-                            return (
-                                <StayMarker
-                                    key={occurrence.id_occurrence}
-                                    occurrence={occurrence}
+                        // </TouchableHighlight>
+                    )}
+                    {selectedFilter === "heat" &&
+                        !isInfoHeatOpen &&
+                        !isFilterOpen &&
+                        selectedOption[0] !== 0 && (
+                            <FloatingButtonStyled
+                                onPress={() => setIsInfoHeatOpen(true)}
+                                position="right-bottom"
+                            >
+                                <Feather
+                                    name="info"
+                                    size={scale(30)}
+                                    color={theme.primaryGray}
                                 />
+                            </FloatingButtonStyled>
+                        )}
+                    {data.token === "" &&
+                        !isFilterOpen &&
+                        selectedOption[0] <= 0 && (
+                            <LoggedInModal navObject={navigation} />
+                        )}
+                    {selectedOption[0] > 0 &&
+                    !isFilterOpen &&
+                    selectedFilter === "heat" ? (
+                        <HeatMap
+                            secretaryOccurrences={secretaryOccurrences}
+                            city={selectedUf}
+                        />
+                    ) : (
+                        <StayNormalMap
+                            region={location}
+                            onPress={(e) => handleReportingCoordinatesOnMap(e)}
+                            showsUserLocation
+                            loadingEnabled
+                            customMapStyle={
+                                theme.type === "dark"
+                                    ? staySafeDarkMapStyle
+                                    : []
+                            }
+                        >
+                            {occurrences !== undefined &&
+                                occurrences?.map((occurrence: Occurrence) => {
+                                    return (
+                                        <StayMarker
+                                            key={occurrence.id_occurrence}
+                                            occurrence={occurrence}
+                                        />
+                                    );
+                                })}
+                        </StayNormalMap>
+                    )}
+                    {!isFilterOpen && (
+                        <MapButtonsContainer>
+                            <MapButton
+                                onPress={() => {
+                                    setSelectedFilter("pins");
+                                    setSelectedOption([0]);
+                                }}
+                                disabled={selectedFilter === "pins"}
+                            >
+                                <MapText>Usuários</MapText>
+                            </MapButton>
+                            <MapButton
+                                onPress={() => {
+                                    setSelectedUf("df");
+                                    setIsFilterOpen(true);
+                                    setSelectedFilter("heat");
+                                    setSelectedOption([0]);
+                                }}
+                                disabled={selectedFilter === "heat"}
+                            >
+                                <MapText>Secretarias</MapText>
+                            </MapButton>
+                        </MapButtonsContainer>
+                    )}
+                    <StayAlert
+                        show={
+                            (isPlaceModalOpen || isModalOpen) &&
+                            data.token !== ""
+                        }
+                        title={
+                            isPlaceModalOpen
+                                ? "Selecionar Local Favorito"
+                                : "Reportar Ocorrência"
+                        }
+                        message="Toque para selecionar o local no mapa com o marcador"
+                        showConfirmButton
+                        confirmText="Entendido"
+                        onConfirmPressed={() => {
+                            handleClosedModal();
+                            if (isPlaceModalOpen) setIsSelectingPlace(true);
+                            else setIsReporting(true);
+                        }}
+                        onDismiss={() => handleClosedModal()}
+                    />
+                    <StayAlert
+                        show={isWarningOpen}
+                        title="Opa!"
+                        message={
+                            "Selecione uma opção de filtro.\nPara voltar ao mapa, clique fora da janela."
+                        }
+                        showConfirmButton
+                        confirmText="Entendido"
+                        onConfirmPressed={() => setIsWarningOpen(false)}
+                        onDismiss={() => setIsWarningOpen(false)}
+                    />
+                    <FilterModal
+                        isOpen={isFilterOpen}
+                        onClosed={() => setIsFilterOpen(false)}
+                        swipeToClose={false}
+                        position="top"
+                        backdropOpacity={0}
+                        backButtonClose
+                        ufOptionOpen={selectedFilter === "heat"}
+                    >
+                        <View
+                            style={{
+                                alignItems: "center",
+                            }}
+                        >
+                            <TabFilter>
+                                <Tab>
+                                    <TabTitle>
+                                        {selectedFilter === "heat"
+                                            ? "Calor"
+                                            : "Ocorrências"}
+                                    </TabTitle>
+                                </Tab>
+                            </TabFilter>
+                            {selectedFilter === "heat" && (
+                                <DropDownContainer>
+                                    <DropDownTitle>
+                                        Selecione uma UF:
+                                    </DropDownTitle>
+                                    <UfDropDown
+                                        style={{
+                                            backgroundColor:
+                                                theme.primaryLightGray,
+                                        }}
+                                        items={ufs}
+                                        defaultValue={selectedUf}
+                                        onChangeItem={(item) => {
+                                            setSelectedUf(item.value);
+                                            setSelectedOption([0]);
+
+                                            if (item.value === "df") {
+                                                setSearchOptions(
+                                                    searchOptionsDf
+                                                );
+                                            } else {
+                                                setSearchOptions(
+                                                    searchOptionsSp
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </DropDownContainer>
+                            )}
+                        </View>
+                        {searchOptions.map((option) => {
+                            return (
+                                <ButtonOptionContainer
+                                    key={option.id}
+                                    onPress={() =>
+                                        handleSelectOption(option.id)
+                                    }
+                                >
+                                    <Option>
+                                        <OptionCircleButton>
+                                            <Feather
+                                                name={
+                                                    selectedOption.indexOf(
+                                                        option.id
+                                                    ) >= 0
+                                                        ? "check-circle"
+                                                        : "circle"
+                                                }
+                                                size={scale(20)}
+                                                color={theme.primaryBlack}
+                                            />
+                                        </OptionCircleButton>
+
+                                        <ButtonOptionText>
+                                            {option.name}
+                                        </ButtonOptionText>
+                                    </Option>
+
+                                    {selectedFilter === "pins" && (
+                                        <OptionColor color={option.color} />
+                                    )}
+                                </ButtonOptionContainer>
                             );
                         })}
-                </StayNormalMap>
-            )}
-            {!isFilterOpen && (
-                <MapButtonsContainer>
-                    <MapButton
-                        onPress={() => {
-                            setSelectedFilter("pins");
-                            setSelectedOption([0]);
-                        }}
-                        disabled={selectedFilter === "pins"}
-                    >
-                        <MapText>Usuários</MapText>
-                    </MapButton>
-                    <MapButton
-                        onPress={() => {
-                            setSelectedUf("df");
-                            setIsFilterOpen(true);
-                            setSelectedFilter("heat");
-                            setSelectedOption([0]);
-                        }}
-                        disabled={selectedFilter === "heat"}
-                    >
-                        <MapText>Secretarias</MapText>
-                    </MapButton>
-                </MapButtonsContainer>
-            )}
-            <StayAlert
-                show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
-                title={
-                    isPlaceModalOpen
-                        ? "Selecionar Local Favorito"
-                        : "Reportar Ocorrência"
-                }
-                message="Toque para selecionar o local no mapa com o marcador"
-                showConfirmButton
-                confirmText="Entendido"
-                onConfirmPressed={() => {
-                    handleClosedModal();
-                    if (isPlaceModalOpen) setIsSelectingPlace(true);
-                    else setIsReporting(true);
-                }}
-                onDismiss={() => handleClosedModal()}
-            />
-            <StayAlert
-                show={isWarningOpen}
-                title="Opa!"
-                message={
-                    "Selecione uma opção de filtro.\nPara voltar ao mapa, clique fora da janela."
-                }
-                showConfirmButton
-                confirmText="Entendido"
-                onConfirmPressed={() => setIsWarningOpen(false)}
-                onDismiss={() => setIsWarningOpen(false)}
-            />
-            <FilterModal
-                isOpen={isFilterOpen}
-                onClosed={() => setIsFilterOpen(false)}
-                swipeToClose={false}
-                position="top"
-                backdropOpacity={0}
-                backButtonClose
-                ufOptionOpen={selectedFilter === "heat"}
-            >
-                <View
-                    style={{
-                        alignItems: "center",
-                    }}
-                >
-                    <TabFilter>
-                        <Tab>
-                            <TabTitle>
-                                {selectedFilter === "heat"
-                                    ? "Calor"
-                                    : "Ocorrências"}
-                            </TabTitle>
-                        </Tab>
-                    </TabFilter>
-                    {selectedFilter === "heat" && (
-                        <DropDownContainer>
-                            <DropDownTitle>Selecione uma UF:</DropDownTitle>
-                            <UfDropDown
-                                style={{
-                                    backgroundColor: theme.primaryLightGray,
-                                }}
-                                items={ufs}
-                                defaultValue={selectedUf}
-                                onChangeItem={(item) => {
-                                    setSelectedUf(item.value);
-                                    setSelectedOption([0]);
+                        <View>
+                            <Span
+                                show={
+                                    selectedFilter === "heat" &&
+                                    selectedOption.length > 1
+                                }
+                            >
+                                Selecione apenas uma opção
+                            </Span>
+                        </View>
+                        <View style={{ alignItems: "center" }}>
+                            <Button
+                                onPress={() => handleSubmitFilter()}
+                                color={theme.primaryRed}
+                                enabled={
+                                    !(
+                                        selectedFilter === "heat" &&
+                                        (selectedOption[0] === 0 ||
+                                            selectedOption.length !== 1)
+                                    )
+                                }
+                            >
+                                <Feather
+                                    name="filter"
+                                    size={scale(18)}
+                                    color={theme.primaryWhite}
+                                />
+                                <ButtonWithIconLabel>
+                                    Filtrar
+                                </ButtonWithIconLabel>
+                            </Button>
+                            <Span show style={{ marginTop: scale(5) }}>
+                                ou clique no mapa para voltar
+                            </Span>
+                        </View>
+                    </FilterModal>
 
-                                    if (item.value === "df") {
-                                        setSearchOptions(searchOptionsDf);
-                                    } else {
-                                        setSearchOptions(searchOptionsSp);
-                                    }
-                                }}
-                            />
-                        </DropDownContainer>
-                    )}
-                </View>
-                {searchOptions.map((option) => {
-                    return (
-                        <ButtonOptionContainer
-                            key={option.id}
-                            onPress={() => handleSelectOption(option.id)}
+                    {selectedOption[0] !== 0 && (
+                        <InfoModal
+                            isOpen={isInfoHeatOpen}
+                            onClosed={() => setIsInfoHeatOpen(false)}
+                            swipeToClose={false}
+                            position="center"
+                            backdropOpacity={0}
+                            backButtonClose
                         >
-                            <Option>
-                                <OptionCircleButton>
-                                    <Feather
-                                        name={
-                                            selectedOption.indexOf(option.id) >=
-                                            0
-                                                ? "check-circle"
-                                                : "circle"
-                                        }
-                                        size={scale(20)}
-                                        color={theme.primaryBlack}
-                                    />
-                                </OptionCircleButton>
-
-                                <ButtonOptionText>
-                                    {option.name}
-                                </ButtonOptionText>
-                            </Option>
-
-                            {selectedFilter === "pins" && (
-                                <OptionColor color={option.color} />
-                            )}
-                        </ButtonOptionContainer>
-                    );
-                })}
-                <View>
-                    <Span
-                        show={
-                            selectedFilter === "heat" &&
-                            selectedOption.length > 1
-                        }
-                    >
-                        Selecione apenas uma opção
-                    </Span>
-                </View>
-                <View style={{ alignItems: "center" }}>
-                    <Button
-                        onPress={() => handleSubmitFilter()}
-                        color={theme.primaryRed}
-                        enabled={
-                            !(
-                                selectedFilter === "heat" &&
-                                (selectedOption[0] === 0 ||
-                                    selectedOption.length !== 1)
-                            )
-                        }
-                    >
-                        <Feather
-                            name="filter"
-                            size={scale(18)}
-                            color={theme.primaryWhite}
-                        />
-                        <ButtonWithIconLabel>Filtrar</ButtonWithIconLabel>
-                    </Button>
-                    <Span show style={{ marginTop: scale(5) }}>
-                        ou clique no mapa para voltar
-                    </Span>
-                </View>
-            </FilterModal>
-
-            {selectedOption[0] !== 0 && (
-                <InfoModal
-                    isOpen={isInfoHeatOpen}
-                    onClosed={() => setIsInfoHeatOpen(false)}
-                    swipeToClose={false}
-                    position="center"
-                    backdropOpacity={0}
-                    backButtonClose
-                >
-                    <View style={{ alignItems: "center" }}>
-                        <InfoTitle>Legenda: {crimeOption?.name}</InfoTitle>
-                        <InfoContainer>
-                            {[...Array(6)].map((_, index) => {
-                                return (
-                                    <Info key={index}>
-                                        <InfoColor
-                                            color={getInfoColor(index)}
-                                        />
-                                        <InfoText>
-                                            {crimeOption !== undefined
-                                                ? getInfoText(
-                                                      crimeOption.range,
-                                                      index
-                                                  )
-                                                : ""}
-                                        </InfoText>
-                                    </Info>
-                                );
-                            })}
-                        </InfoContainer>
-                        <InfoSubText style={{ marginBottom: 10 }}>
-                            * Casos anuais por 100.000 habitantes
-                        </InfoSubText>
-                        <InfoSubText>
-                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
-                        </InfoSubText>
-                    </View>
-                </InfoModal>
-            )}
-            {isLoading && <Loader />}
-        </SafeAreaView>
+                            <View style={{ alignItems: "center" }}>
+                                <InfoTitle>
+                                    Legenda: {crimeOption?.name}
+                                </InfoTitle>
+                                <InfoContainer>
+                                    {[...Array(6)].map((_, index) => {
+                                        return (
+                                            <Info key={index}>
+                                                <InfoColor
+                                                    color={getInfoColor(index)}
+                                                />
+                                                <InfoText>
+                                                    {crimeOption !== undefined
+                                                        ? getInfoText(
+                                                              crimeOption.range,
+                                                              index
+                                                          )
+                                                        : ""}
+                                                </InfoText>
+                                            </Info>
+                                        );
+                                    })}
+                                </InfoContainer>
+                                <InfoSubText style={{ marginBottom: 10 }}>
+                                    * Casos anuais por 100.000 habitantes
+                                </InfoSubText>
+                                <InfoSubText>
+                                    {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
+                                </InfoSubText>
+                            </View>
+                        </InfoModal>
+                    )}
+                    {isLoading && <Loader />}
+                </SafeAreaView>
+            </Portal>
+        </Provider>
     );
 };
 
