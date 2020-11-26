@@ -4,11 +4,10 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import { Modal } from 'react-native';
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
+import SelectPointOnMap from "../../components/SelectPointOnMap";
 import StayAlert from "../../components/StayAlert";
-import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import {
     getFavoritePlaces,
@@ -26,12 +25,7 @@ import {
     DialogInput,
     ButtonsContainer,
     DialogButton,
-    ModalBack,
-    ModalWrapper,
-    ModalText,
-    MapContainer
 } from "./styles";
-import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 
 interface FavoritePlace {
     id_place: number;
@@ -49,7 +43,7 @@ type ParamPlace = {
 
 const FavoritePlaces: React.FC = () => {
     const theme = useTheme();
-    const { data, location } = useUser();
+    const { data } = useUser();
 
     const route = useRoute<RouteProp<ParamPlace, "params">>();
     const navigation = useNavigation();
@@ -70,16 +64,15 @@ const FavoritePlaces: React.FC = () => {
         "",
     ]);
 
+    const [openMap, setOpenMap] = useState(false);
+
     useEffect(() => {
         getPlaces();
     }, [route]);
 
     useEffect(() => {
-        if (route.params) {
-            setPosition([route.params.latitude, route.params.longitude]);
-            setIsDialogOpen(true);
-        }
-    }, [route]);
+        if (position[0] !== 0 && position[1] !== 0) setIsDialogOpen(true);
+    }, [position]);
 
     const getPlaces = async () => {
         if (data.token !== "") {
@@ -178,9 +171,7 @@ const FavoritePlaces: React.FC = () => {
                     <AddPlace
                         icon="plus"
                         onPress={() => {
-                            // navigation.navigate("Home", {
-                            //     showFavoritePlaceModal: true,
-                            // });
+                            setOpenMap(true);
                         }}
                     />
                     <DialogContainer
@@ -242,26 +233,12 @@ const FavoritePlaces: React.FC = () => {
                         onConfirmPressed={() => setHasError(false)}
                         onDismiss={() => setHasError(false)}
                     />
-                    <Modal transparent animationType="slide" >
-                        <ModalBack>
-                            <ModalWrapper>
-                                <ModalText>
-                                    Selecione o local favorito no mapa
-                                </ModalText>
-
-                                <MapContainer>
-                                    <StayNormalMap
-                                        region={location}
-                                        showsUserLocation
-                                        loadingEnabled
-                                        customMapStyle={
-                                            theme.type === "dark" ? staySafeDarkMapStyle : []
-                                        }
-                                    />
-                                </MapContainer>
-                            </ModalWrapper>
-                        </ModalBack>
-                    </Modal>
+                    {openMap && (
+                        <SelectPointOnMap
+                            onPress={setPosition}
+                            onClose={() => setOpenMap(false)}
+                        />
+                    )}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>
