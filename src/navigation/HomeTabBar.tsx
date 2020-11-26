@@ -53,10 +53,10 @@ const HomeTabBar: React.FC = () => {
                     style: {
                         height: "8.5%",
                         backgroundColor: theme.primaryWhite,
-                        borderTopLeftRadius: scale(18),
-                        borderTopRightRadius: scale(18),
+                        borderTopLeftRadius: scale(15),
+                        borderTopRightRadius: scale(15),
                         borderTopWidth: 0,
-                        marginTop: -scale(24),
+                        marginTop: -scale(8),
                     },
                 }}
             >

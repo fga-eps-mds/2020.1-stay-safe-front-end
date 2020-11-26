@@ -130,7 +130,7 @@ export const MapButtonsContainer = styled.View`
     height: ${scale(40)}px;
     width: ${scale(200)}px;
     position: absolute;
-    bottom: 6%;
+    bottom: 3%;
     align-self: center;
     flex-direction: row;
     border-radius: ${scale(20)}px;
