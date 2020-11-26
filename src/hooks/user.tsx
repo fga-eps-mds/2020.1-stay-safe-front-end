@@ -28,6 +28,7 @@ interface UserContextData {
     location: UserLocation;
     isLoading: boolean;
     showNotifications: boolean;
+    updateLocation: (location: UserLocation) => void;
     switchTheme: () => void;
     signIn(credentials: SignInCredentials): Promise<void>;
     signOut(): void;
@@ -175,15 +176,13 @@ export const UserProvider: React.FC = ({ children }) => {
             const { token } = response.body;
 
             registerDeviceForPushNotifications().then(async (deviceToken) => {
-                setTimeout(async () => {
-                    await updateUser(
-                        {
-                            show_notifications: true,
-                            device_token: String(deviceToken),
-                        },
-                        token
-                    );
-                }, 10000);
+                await updateUser(
+                    {
+                        show_notifications: true,
+                        device_token: String(deviceToken),
+                    },
+                    token
+                );
             });
 
             await AsyncStorage.multiSet([
@@ -253,11 +252,16 @@ export const UserProvider: React.FC = ({ children }) => {
         setShowNotifications(showNotifications !== true);
     }, [theme]);
 
+    const updateLocation = (newLocation: UserLocation) => {
+        setLocation(newLocation);
+    };
+
     return (
         <UserContext.Provider
             value={{
                 data,
                 location,
+                updateLocation,
                 switchTheme,
                 theme,
                 isLoading,
