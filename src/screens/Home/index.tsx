@@ -552,9 +552,10 @@ const Home: React.FC = () => {
                         <InfoSubText style={{ marginBottom: 10 }}>
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
-                        <InfoSubText>
+                        <InfoSubText style={{ marginBottom: 10 }}>
                             {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
                         </InfoSubText>
+                        <InfoSubText>{`* ${initialMonth} - ${finalMonth}`}</InfoSubText>
                     </View>
                 </InfoModal>
             )}
