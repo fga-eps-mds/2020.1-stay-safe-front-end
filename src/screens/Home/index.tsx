@@ -124,8 +124,27 @@ const Home: React.FC = () => {
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
 
-    const icons = [
+    const [icons, setIcons] = useState([
         {
+            icon: "map",
+            label: "Secretarias",
+            onPress: () => {
+                setSelectedUf("df");
+                setIsFilterOpen(true);
+                setSelectedFilter("heat");
+                setSelectedOption([0]);
+            }
+        },
+        {
+            icon: "filter",
+            label: "Filtros",
+            onPress: () => setIsFilterOpen(true)
+        }
+    ])
+
+    const loadIcons = () => {
+        let aux_icons = icons
+        aux_icons[0] = {
             icon: selectedFilter === "heat" ? "map-marker" : "map",
             label: selectedFilter === "heat" ? "Usuários" : "Secretarias",
             onPress: () => {
@@ -139,24 +158,17 @@ const Home: React.FC = () => {
                     setSelectedOption([0]);
                 }
             }
-        },
-        {
-            icon: "filter",
-            label: "Filtros",
-            onPress: () => setIsFilterOpen(true)
         }
-    ]
-
-    const loadIcons = () => {
         if (selectedFilter === "heat") {
-            icons.push({
+            aux_icons.push({
                 icon: "information-outline",
                 label: "Informações",
                 onPress: () => setIsInfoHeatOpen(true),
             })
-        } else {
-            icons.pop()
+        } else if (icons.length > 2) {
+            aux_icons.pop()
         }
+        setIcons(aux_icons)
     }
 
     useFocusEffect(
@@ -424,7 +436,7 @@ const Home: React.FC = () => {
                                 })}
                         </StayNormalMap>
                     )}
-                    {!isFilterOpen && (
+                    {/* {!isFilterOpen && (
                         <MapButtonsContainer>
                             <MapButton
                                 onPress={() => {
@@ -447,7 +459,7 @@ const Home: React.FC = () => {
                                 <MapText>Secretarias</MapText>
                             </MapButton>
                         </MapButtonsContainer>
-                    )}
+                    )} */}
                     <StayAlert
                         show={
                             (isPlaceModalOpen || isModalOpen) &&
@@ -483,7 +495,7 @@ const Home: React.FC = () => {
                         isOpen={isFilterOpen}
                         onClosed={() => {
                             setIsFilterOpen(false)
-                            setSelectedFilter("pins")
+                            // setSelectedFilter("pins")
                         }}
                         swipeToClose={false}
                         position="top"
