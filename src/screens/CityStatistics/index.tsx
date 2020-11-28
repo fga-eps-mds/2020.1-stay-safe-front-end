@@ -81,9 +81,6 @@ const CityStatistics: React.FC = () => {
         try {
             getOccurrences().then((response) => {
                 setIsLoading(false);
-                if (response === 200) {
-                    setIsLoading(false);
-                }
             });
         } catch (error) {
             setIsLoading(false);
@@ -100,14 +97,24 @@ const CityStatistics: React.FC = () => {
             "12/" + selectedYear
         );
 
-        if (response.status === 200) {
-            // setData(response.body);
-
+        if (response.status === 200 && response.body.length > 0) {
             response.body[0].cities.map((city: CityCrimes) => {
                 setCityStatistics(city.crimes.sort(sortCities));
 
                 setHigherStatistic(city.crimes.sort(sortCities)[0].quantity);
             });
+        } else {
+            setIsLoading(false);
+            setHasError(true);
+
+            if (response.status === 200) {
+                setErrorMessage(["", "Erro ao buscar dados da cidade."]);
+            } else {
+                setErrorMessage([
+                    "Erro ao buscar dados",
+                    response.body["error"],
+                ]);
+            }
         }
         return response.status;
     };
@@ -200,7 +207,10 @@ const CityStatistics: React.FC = () => {
                         showConfirmButton
                         confirmText="Confirmar"
                         onConfirmPressed={() => setHasError(false)}
-                        onDismiss={() => setHasError(false)}
+                        onDismiss={() => {
+                            setHasError(false);
+                            navigation.goBack();
+                        }}
                     />
                 </KeyboardScrollView>
             </Container>
