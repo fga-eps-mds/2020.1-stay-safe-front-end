@@ -124,7 +124,7 @@ const Search: React.FC = () => {
                             <Feather
                                 name="search"
                                 size={scale(18)}
-                                color={theme.primaryBlack}
+                                color={theme.primaryDarkBlue}
                             />
                         </SearchIcon>
                     </View>
