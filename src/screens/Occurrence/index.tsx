@@ -206,10 +206,10 @@ const Occurrence: React.FC = () => {
                 setIsLoading(true);
                 const response = isEditing
                     ? await updateOccurrence(
-                        idOccurrence,
-                        data.token,
-                        dataOccurrence
-                    )
+                          idOccurrence,
+                          data.token,
+                          dataOccurrence
+                      )
                     : await createOccurrence(dataOccurrence, data.token);
 
                 if (!response.body.error && response.status === 201) {
