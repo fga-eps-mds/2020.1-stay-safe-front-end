@@ -6,7 +6,8 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useCallback, useState } from "react";
+import moment from "moment";
+import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -79,6 +80,9 @@ const Home: React.FC = () => {
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
 
+    const [initialMonth, setInitialMonth] = useState("");
+    const [finalMonth, setFinalMonth] = useState("");
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
@@ -122,6 +126,20 @@ const Home: React.FC = () => {
         }
     });
 
+    useEffect(() => {
+        getInitialAndFinalMonth();
+    }, []);
+
+    const getInitialAndFinalMonth = () => {
+        const date = moment().subtract(2, "M");
+
+        const year = date.year();
+        const month = date.month() + 1;
+
+        setFinalMonth(month + "/" + year);
+        setInitialMonth(month + "/" + (year - 1));
+    };
+
     const handleSubmitFilter = () => {
         if (selectedFilter === "heat") {
             if (selectedOption.length > 1) return null;
@@ -157,8 +175,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                "1/2020",
-                "12/2020",
+                initialMonth,
+                finalMonth,
                 1
             );
 
@@ -507,9 +525,10 @@ const Home: React.FC = () => {
                         <InfoSubText style={{ marginBottom: 10 }}>
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
-                        <InfoSubText>
+                        <InfoSubText style={{ marginBottom: 10 }}>
                             {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
                         </InfoSubText>
+                        <InfoSubText>{`* ${initialMonth} - ${finalMonth}`}</InfoSubText>
                     </View>
                 </InfoModal>
             )}
