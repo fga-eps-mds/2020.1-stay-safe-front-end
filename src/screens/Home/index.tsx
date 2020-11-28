@@ -1,7 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useCallback, useState } from "react";
+import moment from "moment";
+import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
@@ -62,6 +63,9 @@ const Home: React.FC = () => {
     const theme = useTheme();
     const { location } = useUser();
 
+    const [initialMonth, setInitialMonth] = useState("");
+    const [finalMonth, setFinalMonth] = useState("");
+
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -86,6 +90,20 @@ const Home: React.FC = () => {
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
+
+    useEffect(() => {
+        getInitialAndFinalMonth();
+    }, []);
+
+    const getInitialAndFinalMonth = () => {
+        const date = moment().subtract(2, "M");
+
+        const year = date.year();
+        const month = date.month() + 1;
+
+        setFinalMonth(month + "/" + year);
+        setInitialMonth(month + "/" + (year - 1));
+    };
 
     const handleSubmitFilter = () => {
         if (selectedFilter === "heat") {
@@ -122,8 +140,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                "1/2020",
-                "12/2020",
+                initialMonth,
+                finalMonth,
                 1
             );
 
@@ -427,9 +445,10 @@ const Home: React.FC = () => {
                         <InfoSubText style={{ marginBottom: 10 }}>
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
-                        <InfoSubText>
+                        <InfoSubText style={{ marginBottom: 10 }}>
                             {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
                         </InfoSubText>
+                        <InfoSubText>{`* ${initialMonth} - ${finalMonth}`}</InfoSubText>
                     </View>
                 </InfoModal>
             )}
