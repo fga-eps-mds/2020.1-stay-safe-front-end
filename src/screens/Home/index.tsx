@@ -343,7 +343,7 @@ const Home: React.FC = () => {
         <Provider>
             <Portal>
                 <SafeAreaView style={{ flex: 1 }}>
-                    {!isFilterOpen && (
+                    {/* {!isFilterOpen && (
                         <FloatingButton
                             onPress={() => setIsFilterOpen(true)}
                             position="right-top"
@@ -354,7 +354,7 @@ const Home: React.FC = () => {
                                 color={theme.primaryGray}
                             />
                         </FloatingButton>
-                    )}
+                    )} */}
                     {!isFilterOpen && (
                         <FAB.Group
                             style={{
@@ -363,9 +363,10 @@ const Home: React.FC = () => {
                                 paddingBottom: 100 / 2 + 10 - 16,
                             }}
                             theme={{
+                                dark: true,
                                 colors: {
                                     surface: theme.primarySuperDarkBlue,
-                                    text: theme.primarySuperDarkBlue,
+                                    text: theme.primaryLightBlue
                                 },
                             }}
                             open={showIcons}
@@ -618,7 +619,7 @@ const Home: React.FC = () => {
                         </View>
                     </FilterModal>
 
-                    {selectedOption[0] !== 0 &&
+                    {/* {selectedOption[0] !== 0 &&
                      isInfoHeatOpen && (
                         <InfoModal
                             isOpen={isInfoHeatOpen}
@@ -659,7 +660,7 @@ const Home: React.FC = () => {
                                 </InfoSubText>
                             </View>
                         </InfoModal>
-                    )}
+                    )} */}
                     {isLoading && <Loader />}
                 </SafeAreaView>
             </Portal>
