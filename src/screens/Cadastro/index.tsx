@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
@@ -17,7 +18,6 @@ import {
     NormalInput,
     ButtonWithIconLabel,
 } from "../../components/NormalForms";
-import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { createUser, authUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
@@ -169,14 +169,10 @@ const Cadastro: React.FC = () => {
                         />
                         <ButtonWithIconLabel>Criar Conta</ButtonWithIconLabel>
                     </Button>
-                    <StayAlert
+                    <ErrorModal
                         show={hasError}
-                        title={errorMessage[0]}
-                        message={errorMessage[1]}
-                        showConfirmButton
-                        confirmText="Confirmar"
-                        onConfirmPressed={() => setHasError(false)}
-                        onDismiss={() => setHasError(false)}
+                        message={errorMessage}
+                        onPress={() => setHasError(false)}
                     />
                     {isLoading && <Loader />}
                 </KeyboardScrollView>
