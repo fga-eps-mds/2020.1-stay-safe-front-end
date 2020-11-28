@@ -80,8 +80,8 @@ interface CrimeOption {
 const initialLocation = {
     latitude: -15.780311,
     longitude: -47.768043,
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
+    latitudeDelta: 0.7,
+    longitudeDelta: 0.7,
 };
 
 const Home: React.FC = () => {
