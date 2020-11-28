@@ -1,6 +1,8 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import { useTheme } from "styled-components";
 
+import SelectPointOnMap from "../../components/SelectPointOnMap";
 import Logo from "../../img/logo.svg";
 import { scale } from "../../utils/scalling";
 import { AlertButton, ButtonContainer } from "./styles";
@@ -11,25 +13,34 @@ const Report: React.FC = () => {
 
 export default Report;
 
-export const ReportButton = (props: { navObject: any }) => {
-    const { navObject } = props;
+export const ReportButton = () => {
+    const navigation = useNavigation();
 
     const theme = useTheme();
 
-    // Pass the param to open the modal in Home screen
-    const handleOccurrence = () => {
-        navObject.navigate("Home", { showReportModal: true });
-    };
+    const [openModal, setOpenModal] = useState(false);
 
     return (
         <ButtonContainer>
-            <AlertButton onPress={() => handleOccurrence()}>
+            <AlertButton onPress={() => setOpenModal(true)}>
                 <Logo
                     width={scale(35)}
                     height={scale(35)}
                     fill={theme.primaryRed}
                 />
             </AlertButton>
+            {openModal && (
+                <SelectPointOnMap
+                    selectFavoritePlace={false}
+                    onPress={(position: number[]) =>
+                        navigation.navigate("Occurrence", {
+                            latitude: position[0],
+                            longitude: position[1],
+                        })
+                    }
+                    onClose={() => setOpenModal(false)}
+                />
+            )}
         </ButtonContainer>
     );
 };
