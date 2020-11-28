@@ -72,10 +72,8 @@ const HomeTabBar: React.FC = () => {
                 <Tab.Screen
                     name="Report"
                     component={Report}
-                    options={({ navigation }) => ({
-                        tabBarButton: () => (
-                            <ReportButton navObject={navigation} />
-                        ),
+                    options={() => ({
+                        tabBarButton: () => <ReportButton />,
                     })}
                 />
                 {data.token === "" ? (
