@@ -146,7 +146,7 @@ const Search: React.FC = () => {
                             searchablePlaceholderTextColor={
                                 theme.primaryDarkBlue
                             }
-                            searchableStyle={{ textAlign: "center" }}
+                            searchableStyle={{ textAlign: "center", color: theme.primaryDarkBlue }}
                             searchableError={() => (
                                 <NotFoundText>Não encontrado</NotFoundText>
                             )}
@@ -181,7 +181,7 @@ const Search: React.FC = () => {
                             searchablePlaceholderTextColor={
                                 theme.primaryDarkBlue
                             }
-                            searchableStyle={{ textAlign: "center" }}
+                            searchableStyle={{ textAlign: "center", color: theme.primaryDarkBlue }}
                             searchableError={() => (
                                 <NotFoundText>Não encontrado</NotFoundText>
                             )}
