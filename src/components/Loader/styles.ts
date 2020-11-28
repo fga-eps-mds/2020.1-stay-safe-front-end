@@ -21,7 +21,6 @@ export const LoaderWrapper = styled.View`
     height: ${scale(100)}px;
     width: ${scale(100)}px;
     border-radius: ${scale(10)}px;
-    display: flex;
     align-items: center;
     justify-content: center;
 `;

@@ -6,7 +6,6 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from "expo-location";
 import moment from "moment";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
@@ -32,6 +31,7 @@ import LoggedInModal from "../../components/LoggedInModal";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
+import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
@@ -41,7 +41,6 @@ import { scale } from "../../utils/scalling";
 import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterModal,
-    StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
     Option,
@@ -74,16 +73,9 @@ interface CrimeOption {
     range: number[];
 }
 
-const initialLocation = {
-    latitude: -15.780311,
-    longitude: -47.768043,
-    latitudeDelta: 0.2,
-    longitudeDelta: 0.2,
-};
-
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data } = useUser();
+    const { data, location } = useUser();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
@@ -95,7 +87,6 @@ const Home: React.FC = () => {
     const [isReporting, setIsReporting] = useState(false);
     const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
     const [isSelectingPlace, setIsSelectingPlace] = useState(false);
-    const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -136,7 +127,6 @@ const Home: React.FC = () => {
     });
 
     useEffect(() => {
-        getCurrentLocation();
         getInitialAndFinalMonth();
     }, []);
 
@@ -148,25 +138,6 @@ const Home: React.FC = () => {
 
         setFinalMonth(month + "/" + year);
         setInitialMonth(month + "/" + (year - 1));
-    };
-
-    const getCurrentLocation = async () => {
-        const { status } = await Location.requestPermissionsAsync();
-
-        if (status !== "granted") {
-            console.warn("Permission to access location was denied");
-        } else {
-            const position = await Location.getCurrentPositionAsync({});
-
-            const location = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
-            };
-
-            setLocation(location);
-        }
     };
 
     const handleSubmitFilter = () => {
@@ -346,7 +317,8 @@ const Home: React.FC = () => {
                     }
                 >
                     {occurrences !== undefined &&
-                        occurrences?.map((occurrence: Occurrence) => {
+                        !isReporting &&
+                        occurrences.map((occurrence: Occurrence) => {
                             return (
                                 <StayMarker
                                     key={occurrence.id_occurrence}
