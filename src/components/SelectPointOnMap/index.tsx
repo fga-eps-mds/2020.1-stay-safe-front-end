@@ -1,13 +1,17 @@
 import { Feather } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import { Modal } from "react-native";
-import { MapEvent } from "react-native-maps";
+import { Marker } from "react-native-maps";
 import { useTheme } from "styled-components";
 
 import { useUser } from "../../hooks/user";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
+import { scale } from "../../utils/scalling";
+import { ButtonWithIconLabel } from "../NormalForms";
 import StayNormalMap from "../StayNormalMap";
 import {
+    DoneButton,
+    DoneButtonContainer,
     MapContainer,
     ModalBack,
     ModalText,
@@ -19,19 +23,27 @@ import {
 interface SelectPointOnMapProps {
     onClose(): void;
     onPress: ([number, number]) => void;
+    selectFavoritePlace: boolean;
+}
+
+interface Location {
+    latitude: number;
+    longitude: number;
 }
 
 const SelectPointOnMap: React.FC<SelectPointOnMapProps> = ({
     onClose,
     onPress,
+    selectFavoritePlace,
 }) => {
     const theme = useTheme();
-    const { location } = useUser();
+    const { location, updateLocation } = useUser();
 
-    const setPosition = (e: MapEvent) => {
-        const { latitude, longitude } = e.nativeEvent.coordinate;
+    const [chooseLocation, setChooseLocation] = useState<Location | null>(null);
 
-        onPress([latitude, longitude]);
+    const setPosition = () => {
+        onPress([location.latitude, location.longitude]);
+
         onClose();
     };
 
@@ -41,7 +53,9 @@ const SelectPointOnMap: React.FC<SelectPointOnMapProps> = ({
                 <ModalWrapper>
                     <TitleContainer>
                         <ModalText>
-                            Selecione o local favorito no mapa
+                            {selectFavoritePlace
+                                ? "Segure o pino e arraste até o local favorito desejado"
+                                : "Segure o pino e arraste até o local da ocorrência desejado"}
                         </ModalText>
                         <XContainer onPress={onClose}>
                             <Feather
@@ -61,9 +75,38 @@ const SelectPointOnMap: React.FC<SelectPointOnMapProps> = ({
                                     ? staySafeDarkMapStyle
                                     : []
                             }
-                            onPress={(e) => setPosition(e)}
-                        />
+                        >
+                            <Marker
+                                coordinate={location}
+                                draggable
+                                onDragEnd={(e) => {
+                                    const {
+                                        latitude,
+                                        longitude,
+                                    } = e.nativeEvent.coordinate;
+                                    setChooseLocation({ latitude, longitude });
+                                    updateLocation({
+                                        ...location,
+                                        latitude,
+                                        longitude,
+                                    });
+                                }}
+                            />
+                        </StayNormalMap>
                     </MapContainer>
+                    <DoneButtonContainer>
+                        <DoneButton
+                            disabled={chooseLocation === null}
+                            onPress={setPosition}
+                        >
+                            <Feather
+                                name="map-pin"
+                                size={scale(16)}
+                                color={theme.primaryWhite}
+                            />
+                            <ButtonWithIconLabel>Pronto</ButtonWithIconLabel>
+                        </DoneButton>
+                    </DoneButtonContainer>
                 </ModalWrapper>
             </ModalBack>
         </Modal>

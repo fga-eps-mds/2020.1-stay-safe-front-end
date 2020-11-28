@@ -235,6 +235,7 @@ const FavoritePlaces: React.FC = () => {
                     />
                     {openMap && (
                         <SelectPointOnMap
+                            selectFavoritePlace
                             onPress={setPosition}
                             onClose={() => setOpenMap(false)}
                         />
