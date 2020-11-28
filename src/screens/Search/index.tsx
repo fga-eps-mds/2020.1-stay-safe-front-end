@@ -143,7 +143,7 @@ const Search: React.FC = () => {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => (
                             <TouchableCard
-                                onPressed={() => {
+                                onPress={() => {
                                     navigation.navigate("CityStatistics", {
                                         city: item.name,
                                         uf: item.uf,
