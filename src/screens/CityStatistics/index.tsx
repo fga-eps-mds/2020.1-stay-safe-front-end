@@ -80,6 +80,7 @@ const CityStatistics: React.FC = () => {
         setIsLoading(true);
         try {
             getOccurrences().then((response) => {
+                setIsLoading(false);
                 if (response === 200) {
                     setIsLoading(false);
                 }
