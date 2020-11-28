@@ -141,10 +141,10 @@ const Home: React.FC = () => {
     }, []);
 
     const getInitialAndFinalMonth = () => {
-        const date = moment();
+        const date = moment().subtract(2, "M");
 
         const year = date.year();
-        const month = date.add(-2, "M").month() + 1;
+        const month = date.month() + 1;
 
         setFinalMonth(month + "/" + year);
         setInitialMonth(month + "/" + (year - 1));
