@@ -107,7 +107,7 @@ export const UserProvider: React.FC = ({ children }) => {
             }
 
             setTheme(
-                themeType[1] === "default" ? staySafeDarkTheme : staySafeTheme
+                themeType[1] === "default" ? staySafeTheme : staySafeDarkTheme
             );
 
             setShowNotifications(notifications[1] === "true");
