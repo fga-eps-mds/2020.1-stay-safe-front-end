@@ -7,6 +7,7 @@ import {
 } from "@react-navigation/native";
 import * as Font from "expo-font";
 import * as Location from "expo-location";
+import moment from "moment";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { MapEvent } from "react-native-maps";
@@ -140,10 +141,10 @@ const Home: React.FC = () => {
     }, []);
 
     const getInitialAndFinalMonth = () => {
-        const date = new Date();
+        const date = moment();
 
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
+        const year = date.year();
+        const month = date.add(-2, "M").month() + 1;
 
         setFinalMonth(month + "/" + year);
         setInitialMonth(month + "/" + (year - 1));
