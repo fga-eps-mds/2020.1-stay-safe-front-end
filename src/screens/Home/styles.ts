@@ -1,5 +1,4 @@
 import { RectButton } from "react-native-gesture-handler";
-import MapView from "react-native-maps";
 import Modal from "react-native-modalbox";
 import styled, { css } from "styled-components/native";
 
@@ -17,10 +16,6 @@ interface SpanProps {
 interface FilterModalProps {
     ufOptionOpen: boolean;
 }
-
-export const StayNormalMap = styled(MapView)`
-    flex: 1;
-`;
 
 export const FilterModal = styled(Modal)<FilterModalProps>`
     position: absolute;
