@@ -39,11 +39,7 @@ const Search: React.FC = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        coordinatesDF.sort((a, b) =>
-            ("" + a.name.normalize("NFD")).localeCompare(
-                b.name.normalize("NFD")
-            )
-        );
+        coordinatesDF.sort(sortFunction);
         const citiesDf = coordinatesDF.map((city) => {
             return { name: city.name, uf: "df" };
         });
@@ -55,12 +51,7 @@ const Search: React.FC = () => {
         setSPCities(citiesSp);
 
         var allCities: City[] = citiesDf.concat(citiesSp);
-
-        allCities.sort((a, b) =>
-            ("" + a.name.normalize("NFD")).localeCompare(
-                b.name.normalize("NFD")
-            )
-        );
+        allCities.sort(sortFunction);
 
         setFilteredCities(allCities);
         setCitiesData(allCities);
@@ -77,6 +68,12 @@ const Search: React.FC = () => {
             setCitiesData(SPCities);
         }
     }, [selectedUf]);
+
+    const sortFunction = (a, b) => {
+        return ("" + a.name.normalize("NFD")).localeCompare(
+            b.name.normalize("NFD")
+        );
+    };
 
     const searchFilterFunction = (text: string) => {
         if (text) {
@@ -146,7 +143,7 @@ const Search: React.FC = () => {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item, index }) => (
                             <TouchableCard
-                                onPress={() => {
+                                onPressed={() => {
                                     navigation.navigate("CityStatistics", {
                                         city: item.name,
                                         uf: item.uf,
