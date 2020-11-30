@@ -1,15 +1,10 @@
 import { Feather } from "@expo/vector-icons";
-import {
-    useFocusEffect,
-    useRoute,
-    RouteProp,
-    useNavigation,
-} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import { MapEvent } from "react-native-maps";
 import { FAB, Portal, Provider } from "react-native-paper";
+import moment from "moment";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -25,7 +20,6 @@ import {
     InfoSubText,
 } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
-import LoggedInModal from "../../components/LoggedInModal";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
@@ -53,13 +47,6 @@ import {
     DropDownTitle,
 } from "./styles";
 
-type ParamList = {
-    params: {
-        showReportModal: boolean;
-        showFavoritePlaceModal: boolean;
-    };
-};
-
 interface CrimeOption {
     id: number;
     name: string;
@@ -70,15 +57,11 @@ interface CrimeOption {
 
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data, location, centralize } = useUser();
+    const { location, centralize } = useUser();
 
-    const route = useRoute<RouteProp<ParamList, "params">>();
-    const navigation = useNavigation();
+    const [initialMonth, setInitialMonth] = useState("");
+    const [finalMonth, setFinalMonth] = useState("");
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isReporting, setIsReporting] = useState(false);
-    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
-    const [isSelectingPlace, setIsSelectingPlace] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -160,12 +143,19 @@ const Home: React.FC = () => {
         }, [])
     );
 
-    useFocusEffect(() => {
-        if (route.params) {
-            setIsModalOpen(route.params.showReportModal);
-            setIsPlaceModalOpen(route.params.showFavoritePlaceModal);
-        }
-    });
+    useEffect(() => {
+        getInitialAndFinalMonth();
+    }, []);
+
+    const getInitialAndFinalMonth = () => {
+        const date = moment().subtract(2, "M");
+
+        const year = date.year();
+        const month = date.month() + 1;
+
+        setFinalMonth(month + "/" + year);
+        setInitialMonth(month + "/" + (year - 1));
+    };
 
     const handleSubmitFilter = () => {
         if (selectedFilter === "heat") {
@@ -202,8 +192,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                "1/2020",
-                "12/2020",
+                initialMonth,
+                finalMonth,
                 1
             );
 

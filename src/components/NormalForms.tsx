@@ -42,7 +42,7 @@ export const NormalLabel = styled.Text`
 `;
 
 export const NormalInput = styled.TextInput.attrs((props) => ({
-    placeholderTextColor: props.theme.primaryWhite,
+    placeholderTextColor: props.theme.primaryLightGray,
     autoCapitalize: "none",
     multiline: false,
 }))`

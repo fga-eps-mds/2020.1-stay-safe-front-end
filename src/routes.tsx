@@ -31,7 +31,6 @@ const Routes: React.FC = () => {
             initialRouteName="HomeTabBar"
         >
             <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
-            <AppStack.Screen name="Login" component={Login} />
             <AppStack.Screen name="Cadastro" component={Cadastro} />
             <AppStack.Screen name="Occurrence" component={Occurrence} />
             <AppStack.Screen name="Occurrences" component={Occurrences} />

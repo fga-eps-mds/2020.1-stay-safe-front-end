@@ -35,6 +35,21 @@ export const Title = styled.Text`
     text-align: left;
 `;
 
+export const TouchableCard = styled.TouchableOpacity`
+    background-color: ${(props) => props.theme.primaryWhite};
+    width: 100%;
+    border-radius: ${scale(16)}px;
+    margin-bottom: ${scale(12)}px;
+    padding: ${scale(12)}px ${scale(17)}px;
+`;
+
+export const CardContent = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(16)}px;
+    color: ${(props) => props.theme.primarySuperDarkBlue};
+    text-align: center;
+`;
+
 export const NeighText = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(16)}px;

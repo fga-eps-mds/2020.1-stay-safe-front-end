@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import SelectPointOnMap from "../../components/SelectPointOnMap";
@@ -224,14 +225,10 @@ const FavoritePlaces: React.FC = () => {
                         onConfirmPressed={() => setShowSuccessfullyModal(false)}
                         onDismiss={() => setShowSuccessfullyModal(false)}
                     />
-                    <StayAlert
+                    <ErrorModal
                         show={hasError}
-                        title={errorMessage[0]}
-                        message={errorMessage[1]}
-                        showConfirmButton
-                        confirmText="Confirmar"
-                        onConfirmPressed={() => setHasError(false)}
-                        onDismiss={() => setHasError(false)}
+                        message={errorMessage}
+                        onPress={() => setHasError(false)}
                     />
                     {openMap && (
                         <SelectPointOnMap
