@@ -231,7 +231,7 @@ const Rating: React.FC = () => {
                     defaultRating={stars}
                     onFinishRating={(rate: number) => setStars(rate)}
                 />
-                <TellUs>Conte-nos o por quê:</TellUs>
+                <TellUs>Se desejar, conte-nos o por quê:</TellUs>
                 {items.map((detail, key) => {
                     return (
                         <DetailContainer key={key}>
