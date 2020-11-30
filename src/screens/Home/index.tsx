@@ -445,10 +445,9 @@ const Home: React.FC = () => {
                         <InfoSubText style={{ marginBottom: 10 }}>
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
-                        <InfoSubText style={{ marginBottom: 10 }}>
-                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
+                        <InfoSubText>
+                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()} correspondentes ao período de ${initialMonth} até ${finalMonth} `}
                         </InfoSubText>
-                        <InfoSubText>{`* ${initialMonth} - ${finalMonth}`}</InfoSubText>
                     </View>
                 </InfoModal>
             )}

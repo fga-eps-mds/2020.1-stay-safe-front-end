@@ -45,8 +45,14 @@ export const DetailContainer = styled.View`
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-
     margin-bottom: ${scale(15)}px;
+`;
+
+export const TumbsContainer = styled.View`
+    flex-direction: row;
+    justify-content: center;
+    width: 40%;
+    margin-left: ${scale(7)}px; 
 `;
 
 export const Detail = styled.View`
@@ -80,4 +86,5 @@ export const ImpressionContainer = styled(RectButton).attrs((props) => ({
         css`
             opacity: 0.7;
         `};
+    margin: ${scale(7)}px;
 `;

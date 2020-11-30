@@ -68,7 +68,7 @@ const Login: React.FC = () => {
 
                     <Title>Entrar</Title>
 
-                    <NormalLabel>Username</NormalLabel>
+                    <NormalLabel>Nome de usuário</NormalLabel>
                     <NormalInput
                         returnKeyType="next"
                         maxLength={20}

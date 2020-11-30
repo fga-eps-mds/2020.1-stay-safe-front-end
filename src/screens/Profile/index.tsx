@@ -138,7 +138,7 @@ const Profile: React.FC = () => {
                 <KeyboardScrollView>
                     <LogoContainer />
 
-                    <NormalLabel>Username</NormalLabel>
+                    <NormalLabel>Nome de usuário</NormalLabel>
                     <InputViewing
                         editable={false}
                         isEditing={false}
