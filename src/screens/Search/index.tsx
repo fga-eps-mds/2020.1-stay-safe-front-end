@@ -1,242 +1,160 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import Button from "../../components/Button";
+import { TouchableCard, CardContent } from "../../components/Cards";
 import { dropdownStyle } from "../../components/Dropdown";
 import HeaderTitle from "../../components/HeaderTitle";
 import { coordinatesDF } from "../../components/HeatMap/coordinates/coordinatesDF";
 import coordinatesSP from "../../components/HeatMap/coordinates/coordinatesSP.json";
-import {
-    KeyboardScrollView,
-    Container,
-    ButtonWithIconLabel,
-} from "../../components/NormalForms";
-import { Neighborhood } from "../../interfaces/neighborhood";
-import { getCityNeighborhoods } from "../../services/neighborhood";
+import Loader from "../../components/Loader";
+import { Container, NormalInput } from "../../components/NormalForms";
 import { scale } from "../../utils/scalling";
-import {
-    UfDropDown,
-    DropDownsContainer,
-    CityDropDown,
-    NeighborhoodDropDown,
-    NotFoundText,
-} from "./styles";
+import { SearchBarContainer, SearchIcon, UfDropDown } from "./styles";
 
-interface DropDownItem {
-    label: string;
-    value: string;
+interface City {
+    name: string;
+    uf: string;
 }
 
 const Search: React.FC = () => {
     const theme = useTheme();
     const navigation = useNavigation();
 
-    const [DFCities, setDFCities] = useState<DropDownItem[]>([]);
-    const [SPCities, setSPCities] = useState<DropDownItem[]>([]);
-    const [dropdownCities, setDropdownCities] = useState<DropDownItem[]>([]);
-
-    const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([]);
-    const [dropdownNeighborhoods, setDropdownNeighborhoods] = useState<
-        DropDownItem[]
-    >([]);
+    const [DFCities, setDFCities] = useState<City[]>([]);
+    const [SPCities, setSPCities] = useState<City[]>([]);
 
     const [selectedUf, setSelectedUf] = useState("");
-    const [selectedCity, setSelectedCity] = useState("");
-    const [selectedNeighborhood, setSelectedNeighborhood] = useState("");
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [search, setSearch] = useState("");
+    const [filteredCities, setFilteredCities] = useState<City[]>([]);
+    const [citiesData, setCitiesData] = useState<City[]>([]);
 
     useEffect(() => {
-        getNeighborhood();
-    }, [selectedCity]);
+        setIsLoading(true);
 
-    const getNeighborhood = async () => {
-        const response = await getCityNeighborhoods(
-            selectedCity,
-            selectedUf.toUpperCase()
-        );
+        coordinatesDF.sort(sortFunction);
+        const citiesDf = coordinatesDF.map((city) => {
+            return { name: city.name, uf: "df" };
+        });
+        setDFCities(citiesDf);
 
-        if (response.status === 200) {
-            setNeighborhoods(response.body);
+        const citiesSp = coordinatesSP[0].cities.map((city) => {
+            return { name: city.name, uf: "sp" };
+        });
+        setSPCities(citiesSp);
 
-            const dropdownNeighborhoods = response.body.map(
-                (neighborhood: Neighborhood) => {
-                    return {
-                        label: neighborhood.neighborhood,
-                        value: String(neighborhood.id_neighborhood),
-                    };
-                }
-            );
-            setDropdownNeighborhoods(dropdownNeighborhoods);
+        var allCities: City[] = citiesDf.concat(citiesSp);
+        allCities.sort(sortFunction);
+
+        setFilteredCities(allCities);
+        setCitiesData(allCities);
+
+        setIsLoading(false);
+    }, []);
+
+    useEffect(() => {
+        if (selectedUf === "df") {
+            setFilteredCities(DFCities);
+            setCitiesData(DFCities);
+        } else if (selectedUf === "sp") {
+            setFilteredCities(SPCities);
+            setCitiesData(SPCities);
         }
-    };
-
-    useEffect(() => {
-        coordinatesDF.sort((a, b) =>
-            ("" + a.name.normalize("NFD")).localeCompare(
-                b.name.normalize("NFD")
-            )
-        );
-        const dropdownDFCities = coordinatesDF.map((city) => {
-            return { label: city.name, value: city.name };
-        });
-        setDFCities(dropdownDFCities);
-    }, []);
-
-    useEffect(() => {
-        const dropdownSPCities = coordinatesSP[0].cities.map((city) => {
-            return { label: city.name, value: city.name };
-        });
-        setSPCities(dropdownSPCities);
-    }, []);
-
-    useEffect(() => {
-        if (selectedUf === "df") setDropdownCities(DFCities);
-        else if (selectedUf === "sp") setDropdownCities(SPCities);
     }, [selectedUf]);
 
-    const handle_neighborhood_view = () => {
-        const neighborhood = neighborhoods.filter((neigh: Neighborhood) => {
-            return neigh.id_neighborhood === Number(selectedNeighborhood);
-        })[0];
+    const sortFunction = (a, b) => {
+        return ("" + a.name.normalize("NFD")).localeCompare(
+            b.name.normalize("NFD")
+        );
+    };
 
-        navigation.navigate("NeighborhoodReview", { neighborhood });
+    const searchFilterFunction = (text: string) => {
+        if (text) {
+            const newData = citiesData.filter((city) => {
+                const itemData = city
+                    ? city.name.toUpperCase()
+                    : "".toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            setFilteredCities(newData);
+        } else {
+            setFilteredCities(citiesData);
+        }
+        setSearch(text);
     };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <HeaderTitle text="Pesquisar" />
-                <KeyboardScrollView>
-                    <DropDownsContainer>
-                        <UfDropDown
-                            items={[
-                                { label: "DF", value: "df" },
-                                { label: "SP", value: "sp" },
-                            ]}
-                            style={[
-                                dropdownStyle,
-                                { backgroundColor: theme.primaryWhite },
-                            ]}
-                            onChangeItem={(item: DropDownItem) => {
-                                setSelectedUf(item.value);
-                                setSelectedCity("");
-                                setSelectedNeighborhood("");
-                            }}
-                        />
-                        <CityDropDown
-                            items={dropdownCities}
-                            defaultValue={
-                                selectedCity === "" ? null : selectedCity
-                            }
-                            dropDownMaxHeight={scale(300)}
-                            onChangeItem={(item: DropDownItem) => {
-                                setSelectedCity(item.value);
-                                setSelectedNeighborhood("");
-                            }}
-                            style={[
-                                dropdownStyle,
-                                { backgroundColor: theme.primaryWhite },
-                            ]}
-                            disabled={selectedUf === ""}
-                            searchable
-                            searchablePlaceholder="Digite uma cidade..."
-                            searchablePlaceholderTextColor={
-                                theme.primaryDarkBlue
-                            }
-                            searchableStyle={{ textAlign: "center", color: theme.primaryDarkBlue }}
-                            searchableError={() => (
-                                <NotFoundText>Não encontrado</NotFoundText>
-                            )}
-                        />
-                    </DropDownsContainer>
 
-                    <View
-                        style={{
-                            marginTop: scale(15),
-                            width: "100%",
-                            alignItems: "center",
+                <SearchBarContainer>
+                    <UfDropDown
+                        items={[
+                            { label: "DF", value: "df" },
+                            { label: "SP", value: "sp" },
+                        ]}
+                        style={[
+                            dropdownStyle,
+                            { backgroundColor: theme.primaryWhite },
+                        ]}
+                        onChangeItem={(item) => {
+                            setSelectedUf(item.value);
+                            setSearch("");
                         }}
-                    >
-                        <NeighborhoodDropDown
-                            items={dropdownNeighborhoods}
-                            dropDownMaxHeight={scale(300)}
-                            defaultValue={
-                                selectedNeighborhood === ""
-                                    ? null
-                                    : selectedNeighborhood
-                            }
-                            style={[
-                                dropdownStyle,
-                                { backgroundColor: theme.primaryWhite },
-                            ]}
-                            onChangeItem={(item: DropDownItem) => {
-                                setSelectedNeighborhood(item.value);
-                            }}
-                            disabled={selectedCity === ""}
-                            searchable
-                            searchablePlaceholder="Digite um bairro..."
-                            searchablePlaceholderTextColor={
-                                theme.primaryDarkBlue
-                            }
-                            searchableStyle={{ textAlign: "center", color: theme.primaryDarkBlue }}
-                            searchableError={() => (
-                                <NotFoundText>Não encontrado</NotFoundText>
-                            )}
-                        />
-                    </View>
+                    />
 
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            width: "80%",
-                            justifyContent:
-                                selectedNeighborhood !== ""
-                                    ? "space-between"
-                                    : "center",
-                        }}
-                    >
-                        {selectedCity !== "" && (
-                            <Button
-                                width="48%"
-                                color={theme.primaryRed}
-                                onPress={() =>
-                                    navigation.navigate("CityStatistics", {
-                                        city: selectedCity,
-                                        uf: selectedUf,
-                                    })
-                                }
-                            >
-                                <MaterialCommunityIcons
-                                    name="city"
-                                    size={scale(20)}
-                                    color={theme.primaryWhite}
-                                />
-                                <ButtonWithIconLabel>
-                                    Ver cidade
-                                </ButtonWithIconLabel>
-                            </Button>
-                        )}
-                        {selectedNeighborhood !== "" && (
-                            <Button
-                                width="48%"
+                    <View style={{ width: "73%" }}>
+                        <NormalInput
+                            style={{ width: "100%" }}
+                            onChangeText={(text) => searchFilterFunction(text)}
+                            value={search}
+                            underlineColorAndroid="transparent"
+                            placeholder="Buscar cidade..."
+                        />
+                        <SearchIcon>
+                            <Feather
+                                name="search"
+                                size={scale(18)}
                                 color={theme.primaryDarkBlue}
-                                onPress={handle_neighborhood_view}
-                            >
-                                <MaterialCommunityIcons
-                                    name="home-city"
-                                    size={scale(20)}
-                                    color={theme.primaryWhite}
-                                />
-                                <ButtonWithIconLabel>
-                                    Ver bairro
-                                </ButtonWithIconLabel>
-                            </Button>
-                        )}
+                            />
+                        </SearchIcon>
                     </View>
-                </KeyboardScrollView>
+                </SearchBarContainer>
+
+                {isLoading ? (
+                    <Loader />
+                ) : (
+                    <FlatList
+                        style={{ marginBottom: scale(30) }}
+                        contentContainerStyle={{
+                            width: "80%",
+                            alignSelf: "center",
+                        }}
+                        data={filteredCities}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => (
+                            <TouchableCard
+                                onPress={() => {
+                                    navigation.navigate("CityStatistics", {
+                                        city: item.name,
+                                        uf: item.uf,
+                                    });
+                                }}
+                            >
+                                <CardContent>{item.name}</CardContent>
+                            </TouchableCard>
+                        )}
+                    />
+                )}
             </Container>
         </SafeAreaView>
     );

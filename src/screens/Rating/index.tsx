@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -21,6 +22,7 @@ import {
     Detail,
     DetailLabel,
     DetailContainer,
+    TumbsContainer,
     ImpressionContainer,
 } from "./styles";
 
@@ -231,41 +233,47 @@ const Rating: React.FC = () => {
                     defaultRating={stars}
                     onFinishRating={(rate: number) => setStars(rate)}
                 />
-                <TellUs>Conte-nos o por quê:</TellUs>
+                <TellUs>Se desejar, conte-nos o por quê:</TellUs>
                 {items.map((detail, key) => {
                     return (
                         <DetailContainer key={key}>
                             <Detail style={{ elevation: 3 }}>
                                 <DetailLabel>{detail.label}</DetailLabel>
                             </Detail>
-                            <ImpressionContainer
+                            <TumbsContainer>
+                                {stars > 1 && (
+                                <ImpressionContainer
                                 color={theme.primaryImpressionGreen}
                                 select={detail.like}
                                 style={{ elevation: 3 }}
-                            >
-                                <AntDesign
-                                    name="like2"
-                                    size={scale(25)}
-                                    color={theme.primarySuperDarkBlue}
-                                    onPress={() =>
-                                        handleDetail(detail.value, "like")
-                                    }
-                                />
-                            </ImpressionContainer>
-                            <ImpressionContainer
-                                select={detail.dislike}
-                                color={theme.primaryRed}
-                                style={{ elevation: 3 }}
-                            >
-                                <AntDesign
-                                    name="dislike2"
-                                    size={scale(25)}
-                                    color={theme.primarySuperDarkBlue}
-                                    onPress={() =>
-                                        handleDetail(detail.value, "dislike")
-                                    }
-                                />
-                            </ImpressionContainer>
+                                >
+                                    <AntDesign
+                                        name="like2"
+                                        size={scale(25)}
+                                        color={theme.primarySuperDarkBlue}
+                                        onPress={() =>
+                                            handleDetail(detail.value, "like")
+                                        }
+                                    />
+                                </ImpressionContainer>
+                                )}
+                                {stars < 5 && (
+                                    <ImpressionContainer
+                                    select={detail.dislike}
+                                    color={theme.primaryRed}
+                                    style={{ elevation: 3 }}
+                                    >
+                                    <AntDesign
+                                        name="dislike2"
+                                        size={scale(25)}
+                                        color={theme.primarySuperDarkBlue}
+                                        onPress={() =>
+                                            handleDetail(detail.value, "dislike")
+                                        }
+                                        />
+                                </ImpressionContainer>
+                                )}
+                            </TumbsContainer>
                         </DetailContainer>
                     );
                 })}
@@ -290,14 +298,10 @@ const Rating: React.FC = () => {
                     onConfirmPressed={() => handleClosedModal()}
                     onDismiss={() => handleClosedModal()}
                 />
-                <StayAlert
+                <ErrorModal
                     show={hasError}
-                    title={errorMessage[0]}
-                    message={errorMessage[1]}
-                    showConfirmButton
-                    confirmText="Confirmar"
-                    onConfirmPressed={() => setHasError(false)}
-                    onDismiss={() => setHasError(false)}
+                    message={errorMessage}
+                    onPress={() => setHasError(false)}
                 />
             </Container>
         </SafeAreaView>

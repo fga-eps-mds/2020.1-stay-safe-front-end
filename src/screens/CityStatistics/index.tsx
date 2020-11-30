@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
@@ -13,7 +14,6 @@ import {
     KeyboardScrollView,
     ButtonWithIconLabel,
 } from "../../components/NormalForms";
-import StayAlert from "../../components/StayAlert";
 import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
 import {
@@ -80,9 +80,7 @@ const CityStatistics: React.FC = () => {
         setIsLoading(true);
         try {
             getOccurrences().then((response) => {
-                if (response === 200) {
-                    setIsLoading(false);
-                }
+                setIsLoading(false);
             });
         } catch (error) {
             setIsLoading(false);
@@ -99,14 +97,24 @@ const CityStatistics: React.FC = () => {
             "12/" + selectedYear
         );
 
-        if (response.status === 200) {
-            // setData(response.body);
-
+        if (response.status === 200 && response.body.length > 0) {
             response.body[0].cities.map((city: CityCrimes) => {
                 setCityStatistics(city.crimes.sort(sortCities));
 
                 setHigherStatistic(city.crimes.sort(sortCities)[0].quantity);
             });
+        } else {
+            setIsLoading(false);
+            setHasError(true);
+
+            if (response.status === 200) {
+                setErrorMessage(["", "Erro ao buscar dados da cidade."]);
+            } else {
+                setErrorMessage([
+                    "Erro ao buscar dados",
+                    response.body["error"],
+                ]);
+            }
         }
         return response.status;
     };
@@ -192,14 +200,13 @@ const CityStatistics: React.FC = () => {
                             Visualizar Bairros
                         </ButtonWithIconLabel>
                     </Button>
-                    <StayAlert
+                    <ErrorModal
                         show={hasError}
-                        title={errorMessage[0]}
-                        message={errorMessage[1]}
-                        showConfirmButton
-                        confirmText="Confirmar"
-                        onConfirmPressed={() => setHasError(false)}
-                        onDismiss={() => setHasError(false)}
+                        message={errorMessage}
+                        onPress={() => {
+                            setHasError(false);
+                            navigation.goBack();
+                        }}
                     />
                 </KeyboardScrollView>
             </Container>

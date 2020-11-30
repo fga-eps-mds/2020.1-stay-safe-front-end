@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Polygon } from "react-native-maps";
 import { useTheme } from "styled-components";
 
-import { StayNormalMap } from "../../screens/Home/styles";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import Loader from "../Loader";
+import StayNormalMap from "../StayNormalMap";
 import { coordinatesDF } from "./coordinates/coordinatesDF";
 import coordinatesSP from "./coordinates/coordinatesSP.json";
 

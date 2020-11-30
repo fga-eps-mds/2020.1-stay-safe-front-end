@@ -1,15 +1,9 @@
 import { Feather } from "@expo/vector-icons";
-import {
-    useFocusEffect,
-    useRoute,
-    RouteProp,
-    useNavigation,
-} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from "expo-location";
+import moment from "moment";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -27,10 +21,10 @@ import {
     InfoSubText,
 } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
-import LoggedInModal from "../../components/LoggedInModal";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
+import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
@@ -40,7 +34,6 @@ import { scale } from "../../utils/scalling";
 import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
     FilterModal,
-    StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
     Option,
@@ -58,13 +51,6 @@ import {
     MapText,
 } from "./styles";
 
-type ParamList = {
-    params: {
-        showReportModal: boolean;
-        showFavoritePlaceModal: boolean;
-    };
-};
-
 interface CrimeOption {
     id: number;
     name: string;
@@ -73,25 +59,13 @@ interface CrimeOption {
     range: number[];
 }
 
-const initialLocation = {
-    latitude: -15.780311,
-    longitude: -47.768043,
-    latitudeDelta: 0.2,
-    longitudeDelta: 0.2,
-};
-
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data } = useUser();
+    const { location } = useUser();
 
-    const route = useRoute<RouteProp<ParamList, "params">>();
-    const navigation = useNavigation();
+    const [initialMonth, setInitialMonth] = useState("");
+    const [finalMonth, setFinalMonth] = useState("");
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isReporting, setIsReporting] = useState(false);
-    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
-    const [isSelectingPlace, setIsSelectingPlace] = useState(false);
-    const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -117,41 +91,18 @@ const Home: React.FC = () => {
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
 
-    useFocusEffect(
-        useCallback(() => {
-            setIsReporting(false);
-            setIsSelectingPlace(false);
-        }, [])
-    );
-
-    useFocusEffect(() => {
-        if (route.params) {
-            setIsModalOpen(route.params.showReportModal);
-            setIsPlaceModalOpen(route.params.showFavoritePlaceModal);
-        }
-    });
-
     useEffect(() => {
-        getCurrentLocation();
+        getInitialAndFinalMonth();
     }, []);
 
-    const getCurrentLocation = async () => {
-        const { status } = await Location.requestPermissionsAsync();
+    const getInitialAndFinalMonth = () => {
+        const date = moment().subtract(2, "M");
 
-        if (status !== "granted") {
-            console.warn("Permission to access location was denied");
-        } else {
-            const position = await Location.getCurrentPositionAsync({});
+        const year = date.year();
+        const month = date.month() + 1;
 
-            const location = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.02,
-                longitudeDelta: 0.02,
-            };
-
-            setLocation(location);
-        }
+        setFinalMonth(month + "/" + year);
+        setInitialMonth(month + "/" + (year - 1));
     };
 
     const handleSubmitFilter = () => {
@@ -189,8 +140,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                "1/2020",
-                "12/2020",
+                initialMonth,
+                finalMonth,
                 1
             );
 
@@ -219,29 +170,6 @@ const Home: React.FC = () => {
             });
         }, [])
     );
-
-    // Function to use on modal closed.
-    const handleClosedModal = () => {
-        setIsModalOpen(false);
-        setIsPlaceModalOpen(false);
-
-        navigation.setParams({
-            showReportModal: null,
-            showFavoritePlaceModal: null,
-        });
-    };
-
-    const handleReportingCoordinatesOnMap = (e: MapEvent) => {
-        const { latitude, longitude } = e.nativeEvent.coordinate;
-
-        if (isReporting) {
-            setIsReporting(false);
-            navigation.navigate("Occurrence", { latitude, longitude });
-        } else if (isSelectingPlace) {
-            setIsSelectingPlace(false);
-            navigation.navigate("FavoritePlaces", { latitude, longitude });
-        }
-    };
 
     const handleSelectOption = (id: number) => {
         if (selectedOption.indexOf(id) >= 0) {
@@ -310,9 +238,6 @@ const Home: React.FC = () => {
                         />
                     </FloatingButtonStyled>
                 )}
-            {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
-                <LoggedInModal navObject={navigation} />
-            )}
             {selectedOption[0] > 0 &&
             !isFilterOpen &&
             selectedFilter === "heat" ? (
@@ -323,7 +248,6 @@ const Home: React.FC = () => {
             ) : (
                 <StayNormalMap
                     region={location}
-                    onPress={(e) => handleReportingCoordinatesOnMap(e)}
                     showsUserLocation
                     loadingEnabled
                     customMapStyle={
@@ -331,7 +255,7 @@ const Home: React.FC = () => {
                     }
                 >
                     {occurrences !== undefined &&
-                        occurrences?.map((occurrence: Occurrence) => {
+                        occurrences.map((occurrence: Occurrence) => {
                             return (
                                 <StayMarker
                                     key={occurrence.id_occurrence}
@@ -365,23 +289,6 @@ const Home: React.FC = () => {
                     </MapButton>
                 </MapButtonsContainer>
             )}
-            <StayAlert
-                show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
-                title={
-                    isPlaceModalOpen
-                        ? "Selecionar Local Favorito"
-                        : "Reportar Ocorrência"
-                }
-                message="Toque para selecionar o local no mapa com o marcador"
-                showConfirmButton
-                confirmText="Entendido"
-                onConfirmPressed={() => {
-                    handleClosedModal();
-                    if (isPlaceModalOpen) setIsSelectingPlace(true);
-                    else setIsReporting(true);
-                }}
-                onDismiss={() => handleClosedModal()}
-            />
             <StayAlert
                 show={isWarningOpen}
                 title="Opa!"
@@ -539,7 +446,7 @@ const Home: React.FC = () => {
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
                         <InfoSubText>
-                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
+                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()} correspondentes ao período de ${initialMonth} até ${finalMonth} `}
                         </InfoSubText>
                     </View>
                 </InfoModal>
