@@ -4,10 +4,6 @@ export const tabs = [
         text: "Cidade",
     },
     {
-        name: "neighborhood",
-        text: "Bairro",
-    },
-    {
         name: "pins",
         text: "Local",
     },

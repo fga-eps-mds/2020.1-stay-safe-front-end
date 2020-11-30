@@ -6,14 +6,16 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import * as Location from "expo-location";
+import moment from "moment";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import { Marker, MapEvent } from "react-native-maps";
+import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import FloatingButton from "../../components/FloatingButton";
+import { FloatingButtonStyled } from "../../components/FloatingButton/styles";
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -26,27 +28,19 @@ import {
 } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
 import LoggedInModal from "../../components/LoggedInModal";
-import { SendLabel } from "../../components/NormalForms";
+import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
+import StayMarker from "../../components/StayMarker";
+import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
-import DarkLogo from "../../img/logo-thief-dark.svg";
-import Logo from "../../img/logo-thief.svg";
 import { Occurrence } from "../../interfaces/occurrence";
 import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
+import { searchOptionsDf, searchOptionsSp, ufs } from "./searchOptions";
 import {
-    crimesColors,
-    searchOptionsDf,
-    searchOptionsSp,
-    ufs,
-} from "./searchOptions";
-import {
-    FilterButton,
     FilterModal,
-    HeatInfo,
-    StayNormalMap,
     ButtonOptionContainer,
     ButtonOptionText,
     Option,
@@ -59,8 +53,10 @@ import {
     UfDropDown,
     DropDownContainer,
     DropDownTitle,
+    MapButtonsContainer,
+    MapButton,
+    MapText,
 } from "./styles";
-import { tabs } from "./tabs";
 
 type ParamList = {
     params: {
@@ -77,25 +73,20 @@ interface CrimeOption {
     range: number[];
 }
 
-const initialLocation = {
-    latitude: -15.780311,
-    longitude: -47.768043,
-    latitudeDelta: 0.7,
-    longitudeDelta: 0.7,
-};
-
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data } = useUser();
+    const { data, location } = useUser();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
+
+    const [initialMonth, setInitialMonth] = useState("");
+    const [finalMonth, setFinalMonth] = useState("");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isReporting, setIsReporting] = useState(false);
     const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
     const [isSelectingPlace, setIsSelectingPlace] = useState(false);
-    const [location, setLocation] = useState(initialLocation);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -106,14 +97,11 @@ const Home: React.FC = () => {
 
     const [isInfoHeatOpen, setIsInfoHeatOpen] = useState(false);
 
-    const initialDate = "1/2020";
-    const finalDate = "12/2020";
-
     const [secretaryOccurrences, setSecretaryOccurrences] = useState([]);
 
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
-    const [selectedFilter, setSelectedFilter] = useState("heat");
+    const [selectedFilter, setSelectedFilter] = useState("pins");
 
     const [selectedUf, setSelectedUf] = useState("df");
 
@@ -139,32 +127,17 @@ const Home: React.FC = () => {
     });
 
     useEffect(() => {
-        getCurrentLocation();
+        getInitialAndFinalMonth();
     }, []);
 
-    const getCurrentLocation = async () => {
-        const { status } = await Location.requestPermissionsAsync();
+    const getInitialAndFinalMonth = () => {
+        const date = moment().subtract(2, "M");
 
-        if (status !== "granted") {
-            console.warn("Permission to access location was denied");
-        }
+        const year = date.year();
+        const month = date.month() + 1;
 
-        const position = await Location.getCurrentPositionAsync({});
-
-        const location = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
-        };
-
-        setLocation(location);
-    };
-
-    const getPinColor = (occurrence) => {
-        return crimesColors.filter(
-            (op) => op.name === occurrence.occurrence_type
-        )[0].color;
+        setFinalMonth(month + "/" + year);
+        setInitialMonth(month + "/" + (year - 1));
     };
 
     const handleSubmitFilter = () => {
@@ -202,8 +175,8 @@ const Home: React.FC = () => {
             const response = await getOccurrencesByCrimeNature(
                 selectedUf,
                 option.label,
-                initialDate,
-                finalDate,
+                initialMonth,
+                finalMonth,
                 1
             );
 
@@ -297,25 +270,31 @@ const Home: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {!isFilterOpen && (
-                <FilterButton onPress={() => setIsFilterOpen(true)}>
+                <FloatingButton
+                    onPress={() => setIsFilterOpen(true)}
+                    position="right-top"
+                >
                     <Feather
                         name="filter"
                         size={scale(30)}
                         color={theme.primaryGray}
                     />
-                </FilterButton>
+                </FloatingButton>
             )}
             {selectedFilter === "heat" &&
                 !isInfoHeatOpen &&
                 !isFilterOpen &&
                 selectedOption[0] !== 0 && (
-                    <HeatInfo onPress={() => setIsInfoHeatOpen(true)}>
+                    <FloatingButtonStyled
+                        onPress={() => setIsInfoHeatOpen(true)}
+                        position="right-bottom"
+                    >
                         <Feather
                             name="info"
                             size={scale(30)}
                             color={theme.primaryGray}
                         />
-                    </HeatInfo>
+                    </FloatingButtonStyled>
                 )}
             {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
                 <LoggedInModal navObject={navigation} />
@@ -338,41 +317,40 @@ const Home: React.FC = () => {
                     }
                 >
                     {occurrences !== undefined &&
-                        occurrences?.map((occurrence: Occurrence) => {
+                        !isReporting &&
+                        occurrences.map((occurrence: Occurrence) => {
                             return (
-                                <Marker
+                                <StayMarker
                                     key={occurrence.id_occurrence}
-                                    coordinate={{
-                                        latitude: occurrence.location[0],
-                                        longitude: occurrence.location[1],
-                                    }}
-                                    onPress={() =>
-                                        navigation.navigate(
-                                            "OccurrenceDetails",
-                                            {
-                                                occurrence,
-                                            }
-                                        )
-                                    }
-                                    tracksViewChanges={false}
-                                >
-                                    {theme.type === "dark" ? (
-                                        <DarkLogo
-                                            width={scale(38)}
-                                            height={scale(38)}
-                                            fill={getPinColor(occurrence)}
-                                        />
-                                    ) : (
-                                        <Logo
-                                            width={scale(38)}
-                                            height={scale(38)}
-                                            fill={getPinColor(occurrence)}
-                                        />
-                                    )}
-                                </Marker>
+                                    occurrence={occurrence}
+                                />
                             );
                         })}
                 </StayNormalMap>
+            )}
+            {!isFilterOpen && (
+                <MapButtonsContainer>
+                    <MapButton
+                        onPress={() => {
+                            setSelectedFilter("pins");
+                            setSelectedOption([0]);
+                        }}
+                        disabled={selectedFilter === "pins"}
+                    >
+                        <MapText>Usuários</MapText>
+                    </MapButton>
+                    <MapButton
+                        onPress={() => {
+                            setSelectedUf("df");
+                            setIsFilterOpen(true);
+                            setSelectedFilter("heat");
+                            setSelectedOption([0]);
+                        }}
+                        disabled={selectedFilter === "heat"}
+                    >
+                        <MapText>Secretarias</MapText>
+                    </MapButton>
+                </MapButtonsContainer>
             )}
             <StayAlert
                 show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
@@ -417,28 +395,17 @@ const Home: React.FC = () => {
                     }}
                 >
                     <TabFilter>
-                        {tabs.map((item, index) => {
-                            return (
-                                <Tab
-                                    key={`tab-${index}`}
-                                    onPress={() => {
-                                        setSelectedFilter(item.name);
-                                        setSelectedOption([0]);
-                                    }}
-                                    focus={selectedFilter === item.name}
-                                >
-                                    <TabTitle
-                                        focus={selectedFilter === item.name}
-                                    >
-                                        {item.text}
-                                    </TabTitle>
-                                </Tab>
-                            );
-                        })}
+                        <Tab>
+                            <TabTitle>
+                                {selectedFilter === "heat"
+                                    ? "Calor"
+                                    : "Ocorrências"}
+                            </TabTitle>
+                        </Tab>
                     </TabFilter>
                     {selectedFilter === "heat" && (
                         <DropDownContainer>
-                            <DropDownTitle>Selecione uma UF :</DropDownTitle>
+                            <DropDownTitle>Selecione uma UF:</DropDownTitle>
                             <UfDropDown
                                 style={{
                                     backgroundColor: theme.primaryLightGray,
@@ -461,13 +428,12 @@ const Home: React.FC = () => {
                 </View>
                 {searchOptions.map((option) => {
                     return (
-                        <ButtonOptionContainer key={option.id}>
+                        <ButtonOptionContainer
+                            key={option.id}
+                            onPress={() => handleSelectOption(option.id)}
+                        >
                             <Option>
-                                <OptionCircleButton
-                                    onPress={() =>
-                                        handleSelectOption(option.id)
-                                    }
-                                >
+                                <OptionCircleButton>
                                     <Feather
                                         name={
                                             selectedOption.indexOf(option.id) >=
@@ -503,7 +469,6 @@ const Home: React.FC = () => {
                 </View>
                 <View style={{ alignItems: "center" }}>
                     <Button
-                        width="50%"
                         onPress={() => handleSubmitFilter()}
                         color={theme.primaryRed}
                         enabled={
@@ -514,7 +479,12 @@ const Home: React.FC = () => {
                             )
                         }
                     >
-                        <SendLabel>Filtrar</SendLabel>
+                        <Feather
+                            name="filter"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Filtrar</ButtonWithIconLabel>
                     </Button>
                     <Span show style={{ marginTop: scale(5) }}>
                         ou clique no mapa para voltar
@@ -556,7 +526,7 @@ const Home: React.FC = () => {
                             * Casos anuais por 100.000 habitantes
                         </InfoSubText>
                         <InfoSubText>
-                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()} - ${initialDate}-${finalDate} `}
+                            {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()} correspondentes ao período de ${initialMonth} até ${finalMonth} `}
                         </InfoSubText>
                     </View>
                 </InfoModal>

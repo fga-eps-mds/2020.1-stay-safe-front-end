@@ -125,10 +125,3 @@ export const CrimeBarNumber = styled.Text`
     color: ${(props) => props.theme.primaryDarkBlue};
     margin-left: ${scale(2)}px;
 `;
-
-export const SortButtontText = styled.Text`
-    font-family: "Trueno-SemiBold";
-    font-size: ${scale(15)}px;
-    color: ${(props) => props.theme.primaryWhite};
-    margin-left: ${scale(5)}px;
-`;

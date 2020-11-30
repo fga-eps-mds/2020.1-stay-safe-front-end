@@ -83,13 +83,12 @@ export const DialogInput = styled(Dialog.Input).attrs((props) => ({
 
 export const ButtonsContainer = styled.View`
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
 `;
 
 export const DialogButton = styled(Dialog.Button)`
-    width: 100%;
+    width: 120%;
     background-color: ${(props) => props.theme.primaryLightBlue};
-    border-radius: ${scale(10)}px;
-    padding: ${scale(8)}px;
-    margin-right: ${scale(16)}px;
+    border-radius: ${scale(28)}px;
+    padding: ${scale(12)}px;
 `;

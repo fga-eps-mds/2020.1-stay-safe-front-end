@@ -6,6 +6,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import { InfoButton } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
@@ -14,8 +15,7 @@ import NeighborhoodInfo from "../../components/NeighborhoodInfo";
 import {
     Container,
     KeyboardScrollView,
-    NormalSend,
-    SendLabel,
+    ButtonWithIconLabel,
 } from "../../components/NormalForms";
 import { Neighborhood } from "../../interfaces/neighborhood";
 import { getCityNeighborhoods } from "../../services/neighborhood";
@@ -124,29 +124,38 @@ const Neighborhoods: React.FC = () => {
                     </NoStatisticsText>
                 )}
                 <ButtonsContainer>
-                    <NormalSend
-                        style={{
-                            width: "45%",
-                            backgroundColor: theme.primaryLightBlue,
-                        }}
+                    <Button
+                        width="48%"
+                        color={theme.primaryLightBlue}
                         onPress={() =>
                             navigation.navigate("NeighborhoodReview", {
                                 neighborhood,
                             })
                         }
                     >
-                        <SendLabel>Ver Bairro</SendLabel>
-                    </NormalSend>
-                    <NormalSend
-                        style={{ width: "45%", marginLeft: "5%" }}
+                        <MaterialCommunityIcons
+                            name="home-city"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Ver Bairro</ButtonWithIconLabel>
+                    </Button>
+                    <Button
+                        width="48%"
+                        color={theme.primaryRed}
                         onPress={() =>
                             navigation.navigate("Rating", {
                                 rating: { neighborhood },
                             })
                         }
                     >
-                        <SendLabel>Avaliar</SendLabel>
-                    </NormalSend>
+                        <MaterialCommunityIcons
+                            name="star"
+                            size={scale(18)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>Avaliar</ButtonWithIconLabel>
+                    </Button>
                 </ButtonsContainer>
             </NeighborhoodCard>
         );

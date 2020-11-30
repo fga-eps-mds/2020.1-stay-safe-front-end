@@ -1,12 +1,12 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
+import SelectPointOnMap from "../../components/SelectPointOnMap";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import {
@@ -42,13 +42,14 @@ type ParamPlace = {
 };
 
 const FavoritePlaces: React.FC = () => {
-    const navigation = useNavigation();
     const theme = useTheme();
     const { data } = useUser();
+
     const route = useRoute<RouteProp<ParamPlace, "params">>();
+    const navigation = useNavigation();
 
     const [favoritePlaces, setFavoritePlaces] = useState<FavoritePlace[]>([]);
-    const [location, setLocation] = useState<[number, number]>([0, 0]);
+    const [position, setPosition] = useState<[number, number]>([0, 0]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [favoritePlaceName, setFavoritePlaceName] = useState("");
 
@@ -57,16 +58,21 @@ const FavoritePlaces: React.FC = () => {
     const [showDeleteModal, setDeleteModal] = useState(false);
     const [idPlace, setIdPlace] = useState(0);
 
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
+
+    const [openMap, setOpenMap] = useState(false);
+
     useEffect(() => {
         getPlaces();
     }, [route]);
 
     useEffect(() => {
-        if (route.params) {
-            setLocation([route.params.latitude, route.params.longitude]);
-            setIsDialogOpen(true);
-        }
-    }, [route]);
+        if (position[0] !== 0 && position[1] !== 0) setIsDialogOpen(true);
+    }, [position]);
 
     const getPlaces = async () => {
         if (data.token !== "") {
@@ -105,8 +111,8 @@ const FavoritePlaces: React.FC = () => {
         if (data.token !== "") {
             const FavoritePlace = {
                 name: favoritePlaceName,
-                latitude: location[0],
-                longitude: location[1],
+                latitude: position[0],
+                longitude: position[1],
             };
 
             const response = await createFavoritePlace(
@@ -117,10 +123,11 @@ const FavoritePlaces: React.FC = () => {
             if (response.status === 201) {
                 setShowSuccessfullyModal(true);
             } else {
-                Alert.alert(
+                setHasError(true);
+                setErrorMessage([
                     "Erro ao cadastrar local favorito",
-                    response.body.error
-                );
+                    response.body.error,
+                ]);
             }
         }
     };
@@ -164,9 +171,7 @@ const FavoritePlaces: React.FC = () => {
                     <AddPlace
                         icon="plus"
                         onPress={() => {
-                            navigation.navigate("Home", {
-                                showFavoritePlaceModal: true,
-                            });
+                            setOpenMap(true);
                         }}
                     />
                     <DialogContainer
@@ -190,10 +195,7 @@ const FavoritePlaces: React.FC = () => {
                                 onPress={() => handleCloseDialog()}
                             />
                             <DialogButton
-                                style={{
-                                    backgroundColor: theme.primaryRed,
-                                    marginRight: 0,
-                                }}
+                                style={{ backgroundColor: theme.primaryRed }}
                                 color="#ffffff"
                                 disabled={favoritePlaceName.length === 0}
                                 label="Confirmar"
@@ -222,6 +224,22 @@ const FavoritePlaces: React.FC = () => {
                         onConfirmPressed={() => setShowSuccessfullyModal(false)}
                         onDismiss={() => setShowSuccessfullyModal(false)}
                     />
+                    <StayAlert
+                        show={hasError}
+                        title={errorMessage[0]}
+                        message={errorMessage[1]}
+                        showConfirmButton
+                        confirmText="Confirmar"
+                        onConfirmPressed={() => setHasError(false)}
+                        onDismiss={() => setHasError(false)}
+                    />
+                    {openMap && (
+                        <SelectPointOnMap
+                            selectFavoritePlace
+                            onPress={setPosition}
+                            onClose={() => setOpenMap(false)}
+                        />
+                    )}
                 </KeyboardScrollView>
             </Container>
         </SafeAreaView>

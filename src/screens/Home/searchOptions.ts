@@ -5,7 +5,7 @@ export const crimesColors = [
         range: [0, 1, 3, 6, 10],
     },
     {
-        name: "Roubo a Transeunte",
+        name: "Roubo a Pedestre",
         color: "#FFE000",
         range: [200, 400, 600, 1000, 1500],
     },
@@ -25,7 +25,7 @@ export const crimesColors = [
         range: [20, 30, 40, 50, 70],
     },
     {
-        name: "Furto a Transeunte",
+        name: "Furto a Pedestre",
         color: "#4D00FF",
         range: [20, 50, 70, 90, 100],
     },
@@ -46,8 +46,8 @@ export const searchOptionsDf = [
     },
     {
         id: 2,
-        name: "Roubo a Transeunte",
-        label: "Roubo a Transeunte",
+        name: "Roubo a Pedestre",
+        label: "Roubo a Pedestre",
         color: "#FFE000",
         range: [200, 400, 600, 1000, 1500],
     },
@@ -74,8 +74,8 @@ export const searchOptionsDf = [
     },
     {
         id: 6,
-        name: "Furto a Transeunte",
-        label: "Furto a Transeunte",
+        name: "Furto a Pedestre",
+        label: "Furto a Pedestre",
         color: "#4D00FF",
         range: [20, 50, 70, 90, 100],
     },
