@@ -8,12 +8,12 @@ import {
 import * as Font from "expo-font";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import MapView, { MapEvent } from "react-native-maps";
+import { MapEvent } from "react-native-maps";
 import { FAB, Portal, Provider } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
-import Button from "../../components/Button";;
+import Button from "../../components/Button";
 import HeatMap from "../../components/HeatMap";
 import {
     InfoModal,
@@ -50,7 +50,7 @@ import {
     Span,
     UfDropDown,
     DropDownContainer,
-    DropDownTitle
+    DropDownTitle,
 } from "./styles";
 
 type ParamList = {
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [showIcons, setShowIcons] = useState(false)
+    const [showIcons, setShowIcons] = useState(false);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -115,17 +115,17 @@ const Home: React.FC = () => {
                 setIsFilterOpen(true);
                 setSelectedFilter("heat");
                 setSelectedOption([0]);
-            }
+            },
         },
         {
             icon: "filter",
             label: "Filtros",
-            onPress: () => setIsFilterOpen(true)
-        }
-    ])
+            onPress: () => setIsFilterOpen(true),
+        },
+    ]);
 
     const loadIcons = () => {
-        let aux_icons = icons
+        const aux_icons = icons;
         aux_icons[0] = {
             icon: selectedFilter === "heat" ? "map-marker" : "map",
             label: selectedFilter === "heat" ? "Usuários" : "Secretarias",
@@ -139,19 +139,19 @@ const Home: React.FC = () => {
                     setSelectedFilter("heat");
                     setSelectedOption([0]);
                 }
-            }
-        }
+            },
+        };
         if (selectedFilter === "heat") {
             aux_icons.push({
                 icon: "information-outline",
                 label: "Informações",
                 onPress: () => setIsInfoHeatOpen(true),
-            })
+            });
         } else if (icons.length > 2) {
-            aux_icons.pop()
+            aux_icons.pop();
         }
-        setIcons(aux_icons)
-    }
+        setIcons(aux_icons);
+    };
 
     useFocusEffect(
         useCallback(() => {
@@ -313,7 +313,7 @@ const Home: React.FC = () => {
                                 dark: true,
                                 colors: {
                                     surface: theme.primarySuperDarkBlue,
-                                    text: theme.primaryLightBlue
+                                    text: theme.primaryLightBlue,
                                 },
                             }}
                             open={showIcons}
@@ -323,15 +323,19 @@ const Home: React.FC = () => {
                                 borderWidth: scale(1),
                             }}
                             color={theme.primaryRed}
-                            icon={showIcons ? "dots-vertical" : "dots-horizontal"}
+                            icon={
+                                showIcons ? "dots-vertical" : "dots-horizontal"
+                            }
                             actions={icons}
                             onStateChange={() => setShowIcons(!showIcons)}
                             visible
                         />
                     )}
-                    {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
-                        <LoggedInModal navObject={navigation} />
-                    )}
+                    {data.token === "" &&
+                        !isFilterOpen &&
+                        selectedOption[0] <= 0 && (
+                            <LoggedInModal navObject={navigation} />
+                        )}
                     {selectedOption[0] > 0 &&
                     !isFilterOpen &&
                     selectedFilter === "heat" ? (
@@ -346,7 +350,9 @@ const Home: React.FC = () => {
                             showsUserLocation
                             loadingEnabled
                             customMapStyle={
-                                theme.type === "dark" ? staySafeDarkMapStyle : []
+                                theme.type === "dark"
+                                    ? staySafeDarkMapStyle
+                                    : []
                             }
                         >
                             {occurrences !== undefined &&
@@ -362,7 +368,10 @@ const Home: React.FC = () => {
                         </StayNormalMap>
                     )}
                     <StayAlert
-                        show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
+                        show={
+                            (isPlaceModalOpen || isModalOpen) &&
+                            data.token !== ""
+                        }
                         title={
                             isPlaceModalOpen
                                 ? "Selecionar Local Favorito"
@@ -414,10 +423,13 @@ const Home: React.FC = () => {
                             </TabFilter>
                             {selectedFilter === "heat" && (
                                 <DropDownContainer>
-                                    <DropDownTitle>Selecione uma UF:</DropDownTitle>
+                                    <DropDownTitle>
+                                        Selecione uma UF:
+                                    </DropDownTitle>
                                     <UfDropDown
                                         style={{
-                                            backgroundColor: theme.primaryLightGray,
+                                            backgroundColor:
+                                                theme.primaryLightGray,
                                         }}
                                         items={ufs}
                                         defaultValue={selectedUf}
@@ -426,9 +438,13 @@ const Home: React.FC = () => {
                                             setSelectedOption([0]);
 
                                             if (item.value === "df") {
-                                                setSearchOptions(searchOptionsDf);
+                                                setSearchOptions(
+                                                    searchOptionsDf
+                                                );
                                             } else {
-                                                setSearchOptions(searchOptionsSp);
+                                                setSearchOptions(
+                                                    searchOptionsSp
+                                                );
                                             }
                                         }}
                                     />
@@ -439,14 +455,17 @@ const Home: React.FC = () => {
                             return (
                                 <ButtonOptionContainer
                                     key={option.id}
-                                    onPress={() => handleSelectOption(option.id)}
+                                    onPress={() =>
+                                        handleSelectOption(option.id)
+                                    }
                                 >
                                     <Option>
                                         <OptionCircleButton>
                                             <Feather
                                                 name={
-                                                    selectedOption.indexOf(option.id) >=
-                                                    0
+                                                    selectedOption.indexOf(
+                                                        option.id
+                                                    ) >= 0
                                                         ? "check-circle"
                                                         : "circle"
                                                 }
@@ -493,7 +512,9 @@ const Home: React.FC = () => {
                                     size={scale(18)}
                                     color={theme.primaryWhite}
                                 />
-                                <ButtonWithIconLabel>Filtrar</ButtonWithIconLabel>
+                                <ButtonWithIconLabel>
+                                    Filtrar
+                                </ButtonWithIconLabel>
                             </Button>
                             <Span show style={{ marginTop: scale(5) }}>
                                 ou clique no mapa para voltar
@@ -511,7 +532,9 @@ const Home: React.FC = () => {
                             backButtonClose
                         >
                             <View style={{ alignItems: "center" }}>
-                                <InfoTitle>Legenda: {crimeOption?.name}</InfoTitle>
+                                <InfoTitle>
+                                    Legenda: {crimeOption?.name}
+                                </InfoTitle>
                                 <InfoContainer>
                                     {[...Array(6)].map((_, index) => {
                                         return (
@@ -522,9 +545,9 @@ const Home: React.FC = () => {
                                                 <InfoText>
                                                     {crimeOption !== undefined
                                                         ? getInfoText(
-                                                            crimeOption.range,
-                                                            index
-                                                        )
+                                                              crimeOption.range,
+                                                              index
+                                                          )
                                                         : ""}
                                                 </InfoText>
                                             </Info>
