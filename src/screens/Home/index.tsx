@@ -6,7 +6,6 @@ import {
     useNavigation,
 } from "@react-navigation/native";
 import * as Font from "expo-font";
-import { getCurrentPositionAsync } from "expo-location";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import MapView, { MapEvent } from "react-native-maps";
@@ -71,7 +70,7 @@ interface CrimeOption {
 
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data, location } = useUser();
+    const { data, location, centralize } = useUser();
 
     const route = useRoute<RouteProp<ParamList, "params">>();
     const navigation = useNavigation();
@@ -342,7 +341,7 @@ const Home: React.FC = () => {
                         />
                     ) : (
                         <StayNormalMap
-                            region={location}
+                            region={centralize ? location : undefined}
                             onPress={(e) => handleReportingCoordinatesOnMap(e)}
                             showsUserLocation
                             loadingEnabled
