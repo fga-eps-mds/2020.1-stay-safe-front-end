@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
@@ -297,14 +298,10 @@ const Rating: React.FC = () => {
                     onConfirmPressed={() => handleClosedModal()}
                     onDismiss={() => handleClosedModal()}
                 />
-                <StayAlert
+                <ErrorModal
                     show={hasError}
-                    title={errorMessage[0]}
-                    message={errorMessage[1]}
-                    showConfirmButton
-                    confirmText="Confirmar"
-                    onConfirmPressed={() => setHasError(false)}
-                    onDismiss={() => setHasError(false)}
+                    message={errorMessage}
+                    onPress={() => setHasError(false)}
                 />
             </Container>
         </SafeAreaView>

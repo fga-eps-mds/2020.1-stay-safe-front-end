@@ -1,15 +1,9 @@
 import { Feather } from "@expo/vector-icons";
-import {
-    useFocusEffect,
-    useRoute,
-    RouteProp,
-    useNavigation,
-} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
 import moment from "moment";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
-import { MapEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -27,7 +21,6 @@ import {
     InfoSubText,
 } from "../../components/InfoModal";
 import Loader from "../../components/Loader";
-import LoggedInModal from "../../components/LoggedInModal";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
@@ -58,13 +51,6 @@ import {
     MapText,
 } from "./styles";
 
-type ParamList = {
-    params: {
-        showReportModal: boolean;
-        showFavoritePlaceModal: boolean;
-    };
-};
-
 interface CrimeOption {
     id: number;
     name: string;
@@ -75,18 +61,11 @@ interface CrimeOption {
 
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { data, location } = useUser();
-
-    const route = useRoute<RouteProp<ParamList, "params">>();
-    const navigation = useNavigation();
+    const { location } = useUser();
 
     const [initialMonth, setInitialMonth] = useState("");
     const [finalMonth, setFinalMonth] = useState("");
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isReporting, setIsReporting] = useState(false);
-    const [isPlaceModalOpen, setIsPlaceModalOpen] = useState(false);
-    const [isSelectingPlace, setIsSelectingPlace] = useState(false);
     const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -110,20 +89,6 @@ const Home: React.FC = () => {
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
-    });
-
-    useFocusEffect(
-        useCallback(() => {
-            setIsReporting(false);
-            setIsSelectingPlace(false);
-        }, [])
-    );
-
-    useFocusEffect(() => {
-        if (route.params) {
-            setIsModalOpen(route.params.showReportModal);
-            setIsPlaceModalOpen(route.params.showFavoritePlaceModal);
-        }
     });
 
     useEffect(() => {
@@ -206,29 +171,6 @@ const Home: React.FC = () => {
         }, [])
     );
 
-    // Function to use on modal closed.
-    const handleClosedModal = () => {
-        setIsModalOpen(false);
-        setIsPlaceModalOpen(false);
-
-        navigation.setParams({
-            showReportModal: null,
-            showFavoritePlaceModal: null,
-        });
-    };
-
-    const handleReportingCoordinatesOnMap = (e: MapEvent) => {
-        const { latitude, longitude } = e.nativeEvent.coordinate;
-
-        if (isReporting) {
-            setIsReporting(false);
-            navigation.navigate("Occurrence", { latitude, longitude });
-        } else if (isSelectingPlace) {
-            setIsSelectingPlace(false);
-            navigation.navigate("FavoritePlaces", { latitude, longitude });
-        }
-    };
-
     const handleSelectOption = (id: number) => {
         if (selectedOption.indexOf(id) >= 0) {
             let aux = selectedOption.filter((i) => i !== id);
@@ -296,9 +238,6 @@ const Home: React.FC = () => {
                         />
                     </FloatingButtonStyled>
                 )}
-            {data.token === "" && !isFilterOpen && selectedOption[0] <= 0 && (
-                <LoggedInModal navObject={navigation} />
-            )}
             {selectedOption[0] > 0 &&
             !isFilterOpen &&
             selectedFilter === "heat" ? (
@@ -309,7 +248,6 @@ const Home: React.FC = () => {
             ) : (
                 <StayNormalMap
                     region={location}
-                    onPress={(e) => handleReportingCoordinatesOnMap(e)}
                     showsUserLocation
                     loadingEnabled
                     customMapStyle={
@@ -317,7 +255,6 @@ const Home: React.FC = () => {
                     }
                 >
                     {occurrences !== undefined &&
-                        !isReporting &&
                         occurrences.map((occurrence: Occurrence) => {
                             return (
                                 <StayMarker
@@ -352,23 +289,6 @@ const Home: React.FC = () => {
                     </MapButton>
                 </MapButtonsContainer>
             )}
-            <StayAlert
-                show={(isPlaceModalOpen || isModalOpen) && data.token !== ""}
-                title={
-                    isPlaceModalOpen
-                        ? "Selecionar Local Favorito"
-                        : "Reportar Ocorrência"
-                }
-                message="Toque para selecionar o local no mapa com o marcador"
-                showConfirmButton
-                confirmText="Entendido"
-                onConfirmPressed={() => {
-                    handleClosedModal();
-                    if (isPlaceModalOpen) setIsSelectingPlace(true);
-                    else setIsReporting(true);
-                }}
-                onDismiss={() => handleClosedModal()}
-            />
             <StayAlert
                 show={isWarningOpen}
                 title="Opa!"

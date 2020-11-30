@@ -7,6 +7,7 @@ import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
 import { DropDown, dropdownStyle } from "../../components/Dropdown";
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
@@ -430,14 +431,10 @@ const Occurrence: React.FC = () => {
                         onConfirmPressed={() => handleClosedModal()}
                         onDismiss={() => handleClosedModal()}
                     />
-                    <StayAlert
+                    <ErrorModal
                         show={hasError}
-                        title={errorMessage[0]}
-                        message={errorMessage[1]}
-                        showConfirmButton
-                        confirmText="Confirmar"
-                        onConfirmPressed={() => setHasError(false)}
-                        onDismiss={() => setHasError(false)}
+                        message={errorMessage}
+                        onPress={() => setHasError(false)}
                     />
                     {isLoading && <Loader />}
                 </KeyboardScrollView>

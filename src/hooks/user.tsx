@@ -9,7 +9,6 @@ import React, {
     useContext,
     useRef,
 } from "react";
-import { Alert } from "react-native";
 import { ThemeProvider } from "styled-components";
 
 import { authUser, deleteUser, updateUser } from "../services/users";
@@ -172,6 +171,8 @@ export const UserProvider: React.FC = ({ children }) => {
             password,
         });
 
+        let error = "";
+
         if (!response.body.error && response.status === 200) {
             const { token } = response.body;
 
@@ -193,8 +194,10 @@ export const UserProvider: React.FC = ({ children }) => {
 
             setData({ username, token });
         } else {
-            Alert.alert("Erro ao logar usuário", response.body.error);
+            error = response.body.error;
         }
+
+        return error;
     }, []);
 
     const signOut = useCallback(async () => {

@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import ErrorModal from "../../components/ErrorModal";
 import Loader from "../../components/Loader";
 import LogoContainer from "../../components/LogoContainer";
 import {
@@ -27,6 +28,12 @@ const Login: React.FC = () => {
     const [username, setUsername] = useState("");
     const [userPwd, setUserPwd] = useState("");
 
+    const [hasError, setHasError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<[string, string]>([
+        "",
+        "",
+    ]);
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [loaded] = Font.useFonts({
@@ -39,7 +46,13 @@ const Login: React.FC = () => {
     const handleLogin = async () => {
         setIsLoading(true);
 
-        await signIn({ username, password: userPwd });
+        let error = "";
+        error = await signIn({ username, password: userPwd });
+
+        if (error) {
+            setHasError(true);
+            setErrorMessage(["Erro ao logar usuário", error]);
+        }
 
         setIsLoading(false);
         navigation.navigate("HomeTabBar");
@@ -88,6 +101,7 @@ const Login: React.FC = () => {
                     <Button
                         color={theme.primaryLightBlue}
                         onPress={() => navigation.navigate("Cadastro")}
+                        style={{ marginBottom: scale(30) }}
                     >
                         <Feather
                             name="user-plus"
@@ -96,6 +110,11 @@ const Login: React.FC = () => {
                         />
                         <ButtonWithIconLabel>Criar Conta</ButtonWithIconLabel>
                     </Button>
+                    <ErrorModal
+                        show={hasError}
+                        message={errorMessage}
+                        onPress={() => setHasError(false)}
+                    />
                     {isLoading && <Loader />}
                 </KeyboardScrollView>
             </Container>

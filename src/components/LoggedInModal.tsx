@@ -1,13 +1,19 @@
+import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useEffect, useState } from "react";
 
 import { useUser } from "../hooks/user";
 import StayAlert from "./StayAlert";
 
-const LoggedInModal = (props) => {
+interface LoggedInProps {
+    onPressed?: () => void;
+}
+
+const LoggedInModal: React.FC<LoggedInProps> = ({ onPressed }) => {
+    const navigation = useNavigation();
+
     const { data } = useUser();
     const [showAlert, changeAlert] = useState(false);
-    const { navObject } = props;
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../fonts/TruenoSBd.otf"),
@@ -35,12 +41,18 @@ const LoggedInModal = (props) => {
             confirmText="Fazer login"
             onConfirmPressed={() => {
                 changeAlert(false);
-                navObject.navigate("Login");
+                if (onPressed) onPressed();
+                navigation.navigate("Login");
             }}
             showCancelButton
             cancelText="Fechar"
             onCancelPressed={() => {
                 changeAlert(false);
+                if (onPressed) onPressed();
+            }}
+            onDismiss={() => {
+                changeAlert(false);
+                if (onPressed) onPressed();
             }}
         />
     );

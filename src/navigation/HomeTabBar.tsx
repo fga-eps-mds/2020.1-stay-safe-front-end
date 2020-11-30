@@ -3,7 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { useTheme } from "styled-components";
 
+import { useUser } from "../hooks/user";
 import Home from "../screens/Home";
+import Login from "../screens/Login";
 import Profile from "../screens/Profile";
 import Report, { ReportButton } from "../screens/Report";
 import Search from "../screens/Search";
@@ -14,6 +16,8 @@ const Tab = createBottomTabNavigator();
 
 const HomeTabBar: React.FC = () => {
     const theme = useTheme();
+    const { data } = useUser();
+
     return (
         <>
             <Tab.Navigator
@@ -28,7 +32,10 @@ const HomeTabBar: React.FC = () => {
                             iconName = "search";
                         } else if (route.name === "Report") {
                             iconName = "bell";
-                        } else if (route.name === "Profile") {
+                        } else if (
+                            route.name === "Profile" ||
+                            route.name === "Login"
+                        ) {
                             iconName = "user";
                         } else if (route.name === "Settings") {
                             iconName = "settings";
@@ -65,13 +72,15 @@ const HomeTabBar: React.FC = () => {
                 <Tab.Screen
                     name="Report"
                     component={Report}
-                    options={({ navigation }) => ({
-                        tabBarButton: () => (
-                            <ReportButton navObject={navigation} />
-                        ),
+                    options={() => ({
+                        tabBarButton: () => <ReportButton />,
                     })}
                 />
-                <Tab.Screen name="Profile" component={Profile} />
+                {data.token === "" ? (
+                    <Tab.Screen name="Login" component={Login} />
+                ) : (
+                    <Tab.Screen name="Profile" component={Profile} />
+                )}
                 <Tab.Screen name="Settings" component={Settings} />
             </Tab.Navigator>
         </>

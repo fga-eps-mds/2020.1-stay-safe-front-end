@@ -2,7 +2,9 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useTheme } from "styled-components";
 
+import LoggedInModal from "../../components/LoggedInModal";
 import SelectPointOnMap from "../../components/SelectPointOnMap";
+import { useUser } from "../../hooks/user";
 import Logo from "../../img/logo.svg";
 import { scale } from "../../utils/scalling";
 import { AlertButton, ButtonContainer } from "./styles";
@@ -17,6 +19,7 @@ export const ReportButton = () => {
     const navigation = useNavigation();
 
     const theme = useTheme();
+    const { data } = useUser();
 
     const [openModal, setOpenModal] = useState(false);
 
@@ -29,7 +32,10 @@ export const ReportButton = () => {
                     fill={theme.primaryRed}
                 />
             </AlertButton>
-            {openModal && (
+            {openModal && data.token === "" && (
+                <LoggedInModal onPressed={() => setOpenModal(false)} />
+            )}
+            {openModal && data.token !== "" && (
                 <SelectPointOnMap
                     selectFavoritePlace={false}
                     onPress={(position: number[]) =>

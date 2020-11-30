@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
 import Button from "../../components/Button";
+import ErrorModal from "../../components/ErrorModal";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
@@ -13,7 +14,6 @@ import {
     KeyboardScrollView,
     ButtonWithIconLabel,
 } from "../../components/NormalForms";
-import StayAlert from "../../components/StayAlert";
 import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
 import {
@@ -200,14 +200,10 @@ const CityStatistics: React.FC = () => {
                             Visualizar Bairros
                         </ButtonWithIconLabel>
                     </Button>
-                    <StayAlert
+                    <ErrorModal
                         show={hasError}
-                        title={errorMessage[0]}
-                        message={errorMessage[1]}
-                        showConfirmButton
-                        confirmText="Confirmar"
-                        onConfirmPressed={() => setHasError(false)}
-                        onDismiss={() => {
+                        message={errorMessage}
+                        onPress={() => {
                             setHasError(false);
                             navigation.goBack();
                         }}
