@@ -1,10 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Font from "expo-font";
+import moment from "moment";
 import React, { useCallback, useState, useEffect } from "react";
 import { View } from "react-native";
 import { FAB, Portal, Provider } from "react-native-paper";
-import moment from "moment";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -26,7 +26,7 @@ import StayMarker from "../../components/StayMarker";
 import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import { Occurrence } from "../../interfaces/occurrence";
-import { getAllUsersOccurrences, updateOccurrence } from "../../services/occurrences";
+import { getAllUsersOccurrences } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
@@ -116,7 +116,7 @@ const Home: React.FC = () => {
                 if (selectedFilter === "heat") {
                     setSelectedFilter("pins");
                     setSelectedOption([0]);
-                    updateCentralize(true)
+                    updateCentralize(true);
                 } else {
                     setSelectedUf("df");
                     setIsFilterOpen(true);
@@ -142,8 +142,8 @@ const Home: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        loadIcons()
-    }, [selectedFilter])
+        loadIcons();
+    }, [selectedFilter]);
 
     const getInitialAndFinalMonth = () => {
         const date = moment().subtract(2, "M");
@@ -292,8 +292,8 @@ const Home: React.FC = () => {
                             onStateChange={() => setShowIcons(!showIcons)}
                             visible
                             onPress={() => {
-                                updateCentralize(false)
-                              }}
+                                updateCentralize(false);
+                            }}
                         />
                     )}
                     {selectedFilter === "heat" ? (
@@ -335,7 +335,7 @@ const Home: React.FC = () => {
                     <FilterModal
                         isOpen={isFilterOpen}
                         onClosed={() => {
-                            setIsFilterOpen(false)
+                            setIsFilterOpen(false);
                         }}
                         swipeToClose={false}
                         position="top"
@@ -469,7 +469,7 @@ const Home: React.FC = () => {
                                                         ? getInfoText(
                                                             crimeOption.range,
                                                             index
-                                                        )
+                                                          )
                                                         : ""}
                                                 </InfoText>
                                             </Info>
