@@ -26,7 +26,7 @@ import StayMarker from "../../components/StayMarker";
 import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
 import { Occurrence } from "../../interfaces/occurrence";
-import { getAllUsersOccurrences } from "../../services/occurrences";
+import { getAllUsersOccurrences, updateOccurrence } from "../../services/occurrences";
 import { getOccurrencesByCrimeNature } from "../../services/occurrencesSecretary";
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
 import { scale } from "../../utils/scalling";
@@ -57,7 +57,7 @@ interface CrimeOption {
 
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { location, centralize } = useUser();
+    const { location, centralize, updateCentralize } = useUser();
 
     const [initialMonth, setInitialMonth] = useState("");
     const [finalMonth, setFinalMonth] = useState("");
@@ -116,6 +116,7 @@ const Home: React.FC = () => {
                 if (selectedFilter === "heat") {
                     setSelectedFilter("pins");
                     setSelectedOption([0]);
+                    updateCentralize(true)
                 } else {
                     setSelectedUf("df");
                     setIsFilterOpen(true);
@@ -124,28 +125,25 @@ const Home: React.FC = () => {
                 }
             },
         };
-        if (selectedFilter === "heat") {
+        if (selectedFilter === "heat" && icons.length < 3) {
             aux_icons.push({
                 icon: "information-outline",
                 label: "Informações",
                 onPress: () => setIsInfoHeatOpen(true),
             });
-        } else if (icons.length > 2) {
+        } else if (selectedFilter === "pins" && icons.length > 2) {
             aux_icons.pop();
         }
         setIcons(aux_icons);
     };
 
-    useFocusEffect(
-        useCallback(() => {
-            setIsReporting(false);
-            setIsSelectingPlace(false);
-        }, [])
-    );
-
     useEffect(() => {
         getInitialAndFinalMonth();
     }, []);
+
+    useEffect(() => {
+        loadIcons()
+    }, [selectedFilter])
 
     const getInitialAndFinalMonth = () => {
         const date = moment().subtract(2, "M");
@@ -158,6 +156,7 @@ const Home: React.FC = () => {
     };
 
     const handleSubmitFilter = () => {
+        loadIcons();
         if (selectedFilter === "heat") {
             if (selectedOption.length > 1) return null;
             handleFilterHeatMap();
@@ -222,33 +221,6 @@ const Home: React.FC = () => {
             });
         }, [])
     );
-
-    useEffect(() => {
-        loadIcons();
-    }, [selectedFilter]);
-
-    // Function to use on modal closed.
-    const handleClosedModal = () => {
-        setIsModalOpen(false);
-        setIsPlaceModalOpen(false);
-
-        navigation.setParams({
-            showReportModal: null,
-            showFavoritePlaceModal: null,
-        });
-    };
-
-    const handleReportingCoordinatesOnMap = (e: MapEvent) => {
-        const { latitude, longitude } = e.nativeEvent.coordinate;
-
-        if (isReporting) {
-            setIsReporting(false);
-            navigation.navigate("Occurrence", { latitude, longitude });
-        } else if (isSelectingPlace) {
-            setIsSelectingPlace(false);
-            navigation.navigate("FavoritePlaces", { latitude, longitude });
-        }
-    };
 
     const handleSelectOption = (id: number) => {
         if (selectedOption.indexOf(id) >= 0) {
@@ -319,16 +291,12 @@ const Home: React.FC = () => {
                             actions={icons}
                             onStateChange={() => setShowIcons(!showIcons)}
                             visible
+                            onPress={() => {
+                                updateCentralize(false)
+                              }}
                         />
                     )}
-                    {data.token === "" &&
-                        !isFilterOpen &&
-                        selectedOption[0] <= 0 && (
-                            <LoggedInModal navObject={navigation} />
-                        )}
-                    {selectedOption[0] > 0 &&
-                    !isFilterOpen &&
-                    selectedFilter === "heat" ? (
+                    {selectedFilter === "heat" ? (
                         <HeatMap
                             secretaryOccurrences={secretaryOccurrences}
                             city={selectedUf}
@@ -336,17 +304,13 @@ const Home: React.FC = () => {
                     ) : (
                         <StayNormalMap
                             region={centralize ? location : undefined}
-                            onPress={(e) => handleReportingCoordinatesOnMap(e)}
                             showsUserLocation
                             loadingEnabled
                             customMapStyle={
-                                theme.type === "dark"
-                                    ? staySafeDarkMapStyle
-                                    : []
+                                theme.type === "dark" ? staySafeDarkMapStyle : []
                             }
                         >
                             {occurrences !== undefined &&
-                                !isReporting &&
                                 occurrences.map((occurrence: Occurrence) => {
                                     return (
                                         <StayMarker
@@ -357,26 +321,6 @@ const Home: React.FC = () => {
                                 })}
                         </StayNormalMap>
                     )}
-                    <StayAlert
-                        show={
-                            (isPlaceModalOpen || isModalOpen) &&
-                            data.token !== ""
-                        }
-                        title={
-                            isPlaceModalOpen
-                                ? "Selecionar Local Favorito"
-                                : "Reportar Ocorrência"
-                        }
-                        message="Toque para selecionar o local no mapa com o marcador"
-                        showConfirmButton
-                        confirmText="Entendido"
-                        onConfirmPressed={() => {
-                            handleClosedModal();
-                            if (isPlaceModalOpen) setIsSelectingPlace(true);
-                            else setIsReporting(true);
-                        }}
-                        onDismiss={() => handleClosedModal()}
-                    />
                     <StayAlert
                         show={isWarningOpen}
                         title="Opa!"
@@ -390,7 +334,9 @@ const Home: React.FC = () => {
                     />
                     <FilterModal
                         isOpen={isFilterOpen}
-                        onClosed={() => setIsFilterOpen(false)}
+                        onClosed={() => {
+                            setIsFilterOpen(false)
+                        }}
                         swipeToClose={false}
                         position="top"
                         backdropOpacity={0}
@@ -413,13 +359,10 @@ const Home: React.FC = () => {
                             </TabFilter>
                             {selectedFilter === "heat" && (
                                 <DropDownContainer>
-                                    <DropDownTitle>
-                                        Selecione uma UF:
-                                    </DropDownTitle>
+                                    <DropDownTitle>Selecione uma UF:</DropDownTitle>
                                     <UfDropDown
                                         style={{
-                                            backgroundColor:
-                                                theme.primaryLightGray,
+                                            backgroundColor: theme.primaryLightGray,
                                         }}
                                         items={ufs}
                                         defaultValue={selectedUf}
@@ -428,13 +371,9 @@ const Home: React.FC = () => {
                                             setSelectedOption([0]);
 
                                             if (item.value === "df") {
-                                                setSearchOptions(
-                                                    searchOptionsDf
-                                                );
+                                                setSearchOptions(searchOptionsDf);
                                             } else {
-                                                setSearchOptions(
-                                                    searchOptionsSp
-                                                );
+                                                setSearchOptions(searchOptionsSp);
                                             }
                                         }}
                                     />
@@ -445,17 +384,14 @@ const Home: React.FC = () => {
                             return (
                                 <ButtonOptionContainer
                                     key={option.id}
-                                    onPress={() =>
-                                        handleSelectOption(option.id)
-                                    }
+                                    onPress={() => handleSelectOption(option.id)}
                                 >
                                     <Option>
                                         <OptionCircleButton>
                                             <Feather
                                                 name={
-                                                    selectedOption.indexOf(
-                                                        option.id
-                                                    ) >= 0
+                                                    selectedOption.indexOf(option.id) >=
+                                                    0
                                                         ? "check-circle"
                                                         : "circle"
                                                 }
@@ -502,9 +438,7 @@ const Home: React.FC = () => {
                                     size={scale(18)}
                                     color={theme.primaryWhite}
                                 />
-                                <ButtonWithIconLabel>
-                                    Filtrar
-                                </ButtonWithIconLabel>
+                                <ButtonWithIconLabel>Filtrar</ButtonWithIconLabel>
                             </Button>
                             <Span show style={{ marginTop: scale(5) }}>
                                 ou clique no mapa para voltar
@@ -522,9 +456,7 @@ const Home: React.FC = () => {
                             backButtonClose
                         >
                             <View style={{ alignItems: "center" }}>
-                                <InfoTitle>
-                                    Legenda: {crimeOption?.name}
-                                </InfoTitle>
+                                <InfoTitle>Legenda: {crimeOption?.name}</InfoTitle>
                                 <InfoContainer>
                                     {[...Array(6)].map((_, index) => {
                                         return (
@@ -535,9 +467,9 @@ const Home: React.FC = () => {
                                                 <InfoText>
                                                     {crimeOption !== undefined
                                                         ? getInfoText(
-                                                              crimeOption.range,
-                                                              index
-                                                          )
+                                                            crimeOption.range,
+                                                            index
+                                                        )
                                                         : ""}
                                                 </InfoText>
                                             </Info>
@@ -548,7 +480,7 @@ const Home: React.FC = () => {
                                     * Casos anuais por 100.000 habitantes
                                 </InfoSubText>
                                 <InfoSubText>
-                                    {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()}`}
+                                    {`* Dados adquiridos da Secretaria de Segurança Pública - ${selectedUf.toUpperCase()} correspondentes ao período de ${initialMonth} até ${finalMonth} `}
                                 </InfoSubText>
                             </View>
                         </InfoModal>
