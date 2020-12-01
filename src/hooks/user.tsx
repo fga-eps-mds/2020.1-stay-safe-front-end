@@ -29,7 +29,7 @@ interface UserContextData {
     isLoading: boolean;
     showNotifications: boolean;
     updateLocation: (location: UserLocation) => void;
-    updateCentralize: (value: boolean) => void
+    updateCentralize: (value: boolean) => void;
     switchTheme: () => void;
     signIn(credentials: SignInCredentials): Promise<void>;
     signOut(): void;
@@ -240,7 +240,7 @@ export const UserProvider: React.FC = ({ children }) => {
             };
 
             setLocation(someLocation);
-            setCentralize(false)
+            setCentralize(false);
         }
     };
 
