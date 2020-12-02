@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
+import { Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -240,8 +241,10 @@ const Occurrence: React.FC = () => {
         }
     };
 
-    const handleClosedModal = () => {
+    const handleClosedModal = (openSuggestedPrecinct: boolean = false) => {
         setShowSuccessfullyModal(false);
+
+        if (openSuggestedPrecinct) openNearbyPrecinct();
 
         if (isEditing) {
             navigation.navigate("Occurrences");
@@ -264,6 +267,21 @@ const Occurrence: React.FC = () => {
         }
 
         return `Ocorrência ${text} com sucesso!${policeReport}`;
+    };
+
+    const openNearbyPrecinct = () => {
+        var mapsURL =
+            "https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=delegacia+mais+proxima";
+
+        Linking.canOpenURL(mapsURL)
+            .then((supported) => {
+                if (!supported) {
+                    console.log("Can't handle url: " + mapsURL);
+                } else {
+                    return Linking.openURL(mapsURL);
+                }
+            })
+            .catch((err) => console.error("An error occurred", err));
     };
 
     if (!loaded) return null;
@@ -462,7 +480,9 @@ const Occurrence: React.FC = () => {
                                 ? "Ver delegacia"
                                 : "Entendido"
                         }
-                        onConfirmPressed={() => handleClosedModal()}
+                        onConfirmPressed={() => {
+                            handleClosedModal(isPoliceReportSuggested());
+                        }}
                         onDismiss={() => handleClosedModal()}
                     />
                     <ErrorModal
