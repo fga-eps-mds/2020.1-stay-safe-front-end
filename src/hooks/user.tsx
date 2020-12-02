@@ -25,9 +25,11 @@ interface UserContextData {
     theme: AppTheme;
     data: UserState;
     location: UserLocation;
+    centralize: boolean;
     isLoading: boolean;
     showNotifications: boolean;
     updateLocation: (location: UserLocation) => void;
+    updateCentralize: (value: boolean) => void;
     switchTheme: () => void;
     signIn(credentials: SignInCredentials): Promise<void>;
     signOut(): void;
@@ -105,6 +107,8 @@ export const UserProvider: React.FC = ({ children }) => {
     const responseListener = useRef();
 
     const [isLoading, setIsLoading] = useState(true);
+
+    const [centralize, setCentralize] = useState(true);
 
     useEffect(() => {
         async function loadStorageData(): Promise<void> {
@@ -236,6 +240,7 @@ export const UserProvider: React.FC = ({ children }) => {
             };
 
             setLocation(someLocation);
+            setCentralize(false);
         }
     };
 
@@ -259,12 +264,18 @@ export const UserProvider: React.FC = ({ children }) => {
         setLocation(newLocation);
     };
 
+    const updateCentralize = (centralize: boolean) => {
+        setCentralize(centralize);
+    };
+
     return (
         <UserContext.Provider
             value={{
                 data,
+                centralize,
                 location,
                 updateLocation,
+                updateCentralize,
                 switchTheme,
                 theme,
                 isLoading,
