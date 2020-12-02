@@ -250,6 +250,22 @@ const Occurrence: React.FC = () => {
         }
     };
 
+    const isPoliceReportSuggested = () => {
+        return !selectedPoliceReport && selectedVictim;
+    };
+
+    const getMessageText = () => {
+        const text = isEditing ? "editada" : "cadastrada";
+
+        let policeReport = "";
+        if (isPoliceReportSuggested()) {
+            policeReport =
+                "\n\nRecomendamos que você realize um boletim de ocorrência na delegacia mais próxima.";
+        }
+
+        return `Ocorrência ${text} com sucesso!${policeReport}`;
+    };
+
     if (!loaded) return null;
 
     return (
@@ -263,7 +279,11 @@ const Occurrence: React.FC = () => {
                 />
                 <KeyboardScrollView>
                     <InputContainer style={{ width: "80%", marginTop: 0 }}>
-                        <NormalLabel style={{textAlign: 'center', width: "90%"}}>Tipo de Ocorrência</NormalLabel>
+                        <NormalLabel
+                            style={{ textAlign: "center", width: "90%" }}
+                        >
+                            Tipo de Ocorrência
+                        </NormalLabel>
                         <DropDown
                             items={occurrenceTypeItems}
                             style={[
@@ -283,22 +303,9 @@ const Occurrence: React.FC = () => {
 
                     <InputWrapper>
                         <InputContainer>
-                            <NormalLabel style={{textAlign: 'center'}}>Tipo de Arma</NormalLabel>
-                            <DropDown
-                                items={gunItems}
-                                style={[
-                                    dropdownStyle,
-                                    { backgroundColor: theme.primaryWhite },
-                                ]}
-                                defaultValue={selectedGun ? selectedGun : null}
-                                onChangeItem={(item) =>
-                                    setSelectedGun(item.value)
-                                }
-                            />
-                        </InputContainer>
-
-                        <InputContainer>
-                            <NormalLabel style={{textAlign: 'center'}}>Você foi a vítima?</NormalLabel>
+                            <NormalLabel style={{ textAlign: "center" }}>
+                                Você foi a vítima?
+                            </NormalLabel>
                             <DropDown
                                 items={availableVictimOptions}
                                 style={[
@@ -311,11 +318,29 @@ const Occurrence: React.FC = () => {
                                 }
                             />
                         </InputContainer>
+                        <InputContainer>
+                            <NormalLabel style={{ textAlign: "center" }}>
+                                Qual o tipo de arma?
+                            </NormalLabel>
+                            <DropDown
+                                items={gunItems}
+                                style={[
+                                    dropdownStyle,
+                                    { backgroundColor: theme.primaryWhite },
+                                ]}
+                                defaultValue={selectedGun ? selectedGun : null}
+                                onChangeItem={(item) =>
+                                    setSelectedGun(item.value)
+                                }
+                            />
+                        </InputContainer>
                     </InputWrapper>
-                    
+
                     <InputWrapper>
                         <InputContainer>
-                            <NormalLabel style={{textAlign: 'center'}}>Agressão física</NormalLabel>
+                            <NormalLabel style={{ textAlign: "center" }}>
+                                Teve agressão física?
+                            </NormalLabel>
                             <DropDown
                                 items={availablePhysicalAgressionOptions}
                                 style={[
@@ -330,7 +355,9 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
 
                         <InputContainer>
-                            <NormalLabel style={{textAlign: 'center'}}>Foi registrado boletim?</NormalLabel>
+                            <NormalLabel style={{ textAlign: "center" }}>
+                                Foi registrado boletim?
+                            </NormalLabel>
                             <DropDown
                                 items={availablePoliceReportOptions}
                                 style={[
@@ -347,7 +374,9 @@ const Occurrence: React.FC = () => {
 
                     <InputWrapper>
                         <InputContainer>
-                            <NormalLabel style={{textAlign: 'center'}}>Data da Ocorrência</NormalLabel>
+                            <NormalLabel style={{ textAlign: "center" }}>
+                                Data da Ocorrência
+                            </NormalLabel>
                             <Button
                                 width="100%"
                                 style={{ marginTop: 0 }}
@@ -376,7 +405,9 @@ const Occurrence: React.FC = () => {
                         </InputContainer>
 
                         <InputContainer>
-                            <NormalLabel style={{textAlign: 'center'}}>Hora da Ocorrência</NormalLabel>
+                            <NormalLabel style={{ textAlign: "center" }}>
+                                Hora da Ocorrência
+                            </NormalLabel>
                             <Button
                                 width="100%"
                                 style={{ marginTop: 0 }}
@@ -421,13 +452,16 @@ const Occurrence: React.FC = () => {
                                 ? "Editar Ocorrência"
                                 : "Registrar Ocorrência"
                         }
-                        message={
-                            isEditing
-                                ? "Ocorrência editada com sucesso!"
-                                : "Ocorrência cadastrada com sucesso!"
-                        }
+                        message={getMessageText()}
+                        showCancelButton={isPoliceReportSuggested()}
+                        cancelText="Continuar"
+                        onCancelPressed={() => handleClosedModal()}
                         showConfirmButton
-                        confirmText="Entendido"
+                        confirmText={
+                            isPoliceReportSuggested()
+                                ? "Ver delegacia"
+                                : "Entendido"
+                        }
                         onConfirmPressed={() => handleClosedModal()}
                         onDismiss={() => handleClosedModal()}
                     />
