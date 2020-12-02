@@ -1,6 +1,20 @@
 import styled from "styled-components/native";
 
+import AppIntroSlider from "react-native-app-intro-slider";
 import { scale } from "../../utils/scalling";
+
+export const TutorialSlider = styled(AppIntroSlider).attrs((props) => ({
+    showPrevButton: true,
+    prevLabel: "Voltar",
+    nextLabel: "Avançar",
+    doneLabel: "Entendido!",
+    dotStyle: {
+        backgroundColor: props.theme.primaryGray
+    },
+    activeDotStyle: {
+        backgroundColor: props.theme.primaryRed
+    }
+}))``;
 
 export const Container = styled.View`
     flex: 1;

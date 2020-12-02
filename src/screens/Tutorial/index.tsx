@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Font from "expo-font";
-import AppIntroSlider from "react-native-app-intro-slider";
 import React from "react";
 
 import {
+    TutorialSlider,
     Container,
     Title,
     ImageSlide,
@@ -41,14 +41,10 @@ const Tutorial: React.FC = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <AppIntroSlider
+            <TutorialSlider
                 renderItem={renderSlide}
                 data={slides}
                 onDone={endTutorial}
-                showPrevButton={true}
-                prevLabel="Voltar"
-                nextLabel="Avançar"
-                doneLabel="Entendido!"
             />
         </SafeAreaView>
     );
