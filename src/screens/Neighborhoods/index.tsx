@@ -54,13 +54,9 @@ const Neighborhoods: React.FC = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        try {
-            getNeighborhood().then((res) => {});
-        } catch (e) {
-            console.warn(e);
-        } finally {
-            setIsLoading(false);
-        }
+        getNeighborhood()
+            .catch((e) => console.warn(e))
+            .finally(() => setIsLoading(false));
     }, []);
 
     const getNeighborhood = async () => {
