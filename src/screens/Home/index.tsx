@@ -204,13 +204,18 @@ const Home: React.FC = () => {
             }
         }
 
-        if (selectedOption[0] > 0) {
-            loadData().then((res) => {
-                setIsLoading(false);
-                setIsFilterOpen(false);
-            });
-        } else {
-            setIsWarningOpen(true);
+        try {
+            if (selectedOption[0] > 0) {
+                loadData().then((res) => {
+                    setIsFilterOpen(false);
+                });
+            } else {
+                setIsWarningOpen(true);
+            }
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -307,7 +312,9 @@ const Home: React.FC = () => {
                             showsUserLocation
                             loadingEnabled
                             customMapStyle={
-                                theme.type === "dark" ? staySafeDarkMapStyle : []
+                                theme.type === "dark"
+                                    ? staySafeDarkMapStyle
+                                    : []
                             }
                         >
                             {occurrences !== undefined &&
@@ -359,10 +366,13 @@ const Home: React.FC = () => {
                             </TabFilter>
                             {selectedFilter === "heat" && (
                                 <DropDownContainer>
-                                    <DropDownTitle>Selecione uma UF:</DropDownTitle>
+                                    <DropDownTitle>
+                                        Selecione uma UF:
+                                    </DropDownTitle>
                                     <UfDropDown
                                         style={{
-                                            backgroundColor: theme.primaryLightGray,
+                                            backgroundColor:
+                                                theme.primaryLightGray,
                                         }}
                                         items={ufs}
                                         defaultValue={selectedUf}
@@ -371,9 +381,13 @@ const Home: React.FC = () => {
                                             setSelectedOption([0]);
 
                                             if (item.value === "df") {
-                                                setSearchOptions(searchOptionsDf);
+                                                setSearchOptions(
+                                                    searchOptionsDf
+                                                );
                                             } else {
-                                                setSearchOptions(searchOptionsSp);
+                                                setSearchOptions(
+                                                    searchOptionsSp
+                                                );
                                             }
                                         }}
                                     />
@@ -384,14 +398,17 @@ const Home: React.FC = () => {
                             return (
                                 <ButtonOptionContainer
                                     key={option.id}
-                                    onPress={() => handleSelectOption(option.id)}
+                                    onPress={() =>
+                                        handleSelectOption(option.id)
+                                    }
                                 >
                                     <Option>
                                         <OptionCircleButton>
                                             <Feather
                                                 name={
-                                                    selectedOption.indexOf(option.id) >=
-                                                    0
+                                                    selectedOption.indexOf(
+                                                        option.id
+                                                    ) >= 0
                                                         ? "check-circle"
                                                         : "circle"
                                                 }
@@ -438,7 +455,9 @@ const Home: React.FC = () => {
                                     size={scale(18)}
                                     color={theme.primaryWhite}
                                 />
-                                <ButtonWithIconLabel>Filtrar</ButtonWithIconLabel>
+                                <ButtonWithIconLabel>
+                                    Filtrar
+                                </ButtonWithIconLabel>
                             </Button>
                             <Span show style={{ marginTop: scale(5) }}>
                                 ou clique no mapa para voltar
@@ -456,7 +475,9 @@ const Home: React.FC = () => {
                             backButtonClose
                         >
                             <View style={{ alignItems: "center" }}>
-                                <InfoTitle>Legenda: {crimeOption?.name}</InfoTitle>
+                                <InfoTitle>
+                                    Legenda: {crimeOption?.name}
+                                </InfoTitle>
                                 <InfoContainer>
                                     {[...Array(6)].map((_, index) => {
                                         return (
@@ -467,8 +488,8 @@ const Home: React.FC = () => {
                                                 <InfoText>
                                                     {crimeOption !== undefined
                                                         ? getInfoText(
-                                                            crimeOption.range,
-                                                            index
+                                                              crimeOption.range,
+                                                              index
                                                           )
                                                         : ""}
                                                 </InfoText>

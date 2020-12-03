@@ -206,33 +206,42 @@ const Occurrence: React.FC = () => {
         if (error === "") {
             if (data.token !== "") {
                 setIsLoading(true);
-                const response = isEditing
-                    ? await updateOccurrence(
-                          idOccurrence,
-                          data.token,
-                          dataOccurrence
-                      )
-                    : await createOccurrence(dataOccurrence, data.token);
 
-                if (!response.body.error && response.status === 201) {
-                    updateLocation({
-                        latitude: location[0],
-                        longitude: location[1],
-                        latitudeDelta: 0.02,
-                        longitudeDelta: 0.02,
-                    });
-                    navigation.setParams({ occurrence: null });
-                    setShowSuccessfullyModal(true);
-                } else if (!response.body.error && response.status === 200) {
-                    navigation.setParams({ occurrence: null });
-                    setShowSuccessfullyModal(true);
-                } else {
+                try {
+                    const response = isEditing
+                        ? await updateOccurrence(
+                              idOccurrence,
+                              data.token,
+                              dataOccurrence
+                          )
+                        : await createOccurrence(dataOccurrence, data.token);
+
+                    if (!response.body.error && response.status === 201) {
+                        updateLocation({
+                            latitude: location[0],
+                            longitude: location[1],
+                            latitudeDelta: 0.02,
+                            longitudeDelta: 0.02,
+                        });
+                        navigation.setParams({ occurrence: null });
+                        setShowSuccessfullyModal(true);
+                    } else if (
+                        !response.body.error &&
+                        response.status === 200
+                    ) {
+                        navigation.setParams({ occurrence: null });
+                        setShowSuccessfullyModal(true);
+                    } else {
+                        setHasError(true);
+                        setErrorMessage([
+                            "Erro ao cadastrar ocorrência",
+                            response.body.error,
+                        ]);
+                    }
+                } catch (e) {
+                    console.warn(e);
+                } finally {
                     setIsLoading(false);
-                    setHasError(true);
-                    setErrorMessage([
-                        "Erro ao cadastrar ocorrência",
-                        response.body.error,
-                    ]);
                 }
             }
         } else {

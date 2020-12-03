@@ -139,9 +139,8 @@ export const UserProvider: React.FC = ({ children }) => {
 
         setTimeout(() => {
             loadStorageData();
+            getCurrentLocation();
         }, 1000);
-
-        getCurrentLocation();
     }, []);
 
     const registerDeviceForPushNotifications = async () => {

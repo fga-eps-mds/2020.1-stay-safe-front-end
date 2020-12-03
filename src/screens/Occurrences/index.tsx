@@ -37,10 +37,19 @@ const Occurrences: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        let unsubscribe;
+
         setIsLoading(true);
-        const unsubscribe = navigation.addListener("focus", () => {
-            fetchData().then((res) => setIsLoading(false));
-        });
+
+        try {
+            unsubscribe = navigation.addListener("focus", () => {
+                fetchData().then((res) => {});
+            });
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setIsLoading(false);
+        }
 
         return unsubscribe;
     }, [navigation]);
