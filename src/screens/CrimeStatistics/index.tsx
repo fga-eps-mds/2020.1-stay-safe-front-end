@@ -48,20 +48,20 @@ const CrimeStatistics: React.FC = () => {
         loadData();
     }, [selectedCrime]);
 
-    const loadData = () => {
+    const loadData = async () => {
         setIsLoading(true);
+
         try {
-            getOccurrences().then((response) => {
-                setIsLoading(false);
-            });
+            await getCrimes();
         } catch (error) {
-            setIsLoading(false);
             setHasError(true);
             setErrorMessage(["Erro ao conectar com o servidor.", ""]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const getOccurrences = async () => {
+    const getCrimes = async () => {
         console.log(selectedCrime);
         const response = await getOccurrencesByCrimeNature(
             uf,
