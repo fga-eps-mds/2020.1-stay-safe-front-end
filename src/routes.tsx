@@ -6,8 +6,8 @@ import { useUser } from "./hooks/user";
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
 import CityStatistics from "./screens/CityStatistics";
+import CrimeStatistics from "./screens/CrimeStatistics";
 import FavoritePlaces from "./screens/FavoritePlaces";
-import Login from "./screens/Login";
 import NeighborhoodReview from "./screens/NeighborhoodReview";
 import Neighborhoods from "./screens/Neighborhoods";
 import Occurrence from "./screens/Occurrence";
@@ -46,6 +46,10 @@ const Routes: React.FC = () => {
             <AppStack.Screen name="Rating" component={Rating} />
             <AppStack.Screen name="Ratings" component={Ratings} />
             <AppStack.Screen name="CityStatistics" component={CityStatistics} />
+            <AppStack.Screen
+                name="CrimeStatistics"
+                component={CrimeStatistics}
+            />
             <AppStack.Screen name="FavoritePlaces" component={FavoritePlaces} />
         </AppStack.Navigator>
     );
