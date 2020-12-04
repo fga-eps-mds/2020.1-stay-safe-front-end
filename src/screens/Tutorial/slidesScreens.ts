@@ -13,50 +13,110 @@ export const slides = [
     },
     {
         key: "3",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Filtros",
+        text: "No botão, há duas formas de filtrar seu mapa:\n Pelos dados da secretaria ou dos próprios usuários.",
         image: require("../../img/tutorial/3.png")
     },
     {
         key: "4",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Secretarias",
+        text: "Pelos dados das secretarias, é possível criar um mapa de calor, baseado no crime escolhido, para cada cidade.",
         image: require("../../img/tutorial/4.png")
     },
     {
         key: "5",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Mapa de Calor",
+        text: "Esse é um exemplo de como ficou o mapa do DF, filtrado pelo crime de Latrocínio.",
         image: require("../../img/tutorial/5.png")
     },
     {
         key: "6",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Filtro de Ocorrências",
+        text: "Nesse tipo de filtro, será mostrado no seu mapa as ocorrências cadastradas pelos próprios usuários.",
         image: require("../../img/tutorial/6.png")
     },
     {
         key: "7",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Pesquisa",
+        text: "Na função de pesquisar, você pode fazer a busca por qualquer cidade, digitando o seu nome.\n Se preferir, colocando o seu estado para facilitar a busca.",
         image: require("../../img/tutorial/7.png")
     },
     {
         key: "8",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Pesquisando",
+        text: "Exemplificando,\n aqui foi feito a busca pela cidade de Taguatinga - DF, que já aparece nas sugestões.",
         image: require("../../img/tutorial/8.png")
     },
     {
         key: "9",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Estatísticas",
+        text: "Clicando na cidade, é possível ver suas estatísticas de crimes, nos anos de 2018 a 2020",
         image: require("../../img/tutorial/9.png")
     },
     {
         key: "10",
-        title: "Tela 3",
-        text: "Tela 3 aqui.",
+        title: "Bairros",
+        text: "É possivel visualizar os bairros da cidade escolhida, como mostra o exemplo.",
         image: require("../../img/tutorial/10.png")
+    },
+    {
+        key: "11",
+        title: "Avaliações de Bairros",
+        text: "Também é possivel avaliar cada bairro, e sua avaliação é atribuída ao quanto esse bairro é seguro ou não.",
+        image: require("../../img/tutorial/11.png")
+    },
+    {
+        key: "12",
+        title: "Ocorrências",
+        text: "Caso você tenha visto ou sofrido algum crime, \né possível registrar essa ocorrência e onde ela aconteceu.",
+        image: require("../../img/tutorial/12.png")
+    },
+    {
+        key: "13",
+        title: "Reportar Ocorrência",
+        text: "Após selecionado o lugar da ocorrência no mapa, você pode descrever como aconteceu, e isso ajudará na segurança da comunidade.",
+        image: require("../../img/tutorial/13.png")
+    },
+    {
+        key: "14",
+        title: "Pin de Ocorrência",
+        text: "Feita a ocorrência, aparecerá um pin no seu mapa, com a cor respectiva de cada crime.",
+        image: require("../../img/tutorial/14.png")
+    },
+    {
+        key: "15",
+        title: "Perfil",
+        text: "Na tela de perfil, é mostrado suas informações, as quais você pode editar e rever.",
+        image: require("../../img/tutorial/15.png")
+    },
+    {
+        key: "16",
+        title: "Locais Favoritos",
+        text: "Clicando em Meus Locais, você pode adicionar seus locais favoritos, Clicando no botão inferior direito.", 
+        image: require("../../img/tutorial/16.png")
+    },
+    {
+        key: "17",
+        title: "Novo Local Favorito",
+        text: "Usando o pin no mapa, você pode arrastar para o seu local favorito, e salvá-lo.",
+        image: require("../../img/tutorial/17.png")
+    },
+    {
+        key: "18",
+        title: "Criar Local Favorito",
+        text: "Após ter escolhido o local no mapa, basta colocar seu nome e ele será adicionado a sua lista de locais favoritos.",
+        image: require("../../img/tutorial/18.png")
+    },
+    {
+        key: "19",
+        title: "Configurações",
+        text: "Na tela de configurações, é possível ver e alterar as permissões do app, entre outras coisas.",
+        image: require("../../img/tutorial/19.png")
+    },
+    {
+        key: "20",
+        title: "Modo Claro",
+        text: "Também temos um Modo Claro, que facilita a enxergar em um ambiente muito ilumidado ou com a luz do Sol.",
+        image: require("../../img/tutorial/20.png")
     }
 ];
