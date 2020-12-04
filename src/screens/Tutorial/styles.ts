@@ -9,11 +9,11 @@ export const TutorialSlider = styled(AppIntroSlider).attrs((props) => ({
     nextLabel: "Avançar",
     doneLabel: "Entendido!",
     dotStyle: {
-        backgroundColor: props.theme.primaryGray
+        backgroundColor: props.theme.primaryGray,
     },
     activeDotStyle: {
-        backgroundColor: props.theme.primaryRed
-    }
+        backgroundColor: props.theme.primaryRed,
+    },
 }))``;
 
 export const Container = styled.View`
@@ -21,6 +21,29 @@ export const Container = styled.View`
     align-items: center;
     justify-content: center;
     background-color: ${(props) => props.theme.primaryWhite};
+`;
+
+export const ButtonContainer = styled.View`
+    position: absolute;
+    bottom: ${scale(20)}px;
+    left: ${scale(20)}px;
+    right: ${scale(20)}px;
+    flex-direction: row;
+    justify-content: space-between;
+`;
+
+export const Button = styled.TouchableOpacity`
+    width: 35%;
+    padding-vertical: ${scale(12)}px;
+    border-radius: ${scale(12)}px;
+    background-color: ${(props) => props.theme.primarySuperDarkBlue};
+`;
+
+export const ButtonLabel = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(16)}px;
+    color: ${(props) => props.theme.primaryDarkBlue};
+    text-align: center;
 `;
 
 export const Title = styled.Text`
@@ -36,7 +59,8 @@ export const ImageSlide = styled.Image`
     margin-vertical: ${scale(32)}px;
 `;
 
-export const Text = styled.Text`
+export const Description = styled.Text`
+    width: 80%;
     font-family: Trueno-Regular;
     font-size: ${scale(16)}px;
     color: ${(props) => props.theme.primaryDarkBlue};
