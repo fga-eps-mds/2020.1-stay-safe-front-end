@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { useUser } from "../../hooks/user";
@@ -46,22 +47,39 @@ const Tutorial: React.FC = () => {
             <>
                 <DotsContainer>
                     {slides.length > 1 &&
-                        slides.map((slide, i) => (
+                        slides.map((slide, index) => (
                             <Dot
                                 key={slide.key}
-                                selected={i === activeIndex}
-                                onPress={() => slider?.goToSlide(i, true)}
+                                selected={index === activeIndex}
+                                onPress={() => slider?.goToSlide(index, true)}
                             />
                         ))}
                 </DotsContainer>
 
                 <ButtonContainer>
-                    <Button style={{ backgroundColor: theme.primaryLightBlue }}>
-                        <ButtonLabel>Voltar</ButtonLabel>
-                    </Button>
-                    <Button>
-                        <ButtonLabel>Avançar</ButtonLabel>
-                    </Button>
+                    <View>
+                        {activeIndex > 0 &&
+                            <Button
+                                onPress={() => slider?.goToSlide(activeIndex-1, true)}
+                                style={{ backgroundColor: theme.primaryLightBlue }}
+                            >
+                                <ButtonLabel>Voltar</ButtonLabel>
+                            </Button>
+                        }
+                    </View>
+                    {activeIndex !== slides.length-1 ?
+                        <Button
+                            onPress={() => slider?.goToSlide(activeIndex+1, true)}
+                        >
+                            <ButtonLabel>Avançar</ButtonLabel>
+                        </Button>
+                    :
+                        <Button
+                            onPress={() => endTutorial()}
+                        >
+                            <ButtonLabel>Entendido</ButtonLabel>
+                        </Button>    
+                    }
                 </ButtonContainer>
             </>
         );
@@ -81,7 +99,6 @@ const Tutorial: React.FC = () => {
                 data={slides}
                 renderItem={renderSlide}
                 renderPagination={renderPagination}
-                onDone={endTutorial}
             />
         </SafeAreaView>
     );

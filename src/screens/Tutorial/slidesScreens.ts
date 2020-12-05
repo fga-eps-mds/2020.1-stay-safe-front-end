@@ -2,19 +2,19 @@ export const slides = [
     {
         key: "1",
         title: "Bem vindo!",
-        text: "Stay Safe é um app com várias funcionalidades.\nE nesse tutorial, vamos te ensinar como usar.",
+        text: "Stay Safe é um app com várias funcionalidades. E nesse tutorial, vamos te ensinar como usar.",
         image: require("../../img/tutorial/1.png")
     },
     {
         key: "2",
         title: "Botão de Filtro",
-        text: "O botão de Filtros serve para\nque você possa filtrar o\nque é visto no mapa.",
+        text: "O botão de Filtros serve para que você possa filtrar o que é visto no mapa.",
         image: require("../../img/tutorial/2.png")
     },
     {
         key: "3",
         title: "Filtros",
-        text: "No botão, há duas formas de filtrar seu mapa:\n Pelos dados da secretaria ou dos próprios usuários.",
+        text: "No botão, há duas formas de filtrar seu mapa: Pelos dados da secretaria ou dos próprios usuários.",
         image: require("../../img/tutorial/3.png")
     },
     {
@@ -38,13 +38,13 @@ export const slides = [
     {
         key: "7",
         title: "Pesquisa",
-        text: "Na função de pesquisa, você pode fazer a busca por qualquer cidade, digitando o seu nome.\n Se preferir, colocando o seu estado para facilitar a busca.",
+        text: "Na função de pesquisa, você pode fazer a busca por qualquer cidade, digitando seu nome. Se preferir, colocando o seu estado para facilitar a busca.",
         image: require("../../img/tutorial/7.png")
     },
     {
         key: "8",
         title: "Pesquisando",
-        text: "Exemplificando,\n aqui foi feito a busca pela cidade de Taguatinga - DF, que já aparece nas sugestões.",
+        text: "Exemplificando, aqui foi feito a busca pela cidade de Taguatinga - DF, que já aparece nas sugestões.",
         image: require("../../img/tutorial/8.png")
     },
     {
@@ -68,7 +68,7 @@ export const slides = [
     {
         key: "12",
         title: "Ocorrências",
-        text: "Caso você tenha visto ou sofrido algum crime, \né possível registrar essa ocorrência e onde ela aconteceu.",
+        text: "Caso você tenha visto ou sofrido algum crime, é possível registrar essa ocorrência e onde ela aconteceu.",
         image: require("../../img/tutorial/12.png")
     },
     {
@@ -116,7 +116,7 @@ export const slides = [
     {
         key: "20",
         title: "Modo Claro",
-        text: "Também há um Modo Claro, que facilita a enxergar em um ambiente muito ilumidado ou com a luz do Sol.",
+        text: "Também há um Modo Claro, que facilita enxergar em um ambiente muito ilumidado ou com a luz do Sol.",
         image: require("../../img/tutorial/20.png")
     }
 ];

@@ -142,6 +142,7 @@ export const UserProvider: React.FC = ({ children }) => {
             }
 
             //updateShowTutorial(true);
+            //switchTheme();
 
             setShowNotifications(notifications[1] === "true");
             setIsLoading(false);

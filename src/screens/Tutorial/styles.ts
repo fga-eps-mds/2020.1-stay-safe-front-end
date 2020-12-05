@@ -43,7 +43,7 @@ export const Title = styled.Text`
 export const ImageSlide = styled.Image`
     height: ${scale(320)}px;
     resize-mode: contain;
-    margin-vertical: ${scale(32)}px;
+    margin-vertical: ${scale(30)}px;
 `;
 
 export const Description = styled.Text`
@@ -67,7 +67,7 @@ export const ButtonContainer = styled.View`
 export const Button = styled.TouchableOpacity`
     padding-horizontal: ${scale(18)}px;
     padding-vertical: ${scale(12)}px;
-    border-radius: ${scale(12)}px;
+    border-radius: ${scale(14)}px;
     background-color: ${(props) => props.theme.primaryRed};
 `;
 
