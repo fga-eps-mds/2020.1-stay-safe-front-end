@@ -3,53 +3,40 @@ import styled from "styled-components/native";
 import AppIntroSlider from "react-native-app-intro-slider";
 import { scale } from "../../utils/scalling";
 
-export const TutorialSlider = styled(AppIntroSlider).attrs((props) => ({
+export const TutorialSlider = styled(AppIntroSlider).attrs(() => ({
     showPrevButton: true,
-    prevLabel: "Voltar",
-    nextLabel: "Avançar",
-    doneLabel: "Entendido!",
-    dotStyle: {
-        backgroundColor: props.theme.primaryGray,
-    },
-    activeDotStyle: {
-        backgroundColor: props.theme.primaryRed,
-    },
 }))``;
 
 export const Container = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
-    background-color: ${(props) => props.theme.primaryWhite};
+    background-color: ${(props) => props.theme.primaryBackground};
 `;
 
-export const ButtonContainer = styled.View`
-    position: absolute;
-    bottom: ${scale(20)}px;
-    left: ${scale(20)}px;
-    right: ${scale(20)}px;
+export const DotsContainer = styled.View`
+    width: 100%;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: ${scale(40)}px;
+    left: 0px;
 `;
 
-export const Button = styled.TouchableOpacity`
-    width: 35%;
-    padding-vertical: ${scale(12)}px;
-    border-radius: ${scale(12)}px;
-    background-color: ${(props) => props.theme.primarySuperDarkBlue};
-`;
-
-export const ButtonLabel = styled.Text`
-    font-family: Trueno-Regular;
-    font-size: ${scale(16)}px;
-    color: ${(props) => props.theme.primaryDarkBlue};
-    text-align: center;
+export const Dot = styled.TouchableOpacity`
+    width: ${scale(10)}px;
+    height: ${scale(10)}px;
+    background-color: ${(props) => 
+        props.selected ? props.theme.primaryRed : props.theme.primaryWhite};
+    border-radius: ${scale(10)}px;
+    margin-horizontal: ${scale(3)}px;
 `;
 
 export const Title = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(22)}px;
-    color: ${(props) => props.theme.primaryDarkBlue};
+    color: ${(props) => props.theme.primaryRed};
     text-align: center;
 `;
 
@@ -64,5 +51,29 @@ export const Description = styled.Text`
     font-family: Trueno-Regular;
     font-size: ${scale(16)}px;
     color: ${(props) => props.theme.primaryDarkBlue};
+    text-align: center;
+`;
+
+export const ButtonContainer = styled.View`
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    position: absolute;
+    bottom: ${scale(20)}px;
+    left: 0px;
+    padding-horizontal: ${scale(20)}px;
+`;
+
+export const Button = styled.TouchableOpacity`
+    padding-horizontal: ${scale(18)}px;
+    padding-vertical: ${scale(12)}px;
+    border-radius: ${scale(12)}px;
+    background-color: ${(props) => props.theme.primaryRed};
+`;
+
+export const ButtonLabel = styled.Text`
+    font-family: Trueno-Regular;
+    font-size: ${scale(16)}px;
+    color: #ffffff;
     text-align: center;
 `;

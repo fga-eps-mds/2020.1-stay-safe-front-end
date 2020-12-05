@@ -1,30 +1,30 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Font from "expo-font";
-import React from "react";
+import React, { useState } from "react";
 import { useUser } from "../../hooks/user";
 import { useTheme } from "styled-components";
 import { slides } from "./slidesScreens";
-import { scale } from "../../utils/scalling";
 
 import {
     TutorialSlider,
     Container,
-    ButtonContainer,
-    Button,
-    ButtonLabel,
+    DotsContainer,
+    Dot,
     Title,
     ImageSlide,
     Description,
+    ButtonContainer,
+    Button,
+    ButtonLabel,
 } from "./styles";
 
 const Tutorial: React.FC = () => {
-    const navigation = useNavigation();
+    const [slider, setSlider] = useState(TutorialSlider);
+    
     const { updateShowTutorial } = useUser();
+    const navigation = useNavigation();
     const theme = useTheme();
-
-    let slider;
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -41,9 +41,20 @@ const Tutorial: React.FC = () => {
         );
     };
 
-    const _renderPagination = (activeIndex: number) => {
+    const renderPagination = (activeIndex: number) => {
         return (
             <>
+                <DotsContainer>
+                    {slides.length > 1 &&
+                        slides.map((slide, i) => (
+                            <Dot
+                                key={slide.key}
+                                selected={i === activeIndex}
+                                onPress={() => slider?.goToSlide(i, true)}
+                            />
+                        ))}
+                </DotsContainer>
+
                 <ButtonContainer>
                     <Button style={{ backgroundColor: theme.primaryLightBlue }}>
                         <ButtonLabel>Voltar</ButtonLabel>
@@ -66,11 +77,11 @@ const Tutorial: React.FC = () => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <TutorialSlider
-                renderItem={renderSlide}
+                ref={(ref) => setSlider(ref)}
                 data={slides}
+                renderItem={renderSlide}
+                renderPagination={renderPagination}
                 onDone={endTutorial}
-                renderPagination={_renderPagination}
-                ref={(ref) => (slider = ref)}
             />
         </SafeAreaView>
     );

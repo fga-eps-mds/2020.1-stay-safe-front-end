@@ -2,7 +2,7 @@ export const slides = [
     {
         key: "1",
         title: "Bem vindo!",
-        text: "Stay Safe é um app com várias\nfuncionalidades.\nE nesse tutorial, vamos te ensinar\ncomo usar.",
+        text: "Stay Safe é um app com várias funcionalidades.\nE nesse tutorial, vamos te ensinar como usar.",
         image: require("../../img/tutorial/1.png")
     },
     {
@@ -38,7 +38,7 @@ export const slides = [
     {
         key: "7",
         title: "Pesquisa",
-        text: "Na função de pesquisar, você pode fazer a busca por qualquer cidade, digitando o seu nome.\n Se preferir, colocando o seu estado para facilitar a busca.",
+        text: "Na função de pesquisa, você pode fazer a busca por qualquer cidade, digitando o seu nome.\n Se preferir, colocando o seu estado para facilitar a busca.",
         image: require("../../img/tutorial/7.png")
     },
     {
@@ -50,7 +50,7 @@ export const slides = [
     {
         key: "9",
         title: "Estatísticas",
-        text: "Clicando na cidade, é possível ver suas estatísticas de crimes, nos anos de 2018 a 2020",
+        text: "Clicando na cidade, é possível ver suas estatísticas de crimes, nos anos de 2018 a 2020.",
         image: require("../../img/tutorial/9.png")
     },
     {
@@ -62,7 +62,7 @@ export const slides = [
     {
         key: "11",
         title: "Avaliações de Bairros",
-        text: "Também é possivel avaliar cada bairro, e sua avaliação é atribuída ao quanto esse bairro é seguro ou não.",
+        text: "Também é possivel avaliar cada bairro, sua avaliação é atribuída ao quanto esse bairro é seguro ou não.",
         image: require("../../img/tutorial/11.png")
     },
     {
@@ -74,7 +74,7 @@ export const slides = [
     {
         key: "13",
         title: "Reportar Ocorrência",
-        text: "Após selecionado o lugar da ocorrência no mapa, você pode descrever como aconteceu, e isso ajudará na segurança da comunidade.",
+        text: "Após selecionado o lugar da ocorrência no mapa, você pode descrever como aconteceu, isso ajudará na segurança da comunidade.",
         image: require("../../img/tutorial/13.png")
     },
     {
@@ -86,13 +86,13 @@ export const slides = [
     {
         key: "15",
         title: "Perfil",
-        text: "Na tela de perfil, é mostrado suas informações, as quais você pode editar e rever.",
+        text: "Na tela de perfil, é mostrado suas informações, as quais você pode rever e editar.",
         image: require("../../img/tutorial/15.png")
     },
     {
         key: "16",
         title: "Locais Favoritos",
-        text: "Clicando em Meus Locais, você pode adicionar seus locais favoritos, Clicando no botão inferior direito.", 
+        text: "Clicando em Meus Locais, você pode adicionar seus locais favoritos. No botão inferior direito da tela.", 
         image: require("../../img/tutorial/16.png")
     },
     {
@@ -104,7 +104,7 @@ export const slides = [
     {
         key: "18",
         title: "Criar Local Favorito",
-        text: "Após ter escolhido o local no mapa, basta colocar seu nome e ele será adicionado a sua lista de locais favoritos.",
+        text: "Após ter escolhido o local no mapa, basta colocar um nome e ele será adicionado a sua lista de locais favoritos.",
         image: require("../../img/tutorial/18.png")
     },
     {
@@ -116,7 +116,7 @@ export const slides = [
     {
         key: "20",
         title: "Modo Claro",
-        text: "Também temos um Modo Claro, que facilita a enxergar em um ambiente muito ilumidado ou com a luz do Sol.",
+        text: "Também há um Modo Claro, que facilita a enxergar em um ambiente muito ilumidado ou com a luz do Sol.",
         image: require("../../img/tutorial/20.png")
     }
 ];
