@@ -58,13 +58,12 @@ const CityStatistics: React.FC = () => {
     const loadData = () => {
         setIsLoading(true);
         try {
-            getOccurrences().then((response) => {
-                setIsLoading(false);
-            });
+            getOccurrences().then((response) => {});
         } catch (error) {
-            setIsLoading(false);
             setHasError(true);
             setErrorMessage(["Erro ao conectar com o servidor.", ""]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -83,7 +82,6 @@ const CityStatistics: React.FC = () => {
                 setHigherStatistic(city.crimes.sort(sortCities)[0].quantity);
             });
         } else {
-            setIsLoading(false);
             setHasError(true);
 
             if (response.status === 200) {

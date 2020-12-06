@@ -47,15 +47,17 @@ const Login: React.FC = () => {
         setIsLoading(true);
 
         let error = "";
-        error = await signIn({ username, password: userPwd });
-
-        if (error) {
-            setHasError(true);
-            setErrorMessage(["Erro ao logar usuário", error]);
+        try {
+            error = await signIn({ username, password: userPwd });
+            if (error) {
+                setHasError(true);
+                setErrorMessage(["Erro ao logar usuário", error]);
+            }
+        } catch (e) {
+        } finally {
+            setIsLoading(false);
+            navigation.navigate("HomeTabBar");
         }
-
-        setIsLoading(false);
-        navigation.navigate("HomeTabBar");
     };
 
     if (!loaded) return null;

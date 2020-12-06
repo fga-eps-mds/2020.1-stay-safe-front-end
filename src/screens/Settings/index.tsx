@@ -47,18 +47,28 @@ const Settings: React.FC = () => {
     const handleLogout = async () => {
         setIsLoading(true);
 
-        await signOut();
+        try {
+            await signOut();
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setIsLoading(false);
+        }
 
-        setIsLoading(false);
         navigation.navigate("Home");
     };
 
     const handleDeleteAccount = async () => {
         setIsLoading(true);
 
-        await deleteAccount();
+        try {
+            await deleteAccount();
+        } catch (e) {
+            console.warn(e);
+        } finally {
+            setIsLoading(false);
+        }
 
-        setIsLoading(false);
         navigation.navigate("Home");
     };
 
