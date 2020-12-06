@@ -3,6 +3,7 @@ import React from "react";
 
 import Loader from "./components/Loader";
 import { useUser } from "./hooks/user";
+import Tutorial from "./screens/Tutorial";
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
 import CityStatistics from "./screens/CityStatistics";
@@ -19,7 +20,7 @@ import Ratings from "./screens/Ratings";
 const AppStack = createStackNavigator();
 
 const Routes: React.FC = () => {
-    const { isLoading } = useUser();
+    const { isLoading, showTutorial } = useUser();
 
     if (isLoading) {
         return <Loader />;
@@ -28,8 +29,9 @@ const Routes: React.FC = () => {
     return (
         <AppStack.Navigator
             screenOptions={{ headerShown: false }}
-            initialRouteName="HomeTabBar"
+            initialRouteName={showTutorial ? "Tutorial" : "HomeTabBar"}
         >
+            <AppStack.Screen name="Tutorial" component={Tutorial} />
             <AppStack.Screen name="HomeTabBar" component={HomeTabBar} />
             <AppStack.Screen name="Cadastro" component={Cadastro} />
             <AppStack.Screen name="Occurrence" component={Occurrence} />
