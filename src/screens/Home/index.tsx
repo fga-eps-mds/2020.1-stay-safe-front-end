@@ -114,9 +114,7 @@ const Home: React.FC = () => {
             label: selectedFilter === "heat" ? "Usuários" : "Secretarias",
             onPress: () => {
                 if (selectedFilter === "heat") {
-                    setSelectedFilter("pins");
-                    setSelectedOption([0]);
-                    updateCentralize(true);
+                    setMapPins();
                 } else {
                     setSelectedUf("df");
                     setIsFilterOpen(true);
@@ -263,6 +261,18 @@ const Home: React.FC = () => {
         return infoColor;
     };
 
+    const getOptions = () => {
+        if (selectedFilter === "heat" && selectedUf === "sp")
+            return searchOptions;
+        return searchOptionsDf;
+    };
+
+    const setMapPins = () => {
+        setSelectedFilter("pins");
+        setSelectedOption([0]);
+        updateCentralize(true);
+    };
+
     if (!loaded) return null;
 
     return (
@@ -343,6 +353,12 @@ const Home: React.FC = () => {
                         isOpen={isFilterOpen}
                         onClosed={() => {
                             setIsFilterOpen(false);
+                            if (
+                                selectedFilter === "heat" &&
+                                selectedOption[0] === 0
+                            ) {
+                                setMapPins();
+                            }
                         }}
                         swipeToClose={false}
                         position="top"
@@ -394,7 +410,7 @@ const Home: React.FC = () => {
                                 </DropDownContainer>
                             )}
                         </View>
-                        {searchOptions.map((option) => {
+                        {getOptions().map((option) => {
                             return (
                                 <ButtonOptionContainer
                                     key={option.id}
