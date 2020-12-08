@@ -16,6 +16,7 @@ import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
 import Rating from "./screens/Rating";
 import Ratings from "./screens/Ratings";
+import About from "./screens/About";
 
 const AppStack = createStackNavigator();
 
@@ -53,6 +54,7 @@ const Routes: React.FC = () => {
                 component={CrimeStatistics}
             />
             <AppStack.Screen name="FavoritePlaces" component={FavoritePlaces} />
+            <AppStack.Screen name="About" component={About} />
         </AppStack.Navigator>
     );
 };

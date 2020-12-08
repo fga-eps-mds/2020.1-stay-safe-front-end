@@ -28,6 +28,7 @@ interface ButtonObject {
     title: string;
     icon: string;
     userLogged: boolean;
+    screen: string | null;
 }
 
 const Settings: React.FC = () => {
@@ -89,6 +90,9 @@ const Settings: React.FC = () => {
                                         key={button.title}
                                         width="100%"
                                         color={theme.primaryWhite}
+                                        onPress={() => button.screen ?
+                                            navigation.navigate(button.screen) : null
+                                        }
                                         settings
                                     >
                                         <Feather
@@ -104,6 +108,9 @@ const Settings: React.FC = () => {
                                     key={button.title}
                                     width="100%"
                                     color={theme.primaryWhite}
+                                    onPress={() => button.screen ?
+                                        navigation.navigate(button.screen) : null
+                                    }
                                     settings
                                 >
                                     <Feather

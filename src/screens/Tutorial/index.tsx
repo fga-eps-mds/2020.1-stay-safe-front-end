@@ -1,8 +1,9 @@
+import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View } from "react-native";
 import * as Font from "expo-font";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useUser } from "../../hooks/user";
 import { useTheme } from "styled-components";
 import { slides } from "./slidesScreens";
@@ -23,7 +24,7 @@ import {
 const Tutorial: React.FC = () => {
     const [slider, setSlider] = useState(TutorialSlider);
     
-    const { updateShowTutorial } = useUser();
+    const { updateShowTutorial, switchTheme } = useUser();
     const navigation = useNavigation();
     const theme = useTheme();
 
@@ -31,6 +32,14 @@ const Tutorial: React.FC = () => {
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
+
+    useFocusEffect( 
+        useCallback(() => {
+          if (theme.type === "default") {
+            switchTheme();
+          }
+        }, [theme.type])
+    );
 
     const renderSlide = ({ item }) => {
         return (
