@@ -1,6 +1,6 @@
 import { userApi } from "./api";
 
-interface OccurrenceProps {
+export interface OccurrenceProps {
     gun: string;
     location: [number, number];
     occurrence_date_time: string;
@@ -93,7 +93,7 @@ export const updateOccurrence = async (
     return { status: response.status, body: {} };
 };
 
-let occurrenceToJSON = (data: OccurrenceProps): string => {
+export const occurrenceToJSON = (data: OccurrenceProps): string => {
     return JSON.stringify({
         gun: data.gun,
         location: data.location,
