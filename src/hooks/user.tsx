@@ -157,7 +157,7 @@ export const UserProvider: React.FC = ({ children }) => {
     useEffect(() => {
         // This listener is fired whenever a notification is received while the app is foregrounded
         notificationListener.current = Notifications.addNotificationReceivedListener(
-            (notification) => receivingNotification(notification)
+            (response) => receivingresponse(response)
         );
 
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
@@ -170,8 +170,8 @@ export const UserProvider: React.FC = ({ children }) => {
         };
     }, []);
 
-    const receivingNotification = (notification) => {
-        setNotification(notification.request.content.data);
+    const receivingNotification = (response) => {
+        setNotification(response.request.content.data);
     };
 
     const tapOnNotification = () => {
