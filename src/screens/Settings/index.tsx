@@ -2,9 +2,12 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
+import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
+import { Switch } from "react-native-paper";
 
+import { updateUser } from "../../services/users";
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
@@ -12,6 +15,7 @@ import {
     ButtonWithIconLabel,
     Container,
     KeyboardScrollView,
+    ButtonLabel
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
@@ -38,6 +42,8 @@ const Settings: React.FC = () => {
     const navigation = useNavigation();
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [isSwitchOn, setIsSwitchOn] = useState(true);
 
     const [loaded] = Font.useFonts({
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
@@ -72,6 +78,12 @@ const Settings: React.FC = () => {
         navigation.navigate("Home");
     };
 
+    const handleNotification = async () => {
+        const response = await updateUser({show_notifications: !isSwitchOn}, data.token);
+        if (response.status === 200)
+            setIsSwitchOn(!isSwitchOn);
+    }
+
     if (!loaded) return null;
 
     return (
@@ -82,6 +94,23 @@ const Settings: React.FC = () => {
                 <HeaderTitle text="Configurações" />
                 <KeyboardScrollView>
                     <ButtonsContainer>
+                        <View style={{flexDirection: "row", marginBottom: "0%"}}>
+                            <Button
+                                key={"Notificações"}
+                                width="100%"
+                                color={theme.primaryWhite}
+                                settings
+                                onPress={handleNotification}
+                                >
+                                <Feather
+                                    name={"bell"}
+                                    size={scale(18)}
+                                    color={theme.primarySuperDarkBlue}
+                                    />
+                                <ButtonText>Notificações</ButtonText>
+                                <Switch style={{ marginLeft: "10%" }} color={theme.primarySuperDarkBlue} value={isSwitchOn} onValueChange={() => setIsSwitchOn(!isSwitchOn)}/>
+                            </Button>
+                        </View>
                         {buttonsObject.map((button: ButtonObject) => {
                             return button.userLogged ? (
                                 data.token !== "" && (
