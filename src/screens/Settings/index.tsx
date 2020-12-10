@@ -87,9 +87,10 @@ const Settings: React.FC = () => {
     };
 
     const handleNotification = async () => {
+        setIsSwitchOn(!isSwitchOn);
         const response = await updateUser({show_notifications: !isSwitchOn}, data.token);
-        if (response.status === 200)
-            setIsSwitchOn(!isSwitchOn);
+        if (response.status !== 200)
+            setIsSwitchOn(isSwitchOn);
     }
 
     if (!loaded) return null;
