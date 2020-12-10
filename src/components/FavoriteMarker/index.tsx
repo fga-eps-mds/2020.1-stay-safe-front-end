@@ -2,7 +2,7 @@ import React from "react";
 import { Marker } from "react-native-maps";
 import { useTheme } from "styled-components";
 
-import FavoriteLogo from "../../img/favorite-place-pin.svg";
+import FavoriteLogo from "../../img/favorite-pin.svg";
 import { FavoritePlace } from "../../interfaces/favoriteplaces";
 import { scale } from "../../utils/scalling";
 

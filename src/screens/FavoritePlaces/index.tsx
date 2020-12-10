@@ -219,7 +219,7 @@ const FavoritePlaces: React.FC = () => {
                 <HeaderTitle text="Locais Favoritos" goBack />
                 <KeyboardScrollView>
                     {favoritePlaces.length === 0 ? (
-                        <PlaceCard>
+                        <PlaceCard style={{ width: "80%" }}>
                             <PlaceTitle>
                                 Você não possui locais cadastrados.
                             </PlaceTitle>
