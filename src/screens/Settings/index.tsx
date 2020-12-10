@@ -117,7 +117,12 @@ const Settings: React.FC = () => {
                                     color={theme.primarySuperDarkBlue}
                                     />
                                 <ButtonText>Notificações</ButtonText>
-                                <Switch style={{ marginLeft: "10%" }} color={theme.primarySuperDarkBlue} value={isSwitchOn} onValueChange={() => setIsSwitchOn(!isSwitchOn)}/>
+                                <Switch
+                                    style={{ marginLeft: "10%" }}
+                                    color={theme.primarySuperDarkBlue}
+                                    value={isSwitchOn}
+                                    onValueChange={() => setIsSwitchOn(!isSwitchOn)}
+                                />
                             </Button>
                         </View>
                         {buttonsObject.map((button: ButtonObject) => {
