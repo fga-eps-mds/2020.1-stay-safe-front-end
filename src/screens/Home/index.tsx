@@ -57,7 +57,7 @@ interface CrimeOption {
 
 const Home: React.FC = () => {
     const theme = useTheme();
-    const { location, centralize, updateCentralize, data } = useUser();
+    const { location, centralize, updateCentralize } = useUser();
 
     const [initialMonth, setInitialMonth] = useState("");
     const [finalMonth, setFinalMonth] = useState("");
@@ -77,7 +77,6 @@ const Home: React.FC = () => {
     const [isWarningOpen, setIsWarningOpen] = useState(false);
 
     const [selectedFilter, setSelectedFilter] = useState("pins");
-    const [selectedPins, setSelectedPins] = useState("pins");
 
     const [selectedUf, setSelectedUf] = useState("df");
 
@@ -104,34 +103,11 @@ const Home: React.FC = () => {
         {
             icon: "filter",
             label: "Filtros",
-            onPress: () => {
-                setIsFilterOpen(true);
-                setSelectedPins("pins");
-            },
+            onPress: () => setIsFilterOpen(true),
         },
     ]);
 
-    const addFavoritePlaceOption = () => {
-        if (data.token !== "") {
-            setIcons([
-                ...icons,
-                {
-                    icon: "star",
-                    label: "Locais favoritos",
-                    onPress: () => setSelectedPins("favorite"),
-                },
-            ]);
-        } else {
-            setIcons(icons.filter((icon) => icon.label !== "Locais favoritos"));
-        }
-    };
-
-    useEffect(() => {
-        addFavoritePlaceOption();
-    }, [data]);
-
     const loadIcons = () => {
-        const number = data.token !== "" ? 4 : 3;
         const aux_icons = icons;
         aux_icons[0] = {
             icon: selectedFilter === "heat" ? "map-marker" : "map",
@@ -141,7 +117,7 @@ const Home: React.FC = () => {
                     setSelectedFilter("pins");
                     setSelectedOption([0]);
                     updateCentralize(true);
-                } else if (selectedFilter === "pins") {
+                } else {
                     setSelectedUf("df");
                     setIsFilterOpen(true);
                     setSelectedFilter("heat");
@@ -149,13 +125,13 @@ const Home: React.FC = () => {
                 }
             },
         };
-        if (selectedFilter === "heat" && icons.length < number) {
+        if (selectedFilter === "heat" && icons.length < 3) {
             aux_icons.push({
                 icon: "information-outline",
                 label: "Informações",
                 onPress: () => setIsInfoHeatOpen(true),
             });
-        } else if (selectedFilter === "pins" && icons.length > number - 1) {
+        } else if (selectedFilter === "pins" && icons.length > 2) {
             aux_icons.pop();
         }
         setIcons(aux_icons);
@@ -163,7 +139,6 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         getInitialAndFinalMonth();
-        addFavoritePlaceOption();
     }, []);
 
     useEffect(() => {
@@ -342,18 +317,7 @@ const Home: React.FC = () => {
                                     : []
                             }
                         >
-                            {selectedPins === "pins"
-                                ? occurrences !== undefined &&
-                                  occurrences.map((occurrence: Occurrence) => {
-                                      return (
-                                          <StayMarker
-                                              key={occurrence.id_occurrence}
-                                              occurrence={occurrence}
-                                          />
-                                      );
-                                  })
-                                : null}
-                            {/* {occurrences !== undefined &&
+                            {occurrences !== undefined &&
                                 occurrences.map((occurrence: Occurrence) => {
                                     return (
                                         <StayMarker
@@ -361,7 +325,7 @@ const Home: React.FC = () => {
                                             occurrence={occurrence}
                                         />
                                     );
-                                })} */}
+                                })}
                         </StayNormalMap>
                     )}
                     <StayAlert
