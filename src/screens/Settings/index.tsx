@@ -1,13 +1,13 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 import { Switch } from "react-native-paper";
 
-import { updateUser } from "../../services/users";
+import { updateUser, getUser } from "../../services/users";
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
@@ -49,6 +49,15 @@ const Settings: React.FC = () => {
         "Trueno-SemiBold": require("../../fonts/TruenoSBd.otf"),
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
+
+    useEffect(() => {
+        const loadData = async () => {
+            const response = await getUser(data.username);
+            if (response.status === 200)
+                setIsSwitchOn(response.body.show_notifications)
+        }
+        loadData();
+    }, [])
 
     const handleLogout = async () => {
         setIsLoading(true);
