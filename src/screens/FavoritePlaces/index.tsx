@@ -113,14 +113,14 @@ const FavoritePlaces: React.FC = () => {
         handleCloseDialog();
 
         if (data.token !== "") {
-            const FavoritePlace = {
+            const favoritePlace = {
                 name: favoritePlaceName,
                 latitude: position[0],
                 longitude: position[1],
             };
 
             const response = await createFavoritePlace(
-                FavoritePlace,
+                favoritePlace,
                 data.token
             );
 

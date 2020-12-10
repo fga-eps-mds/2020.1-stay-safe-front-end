@@ -1,6 +1,5 @@
 import React from "react";
 import { Marker } from "react-native-maps";
-import { useTheme } from "styled-components";
 
 import FavoriteLogo from "../../img/favorite-pin.svg";
 import { FavoritePlace } from "../../interfaces/favoriteplaces";
@@ -11,8 +10,6 @@ interface FavoriteMarkerProps {
 }
 
 const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
-    const theme = useTheme();
-
     return (
         <Marker
             key={favoriteplace.id_place}
@@ -24,11 +21,7 @@ const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
             onPress={() => console.log(favoriteplace.name)}
             tracksViewChanges={false}
         >
-            {theme.type === "dark" ? (
-                <FavoriteLogo width={scale(40)} height={scale(40)} />
-            ) : (
-                <FavoriteLogo width={scale(40)} height={scale(40)} />
-            )}
+            <FavoriteLogo width={scale(40)} height={scale(40)} />
         </Marker>
     );
 };
