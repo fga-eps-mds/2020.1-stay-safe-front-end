@@ -102,6 +102,7 @@ const Settings: React.FC = () => {
                 <HeaderTitle text="Configurações" />
                 <KeyboardScrollView>
                     <ButtonsContainer>
+                        {data.token !== "" && (
                         <View style={{flexDirection: "row", marginBottom: "0%"}}>
                             <Button
                                 key={"Notificações"}
@@ -124,6 +125,7 @@ const Settings: React.FC = () => {
                                 />
                             </Button>
                         </View>
+                        )}
                         {buttonsObject.map((button: ButtonObject) => {
                             return button.userLogged ? (
                                 data.token !== "" && (

@@ -1,10 +1,5 @@
 export const buttonsObject = [
     {
-        title: "Notificações",
-        icon: "bell",
-        userLogged: true,
-    },
-    {
         title: "Segurança",
         icon: "shield",
         userLogged: true,
