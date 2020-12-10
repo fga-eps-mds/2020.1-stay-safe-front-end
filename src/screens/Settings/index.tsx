@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 import { Switch } from "react-native-paper";
@@ -14,8 +14,7 @@ import Loader from "../../components/Loader";
 import {
     ButtonWithIconLabel,
     Container,
-    KeyboardScrollView,
-    ButtonLabel
+    KeyboardScrollView
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
