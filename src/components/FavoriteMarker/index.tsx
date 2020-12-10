@@ -1,10 +1,8 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Marker } from "react-native-maps";
 import { useTheme } from "styled-components";
 
-import DarkLogo from "../../img/logo-thief-dark.svg";
-import Logo from "../../img/logo-thief.svg";
+import FavoriteLogo from "../../img/favorite-place-pin.svg";
 import { FavoritePlace } from "../../interfaces/favoriteplaces";
 import { scale } from "../../utils/scalling";
 
@@ -14,7 +12,6 @@ interface FavoriteMarkerProps {
 
 const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
     const theme = useTheme();
-    const navigation = useNavigation();
 
     return (
         <Marker
@@ -23,18 +20,14 @@ const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
                 latitude: favoriteplace.latitude,
                 longitude: favoriteplace.longitude,
             }}
-            onPress={
-                () => {}
-                // navigation.navigate("OccurrenceDetails", {
-                //     occurrence,
-                // })
-            }
+            description={favoriteplace.name}
+            onPress={() => console.log(favoriteplace.name)}
             tracksViewChanges={false}
         >
             {theme.type === "dark" ? (
-                <DarkLogo width={scale(38)} height={scale(38)} />
+                <FavoriteLogo width={scale(40)} height={scale(40)} />
             ) : (
-                <Logo width={scale(38)} height={scale(38)} />
+                <FavoriteLogo width={scale(40)} height={scale(40)} />
             )}
         </Marker>
     );
