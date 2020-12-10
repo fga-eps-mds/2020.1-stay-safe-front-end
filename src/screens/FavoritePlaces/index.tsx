@@ -10,6 +10,7 @@ import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import SelectPointOnMap from "../../components/SelectPointOnMap";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { FavoritePlace } from "../../interfaces/favoriteplaces";
 import {
     getFavoritePlaces,
     deleteFavoritePlace,
@@ -28,12 +29,7 @@ import {
     DialogButton,
 } from "./styles";
 
-interface FavoritePlace {
-    id_place: number;
-    name: string;
-    latitude: number;
-    longitude: number;
-}
+
 
 type ParamPlace = {
     params: {
