@@ -6,7 +6,6 @@ import { useTheme } from "styled-components";
 import DarkLogo from "../../img/logo-thief-dark.svg";
 import Logo from "../../img/logo-thief.svg";
 import { FavoritePlace } from "../../interfaces/favoriteplaces";
-import { Occurrence } from "../../interfaces/occurrence";
 import { scale } from "../../utils/scalling";
 
 interface FavoriteMarkerProps {
@@ -17,7 +16,6 @@ const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
     const theme = useTheme();
     const navigation = useNavigation();
 
-
     return (
         <Marker
             key={favoriteplace.id_place}
@@ -25,23 +23,18 @@ const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
                 latitude: favoriteplace.latitude,
                 longitude: favoriteplace.longitude,
             }}
-            onPress={() =>
-                navigation.navigate("OccurrenceDetails", {
-                    occurrence,
-                })
+            onPress={
+                () => {}
+                // navigation.navigate("OccurrenceDetails", {
+                //     occurrence,
+                // })
             }
             tracksViewChanges={false}
         >
             {theme.type === "dark" ? (
-                <DarkLogo
-                    width={scale(38)}
-                    height={scale(38)}
-                />
+                <DarkLogo width={scale(38)} height={scale(38)} />
             ) : (
-                <Logo
-                    width={scale(38)}
-                    height={scale(38)}
-                />
+                <Logo width={scale(38)} height={scale(38)} />
             )}
         </Marker>
     );
