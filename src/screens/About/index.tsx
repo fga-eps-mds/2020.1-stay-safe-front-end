@@ -27,7 +27,7 @@ const About: React.FC = () => {
                     na Universidade de Brasília (UnB).
                     {"\n\n"}
                     O StaySafe é um aplicativo mobile para Android que mostra, através de mapas e estatísicas, 
-                    informações sobre a segurança de um lugar. Os dados exibidos são obtidos das Secretarias 
+                    informações sobre a segurança de diversos locais. Os dados exibidos são obtidos das Secretarias 
                     de Segurança Pública e dos usuários do aplicativo que podem contribuir registrando uma 
                     ocorrência da qual foram vítimas ou testemunhas, e avaliando a segurança dos bairros 
                     que conhecem.
