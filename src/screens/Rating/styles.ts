@@ -52,7 +52,7 @@ export const TumbsContainer = styled.View`
     flex-direction: row;
     justify-content: center;
     width: 40%;
-    margin-left: ${scale(7)}px; 
+    margin-left: ${scale(7)}px;
 `;
 
 export const Detail = styled.View`

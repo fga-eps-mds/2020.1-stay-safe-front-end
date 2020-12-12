@@ -242,36 +242,42 @@ const Rating: React.FC = () => {
                             </Detail>
                             <TumbsContainer>
                                 {stars > 1 && (
-                                <ImpressionContainer
-                                color={theme.primaryImpressionGreen}
-                                select={detail.like}
-                                style={{ elevation: 3 }}
-                                >
-                                    <AntDesign
-                                        name="like2"
-                                        size={scale(25)}
-                                        color={theme.primarySuperDarkBlue}
-                                        onPress={() =>
-                                            handleDetail(detail.value, "like")
-                                        }
-                                    />
-                                </ImpressionContainer>
+                                    <ImpressionContainer
+                                        color={theme.primaryImpressionGreen}
+                                        select={detail.like}
+                                        style={{ elevation: 3 }}
+                                    >
+                                        <AntDesign
+                                            name="like2"
+                                            size={scale(25)}
+                                            color={theme.primarySuperDarkBlue}
+                                            onPress={() =>
+                                                handleDetail(
+                                                    detail.value,
+                                                    "like"
+                                                )
+                                            }
+                                        />
+                                    </ImpressionContainer>
                                 )}
                                 {stars < 5 && (
                                     <ImpressionContainer
-                                    select={detail.dislike}
-                                    color={theme.primaryRed}
-                                    style={{ elevation: 3 }}
+                                        select={detail.dislike}
+                                        color={theme.primaryRed}
+                                        style={{ elevation: 3 }}
                                     >
-                                    <AntDesign
-                                        name="dislike2"
-                                        size={scale(25)}
-                                        color={theme.primarySuperDarkBlue}
-                                        onPress={() =>
-                                            handleDetail(detail.value, "dislike")
-                                        }
+                                        <AntDesign
+                                            name="dislike2"
+                                            size={scale(25)}
+                                            color={theme.primarySuperDarkBlue}
+                                            onPress={() =>
+                                                handleDetail(
+                                                    detail.value,
+                                                    "dislike"
+                                                )
+                                            }
                                         />
-                                </ImpressionContainer>
+                                    </ImpressionContainer>
                                 )}
                             </TumbsContainer>
                         </DetailContainer>

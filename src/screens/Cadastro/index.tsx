@@ -62,37 +62,42 @@ const Cadastro: React.FC = () => {
         });
 
         if (error === "") {
-            const response = await createUser({
-                full_name: userFullName,
-                username,
-                email: userEmail,
-                password: userPwd,
-            });
-            if (!response.body.error && response.status === 201) {
-                const response = await authUser({
+            setIsLoading(true);
+
+            try {
+                const response = await createUser({
+                    full_name: userFullName,
                     username,
+                    email: userEmail,
                     password: userPwd,
                 });
-                if (!response.body.error && response.status === 200) {
-                    setIsLoading(true);
+                if (!response.body.error && response.status === 201) {
+                    const response = await authUser({
+                        username,
+                        password: userPwd,
+                    });
+                    if (!response.body.error && response.status === 200) {
+                        await signIn({ username, password: userPwd });
 
-                    await signIn({ username, password: userPwd });
-
-                    setIsLoading(false);
-                    navigation.navigate("HomeTabBar");
+                        navigation.navigate("HomeTabBar");
+                    } else {
+                        setHasError(true);
+                        setErrorMessage([
+                            "Erro ao logar usuário",
+                            response.body.error,
+                        ]);
+                    }
                 } else {
                     setHasError(true);
                     setErrorMessage([
-                        "Erro ao logar usuário",
+                        "Erro ao cadastrar usuário",
                         response.body.error,
                     ]);
                 }
-            } else {
-                setHasError(true);
-                setErrorMessage([
-                    "Erro ao cadastrar usuário",
-                    response.body.error,
-                ]);
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                setIsLoading(false);
             }
         } else {
             setHasError(true);

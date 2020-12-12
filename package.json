@@ -25,6 +25,7 @@
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+    "react-native-app-intro-slider": "^4.0.4",
     "react-native-awesome-alerts": "^1.4.1",
     "react-native-base64": "^0.1.0",
     "react-native-collapsible": "^1.5.3",

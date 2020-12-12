@@ -58,13 +58,18 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
 
     useEffect(() => {
         setIsLoading(true);
-        if (city === "df") {
-            setCrimes();
-            setCoordinates(coordinatesDF);
+        try {
+            if (city === "df") {
+                setCrimes();
+                setCoordinates(coordinatesDF);
+            } else {
+                setCrimes();
+                getSpCoordinates().then((res) => {});
+            }
+        } catch (e) {
+            console.warn(e);
+        } finally {
             setIsLoading(false);
-        } else {
-            setCrimes();
-            getSpCoordinates().then((res) => setIsLoading(false));
         }
     }, [secretaryOccurrences]);
 

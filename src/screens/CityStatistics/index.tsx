@@ -1,7 +1,6 @@
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -14,20 +13,10 @@ import {
     KeyboardScrollView,
     ButtonWithIconLabel,
 } from "../../components/NormalForms";
+import StatisticsCard from "../../components/StatisticsCard";
+import { CityCrimes, Crimes } from "../../interfaces/statistics";
 import { getAllOccurrencesOfCity } from "../../services/occurrencesSecretary";
 import { scale } from "../../utils/scalling";
-import {
-    StatisticsCard,
-    YearContainer,
-    YearDropDown,
-    YearTitle,
-    YearTitleContainer,
-    CrimeStatistics,
-    CrimeContainer,
-    CrimeText,
-    CrimeBar,
-    CrimeBarNumber,
-} from "./styles";
 import { years } from "./yearsConstants";
 
 type ParamList = {
@@ -36,16 +25,6 @@ type ParamList = {
         uf: string;
     };
 };
-
-interface CityCrimes {
-    name: string;
-    crimes: Array<Crimes>;
-}
-
-interface Crimes {
-    nature: string;
-    quantity: number;
-}
 
 const CityStatistics: React.FC = () => {
     const theme = useTheme();
@@ -79,13 +58,12 @@ const CityStatistics: React.FC = () => {
     const loadData = () => {
         setIsLoading(true);
         try {
-            getOccurrences().then((response) => {
-                setIsLoading(false);
-            });
+            getOccurrences().then((response) => {});
         } catch (error) {
-            setIsLoading(false);
             setHasError(true);
             setErrorMessage(["Erro ao conectar com o servidor.", ""]);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -104,7 +82,6 @@ const CityStatistics: React.FC = () => {
                 setHigherStatistic(city.crimes.sort(sortCities)[0].quantity);
             });
         } else {
-            setIsLoading(false);
             setHasError(true);
 
             if (response.status === 200) {
@@ -128,59 +105,20 @@ const CityStatistics: React.FC = () => {
             <Container>
                 <HeaderTitle text={`Estatísticas - ${cityName}`} goBack />
                 <KeyboardScrollView>
-                    <StatisticsCard style={{ elevation: 5 }}>
-                        <YearContainer>
-                            <YearTitleContainer>
-                                <Feather
-                                    name="calendar"
-                                    size={scale(18)}
-                                    color={theme.primaryRed}
-                                />
-                                <YearTitle>Ano</YearTitle>
-                            </YearTitleContainer>
-                            <YearDropDown
-                                items={years}
-                                defaultValue={selectedYear}
-                                onChangeItem={(item) =>
-                                    setSelectedYear(item.value)
-                                }
-                            />
-                        </YearContainer>
-                        <CrimeStatistics loading={isLoading}>
-                            {isLoading ? (
-                                <Loader />
-                            ) : (
-                                cityStatistics.map((cityStatistic) => {
-                                    const percentage =
-                                        (cityStatistic.quantity /
-                                            higherStatistic) *
-                                        100.0;
-
-                                    return (
-                                        <CrimeContainer
-                                            key={cityStatistic.nature}
-                                        >
-                                            <CrimeText>
-                                                {cityStatistic.nature}
-                                            </CrimeText>
-                                            <View
-                                                style={{
-                                                    flexDirection: "row",
-                                                }}
-                                            >
-                                                <CrimeBar
-                                                    percentage={percentage}
-                                                />
-                                                <CrimeBarNumber>
-                                                    {cityStatistic.quantity}
-                                                </CrimeBarNumber>
-                                            </View>
-                                        </CrimeContainer>
-                                    );
-                                })
-                            )}
-                        </CrimeStatistics>
-                    </StatisticsCard>
+                    {isLoading ? (
+                        <Loader />
+                    ) : (
+                        <StatisticsCard
+                            dropdownTitle="Crime"
+                            dropdownWidth="40%"
+                            dropdownItems={years}
+                            dropdownDefaultValue={selectedYear}
+                            onChangeItem={(item) => setSelectedYear(item.value)}
+                            isCityStatisticScreen
+                            flatlistData={cityStatistics}
+                            higherStatistic={higherStatistic}
+                        />
+                    )}
                     <Button
                         width="70%"
                         color={theme.primaryRed}
@@ -198,6 +136,25 @@ const CityStatistics: React.FC = () => {
                         />
                         <ButtonWithIconLabel>
                             Visualizar Bairros
+                        </ButtonWithIconLabel>
+                    </Button>
+                    <Button
+                        width="70%"
+                        color={theme.primaryRed}
+                        onPress={() =>
+                            navigation.navigate("CrimeStatistics", {
+                                year: selectedYear,
+                                uf,
+                            })
+                        }
+                    >
+                        <MaterialCommunityIcons
+                            name="sort-variant"
+                            size={scale(20)}
+                            color={theme.primaryWhite}
+                        />
+                        <ButtonWithIconLabel>
+                            Comparar Estatísticas
                         </ButtonWithIconLabel>
                     </Button>
                     <ErrorModal

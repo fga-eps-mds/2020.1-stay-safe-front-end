@@ -25,14 +25,18 @@ interface UserContextData {
     theme: AppTheme;
     data: UserState;
     location: UserLocation;
+    centralize: boolean;
     isLoading: boolean;
     showNotifications: boolean;
+    showTutorial: boolean;
     updateLocation: (location: UserLocation) => void;
+    updateCentralize: (value: boolean) => void;
     switchTheme: () => void;
     signIn(credentials: SignInCredentials): Promise<void>;
     signOut(): void;
     deleteAccount(): void;
     switchShowNotifications(): void;
+    updateShowTutorial(show: boolean): Promise<void>;
 }
 
 interface AppTheme {
@@ -100,11 +104,14 @@ export const UserProvider: React.FC = ({ children }) => {
     const [notification, setNotification] = useState(false);
 
     const [showNotifications, setShowNotifications] = useState(true);
+    const [showTutorial, setShowTutorial] = useState(false);
 
     const notificationListener = useRef();
     const responseListener = useRef();
 
     const [isLoading, setIsLoading] = useState(true);
+
+    const [centralize, setCentralize] = useState(true);
 
     useEffect(() => {
         async function loadStorageData(): Promise<void> {
@@ -113,11 +120,13 @@ export const UserProvider: React.FC = ({ children }) => {
                 username,
                 themeType,
                 notifications,
+                tutorial
             ] = await AsyncStorage.multiGet([
                 "@StaySafe:token",
                 "@StaySafe:username",
                 "@StaySafe:theme",
                 "@StaySafe:notifications",
+                "@StaySafe:tutorial"
             ]);
 
             if (token[1] && username[1]) {
@@ -128,16 +137,21 @@ export const UserProvider: React.FC = ({ children }) => {
                 themeType[1] === "default" ? staySafeTheme : staySafeDarkTheme
             );
 
-            setShowNotifications(notifications[1] === "true");
+            if (tutorial[1] === null || tutorial[1] !== "false") {
+                setShowTutorial(true);
+            }
 
+            //updateShowTutorial(true);
+            //switchTheme();
+
+            setShowNotifications(notifications[1] === "true");
             setIsLoading(false);
         }
 
         setTimeout(() => {
             loadStorageData();
+            getCurrentLocation();
         }, 1000);
-
-        getCurrentLocation();
     }, []);
 
     const registerDeviceForPushNotifications = async () => {
@@ -236,6 +250,7 @@ export const UserProvider: React.FC = ({ children }) => {
             };
 
             setLocation(someLocation);
+            setCentralize(true);
         }
     };
 
@@ -255,21 +270,37 @@ export const UserProvider: React.FC = ({ children }) => {
         setShowNotifications(showNotifications !== true);
     }, [theme]);
 
+    const updateShowTutorial = useCallback(async (show: boolean) => {
+        await AsyncStorage.setItem(
+            "@StaySafe:tutorial",
+            String(show)
+        );
+        setShowTutorial(show);
+    }, []);
+
     const updateLocation = (newLocation: UserLocation) => {
         setLocation(newLocation);
+    };
+
+    const updateCentralize = (centralize: boolean) => {
+        setCentralize(centralize);
     };
 
     return (
         <UserContext.Provider
             value={{
                 data,
+                centralize,
                 location,
                 updateLocation,
+                updateCentralize,
                 switchTheme,
                 theme,
                 isLoading,
                 switchShowNotifications,
                 showNotifications,
+                updateShowTutorial,
+                showTutorial,
                 signIn,
                 signOut,
                 deleteAccount,
