@@ -72,7 +72,7 @@ export const InputWithIcon = styled.View`
     height: ${scale(42)}px;
     border-radius: ${scale(15)}px;
     flex-direction: row;
-    /* background-color: #000; */
+    position: relative;
     align-items: center;
     justify-content: space-between;
 `;
