@@ -14,6 +14,7 @@ import {
     NeighText,
     Date,
     CardActions,
+    TouchableAction,
 } from "../../components/Cards";
 import HeaderTitle from "../../components/HeaderTitle";
 import StayAlert from "../../components/StayAlert";
@@ -91,7 +92,6 @@ const Ratings: React.FC = () => {
                                 <Title
                                     style={{
                                         textAlign: "center",
-
                                         marginBottom: 0,
                                         padding: scale(7),
                                     }}
@@ -103,50 +103,63 @@ const Ratings: React.FC = () => {
                     ) : (
                         ratings.map((rating) => {
                             return (
-                                <Card key={rating.id_rating}>
-                                    <CardData>
-                                        <Title>
-                                            {rating.neighborhood.neighborhood}
-                                        </Title>
-                                        <NeighText>
-                                            {rating.neighborhood.city} -{" "}
-                                            {rating.neighborhood.state}
-                                        </NeighText>
-                                        <Date>03-2020</Date>
-                                    </CardData>
-
-                                    <CardActions>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                navigation.navigate("Rating", {
-                                                    rating,
-                                                });
-                                            }}
-                                        >
-                                            <Feather
-                                                name="edit-3"
-                                                size={scale(22)}
-                                                color={
-                                                    theme.primarySuperDarkBlue
+                                <>
+                                    <Card key={rating.id_rating}>
+                                        <CardData>
+                                            <Title>
+                                                {
+                                                    rating.neighborhood
+                                                        .neighborhood
                                                 }
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setConfirmModal(true);
-                                                setIdRating(rating.id_rating);
-                                            }}
-                                        >
-                                            <Feather
-                                                name="trash-2"
-                                                size={scale(22)}
-                                                color={
-                                                    theme.primarySuperDarkBlue
-                                                }
-                                            />
-                                        </TouchableOpacity>
-                                    </CardActions>
-                                </Card>
+                                            </Title>
+                                            <NeighText>
+                                                {rating.neighborhood.city} -{" "}
+                                                {rating.neighborhood.state}
+                                            </NeighText>
+                                            <Date>03-2020</Date>
+                                        </CardData>
+                                        <CardActions>
+                                            <TouchableAction
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "Rating",
+                                                        {
+                                                            rating,
+                                                        }
+                                                    );
+                                                }}
+                                            >
+                                                <Feather
+                                                    name="edit-3"
+                                                    size={scale(22)}
+                                                    color={
+                                                        theme.type === "dark"
+                                                            ? theme.primarySuperDarkBlue
+                                                            : theme.primaryLightBlue
+                                                    }
+                                                />
+                                            </TouchableAction>
+                                            <TouchableAction
+                                                onPress={() => {
+                                                    setConfirmModal(true);
+                                                    setIdRating(
+                                                        rating.id_rating
+                                                    );
+                                                }}
+                                            >
+                                                <Feather
+                                                    name="trash-2"
+                                                    size={scale(22)}
+                                                    color={
+                                                        theme.type === "dark"
+                                                            ? theme.primarySuperDarkBlue
+                                                            : theme.primaryLightBlue
+                                                    }
+                                                />
+                                            </TouchableAction>
+                                        </CardActions>
+                                    </Card>
+                                </>
                             );
                         })
                     )}

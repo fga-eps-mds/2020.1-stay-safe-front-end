@@ -140,6 +140,7 @@ const Profile: React.FC = () => {
 
                     <NormalLabel>Nome de usuário</NormalLabel>
                     <InputViewing
+                        style={isEditing && { opacity: 0.6 }}
                         editable={false}
                         isEditing={false}
                         returnKeyType="next"

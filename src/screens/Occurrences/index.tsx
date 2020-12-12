@@ -13,6 +13,7 @@ import {
     Title,
     Date,
     CardActions,
+    TouchableAction,
 } from "../../components/Cards";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
@@ -109,7 +110,8 @@ const Occurrences: React.FC = () => {
                                     </CardData>
 
                                     <CardActions>
-                                        <TouchableOpacity
+                                        <TouchableAction
+                                            style={{ marginBottom: scale(10) }}
                                             onPress={() => {
                                                 navigation.navigate(
                                                     "Occurrence",
@@ -123,11 +125,13 @@ const Occurrences: React.FC = () => {
                                                 name="edit-3"
                                                 size={scale(22)}
                                                 color={
-                                                    theme.primarySuperDarkBlue
+                                                    theme.type === "dark"
+                                                        ? theme.primarySuperDarkBlue
+                                                        : theme.primaryLightBlue
                                                 }
                                             />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
+                                        </TouchableAction>
+                                        <TouchableAction
                                             onPress={() => {
                                                 setConfirmModal(true);
                                                 setIdOccurrence(
@@ -139,10 +143,12 @@ const Occurrences: React.FC = () => {
                                                 name="trash-2"
                                                 size={scale(22)}
                                                 color={
-                                                    theme.primarySuperDarkBlue
+                                                    theme.type === "dark"
+                                                        ? theme.primarySuperDarkBlue
+                                                        : theme.primaryLightBlue
                                                 }
                                             />
-                                        </TouchableOpacity>
+                                        </TouchableAction>
                                     </CardActions>
                                 </Card>
                             );

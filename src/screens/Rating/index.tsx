@@ -250,7 +250,11 @@ const Rating: React.FC = () => {
                                         <AntDesign
                                             name="like2"
                                             size={scale(25)}
-                                            color={theme.primarySuperDarkBlue}
+                                            color={
+                                                detail.like
+                                                    ? theme.primaryLightBlue
+                                                    : theme.primarySuperDarkBlue
+                                            }
                                             onPress={() =>
                                                 handleDetail(
                                                     detail.value,
