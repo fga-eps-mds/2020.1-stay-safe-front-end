@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { Polygon } from "react-native-maps";
 import { useTheme } from "styled-components";
 
 import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
-import Loader from "../Loader";
 import StayNormalMap from "../StayNormalMap";
 import { coordinatesDF } from "./coordinates/coordinatesDF";
 import coordinatesSP from "./coordinates/coordinatesSP.json";
@@ -54,10 +53,7 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
 
     const [coordinates, setCoordinates] = useState([]);
 
-    const [isLoading, setIsLoading] = useState(false);
-
     useEffect(() => {
-        setIsLoading(true);
         try {
             if (city === "df") {
                 setCrimes();
@@ -68,8 +64,6 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
             }
         } catch (e) {
             console.warn(e);
-        } finally {
-            setIsLoading(false);
         }
     }, [secretaryOccurrences]);
 
@@ -158,10 +152,10 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
             <StayNormalMap
                 loadingEnabled
                 initialRegion={{
-                    latitude: city === "df" ? -15.780311 : -23.6821604,
-                    longitude: city === "df" ? -47.768043 : -46.8754825,
-                    latitudeDelta: 3,
-                    longitudeDelta: 3,
+                    latitude: city === "df" ? -15.780311 : -23.1676648,
+                    longitude: city === "df" ? -47.768043 : -47.1372806,
+                    latitudeDelta: city === "df" ? 3 : 8,
+                    longitudeDelta: city === "df" ? 3 : 8,
                 }}
                 customMapStyle={
                     theme.type === "dark" ? staySafeDarkMapStyle : []
@@ -195,9 +189,8 @@ const HeatMap: React.FC<HeatMapProps> = ({ secretaryOccurrences, city }) => {
                     }
                 })}
             </StayNormalMap>
-            {(isLoading || isSelected) && <Loader />}
         </>
     );
 };
 
-export default HeatMap;
+export default memo(HeatMap);

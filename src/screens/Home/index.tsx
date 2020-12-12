@@ -19,7 +19,6 @@ import {
     InfoText,
     InfoSubText,
 } from "../../components/InfoModal";
-import Loader from "../../components/Loader";
 import { ButtonWithIconLabel } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import StayMarker from "../../components/StayMarker";
@@ -80,7 +79,7 @@ const Home: React.FC = () => {
 
     const [selectedUf, setSelectedUf] = useState("df");
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isMapLoaded, setIsMapLoaded] = useState(false);
 
     const [showIcons, setShowIcons] = useState(false);
 
@@ -158,7 +157,10 @@ const Home: React.FC = () => {
         if (selectedFilter === "heat") {
             if (selectedOption.length > 1) return null;
             handleFilterHeatMap();
-        } else if (selectedFilter === "pins") handleFilterPins();
+        } else if (selectedFilter === "pins") {
+            setIsMapLoaded(false);
+            handleFilterPins();
+        }
     };
 
     const handleFilterPins = async () => {
@@ -181,7 +183,7 @@ const Home: React.FC = () => {
     };
 
     const handleFilterHeatMap = () => {
-        setIsLoading(true);
+        setIsFilterOpen(false);
 
         async function loadData() {
             const option = searchOptions[selectedOption[0] - 1];
@@ -204,16 +206,12 @@ const Home: React.FC = () => {
 
         try {
             if (selectedOption[0] > 0) {
-                loadData().then((res) => {
-                    setIsFilterOpen(false);
-                });
+                loadData().then((res) => setIsMapLoaded(true));
             } else {
                 setIsWarningOpen(true);
             }
         } catch (e) {
             console.warn(e);
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -311,7 +309,9 @@ const Home: React.FC = () => {
                             }}
                         />
                     )}
-                    {selectedFilter === "heat" ? (
+                    {selectedFilter === "heat" &&
+                    !isFilterOpen &&
+                    isMapLoaded ? (
                         <HeatMap
                             secretaryOccurrences={secretaryOccurrences}
                             city={selectedUf}
@@ -380,6 +380,17 @@ const Home: React.FC = () => {
                                     </TabTitle>
                                 </Tab>
                             </TabFilter>
+                            <Span
+                                style={{
+                                    textAlign: "center",
+                                    marginBottom: scale(15),
+                                }}
+                                show={selectedFilter === "heat"}
+                            >
+                                A geração do mapa de calor pode demorar alguns
+                                segundos. Aguarde enquanto o mapa do estado é
+                                centralizado.
+                            </Span>
                             {selectedFilter === "heat" && (
                                 <DropDownContainer>
                                     <DropDownTitle>
@@ -522,7 +533,6 @@ const Home: React.FC = () => {
                             </View>
                         </InfoModal>
                     )}
-                    {isLoading && <Loader />}
                 </SafeAreaView>
             </Portal>
         </Provider>
