@@ -120,13 +120,13 @@ export const UserProvider: React.FC = ({ children }) => {
                 username,
                 themeType,
                 notifications,
-                tutorial
+                tutorial,
             ] = await AsyncStorage.multiGet([
                 "@StaySafe:token",
                 "@StaySafe:username",
                 "@StaySafe:theme",
                 "@StaySafe:notifications",
-                "@StaySafe:tutorial"
+                "@StaySafe:tutorial",
             ]);
 
             if (token[1] && username[1]) {
@@ -271,10 +271,7 @@ export const UserProvider: React.FC = ({ children }) => {
     }, [theme]);
 
     const updateShowTutorial = useCallback(async (show: boolean) => {
-        await AsyncStorage.setItem(
-            "@StaySafe:tutorial",
-            String(show)
-        );
+        await AsyncStorage.setItem("@StaySafe:tutorial", String(show));
         setShowTutorial(show);
     }, []);
 

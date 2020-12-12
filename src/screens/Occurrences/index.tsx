@@ -1,7 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
