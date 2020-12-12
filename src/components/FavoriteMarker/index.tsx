@@ -18,7 +18,6 @@ const FavoriteMarker: React.FC<FavoriteMarkerProps> = ({ favoriteplace }) => {
                 longitude: favoriteplace.longitude,
             }}
             description={favoriteplace.name}
-            onPress={() => console.log(favoriteplace.name)}
             tracksViewChanges={false}
         >
             <FavoriteLogo width={scale(40)} height={scale(40)} />
