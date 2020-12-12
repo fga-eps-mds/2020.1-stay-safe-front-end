@@ -90,8 +90,12 @@ const Settings: React.FC = () => {
                                         key={button.title}
                                         width="100%"
                                         color={theme.primaryWhite}
-                                        onPress={() => button.screen ?
-                                            navigation.navigate(button.screen) : null
+                                        onPress={() =>
+                                            button.screen
+                                                ? navigation.navigate(
+                                                      button.screen
+                                                  )
+                                                : null
                                         }
                                         settings
                                     >
@@ -108,8 +112,10 @@ const Settings: React.FC = () => {
                                     key={button.title}
                                     width="100%"
                                     color={theme.primaryWhite}
-                                    onPress={() => button.screen ?
-                                        navigation.navigate(button.screen) : null
+                                    onPress={() =>
+                                        button.screen
+                                            ? navigation.navigate(button.screen)
+                                            : null
                                     }
                                     settings
                                 >

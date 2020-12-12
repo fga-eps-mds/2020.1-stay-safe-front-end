@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import { scale } from "../../utils/scalling";
 
 export const AppTitle = styled.Text`
-    font-family: "Age";
+    font-family: "Age-Regular";
     font-size: ${scale(32)}px;
     letter-spacing: ${scale(1)}px;
     color: ${(props) => props.theme.primaryRed};
