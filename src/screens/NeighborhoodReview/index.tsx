@@ -99,7 +99,11 @@ const NeighborhoodReview: React.FC = () => {
                     <MaterialCommunityIcons
                         name="pencil"
                         size={scale(18)}
-                        color={theme.primaryWhite}
+                        color={
+                            theme.type === "dark"
+                                ? theme.primaryBlack
+                                : theme.primaryWhite
+                        }
                     />
                     <ButtonWithIconLabel>Avaliar Bairro</ButtonWithIconLabel>
                 </Button>

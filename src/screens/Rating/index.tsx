@@ -287,7 +287,11 @@ const Rating: React.FC = () => {
                     <MaterialCommunityIcons
                         name="star"
                         size={scale(20)}
-                        color={theme.primaryWhite}
+                        color={
+                            theme.type === "dark"
+                                ? theme.primaryBlack
+                                : theme.primaryWhite
+                        }
                     />
                     <ButtonWithIconLabel>Avaliar</ButtonWithIconLabel>
                 </Button>

@@ -95,7 +95,11 @@ const Login: React.FC = () => {
                         <Feather
                             name="log-in"
                             size={scale(18)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>Entrar</ButtonWithIconLabel>
                     </Button>
@@ -108,7 +112,11 @@ const Login: React.FC = () => {
                         <Feather
                             name="user-plus"
                             size={scale(18)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>Criar Conta</ButtonWithIconLabel>
                     </Button>

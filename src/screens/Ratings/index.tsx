@@ -83,8 +83,21 @@ const Ratings: React.FC = () => {
                 <CardContainer>
                     {ratings.length === 0 ? (
                         <Card>
-                            <CardData>
-                                <Title>Nenhuma avaliação :(</Title>
+                            <CardData
+                                style={{
+                                    width: "100%",
+                                }}
+                            >
+                                <Title
+                                    style={{
+                                        textAlign: "center",
+
+                                        marginBottom: 0,
+                                        padding: scale(7),
+                                    }}
+                                >
+                                    Nenhuma avaliação :(
+                                </Title>
                             </CardData>
                         </Card>
                     ) : (
