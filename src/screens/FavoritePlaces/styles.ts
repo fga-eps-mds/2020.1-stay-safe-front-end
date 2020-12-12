@@ -91,3 +91,11 @@ export const DialogButton = styled(Dialog.Button)`
     border-radius: ${scale(28)}px;
     padding: ${scale(12)}px;
 `;
+
+export const TextStyled = styled.Text`
+    font-size: ${scale(12)}px;
+    font-family: "Trueno-SemiBold";
+    color: ${(props) => props.theme.primarySuperDarkBlue};
+    text-align: center;
+    max-width: 60%;
+`;

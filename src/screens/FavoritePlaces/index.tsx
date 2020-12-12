@@ -1,9 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import { RectButton } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -34,6 +33,7 @@ import {
     DialogInput,
     ButtonsContainer,
     DialogButton,
+    TextStyled,
 } from "./styles";
 
 type ParamPlace = {
@@ -225,58 +225,33 @@ const FavoritePlaces: React.FC = () => {
                             </PlaceTitle>
                         </PlaceCard>
                     ) : (
-                        <View
-                            style={{
+                        <Accordion
+                            containerStyle={{
                                 width: "80%",
-                                justifyContent: "center",
-                                alignItems: "center",
                             }}
-                        >
-                            <Accordion
-                                containerStyle={{
-                                    width: "100%",
-                                }}
-                                sectionContainerStyle={{
-                                    elevation: 5,
-                                    marginBottom: scale(20),
-                                    backgroundColor: theme.primaryBackground,
-                                    borderTopLeftRadius: scale(20),
-                                    borderTopRightRadius: scale(20),
-                                    borderBottomLeftRadius: scale(20),
-                                    borderBottomRightRadius: scale(20),
-                                }}
-                                sections={favoritePlaces}
-                                activeSections={activePlaces}
-                                touchableComponent={RectButton}
-                                renderHeader={_renderHeader}
-                                renderContent={_renderContent}
-                                onChange={updateSections}
-                                expandMultiple
-                            />
-                        </View>
-                        // favoritePlaces.map((place: FavoritePlace) => {
-                        //     return (
-                        //         <PlaceCard
-                        //             style={{ elevation: 5 }}
-                        //             key={place.id_place}
-                        //         >
-                        //             <PlaceTitle>{place.name}</PlaceTitle>
-
-                        //             <DeletePlace
-                        //                 onPress={() => {
-                        //                     setDeleteModal(true);
-                        //                     setIdPlace(place.id_place);
-                        //                 }}
-                        //             >
-                        //                 <Feather
-                        //                     name="trash-2"
-                        //                     size={22}
-                        //                     color={theme.primarySuperDarkBlue}
-                        //                 />
-                        //             </DeletePlace>
-                        //         </PlaceCard>
-                        //     );
-                        // })
+                            sectionContainerStyle={{
+                                elevation: 5,
+                                marginBottom: scale(20),
+                                backgroundColor: theme.primaryBackground,
+                                borderTopLeftRadius: scale(20),
+                                borderTopRightRadius: scale(20),
+                                borderBottomLeftRadius: scale(20),
+                                borderBottomRightRadius: scale(20),
+                            }}
+                            sections={favoritePlaces}
+                            activeSections={activePlaces}
+                            touchableComponent={TouchableOpacity}
+                            renderHeader={_renderHeader}
+                            renderContent={_renderContent}
+                            onChange={updateSections}
+                            expandMultiple
+                        />
+                    )}
+                    {favoritePlaces.length !== 0 && (
+                        <TextStyled>
+                            Clique no card para ver onde foi registrado o local
+                            favorito
+                        </TextStyled>
                     )}
                     <AddPlace
                         icon="plus"

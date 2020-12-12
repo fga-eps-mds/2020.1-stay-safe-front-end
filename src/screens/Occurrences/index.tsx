@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import { RectButton } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -29,6 +28,7 @@ import {
     deleteOccurrence,
 } from "../../services/occurrences";
 import { scale } from "../../utils/scalling";
+import { TextStyled } from "../FavoritePlaces/styles";
 
 const Occurrences: React.FC = () => {
     const navigation = useNavigation();
@@ -218,12 +218,18 @@ const Occurrences: React.FC = () => {
                             }}
                             sections={occurrences}
                             activeSections={activeOccurrences}
-                            touchableComponent={RectButton}
+                            touchableComponent={TouchableOpacity}
                             renderHeader={_renderHeader}
                             renderContent={_renderContent}
                             onChange={updateSections}
                             expandMultiple
                         />
+                    )}
+                    {occurrences.length !== 0 && (
+                        <TextStyled>
+                            Clique no card para ver onde foi registrado a
+                            ocorrência
+                        </TextStyled>
                     )}
                 </CardContainer>
                 <StayAlert
