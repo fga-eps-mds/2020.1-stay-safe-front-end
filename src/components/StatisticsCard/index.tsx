@@ -90,7 +90,7 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({
                 />
             </DropDownContainer>
             <Statistics>
-                {flatlistData.lenght === 0 ? (
+                {flatlistData.lenght !== 0 ? (
                     <FlatList
                         data={flatlistData}
                         keyExtractor={(item, index) => index.toString()}
