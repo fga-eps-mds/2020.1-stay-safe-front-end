@@ -19,7 +19,7 @@ interface FilterModalProps {
 
 export const FilterModal = styled(Modal)<FilterModalProps>`
     position: absolute;
-    height: ${(props) => (props.ufOptionOpen ? scale(530) : scale(460))}px;
+    height: ${(props) => (props.ufOptionOpen ? scale(560) : scale(460))}px;
     width: 85.5%;
     margin-top: ${scale(50)}px;
     border-radius: ${scale(24)}px;

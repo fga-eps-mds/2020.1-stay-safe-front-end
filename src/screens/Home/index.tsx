@@ -269,6 +269,9 @@ const Home: React.FC = () => {
         setSelectedFilter("pins");
         setSelectedOption([0]);
         updateCentralize(true);
+        getAllUsersOccurrences().then((response) => {
+            setOccurrences(response.body);
+        });
     };
 
     if (!loaded) return null;
@@ -380,17 +383,19 @@ const Home: React.FC = () => {
                                     </TabTitle>
                                 </Tab>
                             </TabFilter>
-                            <Span
-                                style={{
-                                    textAlign: "center",
-                                    marginBottom: scale(15),
-                                }}
-                                show={selectedFilter === "heat"}
-                            >
-                                A geração do mapa de calor pode demorar alguns
-                                segundos. Aguarde enquanto o mapa do estado é
-                                centralizado.
-                            </Span>
+                            {selectedFilter === "heat" && (
+                                <Span
+                                    style={{
+                                        textAlign: "center",
+                                        marginBottom: scale(15),
+                                    }}
+                                    show
+                                >
+                                    A geração do mapa de calor pode demorar
+                                    alguns segundos. Aguarde enquanto o mapa do
+                                    estado é centralizado.
+                                </Span>
+                            )}
                             {selectedFilter === "heat" && (
                                 <DropDownContainer>
                                     <DropDownTitle>
