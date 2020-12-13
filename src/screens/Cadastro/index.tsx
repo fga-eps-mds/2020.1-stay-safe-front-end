@@ -130,9 +130,7 @@ const Cadastro: React.FC = () => {
                         ref={(input) => setFullNameInput(input)}
                         returnKeyType="next"
                         maxLength={200}
-                        onChangeText={(text) =>
-                            setUserFullName(text.split(" ")[0])
-                        }
+                        onChangeText={(text) => setUserFullName(text)}
                         onSubmitEditing={() => emailInput.focus()}
                     />
 
