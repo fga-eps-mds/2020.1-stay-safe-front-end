@@ -36,6 +36,8 @@ interface UserContextData {
     signOut(): void;
     deleteAccount(): void;
     switchShowNotifications(): void;
+    notification: {};
+    tapNotification: boolean;
     updateShowTutorial(show: boolean): Promise<void>;
 }
 
@@ -102,6 +104,7 @@ export const UserProvider: React.FC = ({ children }) => {
 
     const [expoPushToken, setExpoPushToken] = useState("");
     const [notification, setNotification] = useState(false);
+    const [tapNotification, setTapOnNotification] = useState(false);
 
     const [showNotifications, setShowNotifications] = useState(true);
     const [showTutorial, setShowTutorial] = useState(false);
@@ -141,9 +144,6 @@ export const UserProvider: React.FC = ({ children }) => {
                 setShowTutorial(true);
             }
 
-            //updateShowTutorial(true);
-            //switchTheme();
-
             setShowNotifications(notifications[1] === "true");
             setIsLoading(false);
         }
@@ -154,27 +154,35 @@ export const UserProvider: React.FC = ({ children }) => {
         }, 1000);
     }, []);
 
-    const registerDeviceForPushNotifications = async () => {
-        const tokenNotification = await registerForPushNotificationsAsync();
-
-        setExpoPushToken(tokenNotification);
-
+    useEffect(() => {
         // This listener is fired whenever a notification is received while the app is foregrounded
         notificationListener.current = Notifications.addNotificationReceivedListener(
-            (notification) => {
-                setNotification(notification);
-            }
+            (response) => receivingNotification(response)
         );
 
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
         responseListener.current = Notifications.addNotificationResponseReceivedListener(
-            (response) => {
-                console.log(response);
-            }
+            () => tapOnNotification()
         );
 
-        Notifications.removeNotificationSubscription(notificationListener);
-        Notifications.removeNotificationSubscription(responseListener);
+        return () => {
+            Notifications.removeAllNotificationListeners();
+        };
+    }, []);
+
+    const receivingNotification = (response) => {
+        setNotification(response.request.content.data);
+    };
+
+    const tapOnNotification = () => {
+        setTapOnNotification(true);
+        console.log("----------------> RECEBEU!!!!!!!!!");
+    };
+
+    const registerDeviceForPushNotifications = async () => {
+        const tokenNotification = await registerForPushNotificationsAsync();
+
+        setExpoPushToken(tokenNotification);
 
         return tokenNotification;
     };
@@ -299,7 +307,9 @@ export const UserProvider: React.FC = ({ children }) => {
                 updateShowTutorial,
                 showTutorial,
                 signIn,
+                tapNotification,
                 signOut,
+                notification,
                 deleteAccount,
             }}
         >

@@ -90,30 +90,39 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({
                 />
             </DropDownContainer>
             <Statistics>
-                <FlatList
-                    data={flatlistData}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => {
-                        const quantity = getQuantity(item);
-                        const percentage = (quantity / higherStatistic) * 100.0;
+                {flatlistData.lenght === 0 ? (
+                    <FlatList
+                        data={flatlistData}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => {
+                            const quantity = getQuantity(item);
+                            const percentage =
+                                (quantity / higherStatistic) * 100.0;
 
-                        return (
-                            <StatsContainer key={index}>
-                                <StatsText>{getText(item)}</StatsText>
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                    }}
-                                >
-                                    <StatsBar percentage={percentage} />
-                                    <StatsBarNumber>
-                                        {quantity.toFixed(2)}
-                                    </StatsBarNumber>
-                                </View>
-                            </StatsContainer>
-                        );
-                    }}
-                />
+                            return (
+                                <StatsContainer key={index}>
+                                    <StatsText>{getText(item)}</StatsText>
+                                    <View
+                                        style={{
+                                            flexDirection: "row",
+                                        }}
+                                    >
+                                        <StatsBar percentage={percentage} />
+                                        <StatsBarNumber>
+                                            {quantity.toFixed(2)}
+                                        </StatsBarNumber>
+                                    </View>
+                                </StatsContainer>
+                            );
+                        }}
+                    />
+                ) : (
+                    <Title
+                        style={{ textAlign: "center", marginTop: scale(20) }}
+                    >
+                        Os dados não estão disponíveis no momento.
+                    </Title>
+                )}
             </Statistics>
         </StatisticsContainer>
     );

@@ -1,20 +1,28 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+import { TouchableOpacity } from "react-native";
+import Accordion from "react-native-collapsible/Accordion";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import { TouchableAction } from "../../components/Cards";
 import ErrorModal from "../../components/ErrorModal";
+import FavoriteMarker from "../../components/FavoriteMarker";
 import HeaderTitle from "../../components/HeaderTitle";
 import { Container, KeyboardScrollView } from "../../components/NormalForms";
 import SelectPointOnMap from "../../components/SelectPointOnMap";
 import StayAlert from "../../components/StayAlert";
+import StayNormalMap from "../../components/StayNormalMap";
 import { useUser } from "../../hooks/user";
+import { FavoritePlace } from "../../interfaces/favoriteplaces";
 import {
     getFavoritePlaces,
     deleteFavoritePlace,
     createFavoritePlace,
 } from "../../services/favoritePlaces";
+import staySafeDarkMapStyle from "../../styles/staySafeDarkMapStyle";
+import { scale } from "../../utils/scalling";
 import {
     PlaceCard,
     PlaceTitle,
@@ -26,14 +34,8 @@ import {
     DialogInput,
     ButtonsContainer,
     DialogButton,
+    TextStyled,
 } from "./styles";
-
-interface FavoritePlace {
-    id_place: number;
-    name: string;
-    latitude: number;
-    longitude: number;
-}
 
 type ParamPlace = {
     params: {
@@ -66,6 +68,8 @@ const FavoritePlaces: React.FC = () => {
     ]);
 
     const [openMap, setOpenMap] = useState(false);
+
+    const [activePlaces, setActivePlaces] = useState([]);
 
     useEffect(() => {
         getPlaces();
@@ -110,14 +114,14 @@ const FavoritePlaces: React.FC = () => {
         handleCloseDialog();
 
         if (data.token !== "") {
-            const FavoritePlace = {
+            const favoritePlace = {
                 name: favoritePlaceName,
                 latitude: position[0],
                 longitude: position[1],
             };
 
             const response = await createFavoritePlace(
-                FavoritePlace,
+                favoritePlace,
                 data.token
             );
 
@@ -133,41 +137,127 @@ const FavoritePlaces: React.FC = () => {
         }
     };
 
+    const _renderHeader = (
+        place: FavoritePlace,
+        index: number,
+        isActive: boolean
+    ) => {
+        return (
+            <PlaceCard
+                style={{
+                    borderBottomLeftRadius: isActive ? 0 : scale(16),
+                    borderBottomRightRadius: isActive ? 0 : scale(16),
+                    borderBottomColor: isActive
+                        ? theme.primaryGray
+                        : theme.primaryBackground,
+                    borderBottomWidth: isActive ? 1 : 0,
+                    justifyContent: "space-between",
+                }}
+                key={place.id_place}
+            >
+                <PlaceTitle>{place.name}</PlaceTitle>
+
+                <TouchableAction
+                    onPress={() => {
+                        setDeleteModal(true);
+                        setIdPlace(place.id_place);
+                    }}
+                >
+                    <Feather
+                        name="trash-2"
+                        size={22}
+                        color={
+                            theme.type === "dark"
+                                ? theme.primarySuperDarkBlue
+                                : theme.primaryLightBlue
+                        }
+                    />
+                </TouchableAction>
+            </PlaceCard>
+        );
+    };
+
+    const _renderContent = (
+        place: FavoritePlace,
+        index: number,
+        isActive: boolean
+    ) => {
+        return (
+            <PlaceCard
+                style={{
+                    borderTopLeftRadius: isActive ? 0 : scale(16),
+                    borderTopRightRadius: isActive ? 0 : scale(16),
+                    borderBottomLeftRadius: scale(20),
+                    borderBottomRightRadius: scale(20),
+                }}
+                key={place.id_place}
+            >
+                <StayNormalMap
+                    style={{ padding: scale(100) }}
+                    region={{
+                        latitude: place.latitude,
+                        longitude: place.longitude,
+                        latitudeDelta: 0.01,
+                        longitudeDelta: 0.01,
+                    }}
+                    zoomEnabled={false}
+                    scrollEnabled={false}
+                    loadingEnabled
+                    customMapStyle={
+                        theme.type === "dark" ? staySafeDarkMapStyle : []
+                    }
+                >
+                    <FavoriteMarker favoriteplace={place} />
+                </StayNormalMap>
+            </PlaceCard>
+        );
+    };
+
+    const updateSections = (activeSections) => {
+        setActivePlaces(
+            activeSections.includes(undefined) ? [] : activeSections
+        );
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Container>
                 <HeaderTitle text="Locais Favoritos" goBack />
                 <KeyboardScrollView>
                     {favoritePlaces.length === 0 ? (
-                        <PlaceCard style={{ elevation: 5 }}>
+                        <PlaceCard style={{ width: "80%" }}>
                             <PlaceTitle>
                                 Você não possui locais cadastrados.
                             </PlaceTitle>
                         </PlaceCard>
                     ) : (
-                        favoritePlaces.map((place: FavoritePlace) => {
-                            return (
-                                <PlaceCard
-                                    style={{ elevation: 5 }}
-                                    key={place.id_place}
-                                >
-                                    <PlaceTitle>{place.name}</PlaceTitle>
-
-                                    <DeletePlace
-                                        onPress={() => {
-                                            setDeleteModal(true);
-                                            setIdPlace(place.id_place);
-                                        }}
-                                    >
-                                        <Feather
-                                            name="trash-2"
-                                            size={22}
-                                            color={theme.primarySuperDarkBlue}
-                                        />
-                                    </DeletePlace>
-                                </PlaceCard>
-                            );
-                        })
+                        <Accordion
+                            containerStyle={{
+                                width: "80%",
+                            }}
+                            sectionContainerStyle={{
+                                elevation: 5,
+                                marginBottom: scale(20),
+                                backgroundColor: theme.primaryBackground,
+                                borderTopLeftRadius: scale(20),
+                                borderTopRightRadius: scale(20),
+                                borderBottomLeftRadius: scale(20),
+                                borderBottomRightRadius: scale(20),
+                            }}
+                            sections={favoritePlaces}
+                            activeSections={activePlaces}
+                            touchableComponent={TouchableOpacity}
+                            renderHeader={_renderHeader}
+                            renderContent={_renderContent}
+                            onChange={updateSections}
+                            expandMultiple
+                        />
+                    )}
+                    {favoritePlaces.length !== 0 && (
+                        <TextStyled>
+                            Clique no card para ver onde foi registrado o local
+                            favorito
+                        </TextStyled>
                     )}
                     <AddPlace
                         icon="plus"

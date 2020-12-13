@@ -20,6 +20,7 @@ import {
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
 import { ParamOccurrence } from "../../interfaces/occurrence";
+import { sendNotificationNearFavoritePlace } from "../../services/notifications";
 import { updateOccurrence, createOccurrence } from "../../services/occurrences";
 import {
     formatDate,
@@ -217,6 +218,10 @@ const Occurrence: React.FC = () => {
                         : await createOccurrence(dataOccurrence, data.token);
 
                     if (!response.body.error && response.status === 201) {
+                        sendNotificationNearFavoritePlace(
+                            dataOccurrence,
+                            data.token
+                        );
                         updateLocation({
                             latitude: location[0],
                             longitude: location[1],

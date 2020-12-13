@@ -79,10 +79,7 @@ export const CardActions = styled.View`
     max-height: 100%;
 `;
 
-export const TouchableAction = styled(RectButton).attrs((props) => ({
-    activeOpacity: 0.6,
-    rippleColor: props.theme.primaryGray,
-}))`
+export const TouchableAction = styled.TouchableOpacity`
     background-color: ${(props) =>
         props.theme.type === "dark"
             ? props.theme.primaryLightBlue
