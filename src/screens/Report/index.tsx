@@ -27,8 +27,8 @@ export const ReportButton = () => {
         <ButtonContainer>
             <AlertButton onPress={() => setOpenModal(true)}>
                 <Logo
-                    width={scale(35)}
-                    height={scale(35)}
+                    width={scale(31)}
+                    height={scale(31)}
                     fill={theme.primaryRed}
                 />
             </AlertButton>

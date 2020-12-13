@@ -63,8 +63,9 @@ const HomeTabBar: React.FC = () => {
                         borderTopLeftRadius: scale(15),
                         borderTopRightRadius: scale(15),
                         borderTopWidth: 0,
-                        marginTop: -scale(8),
+                        marginTop: -scale(10),
                     },
+                    keyboardHidesTabBar: true,
                 }}
             >
                 <Tab.Screen name="Home" component={Home} />
