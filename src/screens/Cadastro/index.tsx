@@ -121,7 +121,7 @@ const Cadastro: React.FC = () => {
                     <NormalInput
                         returnKeyType="next"
                         maxLength={20}
-                        onChangeText={(text) => setUsername(text)}
+                        onChangeText={(text) => setUsername(text.split(" ")[0])}
                         onSubmitEditing={() => fullNameInput.focus()}
                     />
 
@@ -130,7 +130,9 @@ const Cadastro: React.FC = () => {
                         ref={(input) => setFullNameInput(input)}
                         returnKeyType="next"
                         maxLength={200}
-                        onChangeText={(text) => setUserFullName(text)}
+                        onChangeText={(text) =>
+                            setUserFullName(text.split(" ")[0])
+                        }
                         onSubmitEditing={() => emailInput.focus()}
                     />
 
@@ -140,7 +142,9 @@ const Cadastro: React.FC = () => {
                         returnKeyType="next"
                         keyboardType="email-address"
                         maxLength={50}
-                        onChangeText={(text) => setUserEmail(text)}
+                        onChangeText={(text) =>
+                            setUserEmail(text.split(" ")[0])
+                        }
                         onSubmitEditing={() => pwdInput.focus()}
                     />
 
@@ -150,7 +154,7 @@ const Cadastro: React.FC = () => {
                         returnKeyType="next"
                         secureTextEntry
                         maxLength={20}
-                        onChangeText={(text) => setUserPwd(text)}
+                        onChangeText={(text) => setUserPwd(text.split(" ")[0])}
                         onSubmitEditing={() => confirmPwdInput.focus()}
                     />
 
@@ -159,7 +163,9 @@ const Cadastro: React.FC = () => {
                         ref={(input) => setConfirmPwdInput(input)}
                         secureTextEntry
                         maxLength={20}
-                        onChangeText={(text) => setUserConfirmPwd(text)}
+                        onChangeText={(text) =>
+                            setUserConfirmPwd(text.split(" ")[0])
+                        }
                         onSubmitEditing={() => handleRegister()}
                     />
 
