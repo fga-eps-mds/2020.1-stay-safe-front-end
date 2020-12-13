@@ -109,7 +109,7 @@ const CityStatistics: React.FC = () => {
                         <Loader />
                     ) : (
                         <StatisticsCard
-                            dropdownTitle="Crime"
+                            dropdownTitle="Ano"
                             dropdownWidth="40%"
                             dropdownItems={years}
                             dropdownDefaultValue={selectedYear}

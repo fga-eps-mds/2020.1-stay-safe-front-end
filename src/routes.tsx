@@ -4,6 +4,7 @@ import React from "react";
 import Loader from "./components/Loader";
 import { useUser } from "./hooks/user";
 import HomeTabBar from "./navigation/HomeTabBar";
+import About from "./screens/About";
 import Cadastro from "./screens/Cadastro";
 import CityStatistics from "./screens/CityStatistics";
 import CrimeStatistics from "./screens/CrimeStatistics";
@@ -53,6 +54,7 @@ const Routes: React.FC = () => {
                 component={CrimeStatistics}
             />
             <AppStack.Screen name="FavoritePlaces" component={FavoritePlaces} />
+            <AppStack.Screen name="About" component={About} />
         </AppStack.Navigator>
     );
 };

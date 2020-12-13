@@ -20,7 +20,7 @@ export const DotsContainer = styled.View`
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: ${scale(40)}px;
+    top: ${scale(22)}px;
     left: 0px;
 `;
 
@@ -41,7 +41,7 @@ export const Title = styled.Text`
 `;
 
 export const ImageSlide = styled.Image`
-    height: ${scale(320)}px;
+    height: ${scale(280)}px;
     resize-mode: contain;
     margin-vertical: ${scale(30)}px;
 `;
@@ -59,7 +59,7 @@ export const ButtonContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
     position: absolute;
-    bottom: ${scale(20)}px;
+    bottom: ${scale(22)}px;
     left: 0px;
     padding-horizontal: ${scale(20)}px;
 `;

@@ -3,21 +3,21 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useState, useEffect } from "react";
 import { View } from "react-native";
+import { Switch } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
-import { Switch } from "react-native-paper";
 
-import { updateUser, getUser } from "../../services/users";
 import Button from "../../components/Button";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
 import {
     ButtonWithIconLabel,
     Container,
-    KeyboardScrollView
+    KeyboardScrollView,
 } from "../../components/NormalForms";
 import StayAlert from "../../components/StayAlert";
 import { useUser } from "../../hooks/user";
+import { updateUser, getUser } from "../../services/users";
 import { scale } from "../../utils/scalling";
 import { buttonsObject } from "./buttonsObject";
 import {
@@ -31,6 +31,7 @@ interface ButtonObject {
     title: string;
     icon: string;
     userLogged: boolean;
+    screen: string | null;
 }
 
 const Settings: React.FC = () => {
@@ -53,10 +54,10 @@ const Settings: React.FC = () => {
         const loadData = async () => {
             const response = await getUser(data.username);
             if (response.status === 200)
-                setIsSwitchOn(response.body.show_notifications)
-        }
+                setIsSwitchOn(response.body.show_notifications);
+        };
         loadData();
-    }, [])
+    }, []);
 
     const handleLogout = async () => {
         setIsLoading(true);
@@ -88,10 +89,12 @@ const Settings: React.FC = () => {
 
     const handleNotification = async () => {
         setIsSwitchOn(!isSwitchOn);
-        const response = await updateUser({show_notifications: !isSwitchOn}, data.token);
-        if (response.status !== 200)
-            setIsSwitchOn(isSwitchOn);
-    }
+        const response = await updateUser(
+            { show_notifications: !isSwitchOn },
+            data.token
+        );
+        if (response.status !== 200) setIsSwitchOn(isSwitchOn);
+    };
 
     if (!loaded) return null;
 
@@ -104,28 +107,35 @@ const Settings: React.FC = () => {
                 <KeyboardScrollView>
                     <ButtonsContainer>
                         {data.token !== "" && (
-                        <View style={{flexDirection: "row", marginBottom: "0%"}}>
-                            <Button
-                                key={"Notificações"}
-                                width="100%"
-                                color={theme.primaryWhite}
-                                settings
-                                onPress={handleNotification}
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    marginBottom: "0%",
+                                }}
+                            >
+                                <Button
+                                    key="Notificações"
+                                    width="100%"
+                                    color={theme.primaryWhite}
+                                    settings
+                                    onPress={handleNotification}
                                 >
-                                <Feather
-                                    name={"bell"}
-                                    size={scale(18)}
-                                    color={theme.primarySuperDarkBlue}
+                                    <Feather
+                                        name="bell"
+                                        size={scale(18)}
+                                        color={theme.primarySuperDarkBlue}
                                     />
-                                <ButtonText>Notificações</ButtonText>
-                                <Switch
-                                    style={{ marginLeft: "10%" }}
-                                    color={theme.primarySuperDarkBlue}
-                                    value={isSwitchOn}
-                                    onValueChange={() => setIsSwitchOn(!isSwitchOn)}
-                                />
-                            </Button>
-                        </View>
+                                    <ButtonText>Notificações</ButtonText>
+                                    <Switch
+                                        style={{ marginLeft: "10%" }}
+                                        color={theme.primarySuperDarkBlue}
+                                        value={isSwitchOn}
+                                        onValueChange={() =>
+                                            setIsSwitchOn(!isSwitchOn)
+                                        }
+                                    />
+                                </Button>
+                            </View>
                         )}
                         {buttonsObject.map((button: ButtonObject) => {
                             return button.userLogged ? (
@@ -134,6 +144,13 @@ const Settings: React.FC = () => {
                                         key={button.title}
                                         width="100%"
                                         color={theme.primaryWhite}
+                                        onPress={() =>
+                                            button.screen
+                                                ? navigation.navigate(
+                                                      button.screen
+                                                  )
+                                                : null
+                                        }
                                         settings
                                     >
                                         <Feather
@@ -149,6 +166,11 @@ const Settings: React.FC = () => {
                                     key={button.title}
                                     width="100%"
                                     color={theme.primaryWhite}
+                                    onPress={() =>
+                                        button.screen
+                                            ? navigation.navigate(button.screen)
+                                            : null
+                                    }
                                     settings
                                 >
                                     <Feather

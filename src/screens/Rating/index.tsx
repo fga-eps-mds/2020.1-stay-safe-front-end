@@ -206,6 +206,9 @@ const Rating: React.FC = () => {
                     response.body.error,
                 ]);
             }
+        } else {
+            setHasError(true);
+            setErrorMessage(["Erro ao avaliar bairro", "Você não está logado"]);
         }
     };
 
@@ -315,7 +318,11 @@ const Rating: React.FC = () => {
                 <ErrorModal
                     show={hasError}
                     message={errorMessage}
-                    onPress={() => setHasError(false)}
+                    onPress={() => {
+                        setHasError(false);
+                        if (errorMessage[1] === "Você não está logado")
+                            navigation.navigate("Login");
+                    }}
                 />
             </Container>
         </SafeAreaView>

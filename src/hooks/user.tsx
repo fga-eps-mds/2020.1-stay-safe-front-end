@@ -79,8 +79,8 @@ interface UserLocation {
 }
 
 const initialLocation = {
-    latitude: -15.780311,
-    longitude: -47.768043,
+    latitude: -15.787469,
+    longitude: -47.882847,
     latitudeDelta: 0.2,
     longitudeDelta: 0.2,
 };
