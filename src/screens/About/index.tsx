@@ -26,7 +26,7 @@ const About: React.FC = () => {
                     um grupo idealiza o projeto na disciplina de Métodos de
                     Desenvolvimento de Software na Universidade de Brasília
                     (UnB).
-                    {"\n\n"}O StaySafe é um aplicativo mobile para Android
+                    {"\n\n"}O StaySafe é um aplicativo mobile para Android que
                     mostra, através de mapas e estatísicas, informações sobre a
                     segurança de diversos locais. Os dados exibidos são obtidos
                     das Secretarias de Segurança Pública e dos usuários do
