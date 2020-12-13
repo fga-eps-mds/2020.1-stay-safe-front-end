@@ -140,6 +140,7 @@ const Profile: React.FC = () => {
 
                     <NormalLabel>Nome de usuário</NormalLabel>
                     <InputViewing
+                        style={isEditing && { opacity: 0.6 }}
                         editable={false}
                         isEditing={false}
                         returnKeyType="next"
@@ -203,7 +204,11 @@ const Profile: React.FC = () => {
                             <Feather
                                 name={isEditing ? "save" : "edit-3"}
                                 size={scale(18)}
-                                color={theme.primaryWhite}
+                                color={
+                                    theme.type === "dark"
+                                        ? theme.primaryBlack
+                                        : theme.primaryWhite
+                                }
                             />
                             <ButtonWithIconLabel>
                                 {isEditing ? "Salvar" : "Editar Perfil"}
@@ -218,7 +223,11 @@ const Profile: React.FC = () => {
                                     <Button
                                         key={button.label}
                                         width="70%"
-                                        color={theme.primaryDarkBlue}
+                                        color={
+                                            theme.type === "dark"
+                                                ? theme.primaryLightBlue
+                                                : theme.primaryDarkBlue
+                                        }
                                         onPress={() =>
                                             navigation.navigate(
                                                 button.navigation
@@ -228,7 +237,11 @@ const Profile: React.FC = () => {
                                         <Feather
                                             name={button.icon}
                                             size={scale(18)}
-                                            color={theme.primaryWhite}
+                                            color={
+                                                theme.type === "dark"
+                                                    ? theme.primaryBlack
+                                                    : theme.primaryWhite
+                                            }
                                         />
                                         <ButtonWithIconLabel>
                                             {button.label}

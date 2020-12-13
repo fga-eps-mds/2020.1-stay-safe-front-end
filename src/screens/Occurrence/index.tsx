@@ -468,7 +468,11 @@ const Occurrence: React.FC = () => {
                         <MaterialCommunityIcons
                             name="map-marker-check"
                             size={scale(20)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>
                             {isEditing

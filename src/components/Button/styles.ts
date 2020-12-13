@@ -21,8 +21,8 @@ export const NormalButton = styled(RectButton).attrs((props) => ({
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: ${(props) =>
-        props.enabled ? props.color : props.theme.primaryGray};
+    opacity: ${(props) => (props.enabled ? 1 : 0.4)};
+    background-color: ${(props) => props.color};
 
     border-radius: ${(props) => scale(props.borderRadius)}px;
     padding: ${scale(12)}px;

@@ -485,7 +485,11 @@ const Home: React.FC = () => {
                                 <Feather
                                     name="filter"
                                     size={scale(18)}
-                                    color={theme.primaryWhite}
+                                    color={
+                                        theme.type === "dark"
+                                            ? theme.primaryBlack
+                                            : theme.primaryWhite
+                                    }
                                 />
                                 <ButtonWithIconLabel>
                                     Filtrar

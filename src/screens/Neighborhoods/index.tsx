@@ -139,7 +139,11 @@ const Neighborhoods: React.FC = () => {
                         <MaterialCommunityIcons
                             name="home-city"
                             size={scale(18)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>Ver Bairro</ButtonWithIconLabel>
                     </Button>
@@ -155,7 +159,11 @@ const Neighborhoods: React.FC = () => {
                         <MaterialCommunityIcons
                             name="star"
                             size={scale(18)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>Avaliar</ButtonWithIconLabel>
                     </Button>

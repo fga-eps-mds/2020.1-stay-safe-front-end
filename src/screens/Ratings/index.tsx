@@ -1,7 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
@@ -14,6 +13,7 @@ import {
     NeighText,
     Date,
     CardActions,
+    TouchableAction,
 } from "../../components/Cards";
 import HeaderTitle from "../../components/HeaderTitle";
 import StayAlert from "../../components/StayAlert";
@@ -83,57 +83,82 @@ const Ratings: React.FC = () => {
                 <CardContainer>
                     {ratings.length === 0 ? (
                         <Card>
-                            <CardData>
-                                <Title>Nenhuma avaliação :(</Title>
+                            <CardData
+                                style={{
+                                    width: "100%",
+                                }}
+                            >
+                                <Title
+                                    style={{
+                                        textAlign: "center",
+                                        marginBottom: 0,
+                                        padding: scale(7),
+                                    }}
+                                >
+                                    Nenhuma avaliação :(
+                                </Title>
                             </CardData>
                         </Card>
                     ) : (
                         ratings.map((rating) => {
                             return (
-                                <Card key={rating.id_rating}>
-                                    <CardData>
-                                        <Title>
-                                            {rating.neighborhood.neighborhood}
-                                        </Title>
-                                        <NeighText>
-                                            {rating.neighborhood.city} -{" "}
-                                            {rating.neighborhood.state}
-                                        </NeighText>
-                                        <Date>03-2020</Date>
-                                    </CardData>
-
-                                    <CardActions>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                navigation.navigate("Rating", {
-                                                    rating,
-                                                });
-                                            }}
-                                        >
-                                            <Feather
-                                                name="edit-3"
-                                                size={scale(22)}
-                                                color={
-                                                    theme.primarySuperDarkBlue
+                                <>
+                                    <Card key={rating.id_rating}>
+                                        <CardData>
+                                            <Title>
+                                                {
+                                                    rating.neighborhood
+                                                        .neighborhood
                                                 }
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                setConfirmModal(true);
-                                                setIdRating(rating.id_rating);
-                                            }}
-                                        >
-                                            <Feather
-                                                name="trash-2"
-                                                size={scale(22)}
-                                                color={
-                                                    theme.primarySuperDarkBlue
-                                                }
-                                            />
-                                        </TouchableOpacity>
-                                    </CardActions>
-                                </Card>
+                                            </Title>
+                                            <NeighText>
+                                                {rating.neighborhood.city} -{" "}
+                                                {rating.neighborhood.state}
+                                            </NeighText>
+                                            <Date>03-2020</Date>
+                                        </CardData>
+                                        <CardActions>
+                                            <TouchableAction
+                                                onPress={() => {
+                                                    navigation.navigate(
+                                                        "Rating",
+                                                        {
+                                                            rating,
+                                                        }
+                                                    );
+                                                }}
+                                            >
+                                                <Feather
+                                                    name="edit-3"
+                                                    size={scale(22)}
+                                                    color={
+                                                        theme.type === "dark"
+                                                            ? theme.primarySuperDarkBlue
+                                                            : theme.primaryLightBlue
+                                                    }
+                                                />
+                                            </TouchableAction>
+                                            <TouchableAction
+                                                onPress={() => {
+                                                    setConfirmModal(true);
+                                                    setIdRating(
+                                                        rating.id_rating
+                                                    );
+                                                }}
+                                            >
+                                                <Feather
+                                                    name="trash-2"
+                                                    size={scale(22)}
+                                                    color={
+                                                        theme.type === "dark"
+                                                            ? theme.primarySuperDarkBlue
+                                                            : theme.primaryLightBlue
+                                                    }
+                                                />
+                                            </TouchableAction>
+                                        </CardActions>
+                                    </Card>
+                                </>
                             );
                         })
                     )}

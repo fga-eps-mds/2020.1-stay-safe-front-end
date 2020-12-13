@@ -60,7 +60,10 @@ export const NormalInput = styled.TextInput.attrs((props) => ({
 export const ButtonLabel = styled.Text`
     font-family: Trueno-SemiBold;
     font-size: ${scale(14)}px;
-    color: ${(props) => props.theme.primaryWhite};
+    color: ${(props) =>
+        props.theme.type === "dark"
+            ? props.theme.primaryBlack
+            : props.theme.primaryWhite};
 `;
 
 export const ButtonWithIconLabel = styled(ButtonLabel)`

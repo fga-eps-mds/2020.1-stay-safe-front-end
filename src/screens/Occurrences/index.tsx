@@ -15,6 +15,7 @@ import {
     Title,
     Date,
     CardActions,
+    TouchableAction,
 } from "../../components/Cards";
 import HeaderTitle from "../../components/HeaderTitle";
 import Loader from "../../components/Loader";
@@ -93,7 +94,6 @@ const Occurrences: React.FC = () => {
             <Card
                 style={{
                     width: "100%",
-                    alignSelf: "center",
                     marginBottom: 0,
                     borderBottomLeftRadius: isActive ? 0 : scale(16),
                     borderBottomRightRadius: isActive ? 0 : scale(16),
@@ -109,7 +109,8 @@ const Occurrences: React.FC = () => {
                 </CardData>
 
                 <CardActions>
-                    <TouchableOpacity
+                    <TouchableAction
+                        style={{ marginBottom: scale(10) }}
                         onPress={() => {
                             navigation.navigate("Occurrence", {
                                 occurrence,
@@ -119,10 +120,14 @@ const Occurrences: React.FC = () => {
                         <Feather
                             name="edit-3"
                             size={scale(22)}
-                            color={theme.primarySuperDarkBlue}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primarySuperDarkBlue
+                                    : theme.primaryLightBlue
+                            }
                         />
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                    </TouchableAction>
+                    <TouchableAction
                         onPress={() => {
                             setConfirmModal(true);
                             setIdOccurrence(occurrence.id_occurrence);
@@ -131,9 +136,13 @@ const Occurrences: React.FC = () => {
                         <Feather
                             name="trash-2"
                             size={scale(22)}
-                            color={theme.primarySuperDarkBlue}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primarySuperDarkBlue
+                                    : theme.primaryLightBlue
+                            }
                         />
-                    </TouchableOpacity>
+                    </TouchableAction>
                 </CardActions>
             </Card>
         );
@@ -200,11 +209,12 @@ const Occurrences: React.FC = () => {
                                     Usuário não possui ocorrências
                                 </Title>
                             </CardData>
+                            <TouchableOpacity />
                         </Card>
                     ) : (
                         <Accordion
                             containerStyle={{
-                                width: "80%",
+                                width: "100%",
                                 backgroundColor: theme.primaryBackground,
                             }}
                             sectionContainerStyle={{
@@ -218,7 +228,6 @@ const Occurrences: React.FC = () => {
                             }}
                             sections={occurrences}
                             activeSections={activeOccurrences}
-                            touchableComponent={TouchableOpacity}
                             renderHeader={_renderHeader}
                             renderContent={_renderContent}
                             onChange={updateSections}

@@ -10,6 +10,7 @@ interface CrimeBarProps {
 
 export const StatisticsContainer = styled.View`
     width: 85%;
+    min-height: ${scale(200)}px;
     background-color: ${(props) => props.theme.primaryWhite};
     border-radius: ${scale(20)}px;
     align-items: center;
