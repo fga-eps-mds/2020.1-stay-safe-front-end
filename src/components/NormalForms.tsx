@@ -66,3 +66,13 @@ export const ButtonLabel = styled.Text`
 export const ButtonWithIconLabel = styled(ButtonLabel)`
     margin-left: ${scale(10)}px;
 `;
+
+export const InputWithIcon = styled.View`
+    width: 80%;
+    height: ${scale(42)}px;
+    border-radius: ${scale(15)}px;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+    justify-content: space-between;
+`;
