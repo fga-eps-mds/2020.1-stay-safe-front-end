@@ -250,7 +250,11 @@ const Rating: React.FC = () => {
                                         <AntDesign
                                             name="like2"
                                             size={scale(25)}
-                                            color={theme.primarySuperDarkBlue}
+                                            color={
+                                                detail.like
+                                                    ? theme.primaryLightBlue
+                                                    : theme.primarySuperDarkBlue
+                                            }
                                             onPress={() =>
                                                 handleDetail(
                                                     detail.value,
@@ -287,7 +291,11 @@ const Rating: React.FC = () => {
                     <MaterialCommunityIcons
                         name="star"
                         size={scale(20)}
-                        color={theme.primaryWhite}
+                        color={
+                            theme.type === "dark"
+                                ? theme.primaryBlack
+                                : theme.primaryWhite
+                        }
                     />
                     <ButtonWithIconLabel>Avaliar</ButtonWithIconLabel>
                 </Button>

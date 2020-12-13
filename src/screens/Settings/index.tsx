@@ -202,7 +202,11 @@ const Settings: React.FC = () => {
                                 <Feather
                                     name="log-out"
                                     size={scale(18)}
-                                    color={theme.primaryWhite}
+                                    color={
+                                        theme.type === "dark"
+                                            ? theme.primaryBlack
+                                            : theme.primaryWhite
+                                    }
                                 />
                                 <ButtonWithIconLabel>Sair</ButtonWithIconLabel>
                             </Button>

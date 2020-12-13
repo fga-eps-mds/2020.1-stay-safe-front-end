@@ -132,7 +132,11 @@ const CityStatistics: React.FC = () => {
                         <Feather
                             name="list"
                             size={scale(18)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>
                             Visualizar Bairros
@@ -151,7 +155,11 @@ const CityStatistics: React.FC = () => {
                         <MaterialCommunityIcons
                             name="sort-variant"
                             size={scale(20)}
-                            color={theme.primaryWhite}
+                            color={
+                                theme.type === "dark"
+                                    ? theme.primaryBlack
+                                    : theme.primaryWhite
+                            }
                         />
                         <ButtonWithIconLabel>
                             Comparar Estatísticas

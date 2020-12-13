@@ -102,7 +102,11 @@ const SelectPointOnMap: React.FC<SelectPointOnMapProps> = ({
                             <Feather
                                 name="map-pin"
                                 size={scale(16)}
-                                color={theme.primaryWhite}
+                                color={
+                                    theme.type === "dark"
+                                        ? theme.primaryBlack
+                                        : theme.primaryWhite
+                                }
                             />
                             <ButtonWithIconLabel>Pronto</ButtonWithIconLabel>
                         </DoneButton>

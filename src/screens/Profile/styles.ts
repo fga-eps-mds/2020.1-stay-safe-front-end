@@ -12,7 +12,7 @@ export const InputViewing = styled(NormalInput)<InputViewingProps>`
     background-color: ${(props) =>
         props.isEditing
             ? props.theme.type === "dark"
-                ? props.theme.primaryBlack
+                ? props.theme.primaryLightBlue + "60"
                 : props.theme.primaryWhite
             : props.theme.type === "dark"
             ? props.theme.primaryWhite

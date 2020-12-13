@@ -6,6 +6,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
 
+import { TouchableAction } from "../../components/Cards";
 import ErrorModal from "../../components/ErrorModal";
 import FavoriteMarker from "../../components/FavoriteMarker";
 import HeaderTitle from "../../components/HeaderTitle";
@@ -25,7 +26,6 @@ import { scale } from "../../utils/scalling";
 import {
     PlaceCard,
     PlaceTitle,
-    DeletePlace,
     AddPlace,
     DialogContainer,
     DialogTitle,
@@ -150,12 +150,13 @@ const FavoritePlaces: React.FC = () => {
                         ? theme.primaryGray
                         : theme.primaryBackground,
                     borderBottomWidth: isActive ? 1 : 0,
+                    justifyContent: "space-between",
                 }}
                 key={place.id_place}
             >
                 <PlaceTitle>{place.name}</PlaceTitle>
 
-                <DeletePlace
+                <TouchableAction
                     onPress={() => {
                         setDeleteModal(true);
                         setIdPlace(place.id_place);
@@ -164,9 +165,13 @@ const FavoritePlaces: React.FC = () => {
                     <Feather
                         name="trash-2"
                         size={22}
-                        color={theme.primarySuperDarkBlue}
+                        color={
+                            theme.type === "dark"
+                                ? theme.primarySuperDarkBlue
+                                : theme.primaryLightBlue
+                        }
                     />
-                </DeletePlace>
+                </TouchableAction>
             </PlaceCard>
         );
     };
