@@ -26,7 +26,6 @@ import { scale } from "../../utils/scalling";
 import {
     PlaceCard,
     PlaceTitle,
-    DeletePlace,
     AddPlace,
     DialogContainer,
     DialogTitle,

@@ -22,11 +22,6 @@ export const PlaceCard = styled.View`
     align-items: center;
 `;
 
-export const DeletePlace = styled.TouchableOpacity`
-    right: 5%;
-    position: absolute;
-`;
-
 export const AddPlace = styled(FAB)`
     background-color: ${(props) => props.theme.primaryRed};
     position: absolute;
