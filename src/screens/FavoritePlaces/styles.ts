@@ -14,10 +14,9 @@ export const PlaceTitle = styled.Text`
 
 export const PlaceCard = styled.View`
     background-color: ${(props) => props.theme.primaryWhite};
-    width: 80%;
+    width: 100%;
     flex-direction: row;
     padding: ${scale(14)}px;
-    margin-bottom: ${scale(20)}px;
     border-radius: ${scale(20)}px;
     justify-content: center;
     align-items: center;
@@ -91,4 +90,12 @@ export const DialogButton = styled(Dialog.Button)`
     background-color: ${(props) => props.theme.primaryLightBlue};
     border-radius: ${scale(28)}px;
     padding: ${scale(12)}px;
+`;
+
+export const TextStyled = styled.Text`
+    font-size: ${scale(12)}px;
+    font-family: "Trueno-SemiBold";
+    color: ${(props) => props.theme.primarySuperDarkBlue};
+    text-align: center;
+    max-width: 60%;
 `;

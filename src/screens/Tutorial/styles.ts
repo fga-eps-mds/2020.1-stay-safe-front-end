@@ -1,6 +1,6 @@
+import AppIntroSlider from "react-native-app-intro-slider";
 import styled from "styled-components/native";
 
-import AppIntroSlider from "react-native-app-intro-slider";
 import { scale } from "../../utils/scalling";
 
 export const TutorialSlider = styled(AppIntroSlider).attrs(() => ({
@@ -27,7 +27,7 @@ export const DotsContainer = styled.View`
 export const Dot = styled.TouchableOpacity`
     width: ${scale(10)}px;
     height: ${scale(10)}px;
-    background-color: ${(props) => 
+    background-color: ${(props) =>
         props.selected ? props.theme.primaryRed : props.theme.primaryWhite};
     border-radius: ${scale(10)}px;
     margin-horizontal: ${scale(3)}px;

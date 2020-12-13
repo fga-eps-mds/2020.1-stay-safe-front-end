@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useTheme } from "styled-components";
 
@@ -15,8 +16,12 @@ import { scale } from "../utils/scalling";
 const Tab = createBottomTabNavigator();
 
 const HomeTabBar: React.FC = () => {
+    const navigation = useNavigation();
     const theme = useTheme();
-    const { data } = useUser();
+    const { data, notification, tapNotification } = useUser();
+
+    if (notification && tapNotification)
+        navigation.navigate("OccurrenceDetails", { occurrence: notification });
 
     return (
         <>
@@ -63,8 +68,9 @@ const HomeTabBar: React.FC = () => {
                         borderTopLeftRadius: scale(15),
                         borderTopRightRadius: scale(15),
                         borderTopWidth: 0,
-                        marginTop: -scale(8),
+                        marginTop: -scale(10),
                     },
+                    keyboardHidesTabBar: true,
                 }}
             >
                 <Tab.Screen name="Home" component={Home} />

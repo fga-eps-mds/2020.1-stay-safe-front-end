@@ -1,13 +1,12 @@
-import { useFocusEffect } from '@react-navigation/native';
-import { useNavigation } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import React, { useCallback, useState } from "react";
-import { useUser } from "../../hooks/user";
+import { View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "styled-components";
-import { slides } from "./slidesScreens";
 
+import { useUser } from "../../hooks/user";
+import { slides } from "./slidesScreens";
 import {
     TutorialSlider,
     Container,
@@ -23,7 +22,7 @@ import {
 
 const Tutorial: React.FC = () => {
     const [slider, setSlider] = useState(TutorialSlider);
-    
+
     const { updateShowTutorial, switchTheme } = useUser();
     const navigation = useNavigation();
     const theme = useTheme();
@@ -33,11 +32,11 @@ const Tutorial: React.FC = () => {
         "Trueno-Regular": require("../../fonts/TruenoRg.otf"),
     });
 
-    useFocusEffect( 
+    useFocusEffect(
         useCallback(() => {
-          if (theme.type === "default") {
-            switchTheme();
-          }
+            if (theme.type === "default") {
+                switchTheme();
+            }
         }, [theme.type])
     );
 
@@ -67,28 +66,32 @@ const Tutorial: React.FC = () => {
 
                 <ButtonContainer>
                     <View>
-                        {activeIndex > 0 &&
+                        {activeIndex > 0 && (
                             <Button
-                                onPress={() => slider?.goToSlide(activeIndex-1, true)}
-                                style={{ backgroundColor: theme.primaryLightBlue }}
+                                onPress={() =>
+                                    slider?.goToSlide(activeIndex - 1, true)
+                                }
+                                style={{
+                                    backgroundColor: theme.primaryLightBlue,
+                                }}
                             >
                                 <ButtonLabel>Voltar</ButtonLabel>
                             </Button>
-                        }
+                        )}
                     </View>
-                    {activeIndex !== slides.length-1 ?
+                    {activeIndex !== slides.length - 1 ? (
                         <Button
-                            onPress={() => slider?.goToSlide(activeIndex+1, true)}
+                            onPress={() =>
+                                slider?.goToSlide(activeIndex + 1, true)
+                            }
                         >
                             <ButtonLabel>Avançar</ButtonLabel>
                         </Button>
-                    :
-                        <Button
-                            onPress={() => endTutorial()}
-                        >
+                    ) : (
+                        <Button onPress={() => endTutorial()}>
                             <ButtonLabel>Entendido</ButtonLabel>
-                        </Button>    
-                    }
+                        </Button>
+                    )}
                 </ButtonContainer>
             </>
         );
