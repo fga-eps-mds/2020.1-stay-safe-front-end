@@ -3,7 +3,6 @@ import React from "react";
 
 import Loader from "./components/Loader";
 import { useUser } from "./hooks/user";
-import Tutorial from "./screens/Tutorial";
 import HomeTabBar from "./navigation/HomeTabBar";
 import Cadastro from "./screens/Cadastro";
 import CityStatistics from "./screens/CityStatistics";
@@ -16,6 +15,7 @@ import OccurrenceDetails from "./screens/OccurrenceDetails";
 import Occurrences from "./screens/Occurrences";
 import Rating from "./screens/Rating";
 import Ratings from "./screens/Ratings";
+import Tutorial from "./screens/Tutorial";
 
 const AppStack = createStackNavigator();
 
