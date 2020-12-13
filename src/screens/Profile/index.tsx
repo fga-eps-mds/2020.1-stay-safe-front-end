@@ -165,7 +165,9 @@ const Profile: React.FC = () => {
                         keyboardType="email-address"
                         maxLength={50}
                         value={userEmail}
-                        onChangeText={(text) => setUserEmail(text)}
+                        onChangeText={(text) =>
+                            setUserEmail(text.split(" ")[0])
+                        }
                     />
 
                     {data.token !== "" && isEditing && (
@@ -177,7 +179,9 @@ const Profile: React.FC = () => {
                                 secureTextEntry
                                 maxLength={20}
                                 value={userPwd}
-                                onChangeText={(text) => setUserPwd(text)}
+                                onChangeText={(text) =>
+                                    setUserPwd(text.split(" ")[0])
+                                }
                             />
                             <NormalLabel>Confirmar senha</NormalLabel>
                             <InputViewing
@@ -185,7 +189,9 @@ const Profile: React.FC = () => {
                                 secureTextEntry
                                 maxLength={20}
                                 value={userConfirmPwd}
-                                onChangeText={(text) => setUserConfirmPwd(text)}
+                                onChangeText={(text) =>
+                                    setUserConfirmPwd(text.split(" ")[0])
+                                }
                             />
                         </>
                     )}
