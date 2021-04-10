@@ -5,7 +5,7 @@ import FavoriteLogo from "../../img/favorite-pin.svg";
 import { FavoritePlace } from "../../interfaces/favoriteplaces";
 import { scale } from "../../utils/scalling";
 
-// Oi galera, tudo bem?????
+// Oi galera, tudo bem????? como vai?
 
 interface FavoriteMarkerProps {
     favoriteplace: FavoritePlace;
